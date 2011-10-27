@@ -1,0 +1,12 @@
+export(din, sim.din)
+
+# internal functions; not intended to be visible to users
+# export(check.input, rowMaxs, rowProds, plot.din, print.din, summary.din,
+#        print.summary.din)
+
+import(graphics, stats)
+
+S3method(plot, din)
+S3method(print, din)
+S3method(summary, din)
+S3method(print, summary.din)
