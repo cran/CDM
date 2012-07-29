@@ -1,40 +1,82 @@
+
+
 ################################################################################
 # summary method for objects of class "din"                                    #
 ################################################################################
 summary.din <-
-function(object, ...){
+function(object, top.n.skill.classes = 6, log.file = NULL, overwrite = FALSE, ...){
 
 # Call: generic
-# Input: object of class din
+# Input: 
+#   object of class din
+#   top.n.skill.classes: a numeric, specifying the number of skill classes, starting with the most frequent, to be returned. Default value is 6.
+#   log.file: an optional character vector, specifying the directory and/or filename for an extensive log file.
+#   overwrite: an optional boolean, specifying wether or not the method is supposed to overwrite an existing log.file. If the log.file exists and overwrite is FALSE, the user is asked to confirm the overwriting.
 # Output: a named list, of the class summary.din (to be passed to print.summary.din), consisting of the following five components
 # 	CALL: a character specifying the model rule, the number of items and the number of attributes underlying the items.
-#	IDI: a matrix giving the diagnostic accuracy for each item. (see help file)
-#	SKILL.CLASS.PROB: a table which returns the minimum, maximum, quantile and mean information of the skill pattern distribution.
-#	AIC: a numeric giving the AIC of the specified model object.
-#	BIC: a numeric giving the BIC of the specified model object.
+#	  IDI: a vector giving the item discrimination index. (see help file)
+#	  SKILL.CLASSES: a vector giving the top.n.skill.classes most frequent skill classes and the corresponding class probability.
+#	  AIC: a numeric giving the AIC of the specified model object.
+#	  BIC: a numeric giving the BIC of the specified model object.
 
 ################################################################################
 # extract output from din object                                               #
 ################################################################################
-	
+
 	CALL <- paste(object$display,"on", ncol(object$data), "items for", nrow(object$skill.patt),"attributes")
 	
 	AIC <- round(object$AIC, 3)
 	BIC <- round(object$BIC, 3)
-	
-	IDI <- matrix(round(
-	  apply(rbind(object$guess[,1],object$slip[,1]), 2, function(x) 1-x[1]/(1-x[2]))
-	    ,3), nrow=1, dimnames=list("",colnames(object$data)))
-	    
-	SKILL.CLASS.PROB <- round(summary(object$attribute.patt[,1]), 3)
 
+	IDI <- t(matrix(round(object$IDI, 4)))
+	rownames(IDI) <- ""
+	colnames(IDI) <- rownames(object$coef)
+		
+	SKILL.CLASSES <- object$attribute.patt[order(object$attribute.patt[,1], decreasing = TRUE),][
+	1:min(top.n.skill.classes, 2^length(object$skill.patt)),]
+	SKILL.CLASSES <- round(t(SKILL.CLASSES)[1, ], 4)
+	
+  	if(top.n.skill.classes > nrow(object$attribute.patt))
+  		warning("There are at most ", 2^length(object$skill.patt), 
+  		" different skill classes. Returning all skill classes.\n")
+  	
+################################################################################
+# catch log file writing errors                                                #
+################################################################################
+
+  if(!is.null(log.file)){
+    if(file.exists(log.file)){
+      if(!overwrite){
+        cat("Press 'y' to overwrite existing file: ")
+        conf <- readLines(con = stdin(), n = 1)
+        if(conf %in% c("y", "Y")){
+          wrn <- getOption("warn"); options(warn = -1)
+          err <- try({ff <- file(log.file); open(ff, "w"); close(ff)}, silent = TRUE)
+          options("warn" = wrn)
+          if(!is.null(err)){
+            warning("'log.file' argument ignored due to ", err)
+            log.file <- NULL
+          }
+        }
+      }      
+    }else{
+      wrn <- getOption("warn"); options(warn = -1)
+      err <- try({ff <- file(log.file); open(ff, "w"); close(ff)}, silent = TRUE)
+      options("warn" = wrn)
+      if(!is.null(err)){
+        warning("'log.file' argument ignored due to ", err)
+        log.file <- NULL
+      }
+    }
+  }
+ 
 ################################################################################
 # return list                                                                  #
 ################################################################################
 	
-	out <- list("CALL"=CALL,"IDI"=IDI,"SKILL.CLASS.PROB"=SKILL.CLASS.PROB,"AIC"=AIC,"BIC"=BIC)
+  out <- list("CALL"=CALL,"IDI"=IDI,
+			"SKILL.CLASSES"=SKILL.CLASSES, "AIC"=AIC, "BIC"=BIC, 
+			"log.file" = log.file, "din.object" = object)
 	class(out) <- "summary.din"
 	return(out)
 }
-
-

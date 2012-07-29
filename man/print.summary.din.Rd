@@ -26,10 +26,10 @@
 \details{
   The \code{print} method prints the summary information about objects
   of the class \code{din} computed by \code{\link{summary.din}}, 
-  which are the diagnostic accuracies of the items, a summary of 
-  the corresponding skill pattern distribution and the model information
-  criteria AIC and BIC.  Specific summary information details such as
-  individual items with their diagnostic accuracy can be accessed through
+  which are the item discriminations indices, the most frequent 
+  skill classes and the model information criteria AIC and BIC.  
+  Specific summary information details such as
+  individual items with their discrimination index can be accessed through
   assignment (see \sQuote{Examples}).  
 }
 
@@ -45,7 +45,7 @@
   Maintainer: Alexander Robitzsch <a.robitzsch@bifie.at>,
               Thomas Kiefer <t.kiefer@bifie.at>,
               Ann Cathrice George <george@statistik.tu-dortmund.de>,
-              Ali Uenlue <uenlue@statistik.tu-dortmund.de>
+              Ali Uenlue <ali.uenlue@tum.de>
 }
 
 \references{

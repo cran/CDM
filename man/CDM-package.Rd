@@ -15,15 +15,17 @@
   (e.g., reading or mathematical comprehension skills).  The package
   \code{CDM} provides functions and example data for cognitive diagnosis
   modeling with the deterministic-input, noisy-and-gate (DINA) and
-  deterministic-input, noisy-or-gate (DINO) models in \R.  
+  deterministic-input and noisy-or-gate (DINO) in \R.
+%  and the multiple group
+%  generalized DINA (GDINA) models in \R.  
 }
 
 \details{
   \tabular{ll}{
     Package: \tab \code{CDM}\cr
     Type: \tab Package\cr
-    Version: \tab 0.0-4\cr
-    Date: \tab 2011-03-22\cr
+    Version: \tab 1.1-0\cr
+    Date: \tab 2012-06-xx\cr
     License: \tab \acronym{GPL} (>= 2)
   }
   Cognitive diagnosis models (CDMs) are restricted latent class models.  
@@ -80,21 +82,21 @@
   illustrated with an accompanying real dataset and Q-matrix 
   (\code{\link{fraction.subtraction.data}} and \code{\link{fraction.subtraction.qmatrix}}) 
   and artificial examples (\code{\link{Data-sim}}).  
+%    ADD SOMETHING ABOUT INCLUDED GDINA FRAMEWORK.
 }
 
 \author{
   Alexander Robitzsch, Thomas Kiefer, Ann Cathrice George, Ali Uenlue 
 
-  Maintainer: Alexander Robitzsch <a.robitzsch@bifie.at>,
-              Thomas Kiefer <t.kiefer@bifie.at>,
-              Ann Cathrice George <george@statistik.tu-dortmund.de>,
-              Ali Uenlue <uenlue@statistik.tu-dortmund.de>
+  Maintainer: Alexander Robitzsch <a.robitzsch@bifie.at>
 }
 
 \references{
   de la Torre, J. and Douglas, J. (2004) Higher-order latent trait models 
   for cognitive diagnosis. \emph{Psychometrika}, \bold{69}, 333--353.
-    
+
+%  de la Torre, J. (2011) The generalized {DINA} model framework. \emph{Psychometrika}, \bold{76}, 179--199.    
+
   DiBello, L. V., Roussos, L. A. and Stout, W. F. (2007) Review of
   cognitively diagnostic assessment and a summary of psychometric models.
   In C. R. Rao and S. Sinharay (Eds.), \emph{Handbook of Statistics},

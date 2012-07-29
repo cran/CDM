@@ -100,7 +100,7 @@ str(fractions.dina)
 fractions.dina$guess
 
 ## corresponding summaries, including diagnostic accuracies,
-## summary of skill pattern distribution and information 
+## most frequent skill classes and information 
 ## criteria AIC and BIC
 summary(fractions.dina)
 
@@ -108,28 +108,25 @@ summary(fractions.dina)
 detailed.summary.fs <- summary(fractions.dina)
 str(detailed.summary.fs)
 
-## Diagnostic accuracy of item 8 seems to low. This is also
+
+## Item discrimination index of item 8 is too low. This is also
 ## visualized in the first plot 
 plot(fractions.dina)
 
 ## The reason therefore is a high guessing parameter
 round(fractions.dina$guess[,1], 2)
 
-## Set an upper boundary for the guessing parameter of 
-## item 5, 8 and 9
-fractions.dina.bound <- din(data = fraction.subtraction.data, 
-  q.matrix = fraction.subtraction.qmatrix, constraint.guess =
-  matrix(c(5,8,9, rep(0.2, 3)), ncol = 2))
-fractions.dina.bound
-detailed.summary.fs.bound <- summary(fractions.dina.bound)
-
-## This improves the diagnostic accuracies
-summary(detailed.summary.fs$IDI[1,])
-summary(detailed.summary.fs.bound$IDI[1,])
+## Fix the guessing parameters of items 5, 8 and 9 equal to .20
+# define a constraint.guess matrix
+constraint.guess <-  matrix(c(5,8,9, rep(0.2, 3)), ncol = 2)
+fractions.dina.fixed <- din(data = fraction.subtraction.data, 
+  q.matrix = fraction.subtraction.qmatrix, 
+  constraint.guess=constraint.guess)
 
 ## The second plot shows the expected (MAP) and observed skill 
-## probabilities. The third plot visualizes the skill pattern
-## occurrence probabilities; Only the 'highest' are labeled; it
+## probabilities. The third plot visualizes the skill classes
+## occurrence probabilities; Only the 'top.n.skill.classes' most frequent 
+## skill classes are labeled; it
 ## is obvious that the skill class '11111111' (all skills are
 ## mastered) is the most probable in this population. The fourth
 ## plot shows the skill probabilities conditional on response
@@ -139,12 +136,13 @@ summary(detailed.summary.fs.bound$IDI[1,])
 ## pattern; it is shown whether a skill is mastered (above 
 ## .5+'uncertainty') unclassifiable (within the boundaries) or
 ## not mastered (below .5-'uncertainty'). In this case, the
-## fifteenth respondent was chosen; if no response pattern is 
+## 527th respondent was chosen; if no response pattern is 
 ## specified, the plot will not be shown (of course)
-pattern <- paste(fraction.subtraction.data[15,], collapse = "")
+pattern <- paste(fraction.subtraction.data[527, ], collapse = "")
+plot(fractions.dina, pattern = pattern, display.nr = 5)
 
-#uncertainty = 0.1, highest = 0.05 are default
-plot(fractions.dina.bound, uncertainty = 0.1, highest = 0.05, 
+#uncertainty = 0.1, top.n.skill.classes = 6 are default
+plot(fractions.dina.fixed, uncertainty = 0.1, top.n.skill.classes = 6, 
   pattern = pattern)
 }
 

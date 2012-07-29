@@ -25,6 +25,9 @@
     progress = TRUE)
   rowMaxs(mat)
   rowProds(matr)
+  rowProds2(matr)
+  %  .create.Mj( Aj , rule = "GDINA" )
+  %ICI(object)
 }
 
 \details{

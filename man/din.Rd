@@ -18,12 +18,13 @@
   din(data, q.matrix, conv.crit = 0.001, maxit = 100, 
 	  constraint.guess = NULL, constraint.slip = NULL,
 	  guess.init = rep(0.2, ncol(data)), slip.init = guess.init,
+    guess.equal = FALSE, slip.equal = FALSE, zeroprob.skillclasses = NULL,  
 	  weights = rep(1, nrow(data)), rule = "DINA", progress = TRUE)
 }
 
 \arguments{
   \item{data}{a required \eqn{N} times \eqn{J} data matrix 
-    containing the binary responses, 0 or 1, of \eqn{N} respondants to \eqn{J}
+    containing the binary responses, 0 or 1, of \eqn{N} respondents to \eqn{J}
     test items, where 1 denotes a correct anwer and 0 an incorrect one. The 
     nth row of the matrix represents the binary response pattern of respondant
     n.  \code{NA} values are allowed.  }
@@ -56,7 +57,16 @@
   \item{slip.init}{an optional initial vector of guessing parameters.  
     Slipping parameters are bounded between 0 and 1.  }
     
-  \item{weights}{an optional vector of weights for the response pattern. 
+  \item{guess.equal}{an optional logical indicating if all guessing parameters are equal to each other.
+            Default is FALSE.}
+
+ \item{slip.equal}{an optional logical indicating if all slipping parameters are equal to each other.
+            Default is FALSE.}
+  
+\item{zeroprob.skillclasses}{an optional vector of integers which indicates which skill classes should have zero probability. Default is NULL 
+    (no skill classes with zero probability).}
+ 
+     \item{weights}{an optional vector of weights for the response pattern. 
   	Non-integer weights allow for different sampling schemes.  }
     
   \item{rule}{an optional character string or vector of character strings 
@@ -75,14 +85,14 @@
   Douglas, 2004}) and DINO (deterministic-input, noisy-or-gate; \cite{Templin and
   Henson, 2006}) models endorsement probabilities are modeled 
   based on guessing and slipping parameters, given the different skill
-  patterns.  The probability of respondent \eqn{n} for solving item \eqn{j} is
-  calculated as a function of the respondent's latent response \eqn{\eta_{nj}}{eta_{nj}}
+  classes.  The probability of respondent \eqn{n} (or corresponding respondents class \eqn{n}) 
+  for solving item \eqn{j} is calculated as a function of the respondent's latent response \eqn{\eta_{nj}}{eta_{nj}}
   and the guessing and slipping rates \eqn{g_j} and \eqn{s_j} for item
-  \eqn{j} conditional on the respondent's skill pattern \eqn{\alpha_n}{alpha_n}:
+  \eqn{j} conditional on the respondent's skill class \eqn{\alpha_n}{alpha_n}:
   \deqn{P_j(\alpha_n) = P(X_{nj} = 1 | \alpha_n) = g_j^{(1- \eta_{nj})}
   (1 - s_j) ^{\eta_{nj}}.  }{P_j(alpha_n) = P(X_{nj} = 1 | alpha_n) = g_j^{(1- eta_{nj})}
   (1 - s_j) ^{eta_{nj}}.  }
-  The respondent's latent response \eqn{\eta_{nj}}{eta_{nj}} is a binary number,
+  The respondent's latent response (class)\eqn{\eta_{nj}}{eta_{nj}} is a binary number,
   0 or 1, indicating absence or presence of all (\code{rule = "DINO"}) 
   or at least one (\code{rule = "DINO"}) required skill(s) for 
   item \eqn{j}, respectively.  
@@ -92,13 +102,13 @@
   a priori distribution of the skill vectors is a uniform distribution.  
   The implementation follows the EM algorithm by \cite{de la Torre (2009)}.  
   
-  An additional condition in parameter estimation in DINA and
+  A monotonicity condition in parameter estimation in DINA and
   DINO models is 
   	\deqn{g_j < 1 - s_j}
-  for each item,
-  that is, the chance of guessing an item is supposed to be smaller 
-  than the chance of mastering the required skills for that item 
-  and not slipping.  However, the EM algorithm
+  for each item.
+  That is, the probability of guessing an item without possessing the required
+  skills is supposed to be smaller than the probability of not slipping the item 
+  when possessing all the required skills for that item.  However, the EM algorithm
   needs not satisfy that constraint.  In that cases there will be a
   warning during the estimation algorithm.  Possible problem solving
   strategies are to adjust the convergence criteria \code{conv.crit},
@@ -121,24 +131,31 @@
     and their standard errors for each item.  }
   \item{slip}{a dataframe giving the estimated slipping parameters
     and their standard errors for each item.  }
+  \item{IDI}{a matrix giving the item discrimination
+    index (IDI; Lee, de la Torre & Park, 2012) for each item \eqn{j}
+    \deqn{ IDI_j = 1 - s_j - g_j , }{ IDI_j = 1 - s_j - g_j , }
+    where a high IDI corresponds to good test items
+    which have both low guessing and slipping rates.  Note that
+    a negative IDI contradicts the monotonicity condition 
+    \eqn{g_j < 1 - s_j}.  See \code{\link{din}} for help.  }
   \item{loglike}{a numeric giving the value of the maximized
     log likelihood.  }
   \item{AIC}{a numeric giving the AIC value of the model.  }
   \item{BIC}{a numeric giving the BIC value of the model.  }
   \item{posterior}{a matrix given the posterior skill distribution
     for all respondents.  The nth row of the matrix gives the probabilities for 
-    respondent n to possess skills 1 to \code{K}.  }
+    respondent n to possess any of the \code{2^K} skill classes.  }
   \item{like}{a matrix giving the values of the maximized likelihood
     for all respondents.  }
   \item{data}{the input matrix of binary response data.  }
   \item{q.matrix}{the input matrix of the required attributes.  }
-  \item{pattern}{a matrix giving the frequency of observed response patterns stored
-    in \code{item.}\cr\code{patt.split}, the attribute classes leading to highest endorsement 
+  \item{pattern}{a matrix giving the skill classes leading to highest endorsement 
     probability for the respective response pattern (\code{mle.est}) with the 
     corresponding posterior class probability (\code{mle.post}), the attribute 
-    classes having the highest occurrence probability given the response pattern 
-    (\code{map.est}) with the corresponding posterior class probability 
-    (\code{mle.post}), and the estimated posterior for each response pattern.  }
+    classes having the highest occurrence posterior probability given the 
+    response pattern (\code{map.est}) with the corresponding posterior class 
+    probability (\code{map.post}), and the estimated posterior for each 
+    response pattern (\code{pattern}).  }
   \item{attribute.patt}{a data frame giving the estimated occurrence
     probabilities of the skill classes and the expected frequency of the
     attribute classes given the model.  }
@@ -146,8 +163,8 @@
     skills.  }
   \item{subj.pattern}{a vector of strings indicating the item response
     pattern for each subject.  }
-  \item{attribute.patt.splitted}{a dataframe giving the response
-    pattern of the respondents.  }
+  \item{attribute.patt.splitted}{a dataframe giving the skill class 
+    of the respondents.  }
   \item{display}{a character giving the model specified under 
     \code{rule}.  }
   \item{item.patt.split}{a matrix giving the splitted response pattern.  }
@@ -156,13 +173,16 @@
 }
 
 \references{
-  de la Torre, J. (2009) Dina model parameter estimation:
+  de la Torre, J. (2009) DINA model parameter estimation:
   A didactic. \emph{Journal of Educational and Behavioral
   Statistics}, \bold{34}, 115--130.
   
   de la Torre, J. and Douglas, J. (2004) Higher-order latent trait models 
   for cognitive diagnosis. \emph{Psychometrika}, \bold{69}, 333--353.    
-  
+
+  Lee, Y.-S., de la Torre, J. and Park, Y. S. (2012). Relationships between cognitive diagnosis, CTT, and IRT indices: An empirical investigation.
+    \emph{Asia Pacific Educational Research}, \bold{13}, 333-345.
+
   Rupp, A. A., Templin, J. and Henson, R. A. (2010) \emph{Diagnostic
   Measurement: Theory, Methods, and Applications}.  New York: The Guilford
   Press.
@@ -181,7 +201,7 @@
   Maintainer: Alexander Robitzsch <a.robitzsch@bifie.at>,
               Thomas Kiefer <t.kiefer@bifie.at>,
               Ann Cathrice George <george@statistik.tu-dortmund.de>,
-              Ali Uenlue <uenlue@statistik.tu-dortmund.de> 
+              Ali Uenlue <ali.uenlue@tum.de> 
 }
 
 \note{
@@ -241,8 +261,8 @@ str(fractions.dina)
 ## assignment
 fractions.dina$guess
 
-## corresponding summaries, including diagnostic accuracies,
-## summary of skill pattern distribution and information 
+## corresponding summaries, including IDI,
+## most frequent skill classes and information 
 ## criteria AIC and BIC
 summary(fractions.dina)
 
@@ -250,28 +270,24 @@ summary(fractions.dina)
 detailed.summary.fs <- summary(fractions.dina)
 str(detailed.summary.fs)
 
-## Diagnostic accuracy of item 8 seems to low. This is also
+## Item discrimination index of item 8 is too low. This is also
 ## visualized in the first plot 
 plot(fractions.dina)
 
 ## The reason therefore is a high guessing parameter
 round(fractions.dina$guess[,1], 2)
 
-## Set an upper boundary for the guessing parameter of 
-## item 5, 8 and 9
-fractions.dina.bound <- din(data = fraction.subtraction.data, 
-  q.matrix = fraction.subtraction.qmatrix, constraint.guess =
-  matrix(c(5,8,9, rep(0.2, 3)), ncol = 2))
-fractions.dina.bound
-detailed.summary.fs.bound <- summary(fractions.dina.bound)
-
-## This improves the diagnostic accuracies
-summary(detailed.summary.fs$IDI[1,])
-summary(detailed.summary.fs.bound$IDI[1,])
+## Fix the guessing parameters of items 5, 8 and 9 equal to .20
+# define a constraint.guess matrix
+constraint.guess <-  matrix(c(5,8,9, rep(0.2, 3)), ncol = 2)
+fractions.dina.fixed <- din(data = fraction.subtraction.data, 
+  q.matrix = fraction.subtraction.qmatrix, 
+  constraint.guess=constraint.guess)
 
 ## The second plot shows the expected (MAP) and observed skill 
-## probabilities. The third plot visualizes the skill pattern
-## occurrence probabilities; Only the 'highest' are labeled; it
+## probabilities. The third plot visualizes the skill class
+## occurrence probabilities; Only the 'top.n.skill.classes' most frequent 
+## skill classes are labeled; it
 ## is obvious that the skill class '11111111' (all skills are
 ## mastered) is the most probable in this population. The fourth
 ## plot shows the skill probabilities conditional on response
@@ -281,12 +297,13 @@ summary(detailed.summary.fs.bound$IDI[1,])
 ## pattern; it is shown whether a skill is mastered (above 
 ## .5+'uncertainty') unclassifiable (within the boundaries) or
 ## not mastered (below .5-'uncertainty'). In this case, the
-## fifteenth respondent was chosen; if no response pattern is 
+## 527th respondent was chosen; if no response pattern is 
 ## specified, the plot will not be shown (of course)
-pattern <- paste(fraction.subtraction.data[15,], collapse = "")
+pattern <- paste(fraction.subtraction.data[527, ], collapse = "")
+plot(fractions.dina, pattern = pattern, display.nr = 5)
 
-#uncertainty = 0.1, highest = 0.05 are default
-plot(fractions.dina.bound, uncertainty = 0.1, highest = 0.05, 
+#uncertainty = 0.1, top.n.skill.classes = 6 are default
+plot(fractions.dina.fixed, uncertainty = 0.1, top.n.skill.classes = 6, 
   pattern = pattern)
 
 ##
@@ -297,6 +314,30 @@ plot(fractions.dina.bound, uncertainty = 0.1, highest = 0.05,
 d1 <- din(sim.dina, q.matr = sim.qmatrix, rule = "DINA",
   conv.crit = 0.01, maxit = 500, progress = TRUE)
 summary(d1)
+
+# DINA model with hierarchical skill classes (Hierarchical DINA model)
+# 1st step:  estimate an initial full model to look at the indexing
+#    of skill classes
+d0 <- din(sim.dina, q.matr = sim.qmatrix, maxit=1)
+d0$attribute.patt.splitted
+#      [,1] [,2] [,3]
+# [1,]    0    0    0
+# [2,]    1    0    0
+# [3,]    0    1    0
+# [4,]    0    0    1
+# [5,]    1    1    0
+# [6,]    1    0    1
+# [7,]    0    1    1
+# [8,]    1    1    1
+#
+# In this example, following hierarchical skill classes shall only allowed:
+# 000, 001, 011, 111
+# We define therefore a vector of indices for skill classes with
+# zero probabilities (see entries in the rows of the matrix d0$attribute.patt.splitted above)
+zeroprob.skillclasses <- c(2,3,5,6)     # classes 100, 010, 110, 101
+# estimate the hierarchical DINA model
+d1a <- din(sim.dina, q.matr = sim.qmatrix, zeroprob.skillclasses =zeroprob.skillclasses )
+summary(d1a)
 
 # Mixed DINA and DINO Model
 d1b <- din(sim.dina, q.matr = sim.qmatrix, rule = 
@@ -322,11 +363,22 @@ d1$coef            # guessing and slipping parameter
 d1$guess           # guessing parameter
 d1$slip            # slipping parameter
 d1$skill.patt      # probabilities for skills
-d1$attribute.patt  # attribute pattern with probabilities
+d1$attribute.patt  # skill classes with probabilities
 d1$subj.pattern    # pattern per subject
 
 # posterior probabilities for every response pattern
 d1$posterior       
+
+# Equal guessing parameters
+d2a <- din( data = sim.dina , q.matrix = sim.qmatrix ,  
+            guess.equal = TRUE , slip.equal = FALSE )
+d2a$coef
+
+# Equal guessing and slipping parameters
+d2b <- din( data = sim.dina , q.matrix = sim.qmatrix ,  
+            guess.equal = TRUE , slip.equal = TRUE )
+d2b$coef
+
 
 ##
 ## (3) examples based on dataset sim.dino

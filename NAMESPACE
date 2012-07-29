@@ -1,7 +1,8 @@
+#export(din, sim.din, gdina)
 export(din, sim.din)
 
 # internal functions; not intended to be visible to users
-# export(check.input, rowMaxs, rowProds, plot.din, print.din, summary.din,
+# export(check.input, rowMaxs, rowProds2, plot.din, print.din, summary.din,
 #        print.summary.din)
 
 import(graphics, stats)

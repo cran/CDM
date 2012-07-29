@@ -11,7 +11,7 @@ check.input <- function( data , q.matrix , conv.crit = 0.001 , maxit = 100 ,
 # Call: from din()
 # Input: cf. din()
 # Output: if possible cleaned arguments 
-#		else a warning message which leads to the termination of the procedure.
+#  	else a warning message which leads to the termination of the procedure.
                     
 ################################################################################
 # check consistency of data object                                             #
@@ -36,7 +36,7 @@ check.input <- function( data , q.matrix , conv.crit = 0.001 , maxit = 100 ,
 	# check for provision of row- and colnames
 	if(is.null(rownames(data))) rownames(data) <- 1:nrow(data)
 	if(is.null(colnames(data))) colnames(data) <- paste("Item",1:ncol(data),sep="")
-
+  
 ################################################################################
 # check consistency of q.matrix object                                         #
 ################################################################################
@@ -44,7 +44,8 @@ check.input <- function( data , q.matrix , conv.crit = 0.001 , maxit = 100 ,
 	# check for data classes matrix and data.frame
 	if ((data.class(q.matrix) != "matrix") && (data.class(q.matrix) != "data.frame"))
        	return(warning("data must be matrix or data frame"))
-	q.matrix <- as.matrix(q.matrix)
+	att.lbl <- attributes(q.matrix)$skill.labels
+  q.matrix <- as.matrix(q.matrix)
 
 	# return all response pattern not containing NA
 	gt_q <- data[ is.na( q.matrix ) == F ]
@@ -65,6 +66,15 @@ check.input <- function( data , q.matrix , conv.crit = 0.001 , maxit = 100 ,
 	if(is.null(rownames(q.matrix))) rownames(q.matrix) <- paste("Item",1:nrow(q.matrix),sep="")
 	if(is.null(colnames(q.matrix))) colnames(q.matrix) <- paste("Skill",1:ncol(q.matrix),sep="")
 
+  # check for provision of skill labels
+  if(is.null(att.lbl)) attr(q.matrix, "skill.labels") <- colnames(q.matrix)
+  if(length(att.lbl) != ncol(q.matrix) & length(att.lbl) != 0){
+    attr(q.matrix, "skill.labels") <- colnames(q.matrix)
+    warning("Unreasonable number of skill labels; skill labels replaced by colnames of q.matrix")
+  }else{
+    attr(q.matrix, "skill.labels") <- att.lbl
+  }
+  
 ################################################################################
 # check consistency of arguments for parameter estimation routine              #
 ################################################################################

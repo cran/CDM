@@ -11,17 +11,13 @@
 }
 
 \usage{
-  \method{print}{din}(x, highest = 0.05, \dots)
+  \method{print}{din}(x, \dots)
 }
 
 \arguments{
   \item{x}{a required object of class \code{din}, obtained from a
     call to the function \code{\link{din}}.  }
-    
-  \item{highest}{a numeric between 0 and 1 giving the percentage 
-    of skill patterns with highest occurrence frequency to be
-    printed.  }
-    
+        
   \item{\dots}{Optional parameters to be passed to or from other
     methods will be ignored.  }
 }
@@ -29,15 +25,14 @@
 \details{
   The \code{print} method prints the main results obtained from
   a DINA or DINO model, which are the itemwise guessing and 
-  slipping values with standard errors, the skill patterns with
-  highest occurrence frequency and the skill probabilities.  
+  slipping values with standard errors, as well as the skill 
+  probabilities.  
 }
 
 \value{
   If the argument \code{x} is of required type, \code{print.din}
   prints the itemwise guessing and slipping values with standard errors,
-  the skill patterns with highest occurrence frequency and the skill
-  probabilities. It invisibly returns \code{x}.  
+  as well as the skill probabilities. It invisibly returns \code{x}.  
 }
 
 \author{
@@ -46,7 +41,7 @@
   Maintainer: Alexander Robitzsch <a.robitzsch@bifie.at>,
               Thomas Kiefer <t.kiefer@bifie.at>,
               Ann Cathrice George <george@statistik.tu-dortmund.de>,
-              Ali Uenlue <uenlue@statistik.tu-dortmund.de>  
+              Ali Uenlue <ali.uenlue@tum.de>  
 }
 
 \references{

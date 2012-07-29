@@ -50,7 +50,7 @@
   Maintainer: Alexander Robitzsch <a.robitzsch@bifie.at>,
               Thomas Kiefer <t.kiefer@bifie.at>,
               Ann Cathrice George <george@statistik.tu-dortmund.de>,
-              Ali Uenlue <uenlue@statistik.tu-dortmund.de> 
+              Ali Uenlue <ali.uenlue@tum.de> 
 }
 
 \references{
@@ -93,7 +93,7 @@ d1$coef            # guessing and slipping parameter
 d1$guess           # guessing parameter
 d1$slip            # slipping parameter
 d1$skill.patt      # probabilities for skills
-d1$attribute.patt  # attribute pattern with probabilities
+d1$attribute.patt  # skill classes with probabilities
 d1$subj.pattern    # pattern per subject
 
 # posterior probabilities for every response pattern

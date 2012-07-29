@@ -12,7 +12,7 @@
 
 \usage{
   \method{plot}{din}(x, items = c(1:ncol(x$data)), pattern = "",
-    uncertainty = 0.1, highest = 0.05, pdf.file = "", 
+    uncertainty = 0.1, top.n.skill.classes = 6, pdf.file = "", 
     hide.idi = FALSE, hide.obs = FALSE,
     display.nr = 1:5, \dots)
 }
@@ -34,9 +34,9 @@
     uncertainty bounds for deriving the observed skill occurrence probabilities 
     in plot 2 and the simplified deterministic attribute profiles in plot 5.  }
 
-  \item{highest}{a numeric between 0 and 1 giving the percentage 
-    of skill patterns with highest occurrence frequency to be
-    labeled in plot 3.  }
+  \item{top.n.skill.classes}{a numeric, specifying the number of skill classes, 
+    starting with the most frequent, to be labeled in plot 3.  
+    Default value is 6.  }
     
   \item{pdf.file}{an optional character string. If specified the graphics 
     obtained from the function \code{plot.din} are provided in a pdf file.  
@@ -74,9 +74,8 @@
   deterministic attribute profiles.  Classifying a respondent as master of a certain 
   attribute increases the observed occurrence probability of that attribute.  
   
-  The third graphic illustrates the distribution of the skill pattern occurrence
-  probabilities.  The skill patterns with the \code{highest} occurrence
-  frequency are labeled.  
+  The third graphic illustrates the distribution of the skill class occurrence
+  probabilities.  The \code{top.n.skill.classes} most frequent skill classes are labeled.  
   
   The forth plot is a parallel coordinate plot of the individual skill profiles.
   Each line represents an individual skill profile.  For each of these skill profiles
@@ -94,7 +93,7 @@
 \value{
   If the argument \code{x} is of required type,
   and if the optional arguments \code{items}, \code{uncertainty},
-  \code{highest} and \code{pdf.file} are specified as required, the
+  \code{top.n.skill.classes} and \code{pdf.file} are specified as required, the
   \code{plot.din} produces several graphics to analyze a CDM model.  
 }
 
@@ -104,7 +103,7 @@
   Maintainer: Alexander Robitzsch <a.robitzsch@bifie.at>,
               Thomas Kiefer <t.kiefer@bifie.at>,
               Ann Cathrice George <george@statistik.tu-dortmund.de>,
-              Ali Uenlue <uenlue@statistik.tu-dortmund.de>
+              Ali Uenlue <ali.uenlue@tum.de>
 }
 
 \references{
@@ -130,16 +129,18 @@
 ## (1) examples based on dataset fractions.subtraction.data
 ##
 
-## Set an upper boundary for the guessing parameter of 
-## item 5, 8 and 9
-fractions.dina.bound <- din(data = fraction.subtraction.data, 
-  q.matrix = fraction.subtraction.qmatrix, constraint.guess =
-  matrix(c(5,8,9, rep(0.2, 3)), ncol = 2))
-fractions.dina.bound
+## Fix the guessing parameters of items 5, 8 and 9 equal to .20
+# define a constraint.guess matrix
+constraint.guess <-  matrix(c(5,8,9, rep(0.2, 3)), ncol = 2)
+fractions.dina.fixed <- din(data = fraction.subtraction.data, 
+  q.matrix = fraction.subtraction.qmatrix, 
+  constraint.guess=constraint.guess)
+
 
 ## The second plot shows the expected (MAP) and observed skill 
-## probabilities. The third plot visualizes the skill pattern
-## occurrence probabilities; Only the 'highest' are labeled; it
+## probabilities. The third plot visualizes the skill class
+## occurrence probabilities; Only the 'top.n.skill.classes' most frequent 
+## skill classes are labeled; it
 ## is obvious that the skill class '11111111' (all skills are
 ## mastered) is the most probable in this population. The fourth
 ## plot shows the skill probabilities conditional on response
@@ -149,12 +150,13 @@ fractions.dina.bound
 ## pattern; it is shown whether a skill is mastered (above 
 ## .5+'uncertainty') unclassifiable (within the boundaries) or
 ## not mastered (below .5-'uncertainty'). In this case, the
-## fifteenth respondent was chosen; if no response pattern is 
+## 527th respondent was chosen; if no response pattern is 
 ## specified, the plot will not be shown (of course)
-pattern <- paste(fraction.subtraction.data[15,], collapse = "")
+pattern <- paste(fraction.subtraction.data[527, ], collapse = "")
+plot(fractions.dina.fixed, pattern = pattern, display.nr = 5)
 
-#uncertainty = 0.1, highest = 0.05 are default
-plot(fractions.dina.bound, uncertainty = 0.1, highest = 0.05, 
+#uncertainty = 0.1, top.n.skill.classes = 6 are default
+plot(fractions.dina.fixed, uncertainty = 0.1, top.n.skill.classes = 6, 
   pattern = pattern)
 }
 

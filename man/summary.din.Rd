@@ -11,13 +11,27 @@
 }
 
 \usage{
-  \method{summary}{din}(object, \dots)
+  \method{summary}{din}(object, top.n.skill.classes = 6, 
+     log.file = NULL, overwrite = FALSE, \dots)
 }
 
 \arguments{
   \item{object}{a required object of class \code{din}, obtained
     from a call to the function \code{\link{din}}.  }
+  
+  \item{top.n.skill.classes}{a numeric, specifying the number of skill 
+    classes, starting with the most frequent, to be returned.  
+    Default value is 6.  }
     
+  \item{log.file}{an optional character vector, specifying the 
+    directory and/or filename to which an extensive summary 
+    output should be written.  }
+    
+  \item{overwrite}{an optional boolean, specifying wether or not 
+    the method is supposed to overwrite an existing \code{log.file}. 
+    If the \code{log.file} exists and \code{overwrite} is 
+    \code{FALSE}, the user is asked to confirm the overwriting.  }
+            
   \item{\dots}{Optional parameters to be passed to or from other
     methods will be ignored.  }
 }
@@ -27,36 +41,40 @@
   \code{summary.din} (see \sQuote{Value}), for which a
   \code{print} method, \code{\link{print.summary.din}}, is
   provided.  Specific summary information details such as
-  individual item parameters and their diagnostic accuracy can be accessed through
-  assignment (see \sQuote{Examples}).  
+  individual item parameters and their discrimination indices
+  can be accessed through assignment (see \sQuote{Examples}).  
 }
 
 \value{
   If the argument \code{object} is of required type,
   \code{summary.din} returns a named list, of the class
-  \code{summary.din}, consisting of the following five components:
+  \code{summary.din}, consisting of the following seven components:
   
   \item{CALL}{a character specifying the model rule, the number of
     items and the number of attributes underlying the items.  }
     
-  \item{IDI}{a matrix giving the diagnostic accuracy
-    for each item \eqn{j}
-    \deqn{ IDI_j = 1 - \frac{g_j}{1-s_j}, }{ IDI_j = 1 - g_j/(1-s_j), }
-    where high diagnostic accuracy corresponds to good test items
+  \item{IDI}{a matrix giving the item discrimination
+    index (IDI; Lee, de la Torre & Park, 2012) for each item \eqn{j}
+    \deqn{ IDI_j = 1 - s_j - g_j , }{ IDI_j = 1 - s_j - g_j , }
+    where a high IDI corresponds to good test items
     which have both low guessing and slipping rates.  Note that
-    a negative diagnostic accuracy in one item contradicts the
-    error parameter constraint \eqn{g_j < 1 - s_j}.  See \code{\link{din}}
-    for help.  }
+    a negative IDI contradicts the monotonicity condition 
+    \eqn{g_j < 1 - s_j}.  See \code{\link{din}} for help.  }
     
-  \item{SKILL.CLASS.PROB}{a table which returns the
-    minimum, maximum, quantile and mean information of the skill
-    pattern distribution.  }
+  \item{SKILL.CLASSES}{a vector giving the \code{top.n.skill.classes} 
+    most frequent skill classes and the corresponding class probability.  }
     
   \item{AIC}{a numeric giving the AIC of the specified model
     \code{object}.  }
     
   \item{BIC}{a numeric giving the BIC of the specified model
     \code{object}.  }
+  
+  \item{log.file}{a character giving the path and file of a specified 
+    log file.  }
+  
+  \item{din.object}{the object of class \code{din} for which the summary 
+    was requested.  }
 }
 
 \author{
@@ -65,13 +83,18 @@
   Maintainer: Alexander Robitzsch <a.robitzsch@bifie.at>,
               Thomas Kiefer <t.kiefer@bifie.at>,
               Ann Cathrice George <george@statistik.tu-dortmund.de>,
-              Ali Uenlue <uenlue@statistik.tu-dortmund.de>    
+              Ali Uenlue <ali.uenlue@tum.de>    
 }
 
 \references{
+  
+  Lee, Y.-S., de la Torre, J. and Park, Y. S. (2012). Relationships between cognitive diagnosis, CTT, and IRT indices: An empirical investigation.
+    \emph{Asia Pacific Educational Research}, \bold{13}, 333-345.
+
   Rupp, A. A., Templin, J. L. and Henson, R. A. (2010) \emph{Diagnostic
   Measurement: Theory, Methods, and Applications}.  New York: The Guilford
   Press.
+  
 }
 
 \seealso{
@@ -97,7 +120,7 @@ fractions.dina <- din(data = fraction.subtraction.data,
   q.matrix = fraction.subtraction.qmatrix, rule = "DINA")
   
 ## corresponding summaries, including diagnostic accuracies,
-## summary of skill pattern distribution and information 
+## most frequent skill classes and information 
 ## criteria AIC and BIC
 summary(fractions.dina)
 

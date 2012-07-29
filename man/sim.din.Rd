@@ -33,13 +33,16 @@
     0.2 for each item.  }
   
   \item{mean}{a numeric vector of length \code{ncol(q.matrix)} indicating 
-    the latent trait of the respondents.  Default is \code{rep(0, length = ncol(q.matrix))}.  
-    That is, having a probability of \code{0.5} for possessing each of the attributes.  }
+    the mean vector of the continuous version of the dichotomous skill vector.  
+    Default is \code{rep(0, length = ncol(q.matrix))}.  
+    That is, having a probability of \code{0.5} for possessing each of the 
+    attributes.  }
 
   \item{Sigma}{a matrix of dimension \code{ncol(q.matrix)} times \code{ncol(q.matrix)}
-     specifying the covariance matrix of atrribute possessions.  Default is
-     \code{diag( 1, ncol(q.matrix))}.  That is, the possession of the attributes
-     is not assumed to be correlated.  }
+     specifying the covariance matrix of the continuous version of the dichotomous skill 
+     vector (i.e., the tetrachoric correlation of the dichotomous skill vector).  
+     Default is \code{diag( 1, ncol(q.matrix))}.  That is, by default the possession of 
+     the attributes is assumed to be uncorrelated.  }
 
   \item{rule}{an optional character string or vector of character strings 
   	specifying the model rule that is used.  The character strings must be 
@@ -59,7 +62,7 @@
   Maintainer: Alexander Robitzsch <a.robitzsch@bifie.at>,
               Thomas Kiefer <t.kiefer@bifie.at>,
               Ann Cathrice George <george@statistik.tu-dortmund.de>,
-              Ali Uenlue <uenlue@statistik.tu-dortmund.de>  
+              Ali Uenlue <ali.uenlue@tum.de>  
 }
 
 \references{
