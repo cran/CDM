@@ -15,12 +15,16 @@
 }
 
 \usage{
-  din(data, q.matrix, conv.crit = 0.001, maxit = 100, 
-	  constraint.guess = NULL, constraint.slip = NULL,
-	  guess.init = rep(0.2, ncol(data)), slip.init = guess.init,
-    guess.equal = FALSE, slip.equal = FALSE, zeroprob.skillclasses = NULL,  
-	  weights = rep(1, nrow(data)), rule = "DINA", progress = TRUE)
+  din(data, q.matrix, skillclasses = NULL , 
+      conv.crit = 0.001, dev.crit= 10^(-5) , maxit = 500, 
+      constraint.guess = NULL, constraint.slip = NULL,
+      guess.init = rep(0.2, ncol(data)), slip.init = guess.init,
+      guess.equal = FALSE, slip.equal = FALSE, zeroprob.skillclasses = NULL,  
+      weights = rep(1, nrow(data)), rule = "DINA", 
+      wgt.overrelax = 0 , wgtest.overrelax = FALSE , param.history=FALSE , 
+      progress = TRUE)
 }
+
 
 \arguments{
   \item{data}{a required \eqn{N} times \eqn{J} data matrix 
@@ -34,11 +38,20 @@
     jth row of the matrix is a binary indicator vector indicating which 
     attributes are not required (coded by 0) and which attributes are 
     required (coded by 1) to master item \eqn{j}.  }
+
+  \item{skillclasses}{An optional matrix for determining the skill space.
+    The argument can be used if a user wants less than \eqn{2^K} skill classes.    
+  }
+   
     
   \item{conv.crit}{termination criterion of iterations in the parameter 
     estimation process.  Iteration ends if the maximal change in parameter
     estimates is below this value.  }
-    
+
+  \item{dev.crit}{termination criterion of iterations in relative change in
+        deviance.}
+
+
   \item{maxit}{maximal number of iterations in the estimation process.  }
     
   \item{constraint.guess}{an optional matrix of fixed guessing
@@ -76,7 +89,16 @@
   	be of length \eqn{J}, which is the number of items.  The default is 
     the condensation rule \code{"DINA"} for all items.  }
          
-  \item{progress}{an optional logical indicating whether the function
+
+\item{wgt.overrelax}{A parameter which is relevant when an overrelaxation
+    algorithm is used}
+
+\item{wgtest.overrelax}{A logical which indicates if the overrelexation 
+    parameter being estimated during iterations}
+
+\item{param.history}{Save parameter history?}
+   
+\item{progress}{an optional logical indicating whether the function
     should print the progress of iteration in the estimation process.  } 
 }
 
@@ -89,9 +111,10 @@
   for solving item \eqn{j} is calculated as a function of the respondent's latent response \eqn{\eta_{nj}}{eta_{nj}}
   and the guessing and slipping rates \eqn{g_j} and \eqn{s_j} for item
   \eqn{j} conditional on the respondent's skill class \eqn{\alpha_n}{alpha_n}:
-  \deqn{P_j(\alpha_n) = P(X_{nj} = 1 | \alpha_n) = g_j^{(1- \eta_{nj})}
-  (1 - s_j) ^{\eta_{nj}}.  }{P_j(alpha_n) = P(X_{nj} = 1 | alpha_n) = g_j^{(1- eta_{nj})}
-  (1 - s_j) ^{eta_{nj}}.  }
+%  \deqn{P_j(\alpha_n) = P(X_{nj} = 1 | \alpha_n) = g_j^{(1- \eta_{nj})}
+%  (1 - s_j) ^{\eta_{nj}}.  }{P_j(alpha_n) = P(X_{nj} = 1 | alpha_n) = g_j^{(1- eta_{nj})}
+%  (1 - s_j) ^{eta_{nj}}.  }
+   \deqn{ P(X_{nj} = 1 | \alpha_n) = g_j^{(1- \eta_{nj})}(1 - s_j) ^{\eta_{nj}}.  }
   The respondent's latent response (class)\eqn{\eta_{nj}}{eta_{nj}} is a binary number,
   0 or 1, indicating absence or presence of all (\code{rule = "DINO"}) 
   or at least one (\code{rule = "DINO"}) required skill(s) for 
@@ -138,10 +161,15 @@
     which have both low guessing and slipping rates.  Note that
     a negative IDI contradicts the monotonicity condition 
     \eqn{g_j < 1 - s_j}.  See \code{\link{din}} for help.  }
+\item{itemfit.rmsea}{The RMSEA item fit index (see \code{\link{itemfit.rmsea}}).
+            }
+\item{mean.rmsea}{Mean of RMSEA item fit indexes.
+            }            
   \item{loglike}{a numeric giving the value of the maximized
     log likelihood.  }
   \item{AIC}{a numeric giving the AIC value of the model.  }
   \item{BIC}{a numeric giving the BIC value of the model.  }
+  \item{Npars}{number of estimated parameters}  
   \item{posterior}{a matrix given the posterior skill distribution
     for all respondents.  The nth row of the matrix gives the probabilities for 
     respondent n to possess any of the \code{2^K} skill classes.  }
@@ -197,11 +225,6 @@
   Based on EM Algorithm by J. de la Torre.
   
   Thomas Kiefer, Ann Cathrice George, Ali Uenlue 
-
-  Maintainer: Alexander Robitzsch <a.robitzsch@bifie.at>,
-              Thomas Kiefer <t.kiefer@bifie.at>,
-              Ann Cathrice George <george@statistik.tu-dortmund.de>,
-              Ali Uenlue <ali.uenlue@tum.de> 
 }
 
 \note{
@@ -218,8 +241,19 @@
   of the class \code{din}, which creates objects of the class
   \code{summary.din}; \code{\link{din}}, the main function for
   DINA and DINO parameter estimation, which creates objects of the class
-  \code{din}.  See also \code{\link{CDM-package}} for general
+  \code{din}.  
+  
+  See the \code{\link{gdina}} function for the estimation of
+  the generalized DINA (GDINA) model.
+  
+  For assessment of model fit see \code{\link{modelfit.cor.din}} and 
+  \code{\link{anova.din}}.
+  
+  See also \code{\link{CDM-package}} for general
   information about this package.  
+  
+  See the \pkg{NPCD} package for joint maximum likelihood estimation
+  of the DINA, DINO and NIDA model.
 }
 
 \examples{
@@ -228,7 +262,7 @@
 ##
 
 ## dataset fractions.subtraction.data and corresponding Q-Matrix
-fraction.subtraction.data
+head(fraction.subtraction.data)
 fraction.subtraction.qmatrix
 
 ## Misspecification in parameter specification for method din()
@@ -252,12 +286,10 @@ fractions.dina.warning3 <- din(data = fraction.subtraction.data,
 # rule = "DINA" is default
 fractions.dina <- din(data = fraction.subtraction.data,
   q.matrix = fraction.subtraction.qmatrix, rule = "DINA")
-fractions.dina # see print.din
-
 attributes(fractions.dina)
 str(fractions.dina)	  
 
-## For instance accessing the guessing parameters through
+## For instance assessing the guessing parameters through
 ## assignment
 fractions.dina$guess
 
@@ -266,7 +298,7 @@ fractions.dina$guess
 ## criteria AIC and BIC
 summary(fractions.dina)
 
-## In particular, accessing detailed summary through assignment
+## In particular, assessing detailed summary through assignment
 detailed.summary.fs <- summary(fractions.dina)
 str(detailed.summary.fs)
 

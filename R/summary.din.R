@@ -31,10 +31,15 @@ function(object, top.n.skill.classes = 6, log.file = NULL, overwrite = FALSE, ..
 	IDI <- t(matrix(round(object$IDI, 4)))
 	rownames(IDI) <- ""
 	colnames(IDI) <- rownames(object$coef)
-		
-	SKILL.CLASSES <- object$attribute.patt[order(object$attribute.patt[,1], decreasing = TRUE),][
-	1:min(top.n.skill.classes, 2^length(object$skill.patt)),]
-	SKILL.CLASSES <- round(t(SKILL.CLASSES)[1, ], 4)
+
+	# item parameters
+	item <- data.frame( "item" = colnames(object$data) , "guess" = object$guess[,1] , 
+				"slip" = object$slip[,1] , "IDI" = object$IDI , "rmsea" = object$itemfit.rmsea )
+	for (vv in 2:5){ item[,vv] <- round( item[,vv] , 3 ) }
+	
+#	SKILL.CLASSES <- object$attribute.patt[order(object$attribute.patt[,1], decreasing = TRUE),][
+#	1:min(top.n.skill.classes, 2^length(object$skill.patt)),]
+#	SKILL.CLASSES <- round(t(SKILL.CLASSES)[1, ], 4)
 	
   	if(top.n.skill.classes > nrow(object$attribute.patt))
   		warning("There are at most ", 2^length(object$skill.patt), 
@@ -73,9 +78,14 @@ function(object, top.n.skill.classes = 6, log.file = NULL, overwrite = FALSE, ..
 ################################################################################
 # return list                                                                  #
 ################################################################################
+
+# print(object)
 	
   out <- list("CALL"=CALL,"IDI"=IDI,
-			"SKILL.CLASSES"=SKILL.CLASSES, "AIC"=AIC, "BIC"=BIC, 
+			"deviance" = -2*object$loglike,
+#			"SKILL.CLASSES"=SKILL.CLASSES, 
+			"AIC"=AIC, "BIC"=BIC, "item" = item , 
+			"Npars" = object$Npars , 
 			"log.file" = log.file, "din.object" = object)
 	class(out) <- "summary.din"
 	return(out)

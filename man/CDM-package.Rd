@@ -9,23 +9,21 @@
 }
 
 \description{
-  Cognitive diagnosis modeling (CDM) is restricted latent class modeling for
-  inferring from respondents' item answers fine-grained and individualized
-  diagnostic information about multiple latent attributes or competencies
-  (e.g., reading or mathematical comprehension skills).  The package
-  \code{CDM} provides functions and example data for cognitive diagnosis
-  modeling with the deterministic-input, noisy-and-gate (DINA) and
-  deterministic-input and noisy-or-gate (DINO) in \R.
-%  and the multiple group
-%  generalized DINA (GDINA) models in \R.  
+Functions for cognitive diagnosis modeling
+    and multidimensional item respose modeling for dichotomous
+    and polytomous data.This package implements parameter 
+    estimation procedures for the DINA, DINO,  the multiple
+    group GDINA model and the general diagnostic model (GDM)
+    which contains the multidimensional linear compensatory
+    item response model.
 }
 
 \details{
   \tabular{ll}{
-    Package: \tab \code{CDM}\cr
+    Package: \tab \pkg{CDM}\cr
     Type: \tab Package\cr
-    Version: \tab 1.1-0\cr
-    Date: \tab 2012-06-xx\cr
+    Version: \tab 1.3\cr
+    Publication Year: \tab 2013\cr
     License: \tab \acronym{GPL} (>= 2)
   }
   Cognitive diagnosis models (CDMs) are restricted latent class models.  
@@ -61,8 +59,10 @@
   The package \code{CDM} implements parameter estimation procedures for the 
   two core CDMs DINA and DINO (e.g.,\cite{de la Torre and
   Douglas, 2004}, \cite{Junker and Sijtsma, 2001} and \cite{Templin and
-  Henson, 2006}), and tools for analyzing data under the
-  two models.  These and related concepts are explained in detail in the
+  Henson, 2006}), the generalized DINA model (GDINA, \cite{de la Torre, 2011}), 
+  the general diagnostic model (GDM, von Davier, 2008),
+  and tools for analyzing data under the models. 
+  These and related concepts are explained in detail in the
   book about diagnostic measurement and CDMs by
   \cite{Rupp, Templin, and Henson (2010)}, and in such survey articles as
   \cite{DiBello, Roussos, and Stout (2007)} and
@@ -82,7 +82,6 @@
   illustrated with an accompanying real dataset and Q-matrix 
   (\code{\link{fraction.subtraction.data}} and \code{\link{fraction.subtraction.qmatrix}}) 
   and artificial examples (\code{\link{Data-sim}}).  
-%    ADD SOMETHING ABOUT INCLUDED GDINA FRAMEWORK.
 }
 
 \author{
@@ -91,11 +90,17 @@
   Maintainer: Alexander Robitzsch <a.robitzsch@bifie.at>
 }
 
+\seealso{
+    See also the \pkg{NPCD} package for nonparametric cogitive 
+    diagnostic models. In \pkg{NPCD} joint maximum likelihood estimation of several 
+    CDMs is implemented.
+        }
+
 \references{
   de la Torre, J. and Douglas, J. (2004) Higher-order latent trait models 
   for cognitive diagnosis. \emph{Psychometrika}, \bold{69}, 333--353.
 
-%  de la Torre, J. (2011) The generalized {DINA} model framework. \emph{Psychometrika}, \bold{76}, 179--199.    
+  de la Torre, J. (2011) The generalized {DINA} model framework. \emph{Psychometrika}, \bold{76}, 179--199.    
 
   DiBello, L. V., Roussos, L. A. and Stout, W. F. (2007) Review of
   cognitively diagnostic assessment and a summary of psychometric models.
@@ -118,6 +123,10 @@
   Templin, J. and Henson, R. (2006) Measurement of
   psychological disorders using cognitive diagnosis
   models. \emph{Psychological Methods}, \bold{11}, 287--305.
+
+  von Davier, M. (2008). A general diagnostic model applied to 
+  language testing data. \emph{British Journal
+  of Mathematical and Statistical Psychology}, \bold{61}, 287-307.
 }
 
 \keyword{package}

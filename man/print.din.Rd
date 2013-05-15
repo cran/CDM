@@ -11,13 +11,13 @@
 }
 
 \usage{
-  \method{print}{din}(x, \dots)
+  \method{print}{din}(x, highest=0.05, \dots)
 }
 
 \arguments{
   \item{x}{a required object of class \code{din}, obtained from a
     call to the function \code{\link{din}}.  }
-        
+  \item{highest}{Print classes with probability higher than \code{highest}}        
   \item{\dots}{Optional parameters to be passed to or from other
     methods will be ignored.  }
 }
@@ -71,7 +71,7 @@
 # rule = "DINA" is default
 fractions.dina <- din(data = fraction.subtraction.data,
   q.matrix = fraction.subtraction.qmatrix, rule = "DINA")
-fractions.dina
+str(fractions.dina)
 }
 
 \keyword{methods}

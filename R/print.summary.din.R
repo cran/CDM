@@ -12,15 +12,37 @@ function(x, ...){
 # console output                                                               #
 ################################################################################
 if(is.null(x$log.file)){
+  d <- packageDescription("CDM")
+  packageStartupMessage(paste(d$Package," " , d$Version," (Built ",d$Date,")",sep=""))
   cat("Call:\n",
-      x$CALL, "\n",
-      "\nItem discrimination index:\n")
-      print(x$IDI)    
-      cat(paste("\n",length(x$SKILL.CLASSES), " most frequent skill classes:\n", sep = ""))
-      print(x$SKILL.CLASSES)
+      x$CALL, "\n")
+#      "\nItem discrimination index:\n")
+#      print(as.table(x$IDI))    
+#      cat("\nSummary of skill pattern distribution:\n")
+ #     print(x$SKILL.CLASS.PROB)
+     cat("\nDeviance = ", x$deviance, " |   Log-Likelihood =" , 
+			round( x$din.object$loglike,3)  , "\n") 	 
+	 cat( "Number of item parameters:" , x$Npars[,1] , "\n")
+	 cat( "Number of skill class parameters:" , x$Npars[,2] , "\n")	 
   cat("\nInformation criteria:",
       "\n  AIC = " , x$AIC,
       "\n  BIC = " , x$BIC, "\n")
+  cat("\nMean of RMSEA item fit:" , 
+	round( x$din.object$mean.rmsea ,3 ) , "\n")
+  cat("\nItem parameters\n")
+	print( x$item , digits=3 )
+    cat("\nMarginal skill probabilities:\n")
+    print(x$din.object$skill.patt , digits= 4)	  
+	# tetrachoric skill correlations
+	if( ncol(x$din.object$q.matrix ) > 1 ){ 
+		obji <- skill.cor(x$din.object)$cor.skills	
+		cat("\nTetrachoric correlations among skill dimensions\n")
+		print( obji , digits=4 )
+			}
+	cat("\nSkill Pattern Probabilities \n\n")
+	xt <- round( x$din.object$attribute.patt[,1] , digits=5 )
+	names(xt) <- rownames( x$din.object$attribute.patt )
+	print(xt)			
 }else{
 
 ################################################################################
@@ -57,10 +79,10 @@ if(is.null(x$log.file)){
       cat("AIC:", x$AIC, "\n")
       cat("BIC:", x$BIC, "\n\n")
       cat("Item discrimination index:\n\n")
-      print(x$IDI)
-      cat(paste("\n",length(x$SKILL.CLASSES), " most frequent skill classes:\n", sep = ""))
-      print(x$SKILL.CLASSES)
-       
+      print(as.table(x$IDI))
+      cat("\nSummary of skill pattern distribution:\n\n")
+      print(x$SKILL.CLASS.PROB)
+      
       cat("\n#-------------------------\n")
       cat("SUMMARY OF MODEL RESULTS\n")
       cat("#-------------------------\n\n")

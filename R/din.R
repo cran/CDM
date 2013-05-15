@@ -16,12 +16,15 @@ rowProds2 <- function(matr){
 ################################################################################
 
 din <-
-function( data, q.matrix, conv.crit = 0.001, maxit = 100,
+function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10^(-5) , maxit = 500,
                     constraint.guess = NULL, constraint.slip = NULL,
                     guess.init = rep(.2, ncol(data) ), slip.init = guess.init,
                     guess.equal = FALSE , slip.equal = FALSE , 
 					zeroprob.skillclasses = NULL , 
                     weights = rep( 1, nrow( data ) ),  rule = "DINA", 
+					wgt.overrelax = 0 , 
+					wgtest.overrelax = FALSE , 
+					param.history = FALSE , 
                     progress = TRUE ){
                     
 # data: a required matrix of binary response data, whereas the items are in the columns 
@@ -60,6 +63,8 @@ function( data, q.matrix, conv.crit = 0.001, maxit = 100,
 # weights: an optional vector of weights for the response pattern. Noninteger weights allow for different
 #       sampling schemes.
 #
+# wgt.overrelax ... convergence weight (overrelaxed EM) => w = 0 standard EM
+
 # rule: an optional character string or vector of character strings specifying the model rule that is used. 
 #       The character strings must be of "DINA" or "DINO". If a vector of character strings is specified, 
 #       implying an itemwise condensation rule, the vector must be of length ncol(data). The default is the 
@@ -137,22 +142,34 @@ function( data, q.matrix, conv.crit = 0.001, maxit = 100,
 ################################################################################
 
     # string with item response patterns
-    item.patt.subj <- sapply( 1:I, FUN = function(ii){ paste( dat.items[ ii, ], collapse="" )  } )
-    # calculate frequency of each item response pattern
-    item.patt <- table( item.patt.subj )
-
-    # sort item response pattern according to their absolute frequencies
-    six <- sort( item.patt, index.return=F, decreasing=T)
+#    item.patt.subj <- sapply( 1:I, FUN = function(ii){ paste( dat.items[ ii, ], collapse="" )  } )	
+	item.patt.subj <- dat.items[,1]
+	for ( jj in 2:J){
+		item.patt.subj <- paste( item.patt.subj  , dat.items[,jj] , sep="")
+				}
 	
+	
+    # calculate frequency of each item response pattern
+	a2 <- rowsum( rep(1,I) , item.patt.subj) 
+	item.patt <- a2[,1]	
+	
+    # sort item response pattern according to their absolute frequencies
+#    six <- sort( item.patt, index.return=F, decreasing=T)
+	six <- item.patt	
     # define data frame 'item.patt' with item response pattern and its frequency (weight)
-    item.patt <- cbind( "pattern" = rownames(six), "freq" = as.numeric(as.vector( six ) ) )
+#    item.patt <- cbind( "pattern" = rownames(six), "freq" = as.numeric(as.vector( six ) ) )
+    item.patt <- cbind( "pattern" = names(six), "freq" = as.numeric(as.vector( six ) ) )
+
 
     # calculate weighted frequency for each item response pattern
-    item.patt[,2] <- sapply( 1:( nrow(item.patt) ), FUN = function(kk){
-                        sum( weights * ( item.patt[ kk, 1] == item.patt.subj  ) )
-                        } )                  
-    item.patt.freq <- as.numeric(item.patt[,2])
+#     item.patt[,2] <- sapply( 1:( nrow(item.patt) ), FUN = function(kk){
+#                         sum( weights * ( item.patt[ kk, 1] == item.patt.subj  ) )
+#                         } )   
 
+	h1 <- rowsum( weights , item.patt.subj )	
+	item.patt[,2] <- h1[ match( item.patt[,1] , rownames(h1) ) , 1]
+    item.patt.freq <- as.numeric(item.patt[,2])
+	
 ################################################################################ 
 # generate all attribute patterns                                              #
 ################################################################################
@@ -170,6 +187,11 @@ function( data, q.matrix, conv.crit = 0.001, maxit = 100,
 			}
 		}
     attr.patt[ L, ] <- rep( 1, K )
+	if ( ! is.null( skillclasses) ){ 
+		attr.patt <- skillclasses
+		L <- nrow(attr.patt)
+			}		
+	
     # combine all attributes in an attribute pattern as a string
     attr.patt.c <- apply( attr.patt, 1, FUN = function(ll){ paste(ll,collapse="" ) } )
 
@@ -206,46 +228,74 @@ function( data, q.matrix, conv.crit = 0.001, maxit = 100,
     loglike <- 0 # init for log-Likelihood
     
     # init value for maximum parameter change in likelihood maximization
-    max.par.change <- 1000
+    dev.change <- max.par.change <- 1000
     
     # calculate for each item how many attributes are necessary for solving the items
     # according to the specified DINA or DINO rule                                  
     comp <- ( rowSums(q.matrix)  )*( rule=="DINA")   + 1* ( rule == "DINO" )               
-        
-        
+
+	# compute latent response
+    latresp <- apply( attr.patt, 1, FUN = function(attr.patt.ll){
+		# form attribute pattern (Lx1) in matrix (J x 1 )
+		attr.patt.ll <- outer( rep(1,J), attr.patt.ll )
+		ind <- 1*(rowSums(q.matrix * attr.patt.ll)  >= comp )   	
+		ind } )
+
+	# response patterns
+	cmresp <- colMeans( resp.patt )
+    some.missings <- if( mean(cmresp) < 1){ TRUE } else { FALSE }
+	
+    # calculations for expected counts
+	# this matrix is needed for computing R.lj
+	ipr <- item.patt.split * item.patt.freq*resp.patt
+#	ips.ipf.rp <- item.patt.freq * resp.patt*item.patt.split
+#	ips.ipf.rp <- ips.ipf.rp[ , rep( 1:J , L ) ]	
+#	ipf.rp <- item.patt.freq * resp.patt
+#	ipf.rp <- ipf.rp[ , rep( 1:J , L ) ]	
+	# response indicator list
+    resp.ind.list <- list( 1:J )
+	for (i in 1:J){ resp.ind.list[[i]] <- which( resp.patt[,i] == 1)  }
+	# parameter history
+	if ( param.history ){
+		likelihood.history <- rep(NA, maxit )
+		slip.history <- guess.history <- matrix( NA , nrow=maxit , ncol=ncol(data) )
+				}
+	
 ################################################################################
 # BEGIN OF THE ITERATION LOOP                                                  #
 ################################################################################
     
-    while ( iter <= maxit & max.par.change > conv.crit ){
+    while ( iter <= maxit & 
+			( ( max.par.change > conv.crit ) | ( dev.change > dev.crit ) )
+								){
 
+								
 ################################################################################
 # STEP I:                                                                      #
 # calculate P(X_i | alpha_l):                                                  # 
 # probability of each item response pattern given an attribute pattern         #
 ################################################################################
                     
-    p.xi.aj <- apply( attr.patt, 1, FUN = function(attr.patt.ll){
-                
-    # form attribute pattern (Lx1) in matrix (J x 1 )
-    attr.patt.ll <- outer( rep(1,J), attr.patt.ll )
-    
-    # define indicator variable 'ind' which indicates if all necessary attributes for
-    #   an item are solved
-    ind <- 1*(rowSums(q.matrix * attr.patt.ll)  >= comp )   
+				
+	slipM <- matrix( slip , nrow= nrow(latresp) , ncol=ncol(latresp))
+	guessM <- matrix( guess , nrow= nrow(latresp) , ncol=ncol(latresp))
+    pj <- (1 - slipM )*latresp + guessM * ( 1 - latresp )
+	pjM <- array( NA , dim=c(J,2,L) )
+	pjM[,1,] <- 1 - pj
+	pjM[,2,] <- pj
+	h1 <- matrix( 1 , nrow=IP , ncol=L )
 
-    ##### (A1) #######
-    # calculate item response probability given the attributes according to DINA or DINO rule
-    pj <- (1 - slip )*ind + guess * ( 1 - ind )
-    # IP ... number of item response patterns
-    pj <- outer( rep(1,IP), pj )
+    res.hwt <- calc_posterior.v2(rprobs= pjM , gwt=h1 , resp=item.patt.split , 
+								 nitems= J , 
+                                 resp.ind.list=resp.ind.list , normalization=FALSE , 
+                                 thetasamp.density= NULL , snodes=0 )	
+    p.xi.aj <- res.hwt[["hwt"]]  	
+	# set likelihood for skill classes with zero probability to zero
+	if ( ! is.null(zeroprob.skillclasses) ){
+		p.xi.aj[ , zeroprob.skillclasses ] <- 0
+								}
            
-    ##### (A2) #######           
-    # calculate likelihood L(X_i | alpha_l )
-    # Due to local independence of items, this is a product of item response functions
-    rowProds2( pj^( resp.patt * item.patt.split ) * ( 1 - pj )^( resp.patt * ( 1 - item.patt.split ) )  )
-    } )
-           
+	   
 ################################################################################
 # STEP II:                                                                     #
 # calculate P(  \alpha_l | X_i ):                                              #
@@ -254,7 +304,9 @@ function( data, q.matrix, conv.crit = 0.001, maxit = 100,
                                            
     # posterior probabilities  P( \alpha_l | X_i ) 
     p.aj.xi <- outer( rep(1,IP), attr.prob ) * p.xi.aj 
-
+    
+	attr.prob0 <- attr.prob
+	
 	if ( ! is.null( zeroprob.skillclasses ) ){
 		p.aj.xi[ , zeroprob.skillclasses ] <- 0 }
 	
@@ -266,7 +318,7 @@ function( data, q.matrix, conv.crit = 0.001, maxit = 100,
 	#***
 	# include structural constraints for high-dimensional skill vectors here!
 	#***
-	
+
 ################################################################################
 # STEP III:                                                                    #
 # calculate I_{lj} and R_{lj}                                                  #
@@ -277,20 +329,28 @@ function( data, q.matrix, conv.crit = 0.001, maxit = 100,
 # R_{lj} ... expected frequency of persons in attribute class l for item j     #
 #               which correctly solve item j                                   #
 ################################################################################
-                     
-    I.lj <- sapply( 1:L, FUN = function(ll){ # skill pattern ll
+
+      
+#    I.lj <- sapply( 1:L, FUN = function(ll){ # skill pattern ll
     # I_{lj} = \sum_i [ N_i * P( \alpha_l | X_i ) ]
     # I_{lj} is the sum of the product of item reponse pattern and the conditional
     # probability of being in attribute class l given item response pattern
-    colSums( item.patt.freq * resp.patt * p.aj.xi[,ll] )    
-                            } )
-    R.lj <- sapply( 1:L, FUN = function(ll){ # skill pattern ll
-    # R_{lj} = \sum_i [ N_i * X_i * P( \alpha_l | X_i ) ]
-    # ... expected frequency of a correct response to an item => multiplication with item.patt.split
-    colSums( item.patt.split * resp.patt * p.aj.xi[,ll] * item.patt.freq )
-                            } )
-    colnames(I.lj) <- colnames(R.lj) <- attr.patt.c
-    rownames(I.lj) <- rownames(R.lj) <- paste("Item",1:J,sep="")
+#    colSums( item.patt.freq * resp.patt * p.aj.xi[,ll] )    
+#                            } )
+
+				
+		R.lj <- I.lj <- matrix( 0 , nrow=J , ncol=L )
+			
+		if ( some.missings ){
+			I.lj <- t( item.patt.freq*resp.patt	) %*% p.aj.xi
+					} else {
+			I.lj <- matrix( t( item.patt.freq ) %*% p.aj.xi , nrow=J , 
+							ncol=L , byrow=TRUE )
+					}
+		R.lj <- t(ipr) %*% p.aj.xi		
+		colnames(I.lj) <- colnames(R.lj) <- attr.patt.c
+		rownames(I.lj) <- rownames(R.lj) <- colnames(data)
+			
 
 ################################################################################
 # STEP IV:                                                                     #
@@ -307,6 +367,7 @@ function( data, q.matrix, conv.crit = 0.001, maxit = 100,
     R.j0 <- rowSums( ( t(( attr.patt %*% t(q.matrix) ) )  <  outer(  comp, rep(1,L) ) ) * R.lj )
     R.j1 <- rowSums( ( t(( attr.patt %*% t(q.matrix) ) )  >= outer(  comp, rep(1,L) ))  * R.lj )
 
+	
 ################################################################################
 # STEP V:                                                                      #
 # M-Step: update slipping and guessing parameters.                             #
@@ -319,9 +380,29 @@ function( data, q.matrix, conv.crit = 0.001, maxit = 100,
     guess.new <- R.j0 / I.j0
     slip.new <- ( I.j1 - R.j1 ) / I.j1
     # equal guessing and slipping parameter
-    if (guess.equal == TRUE ){ guess.new <- rep( sum( R.j0 ) / sum( I.j0) , J ) }
-    if (slip.equal == TRUE ){ slip.new <- rep( sum( I.j1 - R.j1 ) / sum( I.j1) , J ) }
+    if (guess.equal ){ guess.new <- rep( sum( R.j0 ) / sum( I.j0) , J ) }
+    if (slip.equal ){ slip.new <- rep( sum( I.j1 - R.j1 ) / sum( I.j1) , J ) }
 
+	# overrelaxed convergence
+	if ( wgt.overrelax > 0 ){
+		if ( wgtest.overrelax & ( iter > 2) ){
+			l1 <- c( guess.new , slip.new )
+			l2 <- c( guess , slip )
+			l3 <- c( guess.old , slip.old )
+			lambda <- sum( abs( l1 - l2 ) ) / sum( abs( l3 - l2 ) ) 
+			wgt.overrelax <- lambda / ( 2 - lambda )
+			wgt.overrelax[ wgt.overrelax <= 0 ] <- 10^(-5)
+			wgt.overrelax[ wgt.overrelax >= .98 ] <- .98
+					}
+		guess.new <- guess.new + wgt.overrelax * ( guess.new - guess )
+		slip.new <- slip.new + wgt.overrelax * ( slip.new - slip )
+		guess.new[ guess.new < 0 ] <- 0
+		slip.new[ slip.new < 0 ] <- 0
+		if ( wgtest.overrelax ){ 	
+			slip.old <- slip
+			guess.old <- guess
+					}
+			}
     # constrained slipping and guessing parameter
     if ( is.null( constraint.slip ) == F ){  slip.new[ constraint.slip[,1] ] <- constraint.slip[,2] }
     if ( is.null( constraint.guess ) == F ){  guess.new[ constraint.guess[,1] ] <- constraint.guess[,2] }
@@ -330,9 +411,11 @@ function( data, q.matrix, conv.crit = 0.001, maxit = 100,
     like.new <- sum( log( rowSums( p.xi.aj * outer( rep(1,IP), attr.prob )  ) + 10^(-300) ) * item.patt.freq )
     likediff <- abs( loglike - like.new )
     loglike <- like.new
-
+    dev.change <- abs( likediff / loglike )
+	
     # maximum parameter change
-    max.par.change <- max( abs( guess.new - guess ), abs( slip.new - slip ) )
+    max.par.change <- max( abs( guess.new - guess ), abs( slip.new - slip ) ,
+				abs( attr.prob - attr.prob0 ) )
             
     # define estimates which are updated in this iteration
     guess <- guess.new
@@ -340,10 +423,22 @@ function( data, q.matrix, conv.crit = 0.001, maxit = 100,
     if (progress) {  
 		cat( "Iter. ",iter, " :", 
 			substring( paste(Sys.time()), first=11 ), ", ", " loglike = ", 
-			round( like.new, 7), " / max. param. ch. : ",
-			round( max.par.change, 6), "\n", sep="") 
+			round( like.new, 7), 
+			" / max. param. ch. : ", round( max.par.change, 6) , 
+			" / relative deviance change : ", round( dev.change, 6)  			
+			) 
+			
+			if( wgt.overrelax > 0){ 
+				cat(" / overrelax. parameter =" , round( wgt.overrelax , 4 ))
+					}
+			cat("\n", sep="") 
 				}
-    
+	if ( param.history ){ 				
+			likelihood.history[iter] <- like.new
+			slip.history[iter,] <- slip
+			guess.history[iter,] <- guess		
+						}
+					
     flush.console() # Output is flushing on the console
     iter <- iter + 1 # new iteration number                                    
 }
@@ -356,7 +451,10 @@ function( data, q.matrix, conv.crit = 0.001, maxit = 100,
         warning(paste("Negative item discrimination index in item",ifelse(length(which(guess > 1 - slip))>1,"s "," "),
     paste(which(guess > 1 - slip), collapse=", "),". See Help-files to fix this problem.", sep=""))
 
-
+	# set likelihood for skill classes with zero probability to zero
+	if ( ! is.null(zeroprob.skillclasses) ){
+		p.xi.aj[ , zeroprob.skillclasses ] <- 0
+								}
     # calculate posterior probability for each attribute pattern
     pattern <- cbind( freq = round(as.numeric(item.patt[,-1]),3),
                     mle.est = attr.patt.c[ max.col( p.xi.aj ) ], 
@@ -423,8 +521,15 @@ function( data, q.matrix, conv.crit = 0.001, maxit = 100,
     bb <- 0
     if ( is.null( constraint.guess ) == F ){  bb <- bb + nrow(constraint.guess) }
     if ( is.null( constraint.slip ) == F ){  bb <- bb + nrow(constraint.slip) }
-    aic <- -2*loglike + 2*( 2*J  - bb + ( L - 1)  )
-    bic <- -2*loglike + ( 2*J - bb + ( L - 1 ) )*log(I)
+	if( guess.equal){ bb <- bb + J - 1 }
+	if( slip.equal){ bb <- bb + J - 1 }
+	# collect number of parameters
+	pars <- data.frame( "itempars" = 2*J - bb )
+	# number of skill classes
+	pars$skillpars <- L - 1 + length(  zeroprob.skillclasses )
+	Np <- pars$itempars + pars$skillpars
+    aic <- -2*loglike + 2*( Np )
+    bic <- -2*loglike + ( Np )*log(I)
 
     rownames( p.aj.xi ) <- rownames( pattern ) # output rownames posterior probabilities    
     pattern <- data.frame(pattern) # convert pattern to numeric format
@@ -452,24 +557,51 @@ function( data, q.matrix, conv.crit = 0.001, maxit = 100,
 	colnames(p.aj.xi) <- rownames(attr.prob)
 	p.xi.aj <- p.xi.aj[ item.patt.subj$pattern.index , ]
 	rownames(p.xi.aj) <- pattern$pattern
+	colnames(p.xi.aj) <- colnames(p.aj.xi)
+
+	#########################################
+	# item fit [ items , theta , categories ] 
+	# # n.ik [ 1:TP , 1:I , 1:(K+1) , 1:G ]
+	n.ik <- array( 0 , dim=c(L , J , 2 , 1 ) )
+	n.ik[  , , 2 , 1 ] <- t(R.lj)
+	n.ik[  , , 1 , 1 ] <- t(I.lj-R.lj)
+	pi.k <- array( 0 , dim=c(L,1) )
+	pi.k[,1] <- attr.prob$class.prob
+	probs <- aperm( pjM , c(3,1,2) )
+	itemfit.rmsea <- itemfit.rmsea( n.ik , pi.k , probs )
+	
 	#*****
 	
     datfr <-  data.frame( round( cbind( guess , slip  ), 3 ) )
     colnames(datfr) <- c("guess", "se.guess", "slip", "se.slip" )
     rownames(datfr) <- colnames( dat.items )
     datfr <- data.frame( "type" = rule, datfr )
+	datfr$rmsea <- itemfit.rmsea
+	names(itemfit.rmsea) <- colnames(data)	
     s2 <- Sys.time()
 	
 	
     if (progress){ cat("---------------------------------------------------------------------------------\n") }
-    res <- list( coef = datfr, guess = guess, slip = slip, "IDI" = round(1 - guess[,1] - slip[,2],4) ,
+    res <- list( coef = datfr, guess = guess, slip = slip, 
+				"IDI" = round(1 - guess[,1] - slip[,1] ,4) ,
+				"itemfit.rmsea" = itemfit.rmsea , 
+				"mean.rmsea" = mean(itemfit.rmsea) , 
 				loglike = loglike, AIC = aic, BIC = bic, 
+				"Npars" = pars ,
                  posterior = p.aj.xi, "like" = p.xi.aj, "data" = data, "q.matrix" = q.matrix,
                  pattern = pattern , attribute.patt = attr.prob, skill.patt = skill.patt,
                  "subj.pattern" = item.patt.subj, "attribute.patt.splitted" = attr.patt, 
                  "display" = disp, "item.patt.split" = item.patt.split, 
                  "item.patt.freq" = item.patt.freq, "model.type" = r1 , 
+				 "rule" = rule , "zeroprob.skillclasses" = zeroprob.skillclasses , 
+				 "weights" = weights , "pjk" = pjM , 
 				 "start.analysis" = s1 , "end.analysis" = s2 ) 
+	if (param.history){
+		param.history <- list( "likelihood.history" = likelihood.history , 
+				"slip.history" = slip.history , 
+				"guess.history" = guess.history )
+		res$param.history <- param.history
+					}		
     class(res) <- "din"
     return(res)
 }

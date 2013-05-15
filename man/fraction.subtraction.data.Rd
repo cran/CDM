@@ -20,7 +20,7 @@
 \format{
   The \code{fraction.subtraction.data} data frame consists of 536
   rows and 20 columns, representing the responses of the \eqn{N=536} 
-  students to each of the eqn{J=20} test items.  Each row in the data set
+  students to each of the \eqn{J=20} test items.  Each row in the data set
   corresponds to the responses of a particular student.  Thereby a "1"
   denotes that a correct response was recorded, while "0" denotes an
   incorrect response.  The other way round, each column corresponds
@@ -66,7 +66,7 @@
 ##
 
 ## dataset fractions.subtraction.data and corresponding Q-Matrix
-fraction.subtraction.data
+head(fraction.subtraction.data)
 fraction.subtraction.qmatrix
 
 ## Misspecification in parameter specification for method din()
@@ -90,8 +90,6 @@ fractions.dina.warning3 <- din(data = fraction.subtraction.data,
 # rule = "DINA" is default
 fractions.dina <- din(data = fraction.subtraction.data,
   q.matrix = fraction.subtraction.qmatrix, rule = "DINA")
-fractions.dina # see print.din
-
 attributes(fractions.dina)
 str(fractions.dina)	  
 

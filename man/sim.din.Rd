@@ -13,14 +13,15 @@
 }
 
 \usage{
-  sim.din(N, q.matrix, guess = rep(0.2, nrow(q.matrix)),
+  sim.din(N=0, q.matrix, guess = rep(0.2, nrow(q.matrix)),
     slip = guess, mean = rep(0, ncol(q.matrix)), Sigma =                          
-    diag(ncol(q.matrix)), rule = "DINA")
+    diag(ncol(q.matrix)), rule = "DINA",alpha=NULL)
 }
 
 \arguments{
-  \item{N}{a required numeric value specifying the number \eqn{N} of requested
-    response patterns.  }
+  \item{N}{a numeric value specifying the number \eqn{N} of requested
+    response patterns. If \code{alpha} is specified, then \code{N} is set
+    by default to 0.}
 
   \item{q.matrix}{a required binary \eqn{J} times \eqn{K} matrix describing which
     of the \eqn{K} attributes are required, coded by 1, and which attributes 
@@ -50,10 +51,16 @@
   	specified, implying an itemwise condensation rule, the vectore must 
   	be of length \eqn{J}, which is the number of used items.  The default is
     the condensation rule \code{"DINA"} for all items.  }
+  \item{alpha}{A matrix of attribute patterns which can be given as an input
+    instead of underlying latent variables. If \code{alpha} is not \code{NULL},
+    then \code{mean} and \code{Sigma} are ignored.
+        }
 }
 
-\value{
-  A matrix of simulated dichotoumos response data according to the specified CDM model.  
+\value{A list with following entries
+    \item{dat}{A matrix of simulated dichotoumos response data according to the specified CDM model. 
+                }
+    \item{alpha}{Simulated attributes}
 }
 
 \author{
@@ -101,12 +108,30 @@ dat1 <- sim.din(N = 200, q.matrix, slip, guess,
   # Possession of the attributes with high probability 
   mean = c(0.5,0.2), 
   # Possession of the attributes is weakly correlated
-  Sigma = matrix(c(1,0.2,0.2,1), ncol=2), rule = "DINA")
+  Sigma = matrix(c(1,0.2,0.2,1), ncol=2), rule = "DINA")$dat
 head(dat1)
 
 set.seed(15367) # fix random numbers
-dat2 <- sim.din(N = 200, q.matrix, slip, guess, mean = 
+res <- sim.din(N = 200, q.matrix, slip, guess, mean = 
   c(0.5,0.2), Sigma = matrix(c(1,0.2,0.2,1), ncol=2),
   rule = "DINO")
-head(dat2)
+
+# extract simulated data
+dat2 <- res$dat
+# extract attribute patterns
+head( res$alpha )
+##        [,1] [,2]
+##   [1,]    1    1
+##   [2,]    1    1
+##   [3,]    1    1
+##   [4,]    1    1
+##   [5,]    1    1
+##   [6,]    1    0
+
+# simulate data based on given attributes
+# -> 5 persons with 2 attributes -> see the Q matrix above
+alpha <- matrix( c(1,0,1,0,1,1,0,1,1,1) , 
+    nrow=5,ncol=2, byrow=TRUE )
+sim.din(  q.matrix = q.matrix , alpha = alpha )
+
 }
