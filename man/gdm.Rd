@@ -17,7 +17,8 @@ gdm( data, theta.k, irtmodel="2PL", group=NULL, weights=rep(1, nrow(data)),
     b.constraint=NULL, a.constraint=NULL, 
     mean.constraint=NULL , Sigma.constraint=NULL , delta.designmatrix=NULL, 
     standardized.latent=FALSE , centered.latent=FALSE ,  maxiter=1000, 
-    conv=10^(-5), globconv=10^(-5), decrease.increments = FALSE , ...)    
+    conv=10^(-5), globconv=10^(-5), msteps=8 , convM=.0005 ,
+    decrease.increments = FALSE , use.freqpatt=FALSE , ...)    
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -113,12 +114,26 @@ distribution parameters
   \item{globconv}{
 Global deviance convergence criterion
 }
+\item{msteps}{
+	Maximum number of M steps in estimating \eqn{b} and
+	\eqn{a} item parameters. The default is 8 M steps.
+}
+\item{convM}{
+	Convergence criterion in M step
+		}
 \item{decrease.increments}{Should in the M step the increments
     of \eqn{a} and \eqn{b} parameters decrease during iterations?
     The default is \code{FALSE}. If there is an increase in deviance
     during estimation, setting \code{decrease.increments} to \code{TRUE}
     is recommended.
 }
+\item{use.freqpatt}{
+	Should frequencies of unique item response patterns
+	be used. In case of large data set \code{use.freqpatt=TRUE}
+	can speed calculations. Note that in this case, not all
+	person parameters are calculated as usual in the
+	output.
+		}
 \item{\dots}{
     Further arguments to be passed
 }
@@ -181,6 +196,8 @@ following entries:
 \item{a}{Item slopes \eqn{a_{jd}} resp. \eqn{a_{jdk}}}
 \item{se.a}{Standard error of item slopes \eqn{a_{jd}} resp. \eqn{a_{jdk}}}
 \item{itemfit.rmsea}{The RMSEA item fit index (see \code{\link{itemfit.rmsea}}).
+	This entry comes as a list with total and group-wise item fit
+	statistics.
             }
 \item{mean.rmsea}{Mean of RMSEA item fit indexes.
             }            
@@ -227,9 +244,9 @@ following entries:
   Xu, X. & von Davier, M. (2008). \emph{Fitting the structured general diagnostic
   model to NAEP data}. ETS Research Report ETS RR-08-27. Princeton, ETS.
 }
-\author{
-Alexander Robitzsch
-}
+%\author{
+%Alexander Robitzsch
+%}
 %\note{
 %%  ~~further notes~~
 %}
@@ -331,6 +348,12 @@ mod1 <- gdm( dat , irtmodel="1PL" , theta.k=theta.k , skillspace="normal" ,
 summary(mod1)
 
 #***
+# Model 1b: PCM using frequency patterns
+mod1b <- gdm( dat , irtmodel="1PL" , theta.k=theta.k , skillspace="normal" ,
+           centered.latent=TRUE , use.freqpatt=TRUE)
+summary(mod1b)
+
+#***
 # Model 2: PCM with two groups
 mod2 <- gdm( dat , irtmodel="1PL" , theta.k=theta.k , 
             group=data.Students$urban + 1 , skillspace="normal" ,
@@ -383,7 +406,7 @@ summary(mod7a)
 # Model 7b: Item category slopes
 mod7b <- gdm( dat0 , irtmodel="2PLcat" , theta.k=theta.k ,  
             standardized.latent=TRUE , decrease.increments=TRUE )        
-summary(mod7b)}
+summary(mod7b)
 
 ###################################################################
 # EXAMPLE 3: Fraction Dataset 2
@@ -414,7 +437,6 @@ mod3 <- gdm( dat , irtmodel="1PL" , theta.k=theta.k ,
             globconv=5*10^(-3) , conv=10^(-4) , maxiter=10 )
 summary(mod3)            
 
-\dontrun{
 #***
 # Model 4: 3-dimensional Rasch model (loglinear smoothing)
 # set some item parameters of items 4,1 and 2 to zero
@@ -453,8 +475,6 @@ mod7 <- gdm( dat , irtmodel="2PL" , theta.k=theta.k ,
             a.constraint=a.constraint , decrease.increments=FALSE , 
             skillspace="loglinear" , maxiter=400)
 summary(mod7)}
-%% #***
-%% # Model 8: include an example with an interaction
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

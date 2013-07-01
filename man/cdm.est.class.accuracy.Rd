@@ -51,9 +51,9 @@ Cui, Y., Gierl, M. J. & Chang, H.-H. (2012).
 Estimating classification consistency and accuracy for cognitive diagnostic assessment. 
 \emph{Journal of Educational Measurement}, \bold{49}, 19-38.
 }
-\author{
-Alexander Robitzsch
-}
+%\author{
+%Alexander Robitzsch
+%}
 %\note{
 %%  ~~further notes~~
 %}

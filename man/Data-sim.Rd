@@ -44,15 +44,6 @@
 }
   
 
-\author{
-  Alexander Robitzsch, Thomas Kiefer, Ann Cathrice George, Ali Uenlue 
-
-  Maintainer: Alexander Robitzsch <a.robitzsch@bifie.at>,
-              Thomas Kiefer <t.kiefer@bifie.at>,
-              Ann Cathrice George <george@statistik.tu-dortmund.de>,
-              Ali Uenlue <ali.uenlue@tum.de> 
-}
-
 \references{
   Rupp, A. A., Templin, J. L. and Henson, R. A. (2010) \emph{Diagnostic
   Measurement: Theory, Methods, and Applications}. New York: The Guilford
@@ -60,6 +51,7 @@
 }
 
 \examples{
+\dontrun{
 ##
 ## (2) examples based on dataset sim.dina
 ##
@@ -167,7 +159,7 @@ d7 <- din(sim.dina.bib, sim.qmatrix, rule = "DINO",
 # Comparison of DINA and DINO estimates
 lapply(list("guessing" = rbind("DINA" = d6$guess[,1],
   "DINO" = d7$guess[,1]), "slipping" = rbind("DINA" =
-  d6$slip[,1], "DINO" = d7$slip[,1])), round, 2)
+  d6$slip[,1], "DINO" = d7$slip[,1])), round, 2) }
 }
 
 \keyword{datasets}

@@ -1,18 +1,39 @@
------------------------------- CDM NEWS ------------------------------------
+-------------------- CDM NEWS --------------------------------
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 CDM package
 A. Robitzsch, T. Kiefer, A. C. George & A. Uenlue
 
+mailto:
+a.robitzsch /-\ bifie.at
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 --------------------------------------------------------------
-CDM 1.3 (2013-04-14)
+CDM 1.4 (2013-06-30)
+--------------------------------------------------------------
+
+x eliminated a bug in GDINA function for link="log"
+x included the parametrization of the reduced RUM model in gdina
+x worked on higher order GDINA model which has the argument
+  HOGDINA in gdina. Now there is dependency on the fa factor 
+  analysis function in the psych package.
+x included log-likelihood extractor functions
+x included group-wise calculation of RMSEA statistics
+  see itemfit.rmsea and the gdm output (thanks to Artur Pokropek)
+x (hopefully) fixed a bug in gdm function with differing number of
+  item categories (thanks to Artur Pokropek)  
+x use frequency patterns in gdm to speed up calculations
+  for large data sets (argument 'use.freqpatt' in gdm function)
+x included more than one step in gdm function
+  - arguments msteps (set to 8 M steps as the default) and
+    convM
+
+--------------------------------------------------------------
+CDM 1.3 (2013-05-15)
 --------------------------------------------------------------
 
 x included the general diagnostic model (function gdm)

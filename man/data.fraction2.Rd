@@ -6,7 +6,7 @@ Fraction Subtraction Dataset 2
 }
 \description{
 This is the fraction subtraction data set with 536 students
-and 11 items. For this data set, \eqn{Q} matrices are available.
+and 11 items. For this data set, several \eqn{Q} matrices are available.
 The \eqn{Q} matrix was defined in de la Torre (2009).
 }
 \usage{data(data.fraction2)}
@@ -59,7 +59,7 @@ about data source.
   Henson, R. A., Templin, J. T. & Willse, J. T. (2009).
   Defining a family of cognitive diagnosis models using
   log-linear models with latent variables.
-  \emph{Psychometrika, 74}, 191-210.
+  \emph{Psychometrika}, \bold{74}, 191-210.
 }
 %\examples{
 %% data(data.fraction2)

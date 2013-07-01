@@ -10,7 +10,7 @@ in cognitive diagnosis models as implemented in mdltm (von Davier, 2005;
 cited in Kunina-Habenicht, Rupp & Wilhelm, 2009).
 }
 \usage{
-itemfit.rmsea(n.ik, pi.k, probs)
+itemfit.rmsea(n.ik, pi.k, probs, itemnames=NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -23,12 +23,17 @@ An array of two dimensions: Classes x Groups
   \item{probs}{
 An array of four dimensions: Classes x Items x Categories x Groups
 }
+  \item{itemnames}{
+An optional vector of item names. Default is \code{NULL}.
+}
 }
 %\details{
 %%  ~~ If necessary, more details than the description above ~~
 %}
 \value{
-A vector with RMSEA item fit statistics
+A list with two entries:
+\item{rmsea}{Vector of RMSEA item statistics}
+\item{rmsea.groups}{Matrix of group-wise RMSEA item statistics}
 }
 \references{
 Kunina-Habenicht, O., Rupp, A.A., & Wilhelm, O. (2009). 
@@ -39,9 +44,9 @@ Comparing results from confirmatory factor analysis and diagnostic classificatio
 von Davier, M. (2005). \emph{A general diagnostic model applied to language 
 testing data}, Research Report RR-05-16. ETS, Princeton, NJ: ETS.
 }
-\author{
-Alexander Robitzsch
-}
+%\author{
+%Alexander Robitzsch
+%}
 %\note{
 %%  ~~further notes~~
 %}

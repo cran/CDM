@@ -17,6 +17,7 @@ function( data, q.matrix, conv.crit = 0.0001,
 					delta.basispar.init = NULL , 
 					zeroprob.skillclasses = NULL , 
 					reduced.skillspace=TRUE , 
+					HOGDINA = -1 , 
 					Z.skillspace = NULL , 
                     weights = rep( 1, nrow( data ) ),  rule = "GDINA", 
                     progress = TRUE , 
@@ -72,7 +73,6 @@ function( data, q.matrix, conv.crit = 0.0001,
 			colnames(q.matrix) <- paste( "Attr" , seq(1,ncol(q.matrix)) , sep="")
 						}
 
-	
 ################################################################################
 # check consistency of input (data, q.matrix, ...)                             #
 ################################################################################
@@ -85,14 +85,21 @@ function( data, q.matrix, conv.crit = 0.0001,
 	
 		# check of admissible rules
 		admiss.rules <- c("GDINA" , "ACDM" , "DINA" , "DINO" ,
-							"GDINA1" , "GDINA2" )
+							"GDINA1" , "GDINA2" , "RRUM" )
 		i1 <- which( ! ( rule %in% admiss.rules ) )
 		if ( length(i1) > 0 ){
 			cat("The following rules are not implemented in gdina: ")
 			cat( paste( unique( rule[i1] ) , collapse= " " ) , "\n" )
 			stop("Change your argument 'rule'")
 				}
-							
+	# estimation of a reduced RUM model
+    rrum.params <- rrum.model <- FALSE	
+	if ( any( rule  == "RRUM" ) ){
+		rule <- "ACDM" 
+		linkfct <- "log"
+		rrum.model <- TRUE
+					}
+	
 	
 #    dat.items <- clean$data; q.matrix <- clean$q.matrix; conv.crit <- clean$conv.crit;
 #    maxit <- clean$maxit; constraint.guess <- clean$constraint.guess; 
@@ -126,6 +133,18 @@ function( data, q.matrix, conv.crit = 0.0001,
 								}
 							}	
 							
+							
+###############################################################
+# HOGDINA model
+	if (HOGDINA >= 0){						
+		reduced.skillspace <- FALSE
+		theta.k <- seq( -6,6 , len=21 )
+		wgt.theta <- dnorm( theta.k )
+		w1 <- wgt.theta / sum( wgt.theta )
+		wgt.theta <- matrix( w1 , nrow=length(w1) , ncol=G)
+				}
+								
+							
 ################################################################################
 # display on R console                                                         #
 ################################################################################
@@ -158,6 +177,10 @@ function( data, q.matrix, conv.crit = 0.0001,
 						}
 
 
+	if (HOGDINA >= 0){						
+		b.attr <- a.attr <- matrix( 0 , nrow=K , ncol=G )
+				}						
+						
 # a0 <- Sys.time()
 						
 ################################################################################
@@ -321,16 +344,18 @@ function( data, q.matrix, conv.crit = 0.0001,
 				Mj[[jj]] <- .create.Mj( Aj[[jj]] , rule = rule[jj] )
 						}
  		l1 <- as.list( 1 )
-		l2 <- rep(0,L)
+		l2 <- rep(0,L)	
 		for (zz in seq(1,nrow(Aj1)) ){ 
 			#	zz <- 1
- 			Aj1zz <- outer( rep(1,nrow(attr.patt)) , Aj1[zz,] )
+ 			Aj1zz <- outer( rep(1,nrow(attr.patt)) , Aj1[zz,] )			
 			l1[[zz]] <- which( rowMeans( attr.patt[ , nj1 ] == Aj1zz  ) == 1)
 			l2[ l1[[zz]] ] <- zz
 						}
 		attr.items[[jj]] <- l1
 		aggr.attr.patt[[jj]] <- l2
 						}	# end item jj
+						
+    #******						
 	# indices for Mj
 	Mj.index <- matrix( 0 , J , 6 )
 	for (jj in 1:J){
@@ -497,7 +522,7 @@ function( data, q.matrix, conv.crit = 0.0001,
 				pj1[jj,] <- plogis( pj1[jj,] )
 									}
 			if (linkfct == "log"){
-				pj1[jj] <- exp( pj1[jj,] )
+				pj1[jj,] <- exp( pj1[jj,] )
 									}
 									}
     # restrict probabilities in calculations									
@@ -565,6 +590,27 @@ function( data, q.matrix, conv.crit = 0.0001,
 					}
 
 # cat( "\n Step 2 (calc P(alpha|xi) \n" ) ; a1 <- Sys.time() ; print(a1-a0) ; a0 <- a1					
+
+
+#######################################################################
+# STEP II0: higher order GDINA model
+#######################################################################
+
+if (HOGDINA >= 0){
+    for (gg in 1:G){ # gg <- 1
+	if (G==1){ ap.gg <- attr.prob } else {
+		ap.gg <- attr.prob[,gg] }
+	res <- .attr.rpf( attr.patt , attr.prob=ap.gg , theta.k , wgt.theta[,gg] , HOGDINA )
+	if (G==1){ attr.prob <- res$attr.prob } else {
+		attr.prob[,gg] <- res$attr.prob }
+	a.attr[,gg] <- res$a.attr
+	b.attr[,gg] <- res$b.attr 
+					}
+				}
+
+
+
+
 					
 #######################################################################
 # STEP IIa: reduction of skill space					
@@ -696,6 +742,7 @@ function( data, q.matrix, conv.crit = 0.0001,
 		if (linkfct == "log" ){ 
 				pjjj[ pjjj < eps ] <- eps
 				pjjj <- log( pjjj ) 
+# print(pjjj)				
 								}
 #		Wj <- diag( Ilj.ast[,2] )
 		Wj <- diag( Ilj.ast )
@@ -906,7 +953,7 @@ function( data, q.matrix, conv.crit = 0.0001,
 #							infomat.jj[kk2,kk1] <- infomat.jj[kk1,kk2] <-  
 #											sum( mat.jj[,kk1] * mat.jj[,kk2]  )
 						#@@ARb (2012-07-20) correction
-						# frqeuency weights must be taken into account
+						# frequency weights must be taken into account
 						hh1 <- sum( mat.jj[,kk1] * mat.jj[,kk2] * freq.pattern * 
 											resp.patt[,jj] * item.patt.split[,jj] )
 						infomat.jj[kk2,kk1] <- infomat.jj[kk1,kk2] <-  hh1
@@ -971,7 +1018,11 @@ function( data, q.matrix, conv.crit = 0.0001,
 						}
 		delta.summary$partype.attr[ind.jj] <- pgjj
 					}
-
+	
+	# compute RRUM parametrization if model is specified
+	if (rrum.model){
+		rrum.params <- .rrum.param( delta.summary , q.matrix )
+				}
 				
     # attribute pattern
 	if (G==1){ 
@@ -1014,6 +1065,8 @@ function( data, q.matrix, conv.crit = 0.0001,
 			Nipar <- ncol(delta.designmatrix ) }
 		
 		Nskillpar <- G*ncolZ - length( zeroprob.skillclasses )		
+		if (HOGDINA==1){ Nskillpar <- 2*K*G }
+		if (HOGDINA==0){ Nskillpar <- K*G }
 		Npars <- Nipar  - bb + Nskillpar
 		II <- sum( item.patt.freq )
 		aic <- -2*loglike + 2 * Npars  
@@ -1069,7 +1122,7 @@ function( data, q.matrix, conv.crit = 0.0001,
 		pi.k[,1] <- attr.prob$class.prob
 			} 
 		probs <- aperm( pjM , c(3,1,2) )
-		itemfit.rmsea <- itemfit.rmsea( n.ik , pi.k , probs )	
+		itemfit.rmsea <- itemfit.rmsea( n.ik , pi.k , probs )$rmsea	
 		names(itemfit.rmsea) <- colnames(data)
 
     cat("---------------------------------------------------------------------------------\n")
@@ -1092,9 +1145,20 @@ function( data, q.matrix, conv.crit = 0.0001,
 				 beta = beta , covbeta = covbeta , 
 				 "display" = disp,
                  "item.patt.split" = item.patt.split, "item.patt.freq" = item.patt.freq,
-                 "model.type" = r1 , iter = iter-1 #,
-#				 "q.matrix" = q.matrix 
+                 "model.type" = r1 , iter = iter-1 ,
+				 "rrum.model" = rrum.model ,
+				 "rrum.params"= rrum.params ,
+#				 "q.matrix" = q.matrix ,
+				 "HOGDINA" = HOGDINA
 				 ) 
+	if (HOGDINA>=0) { 
+	    colnames(a.attr) <- paste0( "a.Gr" , 1:G )
+		colnames(b.attr) <- paste0( "b.Gr" , 1:G )
+		rownames(b.attr) <- rownames(a.attr) <- colnames(q.matrix)
+		res$a.attr <- a.attr 
+		res$b.attr <- b.attr
+		res$attr.rf <- cbind( b.attr , a.attr )
+				}
     class(res) <- "gdina"
     return(res)
 }
@@ -1112,7 +1176,9 @@ summary.gdina <- function( object , rdigits = 4 , ... ){
     cat("---------------------------------------------------------------------------------------------------------- \n")
 	d1 <- packageDescription("CDM")
 	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n" )		
-    cat("Generalized DINA Model \n")
+    if (object$HOGDINA==-1){ 
+		cat("Generalized DINA Model \n") } else {
+		cat("Higher Order Generalized DINA Model \n") }
     if ( object$G > 1 ){ 
 			cat("  Multiple Group Estmation with",object$G , "Groups \n") 
 			cat("\n")
@@ -1149,10 +1215,17 @@ summary.gdina <- function( object , rdigits = 4 , ... ){
 	cat("\nRMSEA Item Fit\n")											
 	print( round( object$itemfit.rmsea,3) )
 											
-  cat("\nMean of RMSEA item fit:" , 
+    cat("\nMean of RMSEA item fit:" , 
      round( object$mean.rmsea ,3 ) , "\n")											
-											
-											
+	
+	# RRUM model	
+	if (object$rrum.model){
+		cat("\n****\nRRUM Parametrization\n")
+		print( round( object$rrum.params,3) , na  ="")
+		cat("\n")
+					}
+
+	
 	cat("----------------------------------------------------------------------------\n")
 	cat("\nSkill Probabilities \n\n")
 	print(round(object$skill.patt ,rdigits) )
@@ -1162,236 +1235,45 @@ summary.gdina <- function( object , rdigits = 4 , ... ){
 		gt1 <- skill.cor( object )
 		print(round(gt1$cor.skills,3))
 			}
-#    if ( ncol(object$q.matrix ) > 1 ){ 
 		cat("\n----------------------------------------------------------------------------\n")	
 		cat("\nSkill Pattern Probabilities \n\n")
 		xt <- round( object$attribute.patt[,1] , rdigits )
 		names(xt) <- rownames( object$attribute.patt )
 		print(xt)
-#			}
+
+		if (object$HOGDINA>=0){
+			cat("\n***************************\n")	
+			cat("Higher Order GDINA Model ")
+			cat("\n  Attribute Response Function Parameters \n\n")
+			print( round( object$attr.rf,3) )
+					}
+		
 		}
 ##########################################################################
 
 
-
-#****************************************************************
-# design matrices for GDINA model
-.create.Aj <- function(nq){ 
-    Aj <- NULL
-    if (nq == 1){ Aj <- matrix( c(0,1) , ncol=1 ) }
-    if (nq == 2){ 
-        Aj <- matrix( c( 0 , 0 ,
-                        1 , 0 ,
-                        0 , 1 ,
-                        1 , 1 ) , byrow=T , ncol=2 )
-                    }
-    if (nq == 3){ 
-        Aj <- matrix( c( 0 , 0 , 0,
-                        1 , 0 , 0 ,    0 , 1 , 0,     0 , 0 , 1 ,
-                        1 , 1 , 0 ,    1 , 0 , 1 ,   0 , 1 , 1,
-                        1 , 1 , 1 ) , byrow=T , ncol=3 )
-                    }
-    if (nq == 4){ 
-        Aj <- matrix( c( 0 , 0 , 0, 0,
-                        1,0,0,0 ,   0,1,0,0  , 0,0,1,0  , 0,0,0,1 ,
-                        1,1,0,0,  1,0,1,0 ,   1,0,0,1,  0,1,1,0 , 0,1,0,1 , 0,0,1,1 ,
-                        1,1,1,0 , 1,0,1,1,   1,1,0,1,   0,1,1,1 , 
-                        1 , 1 , 1 ,1) , byrow=T , ncol=4 )
-                    }
-    if (nq == 5){ 
-        Aj <- matrix( c( 0,0,0,0,0   , 
-                1,0,0,0,0   , 
-                0,1,0,0,0   , 
-                0,0,1,0,0   , 
-                0,0,0,1,0   , 
-                0,0,0,1,0   , 
-                1,1,0,0,0   , 
-                1,0,1,0,0   , 
-                1,0,0,1,0   , 
-                1,0,0,0,1   , 
-                0,1,1,0,0   , 
-                0,1,0,1,0   , 
-                0,1,0,0,1   , 
-                0,0,1,1,0   , 
-                0,0,1,0,1   , 
-                0,0,0,1,1   , 
-                1,1,1,0,0   , 
-                1,1,0,1,0   , 
-                1,1,0,0,1   , 
-                1,0,1,1,0   , 
-                1,0,1,0,1   , 
-                1,0,0,1,1   , 
-                0,1,1,1,0   , 
-                0,1,1,0,1   , 
-                0,1,0,1,1   , 
-                0,0,1,1,1   , 
-                1,1,1,1,0   , 
-                1,1,1,0,1   , 
-                1,1,0,1,1   , 
-                1,0,1,1,1   , 
-                0,1,1,1,1   , 
-                1,1,1,1,1          ) , byrow=T , ncol=5 )
-                    }                 
-    if ( nq > 5){   stop( "Design matrices with more than 5 nonzero row entries are not allowed!\n") }
-    return(Aj)
+#***************************************************************
+# RRUM parametrization
+.rrum.param <- function( delta.summary , q.matrix ){
+	#---
+	#  RRUM parametrization
+	#  log( P(X=1) ) = b0 + b1*alpha1 + b2 * alpha2 
+	#  RRUM:
+	#  P(X=1) = pi * r1^( 1- alpha1) * r2^(1-alpha2)
+	#  => log( P(X=1) ) = log[ pi * r1 * r2 * r1^(-alpha1) * r2^(-alpha2) ]
+	#                   = log( pi ) + log(r1) + log(r2) + -log(r1)*alpha1 + -log(r2) * alpha2
+	#  => b1 = -log(r1) and r1 = exp( -b1 )
+	#  => log(pi) = b0 + b1 + b2 and pi = exp( b0 + b1 + b2 )
+	I <- nrow(q.matrix)
+	K <- ncol(q.matrix)
+	rrum.params <- matrix( NA , I , K+1 )
+	rownames(rrum.params) <- delta.summary[ delta.summary$partype == 0 , "item" ]
+	colnames(rrum.params) <- c( "pi" , paste( "r_", colnames(q.matrix) , sep="") )
+	for (ii in 1:I){
+		# ii <- 2
+		d.ii <- delta.summary[ delta.summary$itemno == ii , ]
+		rrum.params[ii,"pi"] <- exp( sum( d.ii$est ) )
+		rrum.params[ ii , which( q.matrix[ii,]==1) +1 ] <- exp( - d.ii$est[-1] )
+				}
+	return( rrum.params )
         }
-#*****************************************************************
-
-
-#***************************************************************
-# design matrix Mj
-.create.Mj <- function( Aj , rule = "GDINA" ){
-        K <- ncol(Aj)
-        Mj <- NULL
-        Mj.lab <- NULL
-		#***********************************************
-        if (K==1){ 
-            Mj <- matrix( c( 1,0,
-                             1 ,1 ) , byrow=TRUE , ncol=2^1 )
-            Mj.lab <- c( "0" , "1" )
-                    } 
-		#***********************************************
-        if (K==2){ 
-            Mj <- matrix( c( 1,0,0,0,
-                             1,1,0,0,    1,0,1,0 ,
-                             1 ,1,1,1 ) , byrow=TRUE , ncol=2^2 )
-            Mj.lab <- c( "0" , "1" , "2" , "1-2" )
-			if (rule == "DINA"){
-				M <- 2^2
-				selv <- c(1,M)
-				Mj <- Mj[,selv]
-				Mj.lab <- Mj.lab[ selv]
-								}
-			if (rule == "DINO"){
-				M <- 2^2
-				selv <- c(1,M)
-				Mj <- Mj[,selv]
-				Mj[,2] <- 1 ; Mj[1,2] <- 0
-				Mj.lab <- Mj.lab[ selv]
-				Mj.lab[2] <- gsub("-" , "|" , Mj.lab[2] )
-								}
-			if (rule == "ACDM" | rule == "GDINA1" ){
-				selv <- 1:3
-				Mj <- Mj[,selv]
-				Mj.lab <- Mj.lab[ selv ]
-								}
-			# In case of K = 2, GDINA2 = GDINA					
-                    } 
-		#***********************************************
-        if (K==3){ 
-            Mj <- cbind( 1 , sapply( 1:3 , FUN = function(jj){ 1*(Aj[,jj]==1) } ) )            
-               Mj.lab <- c( "0" , 1:3 )
-            g2 <- combn( 3 , 2 )
-                Mj <- cbind( Mj , sapply( seq( 1 , ncol(g2)) , FUN = function(jj){ rowProds2(Aj[, g2[,jj] ]) } ) )
-                Mj.lab <- c( Mj.lab , apply( g2 , 2 , FUN = function(ll){ paste( ll , collapse="-" ) } ) )
-            g2 <- combn( 3 , 3 )
-			g2 <- matrix( g2 , nrow=length(g2) , ncol=1 )
-                Mj <- cbind( Mj , sapply( seq( 1 , ncol(g2)) , FUN = function(jj){ rowProds2(Aj[, g2[,jj] ]) } ) )
-                Mj.lab <- c( Mj.lab , apply( g2 , 2 , FUN = function(ll){ paste( ll , collapse="-" ) } ) )       
-			if (rule == "DINA"){
-				M <- 2^3
-				selv <- c(1,M)
-				Mj <- Mj[,selv]
-				Mj.lab <- Mj.lab[  selv]
-								}
-			if (rule == "DINO"){
-				M <- 2^3
-				selv <- c(1,M)
-				Mj <- Mj[,selv]
-				Mj[,2] <- 1 ; Mj[1,2] <- 0
-				Mj.lab <- Mj.lab[ selv]
-				Mj.lab[2] <- gsub("-" , "|" , Mj.lab[2] )
-								}																
-								
-			if (rule == "ACDM" | rule == "GDINA1"){
-				selv <- 1:4
-				Mj <- Mj[,selv]
-				Mj.lab <- Mj.lab[  selv ]
-								}						
-			if (rule == "GDINA2"){
-				selv <- 1:7
-				Mj <- Mj[,selv]
-				Mj.lab <- Mj.lab[  selv ]
-								}					
-                    } 
-		#********************************************************************************************
-        if (K==4){
-            Mj <- cbind( 1 , sapply( 1:4 , FUN = function(jj){ 1*(Aj[,jj]==1) } ) )            
-               Mj.lab <- c( "0" , 1:4 )
-            for (kk in 2:4){ 
-                g2 <- combn( 4 , kk )
-				if (kk==4){
-						g2 <- matrix( g2 , nrow=length(g2) , ncol=1 )
-							}
-                    Mj <- cbind( Mj , sapply( seq( 1 , ncol(g2)) , FUN = function(jj){ rowProds2(Aj[, g2[,jj] ]) } ) )
-                    Mj.lab <- c( Mj.lab , apply( g2 , 2 , FUN = function(ll){ paste( ll , collapse="-" ) } ) )
-                            }
-			if (rule == "DINA"){
-				M <- 2^4
-				selv <- c(1,M)
-				Mj <- Mj[,selv]
-				Mj.lab <- Mj.lab[  selv]
-								}
-			if (rule == "DINO"){
-				M <- 2^4
-				selv <- c(1,M)
-				Mj <- Mj[,selv]
-				Mj[,2] <- 1 ; Mj[1,2] <- 0
-				Mj.lab <- Mj.lab[ selv]
-				Mj.lab[2] <- gsub("-" , "|" , Mj.lab[2] )
-								}																
-								
-			if (rule == "ACDM" | rule == "GDINA1"){
-				selv <- 1:5
-				Mj <- Mj[,selv]
-				Mj.lab <- Mj.lab[  selv ]
-								}
-			if (rule == "GDINA2"){
-				selv <- 1:( 1 + 4 + 6 )
-				Mj <- Mj[,selv]
-				Mj.lab <- Mj.lab[  selv ]
-								}									
-                   }
-		#***************************************
-        if (K==5){
-            Mj <- cbind( 1 , sapply( 1:5 , FUN = function(jj){ 1*(Aj[,jj]==1) } ) )            
-               Mj.lab <- c( "0" , 1:5 )
-            for (kk in 2:5){ 
-                g2 <- combn( 5 , kk )
-				if (kk==5){
-						g2 <- matrix( g2 , nrow=length(g2) , ncol=1 )
-							}				
-                    Mj <- cbind( Mj , sapply( seq( 1 , ncol(g2)) , FUN = function(jj){ rowProds2(Aj[, g2[,jj] ]) } ) )
-                    Mj.lab <- c( Mj.lab , apply( g2 , 2 , FUN = function(ll){ paste( ll , collapse="-" ) } ) )
-                            }
-			if (rule == "DINA"){
-				M <- 2^5
-				selv <- c(1,M)
-				Mj <- Mj[,selv]
-				Mj.lab <- Mj.lab[  selv]
-								}
-			if (rule == "DINO"){
-				M <- 2^5
-				selv <- c(1,M)
-				Mj <- Mj[,selv]
-				Mj[,2] <- 1 ; Mj[1,2] <- 0
-				Mj.lab <- Mj.lab[ selv]
-				Mj.lab[2] <- gsub("-" , "|" , Mj.lab[2] )
-								}																
-								
-			if (rule == "ACDM" | rule == "GDINA1"){
-				selv <- 1:6
-				Mj <- Mj[,selv]
-				Mj.lab <- Mj.lab[  selv ]
-								}
-			if (rule == "GDINA2"){
-				selv <- 1:( 1 + 5 + 10 )
-				Mj <- Mj[,selv]
-				Mj.lab <- Mj.lab[  selv ]
-								}									
-								
-                   }
-            res <- list( Mj , Mj.lab )
-           return(res)
-                     }
-#***************************************************************

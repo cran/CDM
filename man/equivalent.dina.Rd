@@ -44,9 +44,9 @@ diagnostic model: Two variants of a model equivalency.
 \emph{British Journal of Mathematical and Statistical Psychology},
 \bold{xx}, xxx-xxx.
 }
-\author{
-Alexander Robitzsch
-}
+%\author{
+%Alexander Robitzsch
+%}
 %\note{
 %%  ~~further notes~~
 %}

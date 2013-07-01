@@ -22,7 +22,7 @@ Functions for cognitive diagnosis modeling
   \tabular{ll}{
     Package: \tab \pkg{CDM}\cr
     Type: \tab Package\cr
-    Version: \tab 1.3\cr
+    Version: \tab 1.4\cr
     Publication Year: \tab 2013\cr
     License: \tab \acronym{GPL} (>= 2)
   }
@@ -91,9 +91,9 @@ Functions for cognitive diagnosis modeling
 }
 
 \seealso{
-    See also the \pkg{NPCD} package for nonparametric cogitive 
-    diagnostic models. In \pkg{NPCD} joint maximum likelihood estimation of several 
-    CDMs is implemented.
+    See also the \pkg{NPCD} package for nonparametric cognitive 
+    diagnostic models. In \pkg{NPCD} joint maximum likelihood estimation 
+    of several CDMs is implemented.
         }
 
 \references{

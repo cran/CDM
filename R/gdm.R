@@ -65,14 +65,16 @@
 #################################################################
 # begin GDM function here
 # 
-gdm <- function( data, theta.k, irtmodel="2PL", group=NULL, weights=rep(1, nrow(data)), 
+gdm <- function( data , theta.k, irtmodel="2PL", group=NULL, 
+    weights=rep(1, nrow(data)), 
 	Qmatrix=NULL ,thetaDes = NULL , skillspace="loglinear",
     b.constraint=NULL, a.constraint=NULL, 
 	mean.constraint=NULL , Sigma.constraint=NULL , 
     delta.designmatrix=NULL, standardized.latent=FALSE , 
 	centered.latent=FALSE , 
-    maxiter=1000, conv=10^(-5), globconv=10^(-5), 
-	decrease.increments = FALSE , 
+    maxiter=1000, conv=10^(-5), globconv=10^(-5), msteps=8 , 
+	convM=.0005 , 
+	decrease.increments = FALSE , use.freqpatt=FALSE ,
 	...){	
 # mean.constraint [ dimension , group , value ]
 # Sigma.constraint [ dimension1 , dimension2 , group , value ]		
@@ -84,10 +86,17 @@ gdm <- function( data, theta.k, irtmodel="2PL", group=NULL, weights=rep(1, nrow(
 	## gdm: no visible binding for global variable 'TD'
 	TD <- TP <- EAP.rel <- mean.trait <- sd.trait <- skewness.trait <- NULL
 	K.item <- correlation.trait <- NULL 	
-	data <- as.matrix(data)
-	dat.resp <- 1 - is.na(data)
+	data0 <- data <- as.matrix(data)
+	dat.resp0 <- dat.resp <- 1 - is.na(data)
 	dat <- data
 	dat[ is.na(data) ] <- 0
+	dat0 <- dat
+	# use frequency pattern. If yes, then some
+	# data preparation follows.
+	if ( use.freqpatt ){
+		res <- .gdm.data.prep( dat , data , weights , group )
+		.attach.environment( res , envir=e1 )
+				}
 	# maximal categories
 	K <- max(dat)
 	# list of indicator data frames
@@ -104,12 +113,11 @@ gdm <- function( data, theta.k, irtmodel="2PL", group=NULL, weights=rep(1, nrow(
 		group <- rep(1,n)
 				} 
 			else {
-		gr2 <- unique( group )
+		gr2 <- unique( sort(paste( group ) ))
 		G <- length(gr2)
 		group <- match( group , gr2 )
 							}
 	Ngroup <- aggregate( 1+0*group , list(group) , sum )[,2] 							
-	
 	# theta design
 	res <- .gdm.thetadesign( theta.k , thetaDes , Qmatrix )
 	.attach.environment( res , envir=e1 )
@@ -121,7 +129,7 @@ gdm <- function( data, theta.k, irtmodel="2PL", group=NULL, weights=rep(1, nrow(
 	# arrange b parameters and starting values
 	b <- matrix( 0 , nrow=I , ncol=K )	
 	for (ii in 1:K){	# ii <- 1
-		cm1 <- colMeans( ( dat >= ii )*dat.resp )
+		cm1 <- colMeans( ( dat0 >= ii )*dat.resp0 )
 		b[,ii] <-  qlogis( ( cm1 + .01 ) / 1.02 )
 				}	
 	# define some item parameter constraints here
@@ -150,7 +158,6 @@ gdm <- function( data, theta.k, irtmodel="2PL", group=NULL, weights=rep(1, nrow(
 	res <- .gdm.constraints.itempars( b.constraint , a.constraint , 
 			K , TD , Qmatrix , a)	
 	.attach.environment( res , envir=e1 )	
-
 
 	# starting values for distributions
 	Sigma <- diag(1,D)
@@ -198,12 +205,36 @@ gdm <- function( data, theta.k, irtmodel="2PL", group=NULL, weights=rep(1, nrow(
 	res <- .gdm.constraints.itempars2( b.constraint , a.constraint , K , TD , I ,
 				dat )	
 	.attach.environment( res , envir=e1 )
+	#***
+	# preparations for calc.counts
+	dat.ind2 <- as.list( 1:(K+1) )
+	ind.group <- as.list( 1:G )
+    for (kk in 1:(K+1)){ 
+		l1 <- as.list(1:G)
+		for (gg in 1:G){
+		  if ( ! use.freqpatt ){
+			ind.gg <- which( group == gg )
+			ind.group[[gg]] <- ind.gg
+			dkk <- (dat.ind[[kk]])[ ind.gg , ]
+			l1[[gg]] <- dkk * dat.resp[ind.gg,] * weights[ind.gg] 	
+							}
+		  if ( use.freqpatt ){
+			dkk <- dat.ind[[kk]]
+			if (G>1){ 	wgg <- weights[,gg]	 }
+			if (G==1){ wgg <- weights 
+					ind.group[[gg]] <- which( group==gg)
+							}
+			l1[[gg]] <- dkk * dat.resp * wgg 
+							}
+						}   # end gg
+			dat.ind2[[kk]] <- l1
+					}
 	
 	#---
 	# initial values algorithm
 	dev <- 0	; iter <- 0
 	globconv1 <- conv1 <- 1000
-	disp <- paste( paste( rep(".", 100 ) , collapse="") ,"\n", sep="")
+	disp <- paste( paste( rep(".", 70 ) , collapse="") ,"\n", sep="")
 	
 	############################################
 	# BEGIN MML Algorithm
@@ -216,13 +247,15 @@ gdm <- function( data, theta.k, irtmodel="2PL", group=NULL, weights=rep(1, nrow(
 		b0 <- b ; a0 <- a ; dev0 <- dev
 		delta0 <- delta ; pi.k0 <- pi.k
 
-# a0 <- Sys.time()
+		
+ #z0 <- Sys.time()
  		
 		#****
 		#1 calculate probabilities
 		probs <- .gdm.calc.prob( a,b,thetaDes,Qmatrix,I,K,TP,TD)
  
-# cat("calc.prob") ; a1 <- Sys.time(); print(a1-a0) ; a0 <- a1		
+ # cat("calc.prob") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1		
+ 
  
 		#*****
 		#2 calculate individual likelihood
@@ -234,59 +267,65 @@ gdm <- function( data, theta.k, irtmodel="2PL", group=NULL, weights=rep(1, nrow(
 					 thetasamp.density= NULL , snodes=0 )	
 		p.xi.aj <- res.hwt$hwt 	
 
-# cat("calc.post.v2") ; a1 <- Sys.time(); print(a1-a0) ; a0 <- a1				
+ #cat("calc.like") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1	
 		
 		#*****
 		#3 calculate posterior and marginal distributions
-		res <- .gdm.calc.post(pi.k,group,p.xi.aj,weights,G)
+		res <- .gdm.calc.post(pi.k,group,p.xi.aj,weights,G,ind.group,
+				use.freqpatt )
 		p.aj.xi <- res$p.aj.xi
 		pi.k <- res$pi.k
 
-# cat("gdm.calc.post") ; a1 <- Sys.time(); print(a1-a0) ; a0 <- a1				
+
+ #cat("calc.post") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1	
 		
 		#*****
 		#4 calculate expected counts
 		# n.ik [ 1:TP , 1:I , 1:(K+1) , 1:G ]
 		res <- .gdm.calc.counts(G,weights,dat.ind,dat,
-					dat.resp,p.aj.xi,K,n.ik,TP,I,group)		
+					dat.resp,p.aj.xi,K,n.ik,TP,I,group , dat.ind2 , ind.group ,
+					use.freqpatt )		
 		n.ik <- res$n.ik
 		N.ik <- res$N.ik
 
-# cat("calc.counts") ; a1 <- Sys.time(); print(a1-a0) ; a0 <- a1		
+ #cat("calc.counts") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1		
 
-	
 		#*****
 		#5 M step: b parameter estimation
 		# n.ik  [1:TP,1:I,1:K,1:G]
 		# probs[1:I,1:K,1:TP]
 		res <- .gdm.est.b(probs, n.ik, N.ik, I, K, G,b,b.constraint,
-				max.increment=max.increment.b )	
+				max.increment=max.increment.b , a,thetaDes,Qmatrix,TP,TD,
+				msteps,convM)	
 		b <- res$b
 		se.b <- res$se.b
-		if (decrease.increments){ 	max.increment.b <- res$max.increment.b/1.1	}
+		if (decrease.increments){ 	max.increment.b <- res$max.increment.b/1.01	}
 
-# cat("est.b") ; a1 <- Sys.time(); print(a1-a0) ; a0 <- a1		
+# cat("est b") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1		
 		
 		#*****
 		#6 M step: a parameter estimation	
 		if ( irtmodel == "2PL"){
 			res <- .gdm.est.a(probs, n.ik, N.ik, I, K, G,a,a.constraint,TD,
-					Qmatrix,thetaDes,TP, max.increment = max.increment.a)
+					Qmatrix,thetaDes,TP, max.increment = max.increment.a ,
+					b , msteps , convM )
 			a <- res$a
 			se.a <- res$se.a
-			if (decrease.increments){ 	max.increment.a <- res$max.increment.a/1.1	}
+			if (decrease.increments){ 	max.increment.a <- res$max.increment.a/1.01	}
 						}
+					
 		if ( irtmodel == "2PLcat"){
 			res <- .gdm.est.a.cat(probs, n.ik, N.ik, I, K, G,a,a.constraint,TD,
-					Qmatrix,thetaDes,TP, max.increment = max.increment.a)					
+					Qmatrix,thetaDes,TP, max.increment = max.increment.a ,
+					b , msteps , convM )					
 			a <- res$a
 			se.a <- res$se.a
 			if (decrease.increments){ 	
-				max.increment.a <- res$max.increment.a / 1.1				
+				max.increment.a <- res$max.increment.a / 1.01				
 					}
 						}	
 			
-# print("a600")							
+ #cat("est a") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1		
 						
 		#*****
 		#7 M step: estimate reduced skillspace
@@ -298,12 +337,16 @@ gdm <- function( data, theta.k, irtmodel="2PL", group=NULL, weights=rep(1, nrow(
 			covdelta <- res$covdelta
 					}
 		if ( skillspace == "normal" ){
-			pi.k <- .gdm.est.normalskills( pi.k , theta.k , irtmodel,
+			res <- .gdm.est.normalskills( pi.k , theta.k , irtmodel,
 						G,D , mean.constraint , Sigma.constraint ,
-						standardized.latent	)
+						standardized.latent	, p.aj.xi , group , ind.group  ,
+						weights , b , a)
+			pi.k <- res$pi.k
+			b <- res$b 
+			a <- res$a					
 					}
 
-# cat("calc skillspace") ; a1 <- Sys.time(); print(a1-a0) ; a0 <- a1							
+# cat("skillspace") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1		
 
 			
 		#*****
@@ -313,13 +356,24 @@ gdm <- function( data, theta.k, irtmodel="2PL", group=NULL, weights=rep(1, nrow(
 		# probs [I , K+1 , TP ]
 		ll <- 0
 		for (gg in 1:G){ 
-			ind.gg <- which(group==gg)
-			ll <- ll + sum( weights[ind.gg] * log( rowSums( p.xi.aj[ind.gg,] * 
-						outer( rep(1,nrow(p.xi.aj[ind.gg,])) , pi.k[,gg] ) ) ) )
+#			ind.gg <- which(group==gg)
+			if ( ! use.freqpatt ){
+				ind.gg <- ind.group[[gg]]
+				ll <- ll + sum( weights[ind.gg] * log( rowSums( p.xi.aj[ind.gg,] * 
+							matrix( pi.k[,gg] , nrow= length(ind.gg) , ncol=nrow(pi.k) , byrow=TRUE ) ) ) )
+									}
+			if ( use.freqpatt ){
+			  if (G>1){   wgg <- weights[,gg]  }
+			  if (G==1){ wgg <- weights }
+				ll <- ll + sum( wgg * log( rowSums( p.xi.aj * 
+							matrix( pi.k[,gg] , nrow= nrow(p.xi.aj) , 
+									ncol=nrow(pi.k) , byrow=TRUE ) ) ) )
+									}
+							
 							}
 		dev <- -2*ll	
 
-# cat("calc LL") ; a1 <- Sys.time(); print(a1-a0) ; a0 <- a1				
+# cat("calc LL") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1		
 
 		#~~~~~~~~~~~~~~~~~~~~~~~~~~
 		# display progress		
@@ -351,7 +405,7 @@ gdm <- function( data, theta.k, irtmodel="2PL", group=NULL, weights=rep(1, nrow(
 		
 		# collect item parameters
 		res <- .gdm.collect.itempars( data , K , D , b , a , TD , thetaDes ,
-					irtmodel , se.b , se.a )
+					irtmodel , se.b , se.a , data0)
 		.attach.environment( res , envir=e1 )					
 		
 		# calculate distribution properties
@@ -361,14 +415,16 @@ gdm <- function( data, theta.k, irtmodel="2PL", group=NULL, weights=rep(1, nrow(
 		# Information criteria
 		ic <- .gdm.calc.ic( dev , dat , G , skillspace , irtmodel , 
 				K,D,TD,I,b.constraint,a.constraint,mean.constraint ,
-			    Sigma.constraint, delta.designmatrix , standardized.latent)
+			    Sigma.constraint, delta.designmatrix , standardized.latent ,
+				data0 )
 
 	#########################################
 	# item fit [ items , theta , categories ] 
 	# # n.ik [ 1:TP , 1:I , 1:(K+1) , 1:G ]
 	probs <- aperm( probs , c(3,1,2) )
-	itemfit.rmsea <- itemfit.rmsea( n.ik , pi.k , probs )		
-    item$itemfit.rmsea <- itemfit.rmsea
+	itemfit.rmsea <- itemfit.rmsea( n.ik , pi.k , probs ,
+			itemnames = colnames(data) )		
+    item$itemfit.rmsea <- itemfit.rmsea$rmsea
 
 	# person parameters
 	res <- .gdm.person.parameters( data , D , theta.k , p.xi.aj , p.aj.xi , weights )	
@@ -381,7 +437,7 @@ gdm <- function( data, theta.k, irtmodel="2PL", group=NULL, weights=rep(1, nrow(
 				"deviance"=dev , "ic" = ic , "b" = b , "se.b" = se.b , 
 				"a" = a ,  "se.a" = se.a , 
 				"itemfit.rmsea" = itemfit.rmsea , 
-				"mean.rmsea" = mean(itemfit.rmsea) , 				
+				"mean.rmsea" = mean(itemfit.rmsea$rmsea) , 				
 				"Qmatrix"=Qmatrix , "pi.k"=pi.k , 	
 				"mean.trait"=mean.trait , "sd.trait" = sd.trait , 
 				"skewness.trait" = skewness.trait , "correlation.trait" = correlation.trait , 

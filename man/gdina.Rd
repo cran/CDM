@@ -2,22 +2,24 @@
 \alias{gdina}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Function for estimating the generalized DINA (GDINA) model (de la Torre, 2011)
+Function for Estimating the Generalized DINA (GDINA) Model
 }
 \description{
     This function implements the generalized DINA model 
     (GDINA; de la Torre, 2011). See the paper
     for details about estimable cognitive diagnosis models. 
     In addition, multiple group estimation 
-    is also possible using the \code{gdina} function.
+    is also possible using the \code{gdina} function. This function also
+    allows for the estimation of a higher order GDINA model
+    (de la Torre & Douglas, 2004).
 }
 \usage{
 gdina(data, q.matrix, conv.crit=0.0001, dev.crit=.1 ,  maxit=1000, 
     linkfct="identity", Mj=NULL, group=NULL , method="WLS" , 
     delta.designmatrix=NULL, delta.basispar.lower=NULL, 
     delta.basispar.upper=NULL, delta.basispar.init=NULL, 
-    zeroprob.skillclasses=NULL, reduced.skillspace=TRUE , Z.skillspace=NULL,
-    weights=rep(1, nrow(data)), rule="GDINA", progress=TRUE,
+    zeroprob.skillclasses=NULL, reduced.skillspace=TRUE , HOGDINA=-1,
+    Z.skillspace=NULL, weights=rep(1, nrow(data)), rule="GDINA", progress=TRUE,
     progress.item=FALSE , ...)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -94,6 +96,13 @@ default analysis. See Example 3.
         If the argument \code{zeroprob.skillclasses} is not \code{NULL}, then
         \code{reduced.skillspace} is set to \code{FALSE}.}
 
+\item{HOGDINA}{Values of -1, 0 or 1 which indicate if a higher order GDINA
+ 	model (see Details) should be estimated. 
+ 	The default value of -1 corresponds to the case that no higher order
+ 	factor is assumed to exist. A value of 0 corresponds to independent
+ 	attributes. A value of 1 assumes the existence of a higher order
+	factor. }
+
 \item{Z.skillspace}{A user specified design matrix for the skill space reduction
         as described in Xu and von Davier (2008). See in the Examples section for 
         applications. See Example 6.
@@ -103,12 +112,21 @@ default analysis. See Example 3.
 An optional vector of sample weights.
 }
 \item{rule}{
-    A string or a vector of itemwise condensation rules. Allowed entries are \code{GDINA}, \code{DINA}, 
-    \code{DINO} and \code{ACDM} (additive cognitive diagnostic model). The rule \code{GDINA1} applies
-    only main effects in the GDINA model which is equivalent to \code{ACDM}. The rule \code{GDINA2} applies
-    to all main effects and second-order interactions of the attributes.
-    If \code{rule} is a string, the condensation rule applies to all items. If \code{rule} is a vector,
-    condensation rules can be specified itemwise. The default is \code{GDINA} for all items.
+    A string or a vector of itemwise condensation rules. Allowed entries are 
+    \code{GDINA}, \code{DINA}, \code{DINO}, \code{ACDM} (additive 
+    cognitive diagnostic model) and \code{RRUM} (reduced reparametrized
+    unified model, RRUM, see Details). 
+    The rule \code{GDINA1} applies
+    only main effects in the GDINA model which is equivalent to \code{ACDM}. 
+    The rule \code{GDINA2} applies to all main effects and second-order 
+    interactions of the attributes. If some item is specified as \code{RRUM},
+    then for all the items the reduced RUM will be estimated which means
+    that the log link function and the \code{ACDM} condensation rule is used.
+    In the output, the entry \code{rrum.params} contains the parameters
+    transformed in the RUM parametrization.
+    If \code{rule} is a string, the condensation rule applies to all items. 
+    If \code{rule} is a vector, condensation rules can be specified itemwise. 
+    The default is \code{GDINA} for all items.
 }
   \item{progress}{
     Display progress on the \R console?
@@ -120,6 +138,11 @@ An optional vector of sample weights.
     Further arguments to be passed
         }
 }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% DETAILS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \details{
     The estimation is based on an EM algorithm as described in de la Torre (2011). 
     Item parameters are contained in the \code{delta} vector which is a list where
@@ -132,9 +155,40 @@ An optional vector of sample weights.
         }
 which is a two-way GDINA-model (the \code{rule="GDINA2"} specification) with a 
 link function \eqn{g}. If the specification
-\code{ACDM} is chosen, then \eqn{\delta_{j12}=0}. The DINA model (\code{rule="DINA"})
-assumes \eqn{ \delta_{j1} = \delta_{j2} = 0}.
+\code{ACDM} is chosen, then \eqn{\delta_{j12}=0}. 
+The DINA model (\code{rule="DINA"}) assumes \eqn{ \delta_{j1} = \delta_{j2} = 0}.
+
+For the reduced RUM model (\code{rule="RRUM"}), the item response model is
+\deqn{P(X_{nj}=1 | \alpha_n ) = \pi_i^\ast \cdot r_{i1}^{1-\alpha_{i1} } 
+	\cdot r_{i2}^{1-\alpha_{i2} } } From this equation, it is obvious, that
+this model is equivalent to an additive model (\code{rule="ACDM"}) with
+a logarithmic link function (\code{linkfct="log"}).
+
+If a reduced skillspace (\code{reduced.skillspace=TRUE}) is employed, then the
+logarithm of probability distribution of the attributes is modelled as a
+log-linear model:
+\deqn{ \log P[ ( \alpha_{n1} , \alpha_{n2} , \ldots , \alpha_{nK} ) ]
+	= \gamma_0 + \sum_k \gamma_k \alpha_{nk} +
+	  \sum_{k < l} \gamma_{kl} \alpha_{nk} \alpha_{nl} }
+
+If a higher order DINA model is assumed (\code{HOGDINA=1}), then a higher order
+factor \eqn{\theta_n} for the attributes is assumed:
+\deqn{P( \alpha_{nk} = 1 | \theta_n ) = \Phi ( a_k \theta_n + b_k ) }
+
+For \code{HOGDINA=0}, all attributes \eqn{\alpha_{nk}} are assumed to be
+independent of each other:
+\deqn{ P[ ( \alpha_{n1} , \alpha_{n2} , \ldots , \alpha_{nK} ) ]
+	= \prod_k P( \alpha_{nk} ) }
+
     }
+    
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% VALUES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    
+    
 \value{
 An object of class \code{gdina} with following entries  
 \item{coef}{Item parameters}
@@ -156,11 +210,11 @@ An object of class \code{gdina} with following entries
 \item{Nskillpar}{Number of parameters for skill class distribution}
 \item{Nskillclasses}{Number of skill classes}
 \item{varmat.delta}{Covariance matrix of \eqn{\delta} item parameters}
-\item{varmat.plaj}{}
+\item{varmat.plaj}{XXX}
 \item{posterior}{Individual posterior distribution}
 \item{like}{Individual likelihood}
 \item{data}{Original data}
-\item{q.matrix}{Used Q matrix}
+\item{q.matrix}{Used \eqn{Q} matrix}
 \item{pattern}{Individual patterns, individual MLE and MAP classifications
     and their corresponding probabilities}
 \item{attribute.patt}{Probabilities of skill classes}
@@ -175,20 +229,38 @@ An object of class \code{gdina} with following entries
 \item{Z.skillspace}{Design matrix for skillspace reduction}
 \item{beta}{Parameters \eqn{\delta} for skill class representation}
 \item{covbeta}{Standard errors of \eqn{\delta} parameters}
-\item{model.type}{}
+\item{model.type}{XXX}
 \item{iter}{Number of iterations}
-\item{\dots}{}
+\item{rrum.params}{Parameters in the parametrization of the reduced RUM model
+	if \code{rule="RRUM"}.}
+\item{HOGDINA}{The used value of \code{HOGDINA}}
+\item{a.attr}{Attribute parameters \eqn{a_k} in case of \code{HOGDINA>=0}}
+\item{b.attr}{Attribute parameters \eqn{b_k} in case of \code{HOGDINA>=0}}
+\item{attr.rf}{Attribute response functions. This matrix contains all 
+	\eqn{a_k} and \eqn{b_k} parameters}
+\item{\dots}{Further values}
     }
+    
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% REFERENCES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
 \references{
+  de la Torre, J. & Douglas, J. A. (2004). Higher-order latent trait models 
+  for cognitive diagnosis. \emph{Psychometrika}, \bold{69}, 333-353.
+	
   de la Torre, J. (2011) The generalized {DINA} model framework. 
   \emph{Psychometrika}, \bold{76}, 179--199.    
   
   Xu, X. & von Davier, M. (2008). \emph{Fitting the structured general diagnostic
   model to NAEP data}. ETS Research Report ETS RR-08-27. Princeton, ETS.
     }
-\author{
-Alexander Robitzsch, Thomas Kiefer
-    }
+    
+    
+%\author{
+%Alexander Robitzsch, Thomas Kiefer
+%    }
     
     
 \note{    
@@ -198,9 +270,7 @@ Alexander Robitzsch, Thomas Kiefer
     
     Standard error calculation in analyses which use sample weights or 
     designmatrix for delta parameters (\code{delta.designmatrix!=NULL}) is not yet 
-    correctly implemented. Please use replication methods instead.
-    
-    
+    correctly implemented. Please use replication methods instead.    
     }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
@@ -238,6 +308,7 @@ mod2b <- din( data = sim.dina ,  q.matrix = sim.qmatrix , rule="DINA")
 summary(mod2b)
 cbind( mod2$coef , mod2b$coef )
 
+\dontrun{
 #***
 # Model 4: DINA model with logit link
 mod4 <- gdina( data = sim.dina ,  q.matrix = sim.qmatrix , maxit= 20 , 
@@ -249,6 +320,21 @@ summary(mod4)
 mod5 <- gdina( data = sim.dina ,  q.matrix = sim.qmatrix , maxit=100 , 
                     rule="DINA" , linkfct = "log" )
 summary(mod5)
+
+#***
+# Model 6: RRUM model
+mod6 <- gdina( data = sim.dina, q.matrix = sim.qmatrix, maxit=100,  rule="RRUM")
+summary(mod6)
+
+#***
+# Model 7: Higher order GDINA model
+mod7 <- gdina( data = sim.dina, q.matrix = sim.qmatrix, maxit=100,  HOGDINA=1)
+summary(mod7)
+
+#***
+# Model 8: Independence GDINA model
+mod8 <- gdina( data = sim.dina, q.matrix = sim.qmatrix, maxit=100,  HOGDINA=0)
+summary(mod8)
 
 ###################################################################
 # EXAMPLE 2: Simulated DINO data
@@ -268,7 +354,6 @@ mod2 <- gdina( data=sim.dino, q.matrix=sim.qmatrix,
                     rule="ACDM", linkfct="logit" )
 summary(mod2)
 
-\dontrun{
 #***
 # Model 3: ACDM log link
 mod3 <- gdina( data=sim.dino,  q.matrix=sim.qmatrix,  
@@ -359,7 +444,7 @@ summary(mod1)
 mod2 <- gdina( data = sim.dino ,  q.matrix = sim.qmatrix ,  rule="ACDM" , 
             delta.designmatrix = delta.designmatrix , 
             maxit=100 , linkfct = "logit")
-summary(mod2)}            
+summary(mod2)            
 
 ###################################################################
 # SIMULATED EXAMPLE 5: Multiple group estimation
@@ -389,7 +474,6 @@ mod2 <- gdina( data = dat , q.matrix = q.matrix ,
                 group= group , rule="DINA")
 summary(mod2)                       
 
-\dontrun{
 ###################################################################
 # EXAMPLE 6: User specified reduced skill space
 ###################################################################
@@ -437,4 +521,5 @@ summary(mod1); summary(mod2); summary(mod3)}
 \keyword{Cognitive Diagnosis Models}
 \keyword{GDINA}
 \keyword{DINA}
+\keyword{Higher order GDINA model}
 %%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

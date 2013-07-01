@@ -115,7 +115,7 @@
 %  (1 - s_j) ^{\eta_{nj}}.  }{P_j(alpha_n) = P(X_{nj} = 1 | alpha_n) = g_j^{(1- eta_{nj})}
 %  (1 - s_j) ^{eta_{nj}}.  }
    \deqn{ P(X_{nj} = 1 | \alpha_n) = g_j^{(1- \eta_{nj})}(1 - s_j) ^{\eta_{nj}}.  }
-  The respondent's latent response (class)\eqn{\eta_{nj}}{eta_{nj}} is a binary number,
+  The respondent's latent response (class) \eqn{\eta_{nj}}{eta_{nj}} is a binary number,
   0 or 1, indicating absence or presence of all (\code{rule = "DINO"}) 
   or at least one (\code{rule = "DINO"}) required skill(s) for 
   item \eqn{j}, respectively.  
@@ -220,12 +220,12 @@
   models. \emph{Psychological Methods}, \bold{11}, 287--305.
 }
 
-\author{
-  Alexander Robitzsch \email{a.robitzsch@bifie.at}
-  Based on EM Algorithm by J. de la Torre.
-  
-  Thomas Kiefer, Ann Cathrice George, Ali Uenlue 
-}
+%\author{
+%  Alexander Robitzsch \email{a.robitzsch@bifie.at}
+%  Based on EM Algorithm by J. de la Torre.
+%  
+%  Thomas Kiefer, Ann Cathrice George, Ali Uenlue 
+%}
 
 \note{
   The calculation of standard errors using sampling weights which
@@ -338,6 +338,7 @@ plot(fractions.dina, pattern = pattern, display.nr = 5)
 plot(fractions.dina.fixed, uncertainty = 0.1, top.n.skill.classes = 6, 
   pattern = pattern)
 
+\dontrun{  
 ##
 ## (2) examples based on dataset sim.dina
 ##
@@ -480,7 +481,7 @@ d7 <- din(sim.dina.bib, sim.qmatrix, rule = "DINO",
 # Comparison of DINA and DINO estimates
 lapply(list("guessing" = rbind("DINA" = d6$guess[,1],
   "DINO" = d7$guess[,1]), "slipping" = rbind("DINA" =
-  d6$slip[,1], "DINO" = d7$slip[,1])), round, 2)
+  d6$slip[,1], "DINO" = d7$slip[,1])), round, 2) }
 }
 
 \keyword{Cognitive Diagnosis Models}

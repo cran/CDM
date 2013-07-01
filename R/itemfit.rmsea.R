@@ -1,10 +1,34 @@
 
 ###########################################################
 # RMSEA Item fit
-itemfit.rmsea <- function( n.ik , pi.k , probs ){
+itemfit.rmsea <- function( n.ik , pi.k , probs , itemnames=NULL){
 	# probs ... [ classes , items , categories ]
 	# n.ik ... [ classes , items , categories , groups ]	
 	# N.ik ... [ classes , items , categories]		
+
+	# RMSEA for all groups
+	itemfit.rmsea <- .rmsea.aux( n.ik , pi.k , probs )
+	if ( ! is.null(itemnames) ){
+		names(itemfit.rmsea) <- itemnames }
+	# groupwise RMSEA
+	G <- dim(n.ik)[4]
+	I <- dim(n.ik)[2]
+	rmsea.groups <- matrix( NA , I , G )
+	if ( ! is.null(itemnames) ){
+		rownames(rmsea.groups) <- itemnames }
+	for (gg in 1:G){
+		rmsea.groups[,gg] <- .rmsea.aux( n.ik[,,,gg,drop=FALSE] , 
+					pi.k , probs )
+						}	
+	res <- list( "rmsea" = itemfit.rmsea , 
+				 "rmsea.groups"=rmsea.groups )
+	return(res)
+	}
+##########################################
+	
+##########################################
+# auxiliary function
+.rmsea.aux <- function( n.ik , pi.k , probs ){
 	N.ik <- n.ik[,,,1]
 	G <- dim(n.ik)[4]
 	pitot <- pi.k[,1]
@@ -26,6 +50,7 @@ itemfit.rmsea <- function( n.ik , pi.k , probs ){
 	# calculate itemwise statistics
 	p.ik_observed <- N.ik / N.ik_tot
 	p.ik_observed[ is.na( p.ik_observed ) ] <- 0
+	
 	# define class weights 
 	pi.k_tot <- array( 0 , dim=dim(p.ik_observed) )
 	for (kk in 1:K){
@@ -37,4 +62,4 @@ itemfit.rmsea <- function( n.ik , pi.k , probs ){
 	for (kk in 2:K){ h1 <- h1 + dist.item[,,kk] }
 	itemfit.rmsea <- sqrt( colSums( h1 ) )
 	return(itemfit.rmsea)
-	}
+		}

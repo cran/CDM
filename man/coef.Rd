@@ -48,6 +48,7 @@ data(sim.dina)
 d1 <- din(sim.dina, q.matr = sim.qmatrix)
 coef(d1)
 
+\dontrun{
 # GDINA model
 d2 <- gdina(sim.dina, q.matr = sim.qmatrix)
 coef(d2)
@@ -56,7 +57,7 @@ coef(d2)
 theta.k <- seq(-4,4,len=11)
 d3 <- gdm( sim.dina , irtmodel="2PL" , theta.k=theta.k , 
      Qmatrix=as.matrix(sim.qmatrix) , centered.latent=TRUE , maxiter=10 )
-coef(d3)
+coef(d3) }
 }
 
 \keyword{methods}

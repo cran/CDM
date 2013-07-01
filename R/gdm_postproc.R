@@ -3,16 +3,16 @@
 ################################################################
 # collect item parameters
 .gdm.collect.itempars <- function( data , K , D , b , a , TD , thetaDes , irtmodel ,
-			se.b , se.a ){	
+			se.b , se.a , data0){	
 		# collect item parameters	
-		item <- data.frame( "item" = colnames(data) ,
-					"N" = colSums(1-is.na(data) ) )
-		item$M <- colMeans(data , na.rm=T)
+		item <- data.frame( "item" = colnames(data0) ,
+					"N" = colSums(1-is.na(data0) ) )
+		item$M <- colMeans(data0 , na.rm=T)
 		# b parameters
-		se.b[ b == -99999  ] <- NA		
-		b[ b == -99999  ] <- NA
-		se.a[ a == -99999  ] <- NA		
-		a[ a == -99999  ] <- NA		
+		se.b[ b < -9999  ] <- NA		
+		b[ b < -9999  ] <- NA
+		se.a[ a < -9999  ] <- NA		
+		a[ a < -9999  ] <- NA		
 		
 		for (kk in 1:K){
 		item[ , paste0( "b.Cat" , kk) ] <- b[,kk]
@@ -80,8 +80,9 @@
 # calculation of information criteria and number of parameters
 .gdm.calc.ic <- function( dev , dat , G ,  skillspace , irtmodel , 
 			K,D,TD,I,b.constraint,a.constraint , mean.constraint ,
-			Sigma.constraint , delta.designmatrix , standardized.latent){
-    ic <- list( "deviance" = dev , "n" = nrow(dat) )
+			Sigma.constraint , delta.designmatrix , standardized.latent ,
+			data0 ){
+    ic <- list( "deviance" = dev , "n" = nrow(data0) )
 	ic$traitpars <- 0
 	ic$itempars <- 0	
 	#******
@@ -104,9 +105,8 @@
 					ic$traitpars <- ic$traitpars - nrow(Sigma.constraint)			
 									}
 #			if (standardized.latent ){ ic$traitpars <- ic$traitpars - D }									
-							}							
-							
-						}
+							}														
+						}	# end normal
 	#******
 	# trait parameters: loglinear skillspace
 	if ( skillspace == "loglinear" ){
@@ -124,7 +124,8 @@
 	if ( irtmodel == "2PL"){ 
 		ic$itempars.a <- I*TD
 		if ( ! is.null(a.constraint)){
-				ic$itempars.a <- ic$itempars.a - nrow(a.constraint)
+				a.constraint2 <- a.constraint[ a.constraint[,3] == 1 , ]
+				ic$itempars.a <- ic$itempars.a - nrow(a.constraint2)
 								   }	
 						}
 	if ( irtmodel == "2PLcat"){ 
@@ -148,7 +149,8 @@
         ic$AICc <- ic$AIC + 2*ic$np * ( ic$np + 1 ) / ( ic$n - ic$np - 1 )				
     return(ic)
 		}
-
+###################################################################
+		
 ###########################################
 # person parameter estimates
 .gdm.person.parameters <- function( data , D , theta.k ,
@@ -158,6 +160,15 @@
     EAP.rel <- rep(0,D)
     names(EAP.rel) <- colnames(theta.k)
     nstudl <- rep(1,nrow(data))
+	doeap <- TRUE
+	if ( is.list( p.aj.xi)){	
+		p.aj.xi <- p.aj.xi[[1]] 
+		nstudl <- rep(1,nrow(p.aj.xi ) )
+		weights <- weights[,1]  
+		weights <- weights[ weights > 0 ]
+		doeap <- FALSE
+			}
+	if (doeap ){
 	for (dd in 1:D){ #dd <- 1
 		dd1 <- colnames(theta.k)[dd]
 		person$EAP <- rowSums( p.aj.xi * outer( nstudl , theta.k[,dd] ) )
@@ -177,6 +188,7 @@
 	mle.est <- theta.k[ max.col( p.aj.xi ) , , drop=FALSE]
 	colnames(mle.est) <- paste0( "MAP." , names(EAP.rel))
 	person <- cbind( person, mle.est )
+			}
 	# results	
 	res <- list( "person" = person , "EAP.rel" = EAP.rel )
 	return(res)

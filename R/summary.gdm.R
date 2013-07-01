@@ -69,7 +69,7 @@ summary.gdm <- function( object , ... ){
 	cat( "\nEAP Reliability:\n" ) 
 	print( round( t(object$EAP.rel ), 3 ) ) 	
 		cat("---------------------------------------------------------------------------------------------------------- \n")
-		cat("Item Parameter \n")
+		cat("Item Parameters \n")
 		obji <- object$item
 		obji[,-1] <- round( obji[,-1] , 3)
 		print( obji )   

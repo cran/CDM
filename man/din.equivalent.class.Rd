@@ -6,7 +6,7 @@ Calculation of Equivalent Skill Classes in the DINA/DINO Model
 }
 \description{
 This function computes nondistinguishable skill classes for the DINA and
-DINO model.
+DINO model (Gross & George, in Review; Zhang, DeCarlo & Ying, 2013).
 }
 \usage{
 din.equivalent.class(q.matrix, rule = "DINA")
@@ -35,14 +35,19 @@ A list with following entries:
     latent responses (\code{latent.response}) and an identifier for
     distinguishable skill classes (\code{distinguish.class}).
     }
-%% ...
 }
-%\references{
-%% ~put references to the literature/web site here ~
+\references{
+Gross, J. & George, A. C. (in Review). \emph{On prerequisite relations between 
+attributes in noncompensatory diagnostic classification.}
+
+Zhang, S. S., DeCarlo, L. T. & Ying, Z. (2013). 
+Non-identifiability, equivalence classes, and attribute-specific classification 
+in Q-matrix based cognitive diagnosis models. 
+\emph{arXiv preprint arXiv:1303.0426}.
+}
+%\author{
+%Ann Cathrice George, Alexander Robitzsch
 %}
-\author{
-Ann Cathrice George, Alexander Robitzsch
-}
 %\note{
 %%  ~~further notes~~
 %}
@@ -53,7 +58,6 @@ Ann Cathrice George, Alexander Robitzsch
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
 \examples{
-
 # DINA models
 data(data.fraction2)
 # first Q matrix

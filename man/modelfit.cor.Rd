@@ -62,9 +62,9 @@ Yen, W. M. (1984). Effects of local item dependence on the fit and equating
 performance of the three-parameter logistic model. 
 \emph{Applied Psychological Measurement}, \bold{8}, 125-145.
 }
-\author{
-Alexander Robitzsch
-}
+%\author{
+%Alexander Robitzsch
+%}
 %\note{
 %%  ~~further notes~~
 %}
@@ -75,6 +75,7 @@ Alexander Robitzsch
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
 \examples{
+\dontrun{	
 # use DINA and DINO model for DINA simulated data
 d1 <- din(sim.dina, q.matr = sim.qmatrix, rule = "DINA" )
 d2 <- din(sim.dina, q.matr = sim.qmatrix, rule = "DINO" )
@@ -102,7 +103,7 @@ g2 <- modelfit.cor.din( d2 )
 ##   MADcor          0.05552
 ##   MX2             2.20449
 ##   100*MADRESIDCOV 1.22491
-##   MADQ3           0.07294
+##   MADQ3           0.07294 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

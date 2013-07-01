@@ -35,14 +35,7 @@
   as well as the skill probabilities. It invisibly returns \code{x}.  
 }
 
-\author{
-  Alexander Robitzsch, Thomas Kiefer, Ann Cathrice George, Ali Uenlue 
 
-  Maintainer: Alexander Robitzsch <a.robitzsch@bifie.at>,
-              Thomas Kiefer <t.kiefer@bifie.at>,
-              Ann Cathrice George <george@statistik.tu-dortmund.de>,
-              Ali Uenlue <ali.uenlue@tum.de>  
-}
 
 \references{
   Rupp, A. A., Templin, J. L. and Henson, R. A. (2010) \emph{Diagnostic

@@ -179,7 +179,7 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 	if (K>=2 ){
 		for(ll in 1:(K-1) ){
 			lk <- combn( 1:K, ll ) 
-			lk
+#			lk
 			for ( jj in 1:( ncol(lk) ) ){ 
 				attr.patt[ h1, lk[,jj] ] <- 1
 				h1 <- h1 + 1
@@ -514,7 +514,8 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
     
     # pattern for seperate skills
     skill.patt <- matrix(apply( matrix( rep(  attr.prob, K ), ncol=K) * attr.patt, 2, sum ),ncol=1)
-    rownames(skill.patt) <- paste("Skill_", colnames(q.matrix),sep="")
+#    rownames(skill.patt) <- paste("Skill_", colnames(q.matrix),sep="")
+    rownames(skill.patt) <- colnames(q.matrix)
     colnames(skill.patt) <- "skill.prob" 
     
     # calculation of the AIC und BIC        
@@ -568,7 +569,7 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 	pi.k <- array( 0 , dim=c(L,1) )
 	pi.k[,1] <- attr.prob$class.prob
 	probs <- aperm( pjM , c(3,1,2) )
-	itemfit.rmsea <- itemfit.rmsea( n.ik , pi.k , probs )
+	itemfit.rmsea <- itemfit.rmsea( n.ik , pi.k , probs )$rmsea
 	
 	#*****
 	
@@ -594,7 +595,7 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
                  "display" = disp, "item.patt.split" = item.patt.split, 
                  "item.patt.freq" = item.patt.freq, "model.type" = r1 , 
 				 "rule" = rule , "zeroprob.skillclasses" = zeroprob.skillclasses , 
-				 "weights" = weights , "pjk" = pjM , 
+				 "weights" = weights , "pjk" = pjM , "I" = I , 
 				 "start.analysis" = s1 , "end.analysis" = s2 ) 
 	if (param.history){
 		param.history <- list( "likelihood.history" = likelihood.history , 

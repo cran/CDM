@@ -49,10 +49,10 @@ d4 <- din(sim.dino, q.matr = sim.qmatrix)
 skill.cor(d4)
 ## estimated tetrachoric correlations
 ##   $cor.skills
-##             Skill_V1  Skill_V2  Skill_V3
-##   Skill_V1 1.0000000 0.2567718 0.2552958
-##   Skill_V2 0.2567718 1.0000000 0.9842188
-##   Skill_V3 0.2552958 0.9842188 1.0000000
+##             V1        V2        V3
+##   V1 1.0000000 0.2567718 0.2552958
+##   V2 0.2567718 1.0000000 0.9842188
+##   V3 0.2552958 0.9842188 1.0000000
   }
 
 % Add one or more standard keywords, see file 'KEYWORDS' in the

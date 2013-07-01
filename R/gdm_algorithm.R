@@ -21,18 +21,61 @@
 			}
 ###############################################################
 # calculation of posterior probabilities
-.gdm.calc.post <- function(pi.k,group,p.xi.aj,weights,G){
+.gdm.calc.post <- function(pi.k,group,p.xi.aj,weights,G,ind.group ,
+		use.freqpatt ){
 		# posterior probabilities  P( \alpha_l | X_i ) 		
-		prior <- t( pi.k[ , group ] )
+	sel <- 1
+	if ( use.freqpatt & (G>1) ){ sel <- 2 }
+	#*****************
+	if ( sel == 1 ){
+		prior <- ( t( pi.k ) )[ group , ]
 		p.aj.xi <- prior * p.xi.aj 
 		p.aj.xi <- p.aj.xi / rowSums( p.aj.xi )
 		# calculate pi.k
 		for (gg in 1:G){ # gg <- 1
-			ind.gg <- which( group == gg )
-			pi.k[,gg] <- colSums( p.aj.xi[ ind.gg , ] * 
-					weights[ ind.gg ] ) / sum( weights[ind.gg] ) 
-
-					}						
+#			ind.gg <- which( group == gg )
+			ind.gg <- ind.group[[gg]]
+			wgg <- weights[ind.gg]
+			pi.k[,gg] <- colSums( p.aj.xi[ ind.gg , ] * wgg ) / sum( wgg )
+					}
+				}
+	#***********************
+	if ( sel == 2 ){  # if use.freqpatt == TRUE for multiple groups
+#		prior <- ( t( pi.k ) )[ group , ]
+#		p.aj.xi <- prior * p.xi.aj 
+#		p.aj.xi <- p.aj.xi / rowSums( p.aj.xi )
+#  p1 <- p.xi.aj     
+# p2 <- pi.k
+		# calculate pi.k
+#		NP <- nrow(p.xi.aj)
+#        prior <- ( t( pi.k ) )[ rep(1:G , each=NP) ,]
+#		p.xi.aj <- p.xi.aj[ rep( 1:NP , G ) , ]
+#		p.aj.xi <- prior * p.xi.aj
+#		l1 <- p.aj.xi0 <- p.aj.xi / rowSums( p.aj.xi)
+#		p.aj.xi <- list(1:G)
+#		for (gg in 1:G){
+#			p.aj.xi[[gg]] <- p.aj.xi0[ (gg-1)*NP + 1:NP , ]
+#			wgg <- weights[,gg]
+#			pi.k[,gg] <- colSums( p.aj.xi[[gg]] * wgg ) / sum( wgg )
+#					}		
+# print(pi.k)		
+# p1 -> p.xi.aj
+# p2 -> pi.k
+		# calculate pi.k
+		p.aj.xi <- list(1:G)
+		for (gg in 1:G){ # gg <- 1
+			wgg <- weights[,gg]
+			ind.gg <- which( wgg > 0 )
+			NP <- length(ind.gg)
+			wgg <- wgg[ind.gg]
+			prior <- ( t( pi.k[,gg] ) )[ rep(1,NP) , ]
+			p.aj.xi.gg <- prior * p.xi.aj[ind.gg,]
+			p.aj.xi.gg <- p.aj.xi.gg / rowSums( p.aj.xi.gg )		
+			p.aj.xi[[gg]] <- p.aj.xi.gg			
+			pi.k[,gg] <- colSums( p.aj.xi.gg * wgg ) / sum( wgg )
+					}
+				}
+	#**********************	
 		res <- list("pi.k"=pi.k , "p.aj.xi"=p.aj.xi )
 		return(res)		
 			}
@@ -40,26 +83,42 @@
 ################################################	
 # calculation of expected counts
 .gdm.calc.counts <- function(G, weights, dat.ind, dat, dat.resp,
-			p.aj.xi, K, n.ik, TP,I,group){
+			p.aj.xi, K, n.ik, TP,I,group , dat.ind2 , ind.group ,
+			use.freqpatt ){
 	# n.ik [ 1:TP , 1:I , 1:(K+1) , 1:G ]
 	# N.ik [ 1:TP , 1:I ,  1:G ]
+# z0 <- Sys.time()	
 	N.ik <- array( 0 , dim=c(TP,I,G) )
     if (G==1){
 	gg <- 1
 		for (kk in 1:(K+1)){   #		kk <- 1	# category 0 ( -> 1 )
-			dkk <- (dat.ind[[kk]])
-			dkk2 <- dkk * dat.resp * weights
+#			dkk <- (dat.ind[[kk]])
+#			dkk2 <- dkk * dat.resp * weights
+            dkk2 <- dat.ind2[[kk]][[gg]]
 			n.ik[,,kk,gg] <- t( p.aj.xi ) %*% dkk2
 			N.ik[,,gg] <- N.ik[,,gg] + n.ik[,,kk,gg]
 						}	
 				}
 	if (G>1){
 		for (gg in 1:G){	# gg <- 1
-		ind.gg <- which( group == gg ) 		
+
+		if ( ! use.freqpatt ){	
+			ind.gg <- ind.group[[gg]]
+			t.p.aj.xi.gg <- t( p.aj.xi[ind.gg,] )
+					} 
+		if (  use.freqpatt ){	
+			t.p.aj.xi.gg <- t( p.aj.xi[[gg]] )
+					} 
+					
 			for (kk in 1:(K+1)){   #		kk <- 1	# category 0 ( -> 1 )
-				dkk <- (dat.ind[[kk]])[ ind.gg , ]
-				dkk2 <- dkk * dat.resp[ind.gg,] * weights[ind.gg] 
-				n.ik[,,kk,gg] <- t( p.aj.xi[ind.gg,] ) %*% dkk2
+#				dkk <- (dat.ind[[kk]])[ ind.gg , ]
+#				dkk2 <- dkk * dat.resp[ind.gg,] * weights[ind.gg] 
+				dkk2 <- dat.ind2[[kk]][[gg]]
+				if ( use.freqpatt ){
+				  if (G>1){ dkk2 <- dkk2[ which(weights[,gg] > 0) , ] }
+#				  if (G==1){ dkk2 <- dkk2[ which(weights[,gg] > 0) , ] }
+									}
+				n.ik[,,kk,gg] <- t.p.aj.xi.gg %*% dkk2
 				N.ik[,,gg] <- N.ik[,,gg] + n.ik[,,kk,gg]
 						}						
 					}
@@ -72,10 +131,15 @@
 ###########################################################################
 # estimation of b parameters
 .gdm.est.b <- function(probs, n.ik, N.ik, I, K, G,b,b.constraint,
-	max.increment){		
-# 	max.increment <- 1
-	# first and second derivatives of b
-		d2.b <- d1.b <- matrix( 0 , nrow=I,ncol=K)			
+	max.increment,a,thetaDes,Qmatrix,TP,TD,msteps,convM){		
+ 	max.increment <- 1
+	iter <- 1
+	parchange <- 1
+	b00 <- b
+	while( ( iter <= msteps ) & ( parchange > convM)  ){
+		b0 <- b
+		probs <- .gdm.calc.prob( a,b,thetaDes,Qmatrix,I,K,TP,TD)								
+		d2.b <- d1.b <- matrix( 0 , nrow=I,ncol=K)				
 		for (kk in 2:(K+1)){
 			for (gg in 1:G){
 				d1.b[,kk-1] <- d1.b[,kk-1] - rowSums( t(n.ik[,,kk,gg]) - t(N.ik[,,gg]) * probs[,kk,] )
@@ -84,22 +148,26 @@
 						}		
 #		increment <- - d1.b / d2.b 
 		increment <-  - d1.b / ( abs( d2.b + 10^(-10) ) )
-		increment[ is.na(increment) ] <- 0
+		increment[ is.na(increment) ] <- 0		
 		increment <- ifelse(abs(increment)> max.increment, 
 					sign(increment)*max.increment , increment )						
-#          increment.temp <- diff.temp*abs(1/( deriv.temp + 10^(-20) ) )  
-#          ci <- ceiling( abs(increment) / ( abs( max.increment ) + 10^(-10) ) )
-#        increment <- ifelse( abs(increment)> max.increment  , 
-#                                    increment /(2*ci) , increment)
-					
-					
-		max.increment <- max(abs(increment)) / .95
+# print(increment)					
+#        increment.temp <- diff.temp*abs(1/( deriv.temp + 10^(-20) ) )  
+#        ci <- ceiling( abs(increment) / ( abs( max.increment ) + 10^(-10) ) )
+ #       increment <- ifelse( abs(increment)> max.increment  , 
+ #                                   increment /(2*ci) , increment)										
+		max.increment <- max(abs(increment)) / .98
 		b <- b + increment
 		se.b <- sqrt( 1 / abs( d2.b+10^(-10)) )
 		if ( ! is.null( b.constraint) ){
 			b[ b.constraint[,1:2,drop=FALSE] ] <- b.constraint[,3,drop=FALSE]
 			se.b[ b.constraint[,1:2,drop=FALSE] ] <- 0		
 				}
+		iter <- iter + 1
+		parchange <- max( abs(b0-b))
+# cat(iter,parchange , "\n" )
+			}
+		max.increment <- max( abs( b - b00 ))
 		res <- list("b" = b , "se.b" = se.b , "max.increment.b"=max.increment)
 		}
 
@@ -112,75 +180,60 @@
 # N.ik [ TP , I , G ]
 # probs [I , K+1 , TP ]
 .gdm.est.a <- function(probs, n.ik, N.ik, I, K, G,a,a.constraint,TD,
-				Qmatrix,thetaDes,TP, max.increment){
-	# 1st derivative
-	d2.b <- d1.b <- array( 0 , dim=c(I , TD ) )
-	for (td in 1:TD){
-		for (gg in 1:G){
-			for (kk in 2:(K+1)){
-				v1 <- colSums( n.ik[,,kk,gg] * Qmatrix[  , td , kk-1 ] * thetaDes[ , td ] )
-				v2 <- N.ik[,,gg] * matrix( Qmatrix[,td,kk-1] , nrow=TP , ncol=I) * thetaDes[,td] * 
-						t( probs[,kk,] )
-				v2 <- colSums(v2)
-				d1.b[  , td] <- d1.b[,td] + v1 - v2
-						}
-					}	
-					}
-	# 2nd derivative
-	for (td in 1:TD){
-		for (ii in 1:I){
-			v1 <- l0 <- 0
+				Qmatrix,thetaDes,TP, max.increment ,
+				b , msteps , convM ){
+	iter <- 1
+	parchange <- 1
+	a00 <- a
+	while( ( iter <= msteps ) & ( parchange > convM )  ){
+		a0 <- a
+		probs <- .gdm.calc.prob( a,b,thetaDes,Qmatrix,I,K,TP,TD)
+		# 1st derivative
+		d2.b <- d1.b <- array( 0 , dim=c(I , TD ) )
+		for (td in 1:TD){
 			for (gg in 1:G){
-			for (kk in 2:(K+1) ){		# kk <- 2
-				v1 <- v1 + N.ik[,ii,gg] * as.vector( ( Qmatrix[ii,td,kk-1] * 
-						thetaDes[ , td ] )^2 * t( probs[ii,kk,] ) )
-				l0 <- l0 + as.vector ( Qmatrix[ii,td,kk-1] * thetaDes[ , td ]  * t( probs[ii,kk,] ) )
+				for (kk in 2:(K+1)){
+					v1 <- colSums( n.ik[,,kk,gg] * Qmatrix[  , td , kk-1 ] * thetaDes[ , td ] )
+					v2 <- N.ik[,,gg] * matrix( Qmatrix[,td,kk-1] , nrow=TP , ncol=I) * thetaDes[,td] * 
+							t( probs[,kk,] )
+					v2 <- colSums(v2)
+					d1.b[  , td] <- d1.b[,td] + v1 - v2
 							}
-						}				
-			d2.b[ii,td] <- sum(v1) - sum( l0^2 * N.ik[,ii,gg] )
-				}
-				}
-#####
-# new derivative
-# Q matrix [1:I , 1:TD , 1:K]
-# thetaDes [TP,TD]
-# n.ik [ TP , I , K+1 , G ]
-# N.ik [ TP , I , G ]
-# probs [I , K+1 , TP ]
-#d2.b <- array( 0 , dim=c(I , TD ) )
-#	for (td in 1:TD){
-#			v1 <- l0 <- 0
-#			for (gg in 1:G){
-#			for (kk in 2:(K+1) ){		# kk <- 2
-#				QM <- matrix( Qmatrix[,td,kk-1]  , nrow=TP,ncol=I , byrow=T )
-#				v1 <- v1 + N.ik[,,gg] *  QM * thetaDes[,td]^2 * t( probs[,kk,] )
-#			v1 + N.ik[,ii,gg] * as.vector( ( Qmatrix[ii,td,kk-1] * 
-#						thetaDes[ , td ] )^2 * t( probs[ii,kk,] ) 				
-#				l0 <- l0 + QM * thetaDes[ , td ]  * t( probs[,kk,] ) 
-#					# l0 scheint korrekt zu sein
-#							}
-# print(v1)							
-#			d2.b[,td] <- colSums(v1) - colSums( l0^2 * N.ik[,,gg] )
-#			d2.b[,td] <-  - colSums( l0^2 * N.ik[,,gg] )
-#						}
-#					}
-#		increment <-  d1.b / d2.b 
-		increment <-  d1.b / abs( d2.b + 10^(-10) )
-		increment[ is.na(increment) ] <- 0		
-		increment <- ifelse(abs(increment)> max.increment, 
-					   sign(increment)*max.increment , increment )	
-#		ci <- ceiling( abs(increment) / ( abs( max.increment ) + 10^(-10) ) )
-#        increment <- ifelse( abs(increment)> max.increment  , 
-#                                  increment /(2*ci) , increment)					
-		a[,,1] <- a[,,1] + increment
-		se.a <- sqrt( 1 / abs( d2.b + 10^(-10) ) )
-		if (K>1){ for (kk in 2:K){ a[,,kk] <- a[,,1] }	 }	
-		if ( ! is.null( a.constraint) ){
-			a[ a.constraint[,1:3,drop=FALSE] ] <- a.constraint[,4,drop=FALSE]
-			se.a[ a.constraint[,1:3,drop=FALSE] ] <- 0			
-			increment[ a.constraint[,1:2,drop=FALSE] ] <- 0			
-				}
-		max.increment <- max(abs(increment)) 
+						}	
+						}
+		# 2nd derivative
+		for (td in 1:TD){
+			for (ii in 1:I){
+				v1 <- l0 <- 0
+				for (gg in 1:G){
+				for (kk in 2:(K+1) ){		# kk <- 2
+					v1 <- v1 + N.ik[,ii,gg] * as.vector( ( Qmatrix[ii,td,kk-1] * 
+							thetaDes[ , td ] )^2 * t( probs[ii,kk,] ) )
+					l0 <- l0 + as.vector ( Qmatrix[ii,td,kk-1] * thetaDes[ , td ]  * t( probs[ii,kk,] ) )
+								}
+							}				
+				d2.b[ii,td] <- sum(v1) - sum( l0^2 * N.ik[,ii,gg] )
+					}
+					}
+			increment <-  d1.b / abs( d2.b + 10^(-10) )
+			increment[ is.na(increment) ] <- 0		
+			increment <- ifelse(abs(increment)> max.increment, 
+						   sign(increment)*max.increment , increment )	
+	#		ci <- ceiling( abs(increment) / ( abs( max.increment ) + 10^(-10) ) )
+	#        increment <- ifelse( abs(increment)> max.increment  , 
+	#                                  increment /(2*ci) , increment)					
+			a[,,1] <- a[,,1] + increment
+			se.a <- sqrt( 1 / abs( d2.b + 10^(-10) ) )
+			if (K>1){ for (kk in 2:K){ a[,,kk] <- a[,,1] }	 }	
+			if ( ! is.null( a.constraint) ){
+				a[ a.constraint[,1:3,drop=FALSE] ] <- a.constraint[,4,drop=FALSE]
+				se.a[ a.constraint[,1:3,drop=FALSE] ] <- 0			
+				increment[ a.constraint[,1:2,drop=FALSE] ] <- 0			
+					}
+			parchange <- max( abs(a-a0))
+			iter <- iter + 1
+			}	# end iter
+		max.increment <- max(abs(a-a00))
 		res <- list( "a" = a , "se.a" = se.a , "max.increment.a" = max.increment)
 		return(res)
 		}		
@@ -193,52 +246,63 @@
 # N.ik [ TP , I , G ]
 # probs [I , K+1 , TP ]
 .gdm.est.a.cat <- function(probs, n.ik, N.ik, I, K, G,a,a.constraint,TD,
-				Qmatrix,thetaDes,TP, max.increment){
-	# 1st derivative
-	d2.b <- d1.b <- array( 0 , dim=c(I , TD , K ) )
-	for (td in 1:TD){
-	for (kk in 2:(K+1)){	
-		for (gg in 1:G){
-				v1 <- colSums( n.ik[,,kk,gg] * Qmatrix[  , td , kk-1 ] * thetaDes[ , td ] )
-				v2 <- N.ik[,,gg] * matrix( Qmatrix[,td,kk-1] , nrow=TP , ncol=I) * thetaDes[,td] * 
-						t( probs[,kk,] )
-				v2 <- colSums(v2)
-				d1.b[  , td , kk-1] <- d1.b[  , td , kk-1] + v1 - v2
-						}
-					}	
-					}	
-	# 2nd derivative
-	for (td in 1:TD){
-		for (ii in 1:I){
-			v1 <- l0 <- 0
-			for (kk in 2:(K+1) ){		# kk <- 2
-			v1 <- l0 <- 0
-			  for (gg in 1:G){			
-				v1 <- N.ik[,ii,gg] * as.vector( ( Qmatrix[ii,td,kk-1] * 
-						thetaDes[ , td ] )^2 * t( probs[ii,kk,] ) )
-				l0 <- as.vector ( Qmatrix[ii,td,kk-1] * thetaDes[ , td ]  * t( probs[ii,kk,] ) )
-			    d2.b[ii,td,kk-1] <- d2.b[ii,td,kk-1] + sum(v1) - sum( l0^2 * N.ik[,ii,gg] )				
+				Qmatrix,thetaDes,TP, max.increment ,
+				b , msteps , convM  ){
+	iter <- 1
+	parchange <- 1
+	a00 <- a
+	while( ( iter <= msteps ) & ( parchange > convM )  ){
+		a0 <- a
+		probs <- .gdm.calc.prob( a,b,thetaDes,Qmatrix,I,K,TP,TD)
+
+		# 1st derivative
+		d2.b <- d1.b <- array( 0 , dim=c(I , TD , K ) )
+		for (td in 1:TD){
+		for (kk in 2:(K+1)){	
+			for (gg in 1:G){
+					v1 <- colSums( n.ik[,,kk,gg] * Qmatrix[  , td , kk-1 ] * thetaDes[ , td ] )
+					v2 <- N.ik[,,gg] * matrix( Qmatrix[,td,kk-1] , nrow=TP , ncol=I) * thetaDes[,td] * 
+							t( probs[,kk,] )
+					v2 <- colSums(v2)
+					d1.b[  , td , kk-1] <- d1.b[  , td , kk-1] + v1 - v2
 							}
-						}				
-				}
-				}				
-#		increment <-  d1.b / d2.b 
-		increment <-  d1.b / abs( d2.b + 10^(-10) )
-		increment[ is.na(increment) ] <- 0		
-		increment <- ifelse(abs(increment)> max.increment, 
-					sign(increment)*max.increment , increment )	
-#        ci <- ceiling( abs(increment) / ( abs( max.increment ) + 10^(-10) ) )
-#        increment <- ifelse( abs(increment)> max.increment  , 
-#                                  increment /(2*ci) , increment)					
-		a <- a + increment
-		se.a <- sqrt( 1 / abs( d2.b + 10^(-10) ) )
-#		if (K>1){ for (kk in 2:K){ a[,,kk] <- a[,,1] }	 }
-		if ( ! is.null( a.constraint) ){
-			a[ a.constraint[,1:3,drop=FALSE] ] <- a.constraint[,4,drop=FALSE]
-			se.a[ a.constraint[,1:3,drop=FALSE] ] <- 0		
-			increment[ a.constraint[,1:3,drop=FALSE] ] <- 0						
-				}
-		smax.increment <- max(abs(increment)) / .95				
+						}	
+						}	
+		# 2nd derivative
+		for (td in 1:TD){
+			for (ii in 1:I){
+				v1 <- l0 <- 0
+				for (kk in 2:(K+1) ){		# kk <- 2
+				v1 <- l0 <- 0
+				  for (gg in 1:G){			
+					v1 <- N.ik[,ii,gg] * as.vector( ( Qmatrix[ii,td,kk-1] * 
+							thetaDes[ , td ] )^2 * t( probs[ii,kk,] ) )
+					l0 <- as.vector ( Qmatrix[ii,td,kk-1] * thetaDes[ , td ]  * t( probs[ii,kk,] ) )
+					d2.b[ii,td,kk-1] <- d2.b[ii,td,kk-1] + sum(v1) - sum( l0^2 * N.ik[,ii,gg] )				
+								}
+							}				
+					}
+					}				
+	#		increment <-  d1.b / d2.b 
+			increment <-  d1.b / abs( d2.b + 10^(-10) )
+			increment[ is.na(increment) ] <- 0		
+			increment <- ifelse(abs(increment)> max.increment, 
+						sign(increment)*max.increment , increment )	
+	#        ci <- ceiling( abs(increment) / ( abs( max.increment ) + 10^(-10) ) )
+	#        increment <- ifelse( abs(increment)> max.increment  , 
+	#                                  increment /(2*ci) , increment)					
+			a <- a + increment
+			se.a <- sqrt( 1 / abs( d2.b + 10^(-10) ) )
+	#		if (K>1){ for (kk in 2:K){ a[,,kk] <- a[,,1] }	 }
+			if ( ! is.null( a.constraint) ){
+				a[ a.constraint[,1:3,drop=FALSE] ] <- a.constraint[,4,drop=FALSE]
+				se.a[ a.constraint[,1:3,drop=FALSE] ] <- 0		
+				increment[ a.constraint[,1:3,drop=FALSE] ] <- 0						
+					}
+			iter <- iter + 1
+			parchange <- max( abs( a - a0 ))
+				} # iter
+		max.increment <- max(abs(a-a00)) / .95				
 		res <- list( "a" = a , "se.a" = se.a , "max.increment.a" = max.increment)
 		return(res)
 		}	
@@ -269,7 +333,8 @@
 ##############################################################
 # estimation of skill distribution under normality
 .gdm.est.normalskills <- function( pi.k , theta.k , irtmodel,G , D ,
-	mean.constraint , Sigma.constraint , standardized.latent){
+	mean.constraint , Sigma.constraint , standardized.latent ,
+	p.aj.xi , group , ind.group , weights , b , a ){
 	# mean.constraint [ dimension , group , value ]
 	# Sigma.constraint [ dimension1 , dimension2 , group , value ]	
    ####################################
@@ -277,15 +342,24 @@
    if (D==1){
 	for (gg in 1:G){
 		# gg <- 1
+#		weights.gg <- weights[ ind.group[[gg]] ]
+#		weights.gg <- weights.gg / sum(weights.gg )
 		mg <- sum( theta.k[,1] * pi.k[,gg] )
 		sdg <- sqrt( sum( theta.k[,1]^2 * pi.k[,gg] ) - mg^2 )
+# cat( mg , sdg , "\n" )			
 	if ( (! is.null ( mean.constraint ))  ){
 		i1 <- mean.constraint[ mean.constraint[,2] == gg , , drop=FALSE]	
-		if ( nrow(i1) > 0 ){ mg <- i1[3] }
+		if ( nrow(i1) > 0 ){ 
+	#			if (gg==1){ b <- b + ( mg - i1[3] ) }
+				mg <- i1[3] 
+						}
 					}
 	if ( ( ! is.null ( Sigma.constraint ) )  ){
 		i1 <- Sigma.constraint[ Sigma.constraint[,3] == gg , , drop=FALSE]
-		if ( nrow(i1) > 0 ){ sdg <- sqrt(i1[4]) }
+		if ( nrow(i1) > 0 ){ 
+	#			if (gg==1){ a <- a * sdg / sqrt(i1[4])  }		
+				sdg <- sqrt(i1[4]) 
+						}
 					}	
 #	if (standardized.latent){ mg <- 0 ; sdg <- 0 }					
 #		if (gg==1){ mg <- 0 }				
@@ -344,12 +418,12 @@
 			Sigma.gg <- d1
 						}
 								}						
-		pi.k[,gg] <- dmvnorm( theta.k , 
-						mean=mean.gg , sigma = Sigma.gg )	
+		pi.k[,gg] <- dmvnorm( theta.k , mean=mean.gg , sigma = Sigma.gg )	
 		pi.k[,gg] <- pi.k[,gg] / sum( pi.k[,gg] )					
 					}
 				}
-	return(pi.k)
+	res <- list("pi.k"=pi.k , "b" = b , "a"=a )
+	return(res)
 				}
 #*************************************************************
 
