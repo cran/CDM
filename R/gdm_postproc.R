@@ -81,7 +81,7 @@
 .gdm.calc.ic <- function( dev , dat , G ,  skillspace , irtmodel , 
 			K,D,TD,I,b.constraint,a.constraint , mean.constraint ,
 			Sigma.constraint , delta.designmatrix , standardized.latent ,
-			data0 ){
+			data0 , centerslopes , TP , centerintercepts ){
     ic <- list( "deviance" = dev , "n" = nrow(data0) )
 	ic$traitpars <- 0
 	ic$itempars <- 0	
@@ -112,6 +112,12 @@
 	if ( skillspace == "loglinear" ){
 			ic$traitpars <- G*(ncol(delta.designmatrix) - 1)
 						}
+	if ( skillspace == "full" ){
+			ic$traitpars <- G*(TP-1)
+						}	
+	if ( skillspace == "est" ){
+			ic$traitpars <- G*(TP-1) + TP*TD
+						}							
 	#************************************************
 	# item parameters b
 	ic$itempars.b <- I*K
@@ -128,6 +134,8 @@
 				ic$itempars.a <- ic$itempars.a - nrow(a.constraint2)
 								   }	
 						}
+	ic$centeredintercepts <- (centerintercepts)*D						
+	ic$centeredslopes <- (centerslopes)*D
 	if ( irtmodel == "2PLcat"){ 
 		ic$itempars.a <- I*TD*K
 		if ( ! is.null(a.constraint)){
@@ -136,7 +144,7 @@
 						}
 	#***********************************************
 	# information criteria
-	ic$itempars <- ic$itempars.a + ic$itempars.b
+	ic$itempars <- ic$itempars.a + ic$itempars.b - ic$centeredintercepts - ic$centeredslopes
 	ic$np <- ic$itempars + ic$traitpars	
 #	ic$n <- n # number of persons
 	# AIC

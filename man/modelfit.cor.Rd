@@ -46,16 +46,16 @@ A list with following entries
 %% ...
 }
 \references{
-Chen, W. & Thissen, D. (1997). Local dependence indexes for item pairs 
+Chen, W., & Thissen, D. (1997). Local dependence indexes for item pairs 
  using item response theory. \emph{Journal of Educational and Behavioral Statistics},
  \bold{22}, 265-289.
 
-  DiBello, L. V., Roussos, L. A. and Stout, W. F. (2007) Review of
+  DiBello, L. V., Roussos, L. A., & Stout, W. F. (2007) Review of
   cognitively diagnostic assessment and a summary of psychometric models.
   In C. R. Rao and S. Sinharay (Eds.), \emph{Handbook of Statistics},
   Vol. 26 (pp. 979--1030). Amsterdam: Elsevier.
 
-  McDonald, R. P. & Mok, M. M.-C. (1995). Goodness of fit in item response models.
+  McDonald, R. P., & Mok, M. M.-C. (1995). Goodness of fit in item response models.
   \emph{Multivariate Behavioral Research}, \bold{30}, 23-40.
 
 Yen, W. M. (1984). Effects of local item dependence on the fit and equating 

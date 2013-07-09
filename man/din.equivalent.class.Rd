@@ -13,7 +13,7 @@ din.equivalent.class(q.matrix, rule = "DINA")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{q.matrix}{The \eqn{Q} matrix}
+  \item{q.matrix}{The Q-matrix}
   \item{rule}{
     The condensation rule. If it is a string, then the rule applies
     to all items. If it is a vector, then for each item \code{DINA}
@@ -40,7 +40,7 @@ A list with following entries:
 Gross, J. & George, A. C. (in Review). \emph{On prerequisite relations between 
 attributes in noncompensatory diagnostic classification.}
 
-Zhang, S. S., DeCarlo, L. T. & Ying, Z. (2013). 
+Zhang, S. S., DeCarlo, L. T., & Ying, Z. (2013). 
 Non-identifiability, equivalence classes, and attribute-specific classification 
 in Q-matrix based cognitive diagnosis models. 
 \emph{arXiv preprint arXiv:1303.0426}.
@@ -60,17 +60,17 @@ in Q-matrix based cognitive diagnosis models.
 \examples{
 # DINA models
 data(data.fraction2)
-# first Q matrix
+# first Q-matrix
 Q1 <- data.fraction2$q.matrix1
 m1 <- din.equivalent.class( q.matrix = Q1 , rule="DINA" )
 ## 8 Skill classes | 5  distinguishable skill classes | Gini coefficient = 0.3 
 
-# second Q matrix
+# second Q-matrix
 Q1 <- data.fraction2$q.matrix2
 m1 <- din.equivalent.class( q.matrix = Q1 , rule="DINA" )
 ## 32 Skill classes | 9  distinguishable skill classes | Gini coefficient = 0.5 
 
-# third Q matrix
+# third Q-matrix
 Q1 <- data.fraction2$q.matrix3
 m1 <- din.equivalent.class( q.matrix = Q1 , rule="DINA" )
 ## 8 Skill classes | 8  distinguishable skill classes | Gini coefficient = 0 

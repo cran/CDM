@@ -14,8 +14,8 @@
 
 \usage{
   sim.din(N=0, q.matrix, guess = rep(0.2, nrow(q.matrix)),
-    slip = guess, mean = rep(0, ncol(q.matrix)), Sigma =                          
-    diag(ncol(q.matrix)), rule = "DINA",alpha=NULL)
+    slip = guess, mean = rep(0, ncol(q.matrix)), Sigma = diag(ncol(q.matrix)), 
+    rule = "DINA", alpha=NULL)
 }
 
 \arguments{
@@ -64,7 +64,7 @@
 }
 
 \references{
-  Rupp, A. A., Templin, J. L. and Henson, R. A. (2010) \emph{Diagnostic
+  Rupp, A. A., Templin, J. L., & Henson, R. A. (2010) \emph{Diagnostic
   Measurement: Theory, Methods, and Applications}. New York: The Guilford
   Press.
 }
@@ -120,9 +120,8 @@ head( res$alpha )
 ##   [6,]    1    0
 
 # simulate data based on given attributes
-# -> 5 persons with 2 attributes -> see the Q matrix above
+# -> 5 persons with 2 attributes -> see the Q-matrix above
 alpha <- matrix( c(1,0,1,0,1,1,0,1,1,1) , 
     nrow=5,ncol=2, byrow=TRUE )
 sim.din(  q.matrix = q.matrix , alpha = alpha )
-
 }

@@ -29,6 +29,9 @@ itemfit.rmsea <- function( n.ik , pi.k , probs , itemnames=NULL){
 ##########################################
 # auxiliary function
 .rmsea.aux <- function( n.ik , pi.k , probs ){
+	# probs ... [ classes , items , categories ]
+	# n.ik ... [ classes , items , categories , groups ]	
+	# N.ik ... [ classes , items , categories]	
 	N.ik <- n.ik[,,,1]
 	G <- dim(n.ik)[4]
 	pitot <- pi.k[,1]
@@ -54,7 +57,8 @@ itemfit.rmsea <- function( n.ik , pi.k , probs , itemnames=NULL){
 	# define class weights 
 	pi.k_tot <- array( 0 , dim=dim(p.ik_observed) )
 	for (kk in 1:K){
-		pi.k_tot[,,kk] <- matrix( pitot , nrow= dim(pi.k_tot)[1] , ncol=dim(pi.k_tot)[2] , byrow=T )
+#		pi.k_tot[,,kk] <- matrix( pitot , nrow= dim(pi.k_tot)[1] , ncol=dim(pi.k_tot)[2] , byrow=T )
+		pi.k_tot[,,kk] <- matrix( pitot , nrow= dim(pi.k_tot)[1] , ncol=dim(pi.k_tot)[2] , byrow=FALSE )
 				}
 	# calculate statistics
 	dist.item <- pi.k_tot * ( p.ik_observed - probs )^2			

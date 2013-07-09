@@ -6,12 +6,12 @@ Fraction Subtraction Dataset 1
 }
 \description{
 This is the fraction subtraction data set with 536 students
-and 15 items. The \eqn{Q} matrix was defined in de la Torre (2009).
+and 15 items. The Q-matrix was defined in de la Torre (2009).
 }
 \usage{data(data.fraction1)}
 \format{
 This dataset comes as a list with the dataset (\code{data}) and
-the \eqn{Q} matrix as entries. 
+the Q-matrix as entries. 
 
 The format is:
 \code{List of 2} \cr

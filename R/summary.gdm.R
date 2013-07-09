@@ -26,7 +26,13 @@ summary.gdm <- function( object , ... ){
 	if (object$skillspace=="loglinear" ){
 		cat("    Log-linear Smoothing (up to 3 Moments)\n" ) 
 					}
-
+	if (object$skillspace=="full" ){
+		cat("    Satured skill space\n" ) 
+					}
+	if (object$skillspace=="est" ){
+		cat("    Saturated skill space with estimated trait grid\n" ) 
+					}
+					
     cat("---------------------------------------------------------------------------------------------------------- \n")
 	cat( "Number of iterations =" , object$iter , "\n" )
     cat( "Deviance = " , round( object$deviance , 2 ) , " | " )
@@ -36,6 +42,8 @@ summary.gdm <- function( object , ... ){
     cat( "Number of estimated parameters = " , object$ic$np , "\n" )    
     cat( "  Number of estimated item parameters = " , object$ic$itempars , "\n" ) 
     cat( "      " , object$ic$itempars.b , "Intercepts and" , object$ic$itempars.a , "Slopes \n")
+    cat( "      " , object$ic$centeredintercepts , "centered intercepts and" , 
+			object$ic$centeredslopes , "centered slopes \n")	
     cat( "  Number of estimated distribution parameters = " , object$ic$traitpars , "\n" )    
 
 	
@@ -66,6 +74,14 @@ summary.gdm <- function( object , ... ){
 						print( round( object$correlation.trait[[gg]] , 3 ) )
 								}
 #									}
+	if ( object$skillspace == "est" ){
+		cat("\n\nEstimated Skill Distribution\n")
+		dfr <- data.frame( "theta.k" = object$theta.k , "pi.k" = object$pi.k )
+		NV <- ncol(dfr)
+		for (vv in 1:(NV-1) ){ dfr[,vv] <- round( dfr[,vv] , 3 ) }
+		vv <- NV ; dfr[,vv] <- round( dfr[,vv] , 5 )
+		print( dfr )	; cat("")								
+			}
 	cat( "\nEAP Reliability:\n" ) 
 	print( round( t(object$EAP.rel ), 3 ) ) 	
 		cat("---------------------------------------------------------------------------------------------------------- \n")

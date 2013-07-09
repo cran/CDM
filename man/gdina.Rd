@@ -1,5 +1,6 @@
 \name{gdina}
 \alias{gdina}
+\alias{summary.gdina}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Function for Estimating the Generalized DINA (GDINA) Model
@@ -21,6 +22,8 @@ gdina(data, q.matrix, conv.crit=0.0001, dev.crit=.1 ,  maxit=1000,
     zeroprob.skillclasses=NULL, reduced.skillspace=TRUE , HOGDINA=-1,
     Z.skillspace=NULL, weights=rep(1, nrow(data)), rule="GDINA", progress=TRUE,
     progress.item=FALSE , ...)
+
+\method{summary}{gdina}(object, rdigits = 4 ,  \dots)    
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -134,9 +137,11 @@ An optional vector of sample weights.
   \item{progress.item}{
     Display itemwise progress
         }
-  \item{\dots}{
-    Further arguments to be passed
-        }
+  \item{object}{a required object of class \code{gdina}, obtained
+    from a call to the function \code{\link{gdina}}.  }
+  \item{rdigits}{number of digits after decimal separator to display.  }                
+  \item{\dots}{Optional parameters to be passed to or from other
+    methods will be ignored.  }
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -214,7 +219,7 @@ An object of class \code{gdina} with following entries
 \item{posterior}{Individual posterior distribution}
 \item{like}{Individual likelihood}
 \item{data}{Original data}
-\item{q.matrix}{Used \eqn{Q} matrix}
+\item{q.matrix}{Used Q-matrix}
 \item{pattern}{Individual patterns, individual MLE and MAP classifications
     and their corresponding probabilities}
 \item{attribute.patt}{Probabilities of skill classes}
@@ -247,13 +252,13 @@ An object of class \code{gdina} with following entries
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
 \references{
-  de la Torre, J. & Douglas, J. A. (2004). Higher-order latent trait models 
+  de la Torre, J., & Douglas, J. A. (2004). Higher-order latent trait models 
   for cognitive diagnosis. \emph{Psychometrika}, \bold{69}, 333-353.
 	
   de la Torre, J. (2011) The generalized {DINA} model framework. 
   \emph{Psychometrika}, \bold{76}, 179--199.    
   
-  Xu, X. & von Davier, M. (2008). \emph{Fitting the structured general diagnostic
+  Xu, X., & von Davier, M. (2008). \emph{Fitting the structured general diagnostic
   model to NAEP data}. ETS Research Report ETS RR-08-27. Princeton, ETS.
     }
     
@@ -370,7 +375,7 @@ rule[7] <- "GDINA2" # 7th item: GDINA model with first-
 rule[8] <- "ACDM"   # 8ht item: additive CDM
 rule[9] <- "DINA"   # 9th item: DINA model
 mod4 <- gdina( data=sim.dino, q.matrix=sim.qmatrix, rule=rule )
-summary(mod4) }
+summary(mod4)
 
 ###################################################################
 # EXAMPLE 3: Model with user-specified design matrices
@@ -412,7 +417,6 @@ mod <- gdina( data = sim.dino ,  q.matrix = sim.qmatrix ,
                     Mj = Mj.user ,  maxit=200 )
 summary(mod)
 
-\dontrun{
 ###################################################################
 # EXAMPLE 4: Design matrix for delta parameters
 ###################################################################
@@ -454,7 +458,7 @@ summary(mod2)
 set.seed(9279)
 N1 <- 200 ; N2 <- 100   # group sizes
 I <- 10                 # number of items
-q.matrix <- matrix(0,I,2)   # create Q matrix
+q.matrix <- matrix(0,I,2)   # create Q-matrix
 q.matrix[1:7,1] <- 1 ; q.matrix[ 5:10,2] <- 1
 # simulate first group
 dat1 <- sim.din(N1, q.matrix=q.matrix , mean = c(0,0) )$dat
@@ -522,4 +526,5 @@ summary(mod1); summary(mod2); summary(mod3)}
 \keyword{GDINA}
 \keyword{DINA}
 \keyword{Higher order GDINA model}
+\keyword{summary}
 %%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

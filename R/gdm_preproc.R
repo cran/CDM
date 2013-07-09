@@ -120,8 +120,8 @@
 				Qmatrix <- Q1
 						}
 						}		
-#	if ( is.vector(theta.k) ){
-	if ( is.numeric(theta.k) ){
+	if ( is.vector(theta.k) ){
+#	if ( is.numeric(theta.k) ){
 			theta.k <- matrix( theta.k , ncol=1 )
 			if (D>1){
 				th1 <- as.list(1:D)
@@ -135,7 +135,7 @@
 			colnames(theta.k) <- names(tk)
 								}
 							
-	theta.k <- as.matrix(theta.k)					
+	theta.k <- as.matrix(theta.k)	
 	D <- ncol(theta.k)											
 	if ( is.null( colnames(theta.k) ) ){
 		colnames(theta.k) <- paste0("F",1:D)
@@ -210,7 +210,7 @@
 # constraints on item parameters
 .gdm.constraints.itempars2 <- function( b.constraint , a.constraint , 
 	K , TD ,I , dat ){
-	K.item <- apply( dat , 2 , max )	
+	K.item <- apply( dat , 2 , max )
 	for (ii in 1:I){	# ii <- 1
 	K.ii <- K.item[ii]	
 	if ( K.ii < K ){

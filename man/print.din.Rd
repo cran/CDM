@@ -37,11 +37,6 @@
 
 
 
-\references{
-  Rupp, A. A., Templin, J. L. and Henson, R. A. (2010) \emph{Diagnostic
-  Measurement: Theory, Methods, and Applications}. New York: The Guilford
-  Press.
-}
 
 \seealso{
   \code{\link{plot.din}}, the S3 method for plotting objects of

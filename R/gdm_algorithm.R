@@ -131,7 +131,8 @@
 ###########################################################################
 # estimation of b parameters
 .gdm.est.b <- function(probs, n.ik, N.ik, I, K, G,b,b.constraint,
-	max.increment,a,thetaDes,Qmatrix,TP,TD,msteps,convM){		
+	max.increment,a,thetaDes,Qmatrix,TP,TD,msteps,convM ,
+	centerintercepts ){		
  	max.increment <- 1
 	iter <- 1
 	parchange <- 1
@@ -163,6 +164,19 @@
 			b[ b.constraint[,1:2,drop=FALSE] ] <- b.constraint[,3,drop=FALSE]
 			se.b[ b.constraint[,1:2,drop=FALSE] ] <- 0		
 				}
+		# centerintercepts
+		if ( centerintercepts) {
+		   if (TD==1){
+				b <- b - mean(b)		
+						}
+			if (TD > 1){		
+				for (dd in 1:TD){
+					ind.dd <- which( Qmatrix[,dd,1] > 0 )
+					m1 <- sum( b[ind.dd,] ) / ( ncol(b) * length(ind.dd) )	
+					b[ind.dd,] <- b[ind.dd,] - 	m1
+							}
+						  }
+						}				
 		iter <- iter + 1
 		parchange <- max( abs(b0-b))
 # cat(iter,parchange , "\n" )
@@ -181,7 +195,7 @@
 # probs [I , K+1 , TP ]
 .gdm.est.a <- function(probs, n.ik, N.ik, I, K, G,a,a.constraint,TD,
 				Qmatrix,thetaDes,TP, max.increment ,
-				b , msteps , convM ){
+				b , msteps , convM , centerslopes ){
 	iter <- 1
 	parchange <- 1
 	a00 <- a
@@ -229,7 +243,17 @@
 				a[ a.constraint[,1:3,drop=FALSE] ] <- a.constraint[,4,drop=FALSE]
 				se.a[ a.constraint[,1:3,drop=FALSE] ] <- 0			
 				increment[ a.constraint[,1:2,drop=FALSE] ] <- 0			
-					}
+					}		
+			if (centerslopes){
+			  if (TD>1){
+				m11 <- t( colSums( a[,,1] ) / colSums( Qmatrix ) )	
+				a[,,1] <- a[,,1] / m11[ rep(1,I) , ]
+						}
+			  if (TD==1){
+				m11 <- t( colSums( a ) / colSums( Qmatrix ) )	
+				a <- a / m11[ rep(1,I) , ]
+						}						
+						}
 			parchange <- max( abs(a-a0))
 			iter <- iter + 1
 			}	# end iter
@@ -427,3 +451,63 @@
 				}
 #*************************************************************
 
+#####################################################
+# estimation of skill space
+.gdm.est.skillspace.traits <- function( n.ik , a , b , theta.k , Qmatrix , I , K , TP,
+		TD , numdiff.parm , max.increment , msteps , convM ){
+	# sum over groups
+	n.ik0 <- apply( n.ik , c(1,2,3) , sum )
+	h <- numdiff.parm
+	parchange <- 1000
+	iter <- 1
+	se.theta.k <- 0 * theta.k
+	Q1 <- matrix( 0 , nrow=TP , ncol=TD)
+	while( ( iter <= msteps ) & (parchange > convM ) ){
+		theta.k0 <- theta.k
+		for ( dd in 1:TD){
+#			dd <- 1		
+			Q0 <- Q1
+			Q0[,dd] <- 1
+			# calculate log-likelihood
+			pjk <- .gdm.calc.prob( a,b,thetaDes=theta.k,Qmatrix,I,K,TP,TD)
+			theta.k1 <- theta.k + h*Q0
+			pjk1 <- .gdm.calc.prob( a,b,thetaDes=theta.k1,Qmatrix,I,K,TP,TD)		
+			theta.k2 <- theta.k - h*Q0
+			pjk2 <- .gdm.calc.prob( a,b,thetaDes=theta.k2,Qmatrix,I,K,TP,TD)		
+			res <- .gdm.numdiff.index( pjk , pjk1 , pjk2 , n.ik=n.ik0 , 
+					max.increment , numdiff.parm , eps=10^(-80) )
+			theta.k[,dd] <- theta.k[,dd] + res$increment		
+			se.theta.k[,dd] <- 1 / sqrt( abs(res$d2) )
+					}
+		iter <- iter + 1 
+		parchange <- max( abs( theta.k - theta.k0 ))
+			}	
+#	thetaDes <- theta.k
+	res <- list( "theta.k" = theta.k , "se.theta.k" = se.theta.k )
+	return(res)
+	}
+##########################################################
+
+####################################################################
+# general function for numerical differentiation
+# diffindex aggregates across super items
+.gdm.numdiff.index <- function( pjk , pjk1 , pjk2 , n.ik , 
+		max.increment , numdiff.parm , eps=10^(-80) ){					
+	h <- numdiff.parm
+    an.ik <- aperm( n.ik , c(2,3,1) )
+    ll0 <- colSums( colSums( an.ik * log(pjk+eps) ))
+    ll1 <- colSums( colSums(an.ik * log(pjk1+eps) ) )
+    ll2 <- colSums( colSums( an.ik * log(pjk2+eps) ) )
+    d1 <- ( ll1 - ll2  ) / ( 2 * h )    # negative sign?
+    # second order derivative
+    # f(x+h)+f(x-h) = 2*f(x) + f''(x)*h^2
+    d2 <- ( ll1 + ll2 - 2*ll0 ) / h^2
+    # change in item difficulty
+    d2[ abs(d2) < 10^(-10) ] <- 10^(-10)
+    increment <- - d1 / d2
+	ci <- ceiling( abs(increment) / ( abs( max.increment) + 10^(-10) ) )
+    increment <- ifelse( abs( increment) > abs(max.increment)  , 
+                                 increment/(2*ci) , increment )	
+	res <- list("increment"=increment , "d2"=d2 , "ll0"=ll0)
+	return(res)
+		}

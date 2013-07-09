@@ -47,7 +47,7 @@ following columns
   \item{P_c_sim}{Classification consistency based on simulated data}  
 }
 \references{
-Cui, Y., Gierl, M. J. & Chang, H.-H. (2012). 
+Cui, Y., Gierl, M. J., & Chang, H.-H. (2012). 
 Estimating classification consistency and accuracy for cognitive diagnostic assessment. 
 \emph{Journal of Educational Measurement}, \bold{49}, 19-38.
 }

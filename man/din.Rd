@@ -103,9 +103,9 @@
 }
 
 \details{
-  In the CDM DINA (deterministic-input, noisy-and-gate; \cite{de la Torre and
-  Douglas, 2004}) and DINO (deterministic-input, noisy-or-gate; \cite{Templin and
-  Henson, 2006}) models endorsement probabilities are modeled 
+  In the CDM DINA (deterministic-input, noisy-and-gate; de la Torre &
+  Douglas, 2004) and DINO (deterministic-input, noisy-or-gate; Templin &
+  Henson, 2006) models endorsement probabilities are modeled 
   based on guessing and slipping parameters, given the different skill
   classes.  The probability of respondent \eqn{n} (or corresponding respondents class \eqn{n}) 
   for solving item \eqn{j} is calculated as a function of the respondent's latent response \eqn{\eta_{nj}}{eta_{nj}}
@@ -123,7 +123,7 @@
   DINA and DINO parameter estimation is performed by
   maximization of the marginal likelihood of the data.  The
   a priori distribution of the skill vectors is a uniform distribution.  
-  The implementation follows the EM algorithm by \cite{de la Torre (2009)}.  
+  The implementation follows the EM algorithm by de la Torre (2009).  
   
   A monotonicity condition in parameter estimation in DINA and
   DINO models is 
@@ -205,17 +205,19 @@
   A didactic. \emph{Journal of Educational and Behavioral
   Statistics}, \bold{34}, 115--130.
   
-  de la Torre, J. and Douglas, J. (2004) Higher-order latent trait models 
+  de la Torre, J., & Douglas, J. (2004) Higher-order latent trait models 
   for cognitive diagnosis. \emph{Psychometrika}, \bold{69}, 333--353.    
 
-  Lee, Y.-S., de la Torre, J. and Park, Y. S. (2012). Relationships between cognitive diagnosis, CTT, and IRT indices: An empirical investigation.
+  Lee, Y.-S., de la Torre, J., & Park, Y. S. (2012). 
+  Relationships between cognitive diagnosis, CTT, and IRT indices: 
+  An empirical investigation.
     \emph{Asia Pacific Educational Research}, \bold{13}, 333-345.
 
-  Rupp, A. A., Templin, J. and Henson, R. A. (2010) \emph{Diagnostic
+  Rupp, A. A., Templin, J., & Henson, R. A. (2010) \emph{Diagnostic
   Measurement: Theory, Methods, and Applications}.  New York: The Guilford
   Press.
   
-  Templin, J. and Henson, R. (2006) Measurement of
+  Templin, J., & Henson, R. (2006) Measurement of
   psychological disorders using cognitive diagnosis
   models. \emph{Psychological Methods}, \bold{11}, 287--305.
 }

@@ -13,8 +13,7 @@
 \usage{
   \method{plot}{din}(x, items = c(1:ncol(x$data)), pattern = "",
     uncertainty = 0.1, top.n.skill.classes = 6, pdf.file = "", 
-    hide.idi = FALSE, hide.obs = FALSE,
-    display.nr = 1:5, \dots)
+    hide.idi = FALSE, hide.obs = FALSE, display.nr = 1:5, \dots)
 }
 
 \arguments{
@@ -106,7 +105,7 @@
 %}
 
 \references{
-  Rupp, A. A., Templin, J. L. and Henson, R. A. (2010) \emph{Diagnostic
+  Rupp, A. A., Templin, J. L., & Henson, R. A. (2010) \emph{Diagnostic
   Measurement: Theory, Methods, and Applications}. New York: The Guilford
   Press.
 }

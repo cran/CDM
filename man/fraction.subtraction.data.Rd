@@ -29,8 +29,8 @@
 
 \details{
   The items used for the fraction subtraction test originally appeared
-  in \cite{Tatsuoka (1984)} and are published in \cite{Tatsuoka (2002)}.  They 
-  can also be found in \cite{DeCarlo (2011)}.  All test items are based on 8 
+  in Tatsuoka (1984) and are published in Tatsuoka (2002).  They 
+  can also be found in DeCarlo (2011).  All test items are based on 8 
   attributes (e.g. convert a whole number to a fraction, separate a whole 
   number from a fraction or simplify before subtracting).  The complete 
   list of skills can be found in \code{\link{fraction.subtraction.qmatrix}}.  
@@ -61,6 +61,7 @@
 }
 
 \examples{
+\dontrun{	
 ##
 ## (1) examples based on dataset fractions.subtraction.data
 ##
@@ -141,7 +142,7 @@ plot(fractions.dina, pattern = pattern, display.nr = 5)
 
 #uncertainty = 0.1, top.n.skill.classes = 6 are default
 plot(fractions.dina.fixed, uncertainty = 0.1, top.n.skill.classes = 6, 
-  pattern = pattern)
+  pattern = pattern) }
 }
 
 \keyword{datasets}

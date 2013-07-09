@@ -36,7 +36,7 @@ A list with two entries:
 \item{rmsea.groups}{Matrix of group-wise RMSEA item statistics}
 }
 \references{
-Kunina-Habenicht, O., Rupp, A.A., & Wilhelm, O. (2009). 
+Kunina-Habenicht, O., Rupp, A. A., & Wilhelm, O. (2009). 
 A practical illustration of multidimensional diagnostic skills profiling: 
 Comparing results from confirmatory factor analysis and diagnostic classification models. 
 \emph{Studies in Educational Evaluation}, \bold{35}, 64--70.

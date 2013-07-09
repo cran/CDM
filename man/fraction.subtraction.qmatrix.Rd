@@ -8,7 +8,7 @@
 }
 
 \description{
-  The Q-Matrix corresponding to \cite{Tatsuoka (1984)} fraction subtraction data set.  
+  The Q-Matrix corresponding to Tatsuoka (1984) fraction subtraction data set.  
 }
 
 \usage{
@@ -35,8 +35,8 @@
 }
 
 \details{
-  This Q-matrix can be found in \cite{DeCarlo (2011)}.  It is the same used by
-  \cite{de la Torre and Douglas (2004)}.  
+  This Q-matrix can be found in DeCarlo (2011).  It is the same used by
+  de la Torre and Douglas (2004).  
 }
 
 \source{

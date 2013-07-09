@@ -71,8 +71,8 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
     b.constraint=NULL, a.constraint=NULL, 
 	mean.constraint=NULL , Sigma.constraint=NULL , 
     delta.designmatrix=NULL, standardized.latent=FALSE , 
-	centered.latent=FALSE , 
-    maxiter=1000, conv=10^(-5), globconv=10^(-5), msteps=8 , 
+	centered.latent=FALSE , centerintercepts=FALSE , centerslopes=FALSE , 
+    maxiter=1000, conv=10^(-5), globconv=10^(-5), msteps=4 , 
 	convM=.0005 , 
 	decrease.increments = FALSE , use.freqpatt=FALSE ,
 	...){	
@@ -85,12 +85,15 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 	## prevent from warnings in R CMD check "no visible binding"
 	## gdm: no visible binding for global variable 'TD'
 	TD <- TP <- EAP.rel <- mean.trait <- sd.trait <- skewness.trait <- NULL
-	K.item <- correlation.trait <- NULL 	
+	K.item <- correlation.trait <- NULL 
+    se.theta.k <- NULL	
 	data0 <- data <- as.matrix(data)
 	dat.resp0 <- dat.resp <- 1 - is.na(data)
 	dat <- data
 	dat[ is.na(data) ] <- 0
 	dat0 <- dat
+	# center slopes
+	if ( irtmodel!="2PL" ){ centerslopes <- FALSE }	
 	# use frequency pattern. If yes, then some
 	# data preparation follows.
 	if ( use.freqpatt ){
@@ -159,6 +162,9 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 			K , TD , Qmatrix , a)	
 	.attach.environment( res , envir=e1 )	
 
+#	res <- .gdm.constraints.itempars2( b.constraint , a.constraint , K , TD ,I , dat )	
+#	.attach.environment( res , envir=e1 )	
+	
 	# starting values for distributions
 	Sigma <- diag(1,D)
 	library(mvtnorm)
@@ -296,11 +302,11 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 		# probs[1:I,1:K,1:TP]
 		res <- .gdm.est.b(probs, n.ik, N.ik, I, K, G,b,b.constraint,
 				max.increment=max.increment.b , a,thetaDes,Qmatrix,TP,TD,
-				msteps,convM)	
+				msteps,convM , centerintercepts )	
 		b <- res$b
 		se.b <- res$se.b
 		if (decrease.increments){ 	max.increment.b <- res$max.increment.b/1.01	}
-
+		
 # cat("est b") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1		
 		
 		#*****
@@ -308,7 +314,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 		if ( irtmodel == "2PL"){
 			res <- .gdm.est.a(probs, n.ik, N.ik, I, K, G,a,a.constraint,TD,
 					Qmatrix,thetaDes,TP, max.increment = max.increment.a ,
-					b , msteps , convM )
+					b , msteps , convM , centerslopes )
 			a <- res$a
 			se.a <- res$se.a
 			if (decrease.increments){ 	max.increment.a <- res$max.increment.a/1.01	}
@@ -345,7 +351,15 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 			b <- res$b 
 			a <- res$a					
 					}
-
+		
+		# estimate skillspace		
+        if ( skillspace == "est" ){
+			res <- .gdm.est.skillspace.traits( n.ik , a , b , theta.k , Qmatrix , I , K , TP,
+					TD , numdiff.parm=.001 , max.increment=1 , msteps , convM )
+			theta.k <- res$theta.k
+			se.theta.k <- res$se.theta.k
+			thetaDes <- theta.k
+						}
 # cat("skillspace") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1		
 
 			
@@ -416,7 +430,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 		ic <- .gdm.calc.ic( dev , dat , G , skillspace , irtmodel , 
 				K,D,TD,I,b.constraint,a.constraint,mean.constraint ,
 			    Sigma.constraint, delta.designmatrix , standardized.latent ,
-				data0 )
+				data0 , centerslopes , TP , centerintercepts )
 
 	#########################################
 	# item fit [ items , theta , categories ] 
@@ -449,6 +463,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 	res$K.item <- K.item
 	res$theta.k <- theta.k
 	res$thetaDes <- thetaDes
+	res$se.theta.k <- NULL
 	res$time <- list( "s1"=s1,"s2"=s2 , "timediff"=s2-s1)
 	res$skillspace <- skillspace
 	res$iter <- iter

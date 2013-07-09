@@ -2,7 +2,7 @@
 \alias{skill.cor}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Tetrachoric correlations between attributes
+Tetrachoric Correlations between Attributes
 }
 \description{
 This function takes the results of \code{din} or \code{gdina} and

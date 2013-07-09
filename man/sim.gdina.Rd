@@ -28,7 +28,7 @@ sim.gdina.prepare( q.matrix )
 Number of persons
 }
   \item{q.matrix}{
-Q matrix
+Q-matrix
 }
   \item{delta}{
 List with \eqn{J} entries where \eqn{J} is the number of items. 
@@ -64,20 +64,18 @@ for each item
 The output of \code{sim.gdina} is a list with following entries:
   \item{data}{Simulated item responses}
   \item{alpha}{Data frame with simulated attributes}
-  \item{q.matrix}{Used Q matrix}
+  \item{q.matrix}{Used Q-matrix}
   \item{delta}{Used delta item parameters}
   \item{Aj}{Design matrices Aj}
   \item{Mj}{Design matrices Mj}
   \item{link}{Used link function}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+
 The function \code{sim.gdina.prepare} possesses the following values as output
 in a list: \code{delta}, \code{necc.attr}, \code{Aj} and \code{Mj}.
-%    res <- list( "data" = dat , "alpha" = alpha , "q.matrix" = q.matrix ,
-%                        "delta" = delta , "Aj" = Aj , "Mj" = Mj , "link" = link )
 }
 \references{
-  de la Torre, J. (2011) The generalized {DINA} model framework. \emph{Psychometrika}, \bold{76}, 179--199.    
+  de la Torre, J. (2011) The generalized {DINA} model framework. 
+  \emph{Psychometrika}, \bold{76}, 179--199.    
 }
 %\author{
 %Alexander Robitzsch, ...
@@ -96,16 +94,9 @@ For estimating the GDINA model see \code{\link{gdina}}.
 # Example: Simulating the GDINA model
 
 n <- 50             # number of persons
-# define Q matrix
-q.matrix <- matrix(  c(1,1,0 ,
-                0,1,1,
-                1,0,1,
-                1,0,0,
-                0,0,1,
-                0,1,0,
-                1,1,1,
-                0,1,1,
-                0,1,1) , ncol=3 , byrow=TRUE)
+# define Q-matrix
+q.matrix <- matrix(  c(1,1,0 , 0,1,1, 1,0,1, 1,0,0,
+    0,0,1, 0,1,0,  1,1,1,  0,1,1, 0,1,1) , ncol=3 , byrow=TRUE)
 # thresholds for attributes alpha^\ast
 thresh.alpha <- c( .65 , 0 , -.30 )
 # covariance matrix for alpha^\ast
@@ -144,13 +135,12 @@ delta[[8]] <- c( .2 , 0 , .3 , -.1 )
 delta[[9]] <- c( .2 , .2 , 0 , .3 )
 
 #******************************************
-# Now, the "real simulation" is starting
-sim.res <- sim.gdina( n=n , q.matrix =q.matrix , delta=delta , link = "identity" , 
+# Now, the "real simulation" starts
+sim.res <- sim.gdina( n=n, q.matrix =q.matrix, delta=delta, link = "identity", 
             thresh.alpha=thresh.alpha , cov.alpha=cov.alpha ,
                 Mj=Mj , Aj=Aj , necc.attr =necc.attr)
 # sim.res$data      # data
 # sim.res$alpha     # alpha
-
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

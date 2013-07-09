@@ -1,5 +1,6 @@
 \name{gdm}
 \alias{gdm}
+\alias{summary.gdm}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 General Diagnostic Model
@@ -16,9 +17,12 @@ gdm( data, theta.k, irtmodel="2PL", group=NULL, weights=rep(1, nrow(data)),
     Qmatrix=NULL , thetaDes = NULL , skillspace="loglinear",  
     b.constraint=NULL, a.constraint=NULL, 
     mean.constraint=NULL , Sigma.constraint=NULL , delta.designmatrix=NULL, 
-    standardized.latent=FALSE , centered.latent=FALSE ,  maxiter=1000, 
-    conv=10^(-5), globconv=10^(-5), msteps=8 , convM=.0005 ,
-    decrease.increments = FALSE , use.freqpatt=FALSE , ...)    
+    standardized.latent=FALSE , centered.latent=FALSE , 
+    centerintercepts=FALSE , centerslopes=FALSE ,
+    maxiter=1000,  conv=10^(-5), globconv=10^(-5), msteps=4 , convM=.0005 ,
+    decrease.increments = FALSE , use.freqpatt=FALSE , ...) 
+
+\method{summary}{gdm}(object, \dots)    
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -36,6 +40,9 @@ In the one-dimensional case it must be a vector.
 For multidimensional models it has to be a list
 of skill vectors if the theta grid differs between
 dimensions. If not, a vector input can be supplied.
+If an estimated skillspace (\code{skillspace="est"}, a vector or
+a matrix \code{theta.k} will be initial values of the estimated 
+\eqn{\bold{\theta}} grid.
 }
   \item{irtmodel}{
 The default \code{2PL} corresponds to the model
@@ -44,7 +51,7 @@ item categories. If item-category slopes should
 be estimated, use \code{2PLcat}. If no item slopes
 should be estimated then \code{1PL} can be selected.
 Note that fixed item slopes can be specified in 
-the \eqn{Q} matrix (argument \code{Qmatrix}).
+the Q-matrix (argument \code{Qmatrix}).
 }
   \item{group}{
 An optional vector of group identifiers for 
@@ -69,6 +76,10 @@ If \code{skillspace="normal"} then a univariate or
 multivariate normal distribution is assumed. 
 The default \code{"loglinear"} corresponds to log-linear
 smoothing of the skillspace distribution (Xu & von Davier, 2008).
+If \code{skillspace="full"}, then all probabilities of the skill space
+are nonparametrically estimated. If \code{skillspace="est"}, then the 
+\eqn{\bold{\theta}} distribution vectors will be estimated
+(see Details and Simulated Examples 4 and 5; Bartolucci, 2007).
 }
   \item{b.constraint}{
 In this optional matrix with \eqn{C_b} rows and three columns,
@@ -101,9 +112,21 @@ von Davier, 2008)
 \item{standardized.latent}{Should in a uni- or multidimensional
 model all latent variables of the first group be normally distributed and standardized?
 The default is \code{FALSE}.}
-\item{centered.latent}{Should in a uni- or multidimensional
-model all latent variables of the first group be normally distributed
-and have zero means? The default is \code{FALSE}.}
+\item{centered.latent}{
+	Should in a uni- or multidimensional
+	model all latent variables of the first group be normally distributed
+	and have zero means? The default is \code{FALSE}.
+		}
+\item{centerintercepts}{
+	Should intercepts be centerred to have a mean of 0 for
+	all dimensions? This argument does not (yet) work properly
+	for varying numbers of item categories.
+		}
+\item{centerslopes}{
+	Should slopes be centered to have a mean of 1 for all dimensions?
+	This argument only works for \code{irtmodel="2PL"}. The default is
+	\code{FALSE}.
+		}
   \item{maxiter}{
 Maximum number of iterations
 }
@@ -116,7 +139,7 @@ Global deviance convergence criterion
 }
 \item{msteps}{
 	Maximum number of M steps in estimating \eqn{b} and
-	\eqn{a} item parameters. The default is 8 M steps.
+	\eqn{a} item parameters. The default is 4 M steps.
 }
 \item{convM}{
 	Convergence criterion in M step
@@ -134,9 +157,9 @@ Global deviance convergence criterion
 	person parameters are calculated as usual in the
 	output.
 		}
-\item{\dots}{
-    Further arguments to be passed
-}
+  \item{object}{a required object of class \code{gdm}}
+  \item{\dots}{Optional parameters to be passed to or from other
+    methods will be ignored.  }  		
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -144,13 +167,12 @@ Global deviance convergence criterion
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \details{
-
 Case \code{irtmodel="1PL"}: \cr
 Equal item slopes of 1 are assumed in this model. Therefore,
 it corresponds to a generalized multidimensional Rasch model.
 \deqn{logit P( X_{nj} = k | \theta_n ) = b_{j0} +
     \sum_d q_{jdk} \theta_{nd} }
-The \eqn{Q} matrix entries \eqn{q_{jdk}} are pre-specified by the user.
+The Q-matrix entries \eqn{q_{jdk}} are pre-specified by the user.
 
 Case \code{irtmodel="2PL"}: \cr
 For each item and each dimension, different item slopes \eqn{a_{jd}}
@@ -171,6 +193,14 @@ step functions or interaction) such that the model can be formulated as
     \sum_h a_{jhk} q_{jhk} t_h( \theta_{n} ) }
 In general, the number of functions \eqn{t_1 , ... , t_H} will be 
 larger than the \eqn{\theta} dimension of \eqn{D}.
+
+The estimation follows an EM algorithm as described in von Davier and
+Yamamoto (2004) and von Davier (2008)
+
+In case of \code{skillspace="est"}, the \eqn{\bold{\theta}} vectors 
+(the grid of the theta distribution) is estimated (Bartolucci, 2007;
+Bacci, Bartolucci & Gnaldi, 2012). This model is called a multidimensional
+latent class item response model.
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -201,7 +231,7 @@ following entries:
             }
 \item{mean.rmsea}{Mean of RMSEA item fit indexes.
             }            
-\item{Qmatrix}{Used \eqn{Q} matrix}
+\item{Qmatrix}{Used Q-matrix}
 \item{pi.k}{Trait distribution}
 \item{mean.trait}{Means of trait distribution}
 \item{sd.trait}{Standard deviations of trait distribution}
@@ -212,7 +242,7 @@ following entries:
 \item{n.ik}{An array of expected counts \eqn{n_{cikg}} of ability class \eqn{c}
     at item \eqn{i} at category \eqn{k} in group \eqn{g}}
 \item{G}{Number of groups}
-\item{D}{Number of \eqn{\theta} dimensions}
+\item{D}{Number of dimension of \eqn{\bold{\theta}}}
 \item{I}{Number of items}
 \item{N}{Number of persons}
 \item{delta}{Parameter estimates for skillspace representation}
@@ -223,26 +253,42 @@ following entries:
 \item{posterior}{Individual posterior distribution}
 \item{skill.levels}{Number of skill levels per dimension}
 \item{K.item}{Maximal category per item}
-\item{theta.k}{Used theta design}
+\item{theta.k}{Used theta design or estimated theta trait distribution
+	in case of \code{skillspace="est"} }
 \item{thetaDes}{Used theta design for item responses}
+\item{se.theta.k}{Estimated standard errors of \code{theta.k} if it is
+	estimated}
 \item{time}{Info about computation time}
 \item{skillspace}{Used skillspace parametrization}
 \item{iter}{Number of iterations}
-\item{\dots}{}
-% \item{xxx}{yyy}
+\item{object}{a required object of class \code{gdm}}
+\item{\dots}{Optional parameters to be passed to or from other
+    methods will be ignored.  }  
+
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% REFERENCES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\references{
-  von Davier, M. (2008). A general diagnostic model applied to 
-  language testing data. \emph{British Journal
-  of Mathematical and Statistical Psychology}, \bold{61}, 287-307.
+\references{	
+Bacci, S., Bartolucci, F., & Gnaldi, M. (2012). 
+A class of Multidimensional Latent Class IRT models for ordinal 
+polytomous item responses. \emph{arXiv preprint}, arXiv:1201.4667.
+	
+Bartolucci, F. (2007). A class of multidimensional IRT models for testing 
+unidimensionality and clustering items. \emph{Psychometrika}, \bold{72}, 141-157.
 
-  Xu, X. & von Davier, M. (2008). \emph{Fitting the structured general diagnostic
-  model to NAEP data}. ETS Research Report ETS RR-08-27. Princeton, ETS.
+von Davier, M. (2008). A general diagnostic model applied to 
+language testing data. \emph{British Journal
+of Mathematical and Statistical Psychology}, \bold{61}, 287-307.
+
+von Davier, M., & Yamamoto, K. (2004). Partially observed mixtures of IRT models: 
+An extension of the generalized partial-credit model. 
+\emph{Applied Psychological Measurement}, \bold{28}, 389-406.  
+  
+Xu, X., & von Davier, M. (2008). \emph{Fitting the structured general diagnostic
+model to NAEP data}. ETS Research Report ETS RR-08-27. Princeton, ETS.
 }
 %\author{
 %Alexander Robitzsch
@@ -258,10 +304,12 @@ Cognitive diagnostic models for dichotomous data can be estimated
 with \code{\link{din}} (DINA or DINO model) or \code{\link{gdina}} 
 (GDINA model, which contains many CDMs as special cases).
 
-  For assessment of model fit see \code{\link{modelfit.cor.din}} and 
-  \code{\link{anova.gdm}}.
+For assessment of model fit see \code{\link{modelfit.cor.din}} and 
+\code{\link{anova.gdm}}.
 
-
+For the estimation of the multidimensional
+latent class item response model see the \pkg{MultiLCIRT}
+and \pkg{sirt} packages.
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 }
 
@@ -328,9 +376,8 @@ summary(mod6)
 #***
 # Model 7: Estimating a version of the DINA model with gdm
 theta.k <- c(-.5,.5)
-mod7 <- gdm( dat , irtmodel="2PL" , theta.k=theta.k , 
-           skillspace="loglinear" )
-summary(mod7)}
+mod7 <- gdm( dat , irtmodel="2PL" , theta.k=theta.k , skillspace="loglinear" )
+summary(mod7)
 
 ###################################################################
 # EXAMPLE 2: Cultural Activities - data.Students
@@ -367,9 +414,8 @@ mod3 <- gdm( dat , irtmodel="1PL" , theta.k=theta.k ,
     skillspace="loglinear" , b.constraint=b.constraint )
 summary(mod3)
 
-\dontrun{
 #***
-# Model 4: Model with pre-specified item weights in Q matrix
+# Model 4: Model with pre-specified item weights in Q-matrix
 Qmatrix <- array( 1 , dim=c(5,1,2) )
 Qmatrix[,1,2] <- 2
 Qmatrix[c(2,4),1,1] <- .74
@@ -474,9 +520,61 @@ mod7 <- gdm( dat , irtmodel="2PL" , theta.k=theta.k ,
             Qmatrix=Qmatrix , b.constraint=b.constraint , 
             a.constraint=a.constraint , decrease.increments=FALSE , 
             skillspace="loglinear" , maxiter=400)
-summary(mod7)}
+summary(mod7)
+
+#################################################################
+# SIMULATED EXAMPLE 4: Unidimensional latent class 1PL IRT model
+#################################################################
+
+# simulate data
+set.seed(754)
+I <- 20     # number of items
+N <- 2000   # number of persons
+theta <- c( -2 , 0 , 1 , 2 )
+theta <- rep( theta , c(N/4,N/4 , 3*N/8 , N/8)  ) 
+b <- seq(-2,2,len=I)
+dat <- sim.raschtype( theta=theta , b=b )
+
+theta.k <- seq(-1 , 1 , len=4)      # initial vector of theta
+# estimate model
+mod1 <- gdm( dat , theta.k = theta.k , skillspace="est" , irtmodel="1PL",
+        centerintercepts=TRUE , maxiter=200)
+summary(mod1)
+
+#################################################################
+# SIMULATED EXAMPLE 5: Multidimensional latent class IRT model
+#################################################################
+
+# simulate data
+set.seed(754)
+I <- 13     # number of items
+N <- 2400   # number of persons
+theta <- c( -2 , 0 , 1 , 2 )
+theta <- rep( theta , c(N/4,N/4 , 3*N/8 , N/8)  ) 
+b <- seq(-2,2,len=I)
+dat1 <- sim.raschtype( theta=theta , b=b )
+
+theta <- c( -3 , 0 , 1.5 , 2 )
+theta <- rep( theta , c(N/4,N/4 , 3*N/8 , N/8)  ) 
+dat2 <- sim.raschtype( theta=theta , b=b )
+colnames(dat2) <- gsub( "I" , "U" , colnames(dat2))
+dat <- cbind( dat1 , dat2 )
+
+# define Q-matrix
+Qmatrix <- matrix(0,2*I,2)
+Qmatrix[ cbind( 1:(2*I) , rep(1:2 , each=I) ) ] <- 1
+
+theta.k <- seq(-1 , 1 , len=4)      # initial matrix
+theta.k <- cbind( theta.k , theta.k )
+colnames(theta.k) <- c("Dim1","Dim2")
+
+# estimate model
+mod2 <- gdm( dat , theta.k = theta.k , skillspace="est" , irtmodel="1PL",
+        Qmatrix=Qmatrix , centerintercepts=TRUE , maxiter=200)
+summary(mod2)}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 \keyword{General diagnostic model}
+\keyword{summary}
 %% \keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

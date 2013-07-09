@@ -12,6 +12,21 @@ a.robitzsch /-\ bifie.at
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
+
+--------------------------------------------------------------
+CDM 1.5 (2013-0x-xx)
+--------------------------------------------------------------
+
+x allowed for centering of intercepts and slopes in gdm
+x included satured skill distribution estimation in gdm
+x fixed a bug in the calculation of RMSEA itemfit, although
+  is not clear if the correct formula is used
+x fixed a bug in gdm with varying number of item categories
+  (thanks to Artur Pokropek)
+x included the multidimensional latent class IRT model 
+  (Bartolucci, 2007) in gdm (skillspace="est")
+x speeded calculation of modelfit.cor
+
 --------------------------------------------------------------
 CDM 1.4 (2013-06-30)
 --------------------------------------------------------------

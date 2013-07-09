@@ -7,16 +7,16 @@ Fraction Subtraction Dataset 2
 \description{
 This is the fraction subtraction data set with 536 students
 and 11 items. For this data set, several \eqn{Q} matrices are available.
-The \eqn{Q} matrix was defined in de la Torre (2009).
+The Q-matrix was defined in de la Torre (2009).
 }
 \usage{data(data.fraction2)}
 \format{
 The data comes as a list. The first entry \code{data}
 contains the data frame. The entry \code{q.matrix1} contains
-the \eqn{Q} matrix of Henson, Templin and Willse (2009).
+the Q-matrix of Henson, Templin and Willse (2009).
 The third entry \code{q.matrix2} is an alternative
-\eqn{Q} matrix of de la Torre (2009). The fourth entry is a
-modified \eqn{Q} matrix of \code{q.matrix1}.
+Q-matrix of de la Torre (2009). The fourth entry is a
+modified Q-matrix of \code{q.matrix1}.
 
 The format is:
 \code{ $ data     :'data.frame':} \cr
@@ -56,7 +56,7 @@ about data source.
   A didactic. \emph{Journal of Educational and Behavioral
   Statistics}, \bold{34}, 115--130.
   
-  Henson, R. A., Templin, J. T. & Willse, J. T. (2009).
+  Henson, R. A., Templin, J. T., & Willse, J. T. (2009).
   Defining a family of cognitive diagnosis models using
   log-linear models with latent variables.
   \emph{Psychometrika}, \bold{74}, 191-210.

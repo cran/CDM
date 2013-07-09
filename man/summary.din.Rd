@@ -11,7 +11,7 @@
 }
 
 \usage{
-  \method{summary}{din}(object, top.n.skill.classes = 6, 
+\method{summary}{din}(object, top.n.skill.classes = 6, 
      log.file = NULL, overwrite = FALSE, \dots)
 }
 
@@ -79,7 +79,8 @@
 
 \references{
   
-  Lee, Y.-S., de la Torre, J. and Park, Y. S. (2012). Relationships between cognitive diagnosis, CTT, and IRT indices: An empirical investigation.
+  Lee, Y.-S., de la Torre, J. and Park, Y. S. (2012). Relationships between 
+  cognitive diagnosis, CTT, and IRT indices: An empirical investigation.
     \emph{Asia Pacific Educational Research}, \bold{13}, 333-345.
 
   Rupp, A. A., Templin, J. L. and Henson, R. A. (2010) \emph{Diagnostic

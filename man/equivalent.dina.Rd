@@ -6,9 +6,9 @@ Determination of a Statistically Equivalent DINA Model
 }
 \description{
 This function determines a statistically equivalent DINA model
-given a \eqn{Q} matrix using the method of von Davier (2013).
+given a Q-matrix using the method of von Davier (2013).
 Thereby, the dimension of the skill space is expanded, but in the
-reparametrized version, the \eqn{Q} matrix has a simple structure
+reparametrized version, the Q-matrix has a simple structure
 or the IRT model is no longer be conjuctive (like in DINA) due
 to a redefinition of the skill space.
 }
@@ -18,7 +18,7 @@ equivalent.dina(q.matrix, reparametrization = "B")
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{q.matrix}{
-A \eqn{Q} matrix
+A Q-matrix
 }
   \item{reparametrization}{
 The used reparametrization (see von Davier, 2013). \code{A} and \code{B}
@@ -32,8 +32,8 @@ are possible reparametrizations.
 A list with following entries
 %%  ~Describe the value returned
 %%  If it is a LIST, use
-  \item{q.matrix}{Original \eqn{Q} matrix}
-  \item{q.matrix.ast}{Reparametrized \eqn{Q} matrix}  
+  \item{q.matrix}{Original Q-matrix}
+  \item{q.matrix.ast}{Reparametrized Q-matrix}  
   \item{alpha}{Original skill space}
   \item{alpha.ast}{Reparametrized skill space}  
 %% ...
@@ -57,7 +57,7 @@ diagnostic model: Two variants of a model equivalency.
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
 \examples{
-# define a Q matrix
+# define a Q-matrix
 Q <- matrix( c( 1,0,0 ,  0,1,0 , 
         0,0,1, 1,0,1 ,  1,1,1 ) , byrow=TRUE , ncol=3 )
 Q <- Q[ rep(1:(nrow(Q)),each=2) , ]
