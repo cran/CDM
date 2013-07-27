@@ -36,31 +36,12 @@
 #			ind.gg <- which( group == gg )
 			ind.gg <- ind.group[[gg]]
 			wgg <- weights[ind.gg]
-			pi.k[,gg] <- colSums( p.aj.xi[ ind.gg , ] * wgg ) / sum( wgg )
+			if (G==1){ 	pi.k[,gg] <- colSums( p.aj.xi * wgg ) / sum( wgg ) }
+			if (G>1){ 	pi.k[,gg] <- colSums( p.aj.xi[ ind.gg , ] * wgg ) / sum( wgg ) }			
 					}
 				}
 	#***********************
 	if ( sel == 2 ){  # if use.freqpatt == TRUE for multiple groups
-#		prior <- ( t( pi.k ) )[ group , ]
-#		p.aj.xi <- prior * p.xi.aj 
-#		p.aj.xi <- p.aj.xi / rowSums( p.aj.xi )
-#  p1 <- p.xi.aj     
-# p2 <- pi.k
-		# calculate pi.k
-#		NP <- nrow(p.xi.aj)
-#        prior <- ( t( pi.k ) )[ rep(1:G , each=NP) ,]
-#		p.xi.aj <- p.xi.aj[ rep( 1:NP , G ) , ]
-#		p.aj.xi <- prior * p.xi.aj
-#		l1 <- p.aj.xi0 <- p.aj.xi / rowSums( p.aj.xi)
-#		p.aj.xi <- list(1:G)
-#		for (gg in 1:G){
-#			p.aj.xi[[gg]] <- p.aj.xi0[ (gg-1)*NP + 1:NP , ]
-#			wgg <- weights[,gg]
-#			pi.k[,gg] <- colSums( p.aj.xi[[gg]] * wgg ) / sum( wgg )
-#					}		
-# print(pi.k)		
-# p1 -> p.xi.aj
-# p2 -> pi.k
 		# calculate pi.k
 		p.aj.xi <- list(1:G)
 		for (gg in 1:G){ # gg <- 1
@@ -339,12 +320,10 @@
 	covdelta <- as.list(1:G)
 	for (gg in 1:G){
 		ntheta <- Ngroup[gg] * pi.k[,gg]
-		lntheta <- matrix(log(ntheta+eps),ncol=1 )
-		V <- diag( ntheta)
-		Z1 <- t(Z) %*% V %*% Z
-		diag(Z1) <- diag(Z1)+eps
-		covbeta <- solve( Z1 )
-		beta <- covbeta  %*% ( t(Z) %*% V %*% lntheta )
+		lntheta <- log(ntheta+eps)
+		mod <- lm( lntheta ~ 0 + Z , weights = ntheta )
+		covbeta <- vcov(mod)		
+		beta <- coef(mod)		
 		pi.k[,gg] <- exp( Z %*% beta ) / Ngroup[gg]
 		pi.k[,gg] <- pi.k[,gg] / sum( pi.k[,gg] )
 		delta[,gg] <- beta
@@ -373,18 +352,23 @@
 # cat( mg , sdg , "\n" )			
 	if ( (! is.null ( mean.constraint ))  ){
 		i1 <- mean.constraint[ mean.constraint[,2] == gg , , drop=FALSE]	
-		if ( nrow(i1) > 0 ){ 
-	#			if (gg==1){ b <- b + ( mg - i1[3] ) }
+		  if ( ( nrow(i1) == 1 ) & (G>1) ){ 	
+				if ( ( gg==1 ) & (i1[,1]==1) & (i1[,2]==1) ){ 
+					b <- b + ( mg - i1[3] ) 
+						}
 				mg <- i1[3] 
 						}
 					}
 	if ( ( ! is.null ( Sigma.constraint ) )  ){
 		i1 <- Sigma.constraint[ Sigma.constraint[,3] == gg , , drop=FALSE]
-		if ( nrow(i1) > 0 ){ 
-	#			if (gg==1){ a <- a * sdg / sqrt(i1[4])  }		
+		  if ( ( nrow(i1) == 1 ) & (G>1) ){ 	
+			if ( ( gg==1 ) & (i1[,1]==1) & (i1[,2]==1) ){ 
+	                a <- a * sdg / sqrt(i1[4])  
+							}		
 				sdg <- sqrt(i1[4]) 
 						}
-					}	
+					}
+# cat( mg , sdg , "\n" )						
 #	if (standardized.latent){ mg <- 0 ; sdg <- 0 }					
 #		if (gg==1){ mg <- 0 }				
 		pi.k[,gg] <- dnorm( theta.k[,1] ,mean=mg , sd=sdg)

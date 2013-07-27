@@ -17,9 +17,9 @@ Alternatively, a matrix of skill classes \code{alpha}
 can be given as an input.
 }
 \usage{
-sim.gdina(n, q.matrix, delta, link = "identity", 
-    thresh.alpha=NULL, cov.alpha=NULL, alpha=NULL,
-    Mj, Aj, necc.attr)
+sim.gdina(n, q.matrix, delta, link = "identity",  thresh.alpha=NULL, 
+    cov.alpha=NULL, alpha=NULL, Mj, Aj, necc.attr)
+    
 sim.gdina.prepare( q.matrix )
 }
 %- maybe also 'usage' for other objects documented here.
@@ -74,7 +74,7 @@ The function \code{sim.gdina.prepare} possesses the following values as output
 in a list: \code{delta}, \code{necc.attr}, \code{Aj} and \code{Mj}.
 }
 \references{
-  de la Torre, J. (2011) The generalized {DINA} model framework. 
+  de la Torre, J. (2011). The generalized {DINA} model framework. 
   \emph{Psychometrika}, \bold{76}, 179--199.    
 }
 %\author{

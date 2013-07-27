@@ -11,14 +11,14 @@ The Q-matrix was defined in de la Torre (2009).
 }
 \usage{data(data.fraction2)}
 \format{
-The data comes as a list. The first entry \code{data}
+The data is a list. The first entry \code{data}
 contains the data frame. The entry \code{q.matrix1} contains
 the Q-matrix of Henson, Templin and Willse (2009).
 The third entry \code{q.matrix2} is an alternative
 Q-matrix of de la Torre (2009). The fourth entry is a
 modified Q-matrix of \code{q.matrix1}.
 
-The format is:
+The format is: \cr
 \code{ $ data     :'data.frame':} \cr
 \code{  ..$ H01: int [1:536] 1 1 1 1 1 0 0 1 0 0 ...} \cr
 \code{  ..$ H02: int [1:536] 1 1 1 0 0 0 0 0 0 0 ...} \cr

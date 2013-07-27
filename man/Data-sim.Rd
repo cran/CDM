@@ -45,7 +45,7 @@
   
 
 \references{
-  Rupp, A. A., Templin, J. L. and Henson, R. A. (2010) \emph{Diagnostic
+  Rupp, A. A., Templin, J. L., & Henson, R. A. (2010) \emph{Diagnostic
   Measurement: Theory, Methods, and Applications}. New York: The Guilford
   Press.
 }
@@ -57,25 +57,25 @@
 ##
 
 # DINA Model
-d1 <- din(sim.dina, q.matr = sim.qmatrix, rule = "DINA",
-  conv.crit = 0.01, maxit = 500, progress = TRUE)
+d1 <- din(sim.dina, q.matr = sim.qmatrix, rule = "DINA",  conv.crit = 0.01, 
+            maxit = 500, progress = TRUE)
 summary(d1)
 
 # Mixed DINA and DINO Model
-d1b <- din(sim.dina, q.matr = sim.qmatrix, rule = 
-  c(rep("DINA", 7), rep("DINO", 2)), conv.crit = 0.01,
-  maxit = 500, progress = FALSE)
+d1b <- din(sim.dina, q.matr = sim.qmatrix, 
+           rule = c(rep("DINA", 7), rep("DINO", 2)), conv.crit = 0.01,
+           maxit = 500, progress = FALSE)
 summary(d1b)
 
 # DINO Model
 d2 <- din(sim.dina, q.matr = sim.qmatrix, rule = "DINO",
-  conv.crit = 0.01, maxit = 500, progress = FALSE)
+        conv.crit = 0.01, maxit = 500, progress = FALSE)
 summary(d2)
 
 # Comparison of DINA and DINO estimates
 lapply(list("guessing" = rbind("DINA" = d1$guess[,1],
-  "DINO" = d2$guess[,1]), "slipping" = rbind("DINA" = 
-  d1$slip[,1], "DINO" = d2$slip[,1])), round, 2)
+         "DINO" = d2$guess[,1]), "slipping" = rbind("DINA" = 
+          d1$slip[,1], "DINO" = d2$slip[,1])), round, 2)
 
 # Comparison of the information criteria
 c("DINA"=d1$AIC, "MIXED"=d1b$AIC, "DINO"=d2$AIC)
@@ -100,13 +100,13 @@ d3 <- din(sim.dino, q.matr = sim.qmatrix, rule = "DINO",
   conv.crit = 0.005, progress = FALSE)
 
 # Mixed DINA and DINO Model
-d3b <- din(sim.dino, q.matr = sim.qmatrix, rule = 
-  c(rep("DINA", 4), rep("DINO", 5)), conv.crit = 0.001, 
-  progress = FALSE)
+d3b <- din(sim.dino, q.matr = sim.qmatrix, 
+        rule = c(rep("DINA", 4), rep("DINO", 5)), conv.crit = 0.001, 
+        progress = FALSE)
                         
 # DINA Estimation
 d4 <- din(sim.dino, q.matr = sim.qmatrix, rule = "DINA",
-  conv.crit = 0.005, progress = FALSE)
+         conv.crit = 0.005, progress = FALSE)
             
 # Comparison of DINA and DINO estimates
 lapply(list("guessing" = rbind("DINO" = d3$guess[,1],
@@ -158,8 +158,8 @@ d7 <- din(sim.dina.bib, sim.qmatrix, rule = "DINO",
 
 # Comparison of DINA and DINO estimates
 lapply(list("guessing" = rbind("DINA" = d6$guess[,1],
-  "DINO" = d7$guess[,1]), "slipping" = rbind("DINA" =
-  d6$slip[,1], "DINO" = d7$slip[,1])), round, 2) }
+       "DINO" = d7$guess[,1]), "slipping" = rbind("DINA" =
+       d6$slip[,1], "DINO" = d7$slip[,1])), round, 2) }
 }
 
 \keyword{datasets}

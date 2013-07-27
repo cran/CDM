@@ -6,7 +6,8 @@ Tetrachoric Correlations between Attributes
 }
 \description{
 This function takes the results of \code{din} or \code{gdina} and
-computes tetrachoric correlations between attributes.
+computes tetrachoric correlations between attributes (see e.g. 
+Templin & Henson, 2006).
 }
 \usage{
 skill.cor(object)
@@ -27,9 +28,11 @@ Object of class \code{din} or \code{gdina}
 %%  \item{comp2 }{Description of 'comp2'}
 %% ...
 %}
-%\references{
-%% ~put references to the literature/web site here ~
-%}
+\references{
+Templin, J., & Henson, R. (2006). Measurement of psychological disorders 
+using cognitive diagnosis models. \emph{Psychological Methods}, 
+\bold{11}, 287-305.
+}
 %\author{
 %Alexander Robitzsch
 %}

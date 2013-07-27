@@ -10,10 +10,10 @@ and 15 items. The Q-matrix was defined in de la Torre (2009).
 }
 \usage{data(data.fraction1)}
 \format{
-This dataset comes as a list with the dataset (\code{data}) and
+This dataset is a list with the dataset (\code{data}) and
 the Q-matrix as entries. 
 
-The format is:
+The format is: \cr
 \code{List of 2} \cr
 \code{ $ data    :'data.frame':} \cr
 \code{  ..$ T01: int [1:536] 0 1 1 1 0 0 0 0 0 0 ...} \cr

@@ -22,9 +22,10 @@ Functions for cognitive diagnosis modeling
   \tabular{ll}{
     Package: \tab \pkg{CDM}\cr
     Type: \tab Package\cr
-    Version: \tab 1.5\cr
+    Version: \tab 2.01\cr
     Publication Year: \tab 2013\cr
-    License: \tab \acronym{GPL} (>= 2)
+    License: \tab \acronym{GPL} (>= 2) \cr
+    URL: \tab \url{https://sites.google.com/site/alexanderrobitzsch/software} \cr            
   }
   Cognitive diagnosis models (CDMs) are restricted latent class models.  
   They represent model-based classification approaches, which aim at
@@ -101,26 +102,27 @@ Functions for cognitive diagnosis modeling
   Bartolucci, F. (2007). A class of multidimensional IRT models for testing 
   unidimensionality and clustering items. \emph{Psychometrika}, \bold{72}, 141-157.
 
-  de la Torre, J., & Douglas, J. (2004) Higher-order latent trait models 
+  de la Torre, J., & Douglas, J. (2004). Higher-order latent trait models 
   for cognitive diagnosis. \emph{Psychometrika}, \bold{69}, 333--353.
 
-  de la Torre, J. (2011) The generalized {DINA} model framework. \emph{Psychometrika}, \bold{76}, 179--199.    
+  de la Torre, J. (2011). The generalized {DINA} model framework. 
+  \emph{Psychometrika}, \bold{76}, 179--199.    
 
-  DiBello, L. V., Roussos, L. A., & Stout, W. F. (2007) Review of
+  DiBello, L. V., Roussos, L. A., & Stout, W. F. (2007). Review of
   cognitively diagnostic assessment and a summary of psychometric models.
   In C. R. Rao and S. Sinharay (Eds.), \emph{Handbook of Statistics},
   Vol. 26 (pp. 979--1030). Amsterdam: Elsevier.
 
-  Junker, B. W., & Sijtsma, K. (2001) Cognitive assessment models with few  
+  Junker, B. W., & Sijtsma, K. (2001). Cognitive assessment models with few  
   assumptions, and connections with nonparametric item response theory.
   \emph{Applied Psychological Measurement}, \bold{25}, 258--272.
     
-  Rupp, A. A., & Templin, J. (2008) Unique characteristics of
+  Rupp, A. A., & Templin, J. (2008). Unique characteristics of
   diagnostic classification models: A comprehensive review of the current
   state-of-the-art. \emph{Measurement: Interdisciplinary Research and
   Perspectives}, \bold{6}, 219--262.
   
-  Rupp, A. A., Templin, J., & Henson, R. A. (2010) \emph{Diagnostic
+  Rupp, A. A., Templin, J., & Henson, R. A. (2010). \emph{Diagnostic
   Measurement: Theory, Methods, and Applications}. New York: The Guilford
   Press.
   

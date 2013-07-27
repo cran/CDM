@@ -14,7 +14,17 @@ a.robitzsch /-\ bifie.at
 
 
 --------------------------------------------------------------
-CDM 1.5 (2013-0x-xx)
+CDM 2.01 (2013-07-27)
+--------------------------------------------------------------
+
+x fixed a bug in gdm in multiple group estimation: group
+  labeling was incorrect and is now included in output group.stat
+  and displayed in summary.gdm
+x improved convergence behavior for multiple group analysis
+x accelerated calculation in gdm: skillspace reduction
+
+--------------------------------------------------------------
+CDM 1.5 (2013-07-09)
 --------------------------------------------------------------
 
 x allowed for centering of intercepts and slopes in gdm

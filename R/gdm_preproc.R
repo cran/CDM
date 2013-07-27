@@ -119,8 +119,9 @@
 				Q1[,,1] <- Qmatrix
 				Qmatrix <- Q1
 						}
-						}		
-	if ( is.vector(theta.k) ){
+						}
+	w1 <- ( is.vector( theta.k)  ) & ( ! is.list( theta.k) )	
+	if ( w1 ){
 #	if ( is.numeric(theta.k) ){
 			theta.k <- matrix( theta.k , ncol=1 )
 			if (D>1){
@@ -130,7 +131,7 @@
 					}
 						}	
 	if ( is.list( theta.k) ){
-			tk <- theta.k
+			tk <- theta.k	
 			theta.k <- expand.grid( theta.k )
 			colnames(theta.k) <- names(tk)
 								}

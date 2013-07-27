@@ -40,16 +40,16 @@
 }
 
 \source{
-  DeCarlo, L. T. (2011) On the Analysis of Fraction Subtraction Data:  
-  The DINA Model, Classification, Latent Class Sizes, and the Q-Matrix.
+  DeCarlo, L. T. (2011). On the analysis of fraction subtraction data:  
+  The DINA Model, classification, latent class sizes, and the Q-Matrix.
   \emph{Applied Psychological Measurement}, \bold{35}, 8--26.
 }
 
 \references{
-  de la Torre, J. and Douglas, J. (2004) Higher-order latent trait models 
+  de la Torre, J. and Douglas, J. (2004). Higher-order latent trait models 
   for cognitive diagnosis. \emph{Psychometrika}, \bold{69}, 333--353.
   
-  Tatsuoka, C. (2002) Data analytic methods for latent partially ordered classification 
+  Tatsuoka, C. (2002). Data analytic methods for latent partially ordered classification 
   models. \emph{Journal of the Royal Statistical Society, Series C, Applied Statistics}, 
   \bold{51}, 337--350.
   

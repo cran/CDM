@@ -64,7 +64,7 @@
 }
 
 \references{
-  Rupp, A. A., Templin, J. L., & Henson, R. A. (2010) \emph{Diagnostic
+  Rupp, A. A., Templin, J. L., & Henson, R. A. (2010). \emph{Diagnostic
   Measurement: Theory, Methods, and Applications}. New York: The Guilford
   Press.
 }

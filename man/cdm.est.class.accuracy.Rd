@@ -9,7 +9,8 @@ This function computes the classification accuracy and
 consistency by the method of Cui, Gierl and Chang (2012)
 and by simulation. The simulation function now only works 
 for models of class \code{din} (i.e. the mixed DINA and
-DINO model).
+DINO model) while the analytical method also works for
+objects of class \code{gdina}.
 }
 \usage{
 cdm.est.class.accuracy(cdmobj, n.sims = 0, seed = 987)
@@ -39,8 +40,7 @@ classification estimators.
 }
 \value{
 A data frame for MLE and MAP classification reliability with
-following columns
-%%  If it is a LIST, use
+following columns:
   \item{P_a}{Classification accuracy (Gierl et al., 2012)}
   \item{P_a_sim}{Classification accuracy based on simulated data}  
   \item{P_c}{Classification consistency (Gierl et al., 2012)}
@@ -48,7 +48,8 @@ following columns
 }
 \references{
 Cui, Y., Gierl, M. J., & Chang, H.-H. (2012). 
-Estimating classification consistency and accuracy for cognitive diagnostic assessment. 
+Estimating classification consistency and accuracy for cognitive 
+diagnostic assessment.  
 \emph{Journal of Educational Measurement}, \bold{49}, 19-38.
 }
 %\author{
@@ -64,8 +65,9 @@ Estimating classification consistency and accuracy for cognitive diagnostic asse
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
 \examples{
-######################################
-# DINO data example
+#############################################################################
+# EXAMPLE 1: DINO data example
+#############################################################################
 
 # estimate DINO model
 mod <- din( sim.dino , q.matrix = sim.qmatrix , rule="DINO")

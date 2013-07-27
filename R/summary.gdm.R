@@ -2,21 +2,15 @@
 # Summary for gdm object
 summary.gdm <- function( object , ... ){
     # object      ... object from rasch.mml                #
-    cat("---------------------------------------------------------------------------------------------------------- \n")
+    cat("-----------------------------------------------------------------------------\n")
     d1 <- packageDescription("CDM")
 	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n\n" )	
 	cat( "Date of Analysis:" , paste( object$time$s2 ) , "\n" )
 	cat("Computation Time:" , print(object$time$s2 - object$time$s1), "\n\n")
     cat("General Diagnostic Model \n\n")
 	modeltype <- object$irtmodel
-# 	if (object$modeltype %in% c("MLC1","MLC2") ){
-#		if (modeltype=="MLC1"){
-#				cat("Multidimensional Latent Class Rasch Model with\n     " )
-#							}
-#		if (modeltype=="MLC2"){
-#				cat("Multidimensional Latent Class 2PL Model with\n     " )
-#							}
-		cat( "   " , object$N , "Cases, " , object$I , "Items, " , object$G , "Group(s)", "," ,
+
+	cat( "   " , object$N , "Cases, " , object$I , "Items, " , object$G , "Group(s)", "," ,
 				object$D , "Dimension(s)\n")  
 
 				
@@ -32,8 +26,13 @@ summary.gdm <- function( object , ... ){
 	if (object$skillspace=="est" ){
 		cat("    Saturated skill space with estimated trait grid\n" ) 
 					}
-					
-    cat("---------------------------------------------------------------------------------------------------------- \n")
+
+    if (object$G > 1 ){					
+		# group statistics
+		cat("\nGroup statistics\n")
+		print( object$group.stat )	
+					}
+    cat("\n-----------------------------------------------------------------------------\n")
 	cat( "Number of iterations =" , object$iter , "\n" )
     cat( "Deviance = " , round( object$deviance , 2 ) , " | " )
     cat( "Log Likelihood = " , round( -object$deviance/2 , 2 ) , "\n" )	
@@ -56,7 +55,7 @@ summary.gdm <- function( object , ... ){
     cat( "CAIC = " , round( object$ic$CAIC , 2 ) ," | penalty =" , round( object$ic$CAIC - object$ic$deviance ,2 ) )
 		cat("   | CAIC = -2*LL + [log(n)+1]*p  (consistent AIC)\n\n" )   
 
-	cat("---------------------------------------------------------------------------------------------------------- \n")
+    cat("-----------------------------------------------------------------------------\n")
 	cat("Trait Distribution\n")
 	obji <- object$pi.k
 	cat( "\nM Trait:\n" ) 
@@ -84,7 +83,7 @@ summary.gdm <- function( object , ... ){
 			}
 	cat( "\nEAP Reliability:\n" ) 
 	print( round( t(object$EAP.rel ), 3 ) ) 	
-		cat("---------------------------------------------------------------------------------------------------------- \n")
+		    cat("-----------------------------------------------------------------------------\n")
 		cat("Item Parameters \n")
 		obji <- object$item
 		obji[,-1] <- round( obji[,-1] , 3)

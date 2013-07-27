@@ -1,8 +1,8 @@
 Package: CDM
 Type: Package
 Title: Cognitive Diagnosis Modeling
-Version: 1.5-12
-Date: 2013-07-09
+Version: 2.01-11
+Date: 2013-07-27
 Author: Alexander Robitzsch [aut, cre], Thomas Kiefer [aut], 
      Ann Cathrice George [aut], Ali Uenlue [aut]
 Maintainer: Alexander Robitzsch <a.robitzsch@bifie.at>
@@ -22,7 +22,7 @@ LazyLoad: yes
 LazyData: yes
 License: GPL (>= 2)
 URL: https://sites.google.com/site/alexanderrobitzsch/software
-Packaged: 2013-07-09 11:21:16 UTC; robitzsch
+Packaged: 2013-07-27 14:16:11 UTC; robitzsch
 NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2013-07-09 14:01:56
+Date/Publication: 2013-07-27 17:30:37

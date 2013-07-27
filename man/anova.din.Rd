@@ -14,7 +14,9 @@ or \code{gdm} using a likelihood ratio test.
 }
 \usage{
 \method{anova}{din}(object,object1,\dots)
+
 \method{anova}{gdina}(object,object1,\dots)
+
 \method{anova}{gdm}(object,object1,\dots)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -55,8 +57,9 @@ Further arguments to be passed
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
 \examples{
-#################################
-# anova with din objects
+#############################################################################
+# EXAMPLE 1: anova with din objects
+#############################################################################
 
 # Model 1
 d1 <- din(sim.dina, q.matr = sim.qmatrix )
@@ -70,8 +73,9 @@ anova(d1,d2)
 ##   1 Model 1 -2042.378 4084.756    25 4134.756 4234.543       NA NA NA
 
 \dontrun{
-#################################
-# anova with gdina objects
+#############################################################################
+# EXAMPLE 2: anova with gdina objects
+#############################################################################
 
 # Model 3: GDINA model
 d3 <- gdina( sim.dina, q.matr = sim.qmatrix )

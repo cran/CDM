@@ -43,7 +43,7 @@ attributes in noncompensatory diagnostic classification.}
 Zhang, S. S., DeCarlo, L. T., & Ying, Z. (2013). 
 Non-identifiability, equivalence classes, and attribute-specific classification 
 in Q-matrix based cognitive diagnosis models. 
-\emph{arXiv preprint arXiv:1303.0426}.
+\emph{arXiv preprint}, \emph{arXiv:1303.0426}.
 }
 %\author{
 %Ann Cathrice George, Alexander Robitzsch

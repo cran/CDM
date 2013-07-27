@@ -198,7 +198,7 @@ The estimation follows an EM algorithm as described in von Davier and
 Yamamoto (2004) and von Davier (2008)
 
 In case of \code{skillspace="est"}, the \eqn{\bold{\theta}} vectors 
-(the grid of the theta distribution) is estimated (Bartolucci, 2007;
+(the grid of the theta distribution) are estimated (Bartolucci, 2007;
 Bacci, Bartolucci & Gnaldi, 2012). This model is called a multidimensional
 latent class item response model.
 }
@@ -248,7 +248,8 @@ following entries:
 \item{delta}{Parameter estimates for skillspace representation}
 \item{covdelta}{Covariance matrix of parameter estimates for
       skillspace representation}
-\item{data}{Original dataframe}
+\item{data}{Original data frame}
+\item{group.stat}{Group statistics (sample sizes, group labels)}
 \item{p.xi.aj}{Individual likelihood}
 \item{posterior}{Individual posterior distribution}
 \item{skill.levels}{Number of skill levels per dimension}
@@ -274,7 +275,7 @@ following entries:
 \references{	
 Bacci, S., Bartolucci, F., & Gnaldi, M. (2012). 
 A class of Multidimensional Latent Class IRT models for ordinal 
-polytomous item responses. \emph{arXiv preprint}, arXiv:1201.4667.
+polytomous item responses. \emph{arXiv preprint}, \emph{arXiv:1201.4667}.
 	
 Bartolucci, F. (2007). A class of multidimensional IRT models for testing 
 unidimensionality and clustering items. \emph{Psychometrika}, \bold{72}, 141-157.
@@ -318,10 +319,10 @@ and \pkg{sirt} packages.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \examples{
-###################################################################
+#############################################################################
 # EXAMPLE 1: Fraction Dataset 1
 #      Unidimensional Models for dichotomous data
-###################################################################
+#############################################################################
 
 data( data.fraction1 )
 dat <- data.fraction1$data
@@ -379,10 +380,10 @@ theta.k <- c(-.5,.5)
 mod7 <- gdm( dat , irtmodel="2PL" , theta.k=theta.k , skillspace="loglinear" )
 summary(mod7)
 
-###################################################################
+#############################################################################
 # EXAMPLE 2: Cultural Activities - data.Students
 #      Unidimensional Models for polytomous data
-###################################################################
+#############################################################################
 
 data( data.Students )
 dat <- data.Students[ , grep( "act" , colnames(data.Students) ) ]
@@ -454,10 +455,10 @@ mod7b <- gdm( dat0 , irtmodel="2PLcat" , theta.k=theta.k ,
             standardized.latent=TRUE , decrease.increments=TRUE )        
 summary(mod7b)
 
-###################################################################
+#############################################################################
 # EXAMPLE 3: Fraction Dataset 2
 #      Multidimensional Models for dichotomous data
-###################################################################
+#############################################################################
 
 data( data.fraction2 )
 dat <- data.fraction2$data
@@ -522,9 +523,9 @@ mod7 <- gdm( dat , irtmodel="2PL" , theta.k=theta.k ,
             skillspace="loglinear" , maxiter=400)
 summary(mod7)
 
-#################################################################
+#############################################################################
 # SIMULATED EXAMPLE 4: Unidimensional latent class 1PL IRT model
-#################################################################
+#############################################################################
 
 # simulate data
 set.seed(754)
@@ -541,9 +542,9 @@ mod1 <- gdm( dat , theta.k = theta.k , skillspace="est" , irtmodel="1PL",
         centerintercepts=TRUE , maxiter=200)
 summary(mod1)
 
-#################################################################
+#############################################################################
 # SIMULATED EXAMPLE 5: Multidimensional latent class IRT model
-#################################################################
+#############################################################################
 
 # simulate data
 set.seed(754)

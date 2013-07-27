@@ -78,15 +78,13 @@
 }
 
 \references{
-  
-  Lee, Y.-S., de la Torre, J. and Park, Y. S. (2012). Relationships between 
+  Lee, Y.-S., de la Torre, J., & Park, Y. S. (2012). Relationships between 
   cognitive diagnosis, CTT, and IRT indices: An empirical investigation.
     \emph{Asia Pacific Educational Research}, \bold{13}, 333-345.
 
-  Rupp, A. A., Templin, J. L. and Henson, R. A. (2010) \emph{Diagnostic
+  Rupp, A. A., Templin, J. L., & Henson, R. A. (2010) \emph{Diagnostic
   Measurement: Theory, Methods, and Applications}.  New York: The Guilford
   Press.
-  
 }
 
 \seealso{

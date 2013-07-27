@@ -6,7 +6,8 @@ RMSEA Item Fit
 }
 \description{
 This function estimates a chi squared based measure of item fit
-in cognitive diagnosis models as implemented in mdltm (von Davier, 2005;
+in cognitive diagnosis models similar to the RMSEA itemfit 
+implemented in mdltm (von Davier, 2005;
 cited in Kunina-Habenicht, Rupp & Wilhelm, 2009).
 }
 \usage{
@@ -27,9 +28,24 @@ An array of four dimensions: Classes x Items x Categories x Groups
 An optional vector of item names. Default is \code{NULL}.
 }
 }
-%\details{
-%%  ~~ If necessary, more details than the description above ~~
-%}
+\details{
+For item \eqn{i}, the RMSEA itemfit in this function is calculated
+as follows:
+\deqn{ RMSEA_i = \sqrt{ \sum_k \sum_c P ( \bold{\theta}_c)
+    \left( P_i ( \bold{\theta}_c ) -
+\frac{n_{ikc}}{N_{ic}} \right)^2 } }
+where \eqn{c} denotes the class of the skill vector 
+\eqn{\bold{\theta}}, \eqn{k} is the item category,
+\eqn{P ( \bold{\theta}_c)} is the estimated class probability 
+of \eqn{\bold{\theta}_c}, 
+\eqn{P_i} is the estimated item response function,
+\eqn{n_{ikc}} is the expected number of students with
+skill \eqn{\bold{\theta}_c} on
+item \eqn{i} in category \eqn{k} and 
+\eqn{N_{ic}} is the expected number of students with
+skill \eqn{\bold{\theta}_c} on
+item \eqn{i}.
+}
 \value{
 A list with two entries:
 \item{rmsea}{Vector of RMSEA item statistics}
@@ -42,7 +58,7 @@ Comparing results from confirmatory factor analysis and diagnostic classificatio
 \emph{Studies in Educational Evaluation}, \bold{35}, 64--70.
 
 von Davier, M. (2005). \emph{A general diagnostic model applied to language 
-testing data}, Research Report RR-05-16. ETS, Princeton, NJ: ETS.
+testing data}. ETS Research Report RR-05-16. ETS, Princeton, NJ: ETS.
 }
 %\author{
 %Alexander Robitzsch

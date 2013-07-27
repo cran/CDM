@@ -58,7 +58,7 @@ gdina(data, q.matrix, conv.crit=0.0001, dev.crit=.1 ,  maxit=1000,
 \item{Mj}{
 A list of design matrices and labels for each item. 
 The definition of \code{Mj} follows the
-defintion of \eqn{M_j} in de la Torre (2011). 
+definition of \eqn{M_j} in de la Torre (2011). 
 Please study the value \code{Mj} of the function in 
 default analysis. See Example 3.
 }
@@ -159,7 +159,8 @@ An optional vector of sample weights.
             \delta_{j2} \alpha_{n2} + \delta_{j12} \alpha_{n1} \alpha_{n2}
         }
 which is a two-way GDINA-model (the \code{rule="GDINA2"} specification) with a 
-link function \eqn{g}. If the specification
+link function \eqn{g} (which can be the identity, logit or logarithmic link). 
+If the specification
 \code{ACDM} is chosen, then \eqn{\delta_{j12}=0}. 
 The DINA model (\code{rule="DINA"}) assumes \eqn{ \delta_{j1} = \delta_{j2} = 0}.
 
@@ -238,6 +239,7 @@ An object of class \code{gdina} with following entries
 \item{iter}{Number of iterations}
 \item{rrum.params}{Parameters in the parametrization of the reduced RUM model
 	if \code{rule="RRUM"}.}
+\item{group.stat}{Group statistics (sample sizes, group labels)}                
 \item{HOGDINA}{The used value of \code{HOGDINA}}
 \item{a.attr}{Attribute parameters \eqn{a_k} in case of \code{HOGDINA>=0}}
 \item{b.attr}{Attribute parameters \eqn{b_k} in case of \code{HOGDINA>=0}}
@@ -255,7 +257,7 @@ An object of class \code{gdina} with following entries
   de la Torre, J., & Douglas, J. A. (2004). Higher-order latent trait models 
   for cognitive diagnosis. \emph{Psychometrika}, \bold{69}, 333-353.
 	
-  de la Torre, J. (2011) The generalized {DINA} model framework. 
+  de la Torre, J. (2011). The generalized {DINA} model framework. 
   \emph{Psychometrika}, \bold{76}, 179--199.    
   
   Xu, X., & von Davier, M. (2008). \emph{Fitting the structured general diagnostic
@@ -291,10 +293,10 @@ See \code{\link{sim.gdina}} for simulating the GDINA model.
 
 
 \examples{
-###################################################################
+#############################################################################
 # EXAMPLE 1: Simulated DINA data
 #    different condensation rules 
-###################################################################
+#############################################################################
 data(sim.dina)
 
 #***
@@ -341,11 +343,11 @@ summary(mod7)
 mod8 <- gdina( data = sim.dina, q.matrix = sim.qmatrix, maxit=100,  HOGDINA=0)
 summary(mod8)
 
-###################################################################
+#############################################################################
 # EXAMPLE 2: Simulated DINO data
 #    additive cognitive diagnosis model
 #    with different link functions
-###################################################################
+#############################################################################
 
 #***
 # Model 1: additive cognitive diagnosis model (ACDM; identity link)
@@ -377,9 +379,9 @@ rule[9] <- "DINA"   # 9th item: DINA model
 mod4 <- gdina( data=sim.dino, q.matrix=sim.qmatrix, rule=rule )
 summary(mod4)
 
-###################################################################
+#############################################################################
 # EXAMPLE 3: Model with user-specified design matrices
-###################################################################
+#############################################################################
 
 # do a preliminary analysis and modify obtained design matrices
 mod0 <- gdina( data = sim.dino ,  q.matrix = sim.qmatrix ,  maxit=1)
@@ -417,9 +419,9 @@ mod <- gdina( data = sim.dino ,  q.matrix = sim.qmatrix ,
                     Mj = Mj.user ,  maxit=200 )
 summary(mod)
 
-###################################################################
+#############################################################################
 # EXAMPLE 4: Design matrix for delta parameters
-###################################################################
+#############################################################################
 
 #~~~
 # estimate an initial model
@@ -450,9 +452,9 @@ mod2 <- gdina( data = sim.dino ,  q.matrix = sim.qmatrix ,  rule="ACDM" ,
             maxit=100 , linkfct = "logit")
 summary(mod2)            
 
-###################################################################
+#############################################################################
 # SIMULATED EXAMPLE 5: Multiple group estimation
-###################################################################
+#############################################################################
 
 # simulate data
 set.seed(9279)
@@ -478,9 +480,9 @@ mod2 <- gdina( data = dat , q.matrix = q.matrix ,
                 group= group , rule="DINA")
 summary(mod2)                       
 
-###################################################################
+#############################################################################
 # EXAMPLE 6: User specified reduced skill space
-###################################################################
+#############################################################################
 
 #   Some correlations between attributes should be set to zero.
 q.matrix <- expand.grid( c(0,1) , c(0,1) , c(0,1) , c(0,1) )
@@ -517,8 +519,6 @@ mod3 <- gdina( data=dat , q.matrix = q.matrix ,
         Z.skillspace=Z.skillspace , rule="DINA")
 summary(mod1); summary(mod2); summary(mod3)}
 }
-
-
 
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

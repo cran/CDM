@@ -9,7 +9,9 @@
 }
 \usage{
 \method{coef}{din}(object, \dots)
+
 \method{coef}{gdina}(object, \dots)
+
 \method{coef}{gdm}(object, \dots)
 }
 

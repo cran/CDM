@@ -12,6 +12,7 @@ based on comparing observed and expected frequencies of item pairs.
 }
 \usage{
 modelfit.cor(data, posterior, probs)
+
 modelfit.cor.din( dinobj )
 }
 %- maybe also 'usage' for other objects documented here.
@@ -50,7 +51,7 @@ Chen, W., & Thissen, D. (1997). Local dependence indexes for item pairs
  using item response theory. \emph{Journal of Educational and Behavioral Statistics},
  \bold{22}, 265-289.
 
-  DiBello, L. V., Roussos, L. A., & Stout, W. F. (2007) Review of
+  DiBello, L. V., Roussos, L. A., & Stout, W. F. (2007). Review of
   cognitively diagnostic assessment and a summary of psychometric models.
   In C. R. Rao and S. Sinharay (Eds.), \emph{Handbook of Statistics},
   Vol. 26 (pp. 979--1030). Amsterdam: Elsevier.

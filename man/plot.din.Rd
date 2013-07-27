@@ -104,11 +104,11 @@
 %              Ali Uenlue <ali.uenlue@tum.de>
 %}
 
-\references{
-  Rupp, A. A., Templin, J. L., & Henson, R. A. (2010) \emph{Diagnostic
-  Measurement: Theory, Methods, and Applications}. New York: The Guilford
-  Press.
-}
+% \references{
+%  Rupp, A. A., Templin, J. L., & Henson, R. A. (2010). \emph{Diagnostic
+%  Measurement: Theory, Methods, and Applications}. New York: The Guilford
+%  Press.
+%}
 
 \seealso{
   \code{\link{print.din}}, the S3 method for printing objects of

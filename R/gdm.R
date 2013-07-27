@@ -113,21 +113,35 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 	# arrange groups
 	if ( is.null(group)){ 
 		G <- 1 
-		group <- rep(1,n)
+		group0 <- group <- rep(1,n)
 				} 
 			else {
-		gr2 <- unique( sort(paste( group ) ))
+		group0 <- group
+	  if( ! ( is.numeric(group) ) ){
+			gr2 <- unique( sort(paste( group ) ))
+			    } else {
+		gr2 <- unique( sort( group ) )
+						}
 		G <- length(gr2)
 		group <- match( group , gr2 )
 							}
-	Ngroup <- aggregate( 1+0*group , list(group) , sum )[,2] 							
+	group.stat <- NULL
+	if (G>1){
+		a1 <- aggregate( 1+0*group , list(group) , sum )
+	#    a2 <- aggregate( group0 , list(group) , mean )
+		a2 <- rep("",G)
+		for (gg in 1:G){
+			a2[gg] <- group0[ which( group == gg )[1]  ]
+						}
+		group.stat <- cbind( a2 , a1 )
+		colnames(group.stat) <- c(  "group.orig" , "group" , "N"  )
+	    Ngroup <- a1[,2]		
+			}	
+    if (G==1){ Ngroup <- length(group) }
 	# theta design
 	res <- .gdm.thetadesign( theta.k , thetaDes , Qmatrix )
 	.attach.environment( res , envir=e1 )
-
 	
-#print("p200")	
-		
 	#****
 	# arrange b parameters and starting values
 	b <- matrix( 0 , nrow=I , ncol=K )	
@@ -143,7 +157,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 #		b.constraint[ 1 , 3 ] <- 0
 #					}
 
-#print("p300")						
+# print("p300")						
 
 	#****
 	# item slope matrix
@@ -164,6 +178,8 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 
 #	res <- .gdm.constraints.itempars2( b.constraint , a.constraint , K , TD ,I , dat )	
 #	.attach.environment( res , envir=e1 )	
+
+# print("p320")
 	
 	# starting values for distributions
 	Sigma <- diag(1,D)
@@ -173,6 +189,8 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 	pi.k <- matrix( 0 , TP , G )
 	for (gg in 1:G){ pi.k[,gg] <- pik }
 	n.ik <- array( 0 , dim=c(TP,I,K+1,G) )	
+
+# print("p340")
 	
 	#***
 	# response patterns
@@ -235,7 +253,9 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 						}   # end gg
 			dat.ind2[[kk]] <- l1
 					}
-	
+
+# print("p400")					
+					
 	#---
 	# initial values algorithm
 	dev <- 0	; iter <- 0
@@ -254,13 +274,13 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 		delta0 <- delta ; pi.k0 <- pi.k
 
 		
- #z0 <- Sys.time()
+# z0 <- Sys.time()
  		
 		#****
 		#1 calculate probabilities
 		probs <- .gdm.calc.prob( a,b,thetaDes,Qmatrix,I,K,TP,TD)
  
- # cat("calc.prob") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1		
+#  cat("calc.prob") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1		
  
  
 		#*****
@@ -273,7 +293,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 					 thetasamp.density= NULL , snodes=0 )	
 		p.xi.aj <- res.hwt$hwt 	
 
- #cat("calc.like") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1	
+# cat("calc.like") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1	
 		
 		#*****
 		#3 calculate posterior and marginal distributions
@@ -283,7 +303,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 		pi.k <- res$pi.k
 
 
- #cat("calc.post") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1	
+# cat("calc.post") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1	
 		
 		#*****
 		#4 calculate expected counts
@@ -294,7 +314,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 		n.ik <- res$n.ik
 		N.ik <- res$N.ik
 
- #cat("calc.counts") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1		
+# cat("calc.counts") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1		
 
 		#*****
 		#5 M step: b parameter estimation
@@ -331,7 +351,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 					}
 						}	
 			
- #cat("est a") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1		
+# cat("est a") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1		
 						
 		#*****
 		#7 M step: estimate reduced skillspace
@@ -387,7 +407,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 							}
 		dev <- -2*ll	
 
-# cat("calc LL") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1		
+#  cat("calc LL") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1		
 
 		#~~~~~~~~~~~~~~~~~~~~~~~~~~
 		# display progress		
@@ -444,6 +464,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 	res <- .gdm.person.parameters( data , D , theta.k , p.xi.aj , p.aj.xi , weights )	
 	.attach.environment( res , envir=e1 )
 	
+	
 	#*************************
 	# collect output	
 	s2 <- Sys.time()
@@ -457,7 +478,8 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 				"skewness.trait" = skewness.trait , "correlation.trait" = correlation.trait , 
 				"pjk" = probs , "n.ik" = n.ik ,  
 				"G"=G , "D"=D , "I" = ncol(data) , "N" = nrow(data) , 
-				"delta" = delta , "covdelta"=covdelta , "data" = data )
+				"delta" = delta , "covdelta"=covdelta , "data" = data ,
+				"group.stat"=group.stat )
 	res$p.xi.aj <- p.xi.aj ; res$posterior <- p.aj.xi 
 	res$skill.levels <- skill.levels
 	res$K.item <- K.item

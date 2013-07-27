@@ -10,7 +10,9 @@
 }
 \usage{
 \method{logLik}{din}(object, \dots)
+
 \method{logLik}{gdina}(object, \dots)
+
 \method{logLik}{gdm}(object, \dots)
 }
 

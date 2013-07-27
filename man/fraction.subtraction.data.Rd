@@ -8,7 +8,7 @@
 }
 
 \description{
-  \cite{Tatsuoka's (1984)} fraction subtraction data set is comprised of 
+  Tatsuoka's (1984) fraction subtraction data set is comprised of 
   responses to \eqn{J=20} fraction subtraction test items from \eqn{N=536} 
   middle school students.  
 }
@@ -40,19 +40,19 @@
   The Royal Statistical Society Datasets Website, Series C, 
   Applied Statistics, Data analytic methods for latent partially
   ordered classification models:\cr
-  URL: http://www.blackwellpublishing.com/rss/Volumes/Cv51p2_read2.htm
+  URL: \url{http://www.blackwellpublishing.com/rss/Volumes/Cv51p2_read2.htm}
 }
 
 \references{
-  DeCarlo, L. T. (2011) On the Analysis of Fraction Subtraction Data:  
-  The DINA Model, Classification, Latent Class Sizes, and the Q-Matrix.
+  DeCarlo, L. T. (2011). On the analysis of fraction subtraction data:  
+  The DINA Model, classification, latent class sizes, and the Q-Matrix.
   \emph{Applied Psychological Measurement}, \bold{35}, 8--26.
   
-  Tatsuoka, C. (2002) Data analytic methods for latent partially ordered classification 
+  Tatsuoka, C. (2002). Data analytic methods for latent partially ordered classification 
   models. \emph{Journal of the Royal Statistical Society, Series C, Applied Statistics}, 
   \bold{51}, 337--350.
   
-  Tatsuoka, K. (1984) \emph{Analysis of errors in fraction addition and subtraction 
+  Tatsuoka, K. (1984). \emph{Analysis of errors in fraction addition and subtraction 
   problems}. Final Report for NIE-G-81-0002, University of Illinois, Urbana-Champaign.
 }
 

@@ -111,9 +111,6 @@
   for solving item \eqn{j} is calculated as a function of the respondent's latent response \eqn{\eta_{nj}}{eta_{nj}}
   and the guessing and slipping rates \eqn{g_j} and \eqn{s_j} for item
   \eqn{j} conditional on the respondent's skill class \eqn{\alpha_n}{alpha_n}:
-%  \deqn{P_j(\alpha_n) = P(X_{nj} = 1 | \alpha_n) = g_j^{(1- \eta_{nj})}
-%  (1 - s_j) ^{\eta_{nj}}.  }{P_j(alpha_n) = P(X_{nj} = 1 | alpha_n) = g_j^{(1- eta_{nj})}
-%  (1 - s_j) ^{eta_{nj}}.  }
    \deqn{ P(X_{nj} = 1 | \alpha_n) = g_j^{(1- \eta_{nj})}(1 - s_j) ^{\eta_{nj}}.  }
   The respondent's latent response (class) \eqn{\eta_{nj}}{eta_{nj}} is a binary number,
   0 or 1, indicating absence or presence of all (\code{rule = "DINO"}) 
@@ -201,11 +198,11 @@
 }
 
 \references{
-  de la Torre, J. (2009) DINA model parameter estimation:
+  de la Torre, J. (2009). DINA model parameter estimation:
   A didactic. \emph{Journal of Educational and Behavioral
   Statistics}, \bold{34}, 115--130.
   
-  de la Torre, J., & Douglas, J. (2004) Higher-order latent trait models 
+  de la Torre, J., & Douglas, J. (2004). Higher-order latent trait models 
   for cognitive diagnosis. \emph{Psychometrika}, \bold{69}, 333--353.    
 
   Lee, Y.-S., de la Torre, J., & Park, Y. S. (2012). 
@@ -213,11 +210,11 @@
   An empirical investigation.
     \emph{Asia Pacific Educational Research}, \bold{13}, 333-345.
 
-  Rupp, A. A., Templin, J., & Henson, R. A. (2010) \emph{Diagnostic
+  Rupp, A. A., Templin, J., & Henson, R. A. (2010). \emph{Diagnostic
   Measurement: Theory, Methods, and Applications}.  New York: The Guilford
   Press.
   
-  Templin, J., & Henson, R. (2006) Measurement of
+  Templin, J., & Henson, R. (2006). Measurement of
   psychological disorders using cognitive diagnosis
   models. \emph{Psychological Methods}, \bold{11}, 287--305.
 }
@@ -414,7 +411,6 @@ d2b <- din( data = sim.dina , q.matrix = sim.qmatrix ,
             guess.equal = TRUE , slip.equal = TRUE )
 d2b$coef
 
-
 ##
 ## (3) examples based on dataset sim.dino
 ##
@@ -456,7 +452,6 @@ d5 <- din(sim.dina, sim.qmatrix, rule = "DINA", conv.crit =
 # Comparison of the information criteria
 c("DINA"=d1$AIC, "WEIGHTS"=d5$AIC)
 
-
 ##
 ## (5) example estimation within a Balanced Incomplete 
 ##     Block (BIB) Design generated on dataset sim.dina
@@ -472,7 +467,6 @@ sim.dina.bib <- sim.dina
 sim.dina.bib[1:100, 1:3] <- NA
 sim.dina.bib[101:300, 4:8] <- NA
 sim.dina.bib[301:400, c(1,2,9)] <- NA
-
 
 d6 <- din(sim.dina.bib, sim.qmatrix, rule = "DINA", 
   conv.crit = 0.0005, weights = weights, maxit=200)
