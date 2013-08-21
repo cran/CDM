@@ -1,6 +1,5 @@
 #######################################
-# attach all elements in an environment 
-  
+# attach all elements in an environment   
 .attach.environment <- function( res , envir ){
 #	e1 <- environment()
 	CC <- length(res)

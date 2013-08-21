@@ -31,12 +31,12 @@ An optional vector of item names. Default is \code{NULL}.
 \details{
 For item \eqn{i}, the RMSEA itemfit in this function is calculated
 as follows:
-\deqn{ RMSEA_i = \sqrt{ \sum_k \sum_c P ( \bold{\theta}_c)
+\deqn{ RMSEA_i = \sqrt{ \sum_k \sum_c \pi ( \bold{\theta}_c)
     \left( P_i ( \bold{\theta}_c ) -
 \frac{n_{ikc}}{N_{ic}} \right)^2 } }
 where \eqn{c} denotes the class of the skill vector 
 \eqn{\bold{\theta}}, \eqn{k} is the item category,
-\eqn{P ( \bold{\theta}_c)} is the estimated class probability 
+\eqn{\pi ( \bold{\theta}_c)} is the estimated class probability 
 of \eqn{\bold{\theta}_c}, 
 \eqn{P_i} is the estimated item response function,
 \eqn{n_{ikc}} is the expected number of students with

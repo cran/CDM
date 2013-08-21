@@ -11,7 +11,9 @@ summary.gdina <- function( object , rdigits = 4 , ... ){
 	# Parameter summary
     cat("---------------------------------------------------------------------------------------------------------- \n")
 	d1 <- packageDescription("CDM")
-	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n" )		
+	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n" )	
+	cat( "Date of Analysis:" , paste( object$time$s2 ) , "\n" )
+	cat("Computation Time:" , print(object$time$s2 - object$time$s1), "\n\n")	
     if (object$HOGDINA==-1){ 
 		cat("Generalized DINA Model \n") } else {
 		cat("Higher Order Generalized DINA Model \n") }
@@ -64,22 +66,22 @@ summary.gdina <- function( object , rdigits = 4 , ... ){
 		print( round( object$rrum.params,3) , na  ="")
 		cat("\n")
 					}
-
 	
 	cat("----------------------------------------------------------------------------\n")
 	cat("\nSkill Probabilities \n\n")
 	print(round(object$skill.patt ,rdigits) )
-	if ( ( object$G == 1 ) & (ncol(object$q.matrix ) > 1 )){ 
+	if ( ( object$G == 1 ) & (ncol(object$q.matrix ) > 1 ) & 
+			max(object$NAttr ==2 ) ){ 
 		cat("----------------------------------------------------------------------------\n")
 		cat("\nTetrachoric Correlations \n\n")
 		gt1 <- skill.cor( object )
 		print(round(gt1$cor.skills,3))
 			}
-		cat("\n----------------------------------------------------------------------------\n")	
-		cat("\nSkill Pattern Probabilities \n\n")
-		xt <- round( object$attribute.patt[,1] , rdigits )
-		names(xt) <- rownames( object$attribute.patt )
-		print(xt)
+	cat("\n----------------------------------------------------------------------------\n")	
+	cat("\nSkill Pattern Probabilities \n\n")
+	xt <- round( object$attribute.patt[,1] , rdigits )
+	names(xt) <- rownames( object$attribute.patt )
+	print(xt)
 
 		if (object$HOGDINA>=0){
 			cat("\n***************************\n")	

@@ -35,16 +35,20 @@ Probabilities as an array: [items,categories,attribute classes]
 \value{
 A list with following entries
 %%  If it is a LIST, use
-  \item{modelfit}{Model fit statistics: \cr
+  \item{modelfit}{Model fit statistics:
+  	  
    \code{MADcor}: mean of absolute deviations in observed and expected correlations 
-        (DiBello et al., 2007)  \cr
-    \code{MX2}: Mean of \eqn{\chi^2} statistics of all item pairs (Chen & Thissen, 1997) \cr
-    \code{MADRESIDCOV}: Mean of absolute deviations of residual covariances (McDonald & Mok, 1995) \cr
+        (DiBello et al., 2007) 
+        
+    \code{MX2}: Mean of \eqn{\chi^2} statistics of all item pairs 
+    (Chen & Thissen, 1997)
+    
+    \code{MADRESIDCOV}: Mean of absolute deviations of residual covariances
+    (McDonald & Mok, 1995) 
     \code{MADQ3}: Mean of absolute values of \eqn{Q_3} statistic (Yen, 1984)
             }
   \item{itempairs}{Fit of itempairs}
   \item{pfit}{Fit of single fit with respect to the observed proportions}  
-%% ...
 }
 \references{
 Chen, W., & Thissen, D. (1997). Local dependence indexes for item pairs 

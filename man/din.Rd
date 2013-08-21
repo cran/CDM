@@ -5,13 +5,13 @@
 \concept{binary response data}
 
 \title{
-  Main Function for Parameter Estimation in Cognitive Diagnosis Models
+  Parameter Estimation for Mixed DINA/DINO Model
 }
 
 \description{
 	\code{din} provides parameter estimation for cognitive
 	diagnosis models of the types ``DINA'', ``DINO'' and ``mixed DINA 
-  and DINO''.  It is the main function of this package.  
+  and DINO''.
 }
 
 \usage{
@@ -108,7 +108,8 @@
   Henson, 2006) models endorsement probabilities are modeled 
   based on guessing and slipping parameters, given the different skill
   classes.  The probability of respondent \eqn{n} (or corresponding respondents class \eqn{n}) 
-  for solving item \eqn{j} is calculated as a function of the respondent's latent response \eqn{\eta_{nj}}{eta_{nj}}
+  for solving item \eqn{j} is calculated as a function of the 
+  respondent's latent response \eqn{\eta_{nj}}{eta_{nj}}
   and the guessing and slipping rates \eqn{g_j} and \eqn{s_j} for item
   \eqn{j} conditional on the respondent's skill class \eqn{\alpha_n}{alpha_n}:
    \deqn{ P(X_{nj} = 1 | \alpha_n) = g_j^{(1- \eta_{nj})}(1 - s_j) ^{\eta_{nj}}.  }

@@ -11,9 +11,9 @@
 \description{
 Functions for cognitive diagnosis modeling
     and multidimensional item respose modeling for dichotomous
-    and polytomous data.This package implements parameter 
+    and polytomous data. This package implements parameter 
     estimation procedures for the DINA, DINO,  the multiple
-    group GDINA model and the general diagnostic model (GDM)
+    group (polytomous) GDINA model and the general diagnostic model (GDM)
     which contains the multidimensional linear compensatory
     item response model.
 }
@@ -22,7 +22,7 @@ Functions for cognitive diagnosis modeling
   \tabular{ll}{
     Package: \tab \pkg{CDM}\cr
     Type: \tab Package\cr
-    Version: \tab 2.01\cr
+    Version: \tab 2.2\cr
     Publication Year: \tab 2013\cr
     License: \tab \acronym{GPL} (>= 2) \cr
     URL: \tab \url{https://sites.google.com/site/alexanderrobitzsch/software} \cr            
@@ -60,7 +60,9 @@ Functions for cognitive diagnosis modeling
   The package \code{CDM} implements parameter estimation procedures for the 
   two core CDMs DINA and DINO (e.g.,de la Torre &
   Douglas, 2004; Junker & Sijtsma, 2001; Templin &
-  Henson, 2006; the generalized DINA model (GDINA, de la Torre, 2011); 
+  Henson, 2006; the generalized DINA model for dichotomous attributes 
+  (GDINA, de la Torre, 2011) and for polytomous attributes
+  (pGDINA, Chen & de la Torre, 2013); 
   the general diagnostic model (GDM, von Davier, 2008) and its extension
   to the multidimensional latent class IRT model (Bartolucci, 2007),
   and tools for analyzing data under the models. 
@@ -71,9 +73,9 @@ Functions for cognitive diagnosis modeling
   upp and Templin (2008).  
 
   The package \code{CDM} is implemented based on the S3 system.  It comes
-  with a namespace and consists of one external function (a function the
-  package exports): the main function of this package, \code{\link{din}}.  The
-  package obtains a utility method for the simulation of artificial data based
+  with a namespace and consists of several external functions (functions the
+  package exports). 
+  The package obtains a utility method for the simulation of artificial data based
   on a CDM model (\code{\link{sim.din}}).  It also contains seven internal functions 
   (functions not exported by the package): this are \code{plot}, \code{print}, and 
   \code{summary} methods for objects of the class \code{din} (\code{\link{plot.din}},
@@ -95,13 +97,17 @@ Functions for cognitive diagnosis modeling
 \seealso{
     See also the \pkg{NPCD} package for nonparametric cognitive 
     diagnostic models. In \pkg{NPCD} joint maximum likelihood estimation 
-    of several CDMs is implemented.
+    of several cognitive diagnostic models is implemented.
         }
 
 \references{
   Bartolucci, F. (2007). A class of multidimensional IRT models for testing 
   unidimensionality and clustering items. \emph{Psychometrika}, \bold{72}, 141-157.
 
+  Chen, J., & de la Torre, J. (2013). 
+  A general cognitive diagnosis model for expert-defined polytomous attributes.
+  \emph{Applied Psychological Measurement}, \bold{37}, 419-437.  
+  
   de la Torre, J., & Douglas, J. (2004). Higher-order latent trait models 
   for cognitive diagnosis. \emph{Psychometrika}, \bold{69}, 333--353.
 
@@ -126,7 +132,7 @@ Functions for cognitive diagnosis modeling
   Measurement: Theory, Methods, and Applications}. New York: The Guilford
   Press.
   
-  Templin, J., & Henson, R. (2006) Measurement of
+  Templin, J., & Henson, R. (2006). Measurement of
   psychological disorders using cognitive diagnosis
   models. \emph{Psychological Methods}, \bold{11}, 287--305.
 

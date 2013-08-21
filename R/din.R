@@ -596,7 +596,8 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
                  "item.patt.freq" = item.patt.freq, "model.type" = r1 , 
 				 "rule" = rule , "zeroprob.skillclasses" = zeroprob.skillclasses , 
 				 "weights" = weights , "pjk" = pjM , "I" = I , 
-				 "start.analysis" = s1 , "end.analysis" = s2 ) 
+				 "start.analysis" = s1 , "end.analysis" = s2 ,
+				 "I.lj"=I.lj , "R.lj" = R.lj ) 
 	if (param.history){
 		param.history <- list( "likelihood.history" = likelihood.history , 
 				"slip.history" = slip.history , 

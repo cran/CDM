@@ -6,9 +6,10 @@
 Function for Estimating the Generalized DINA (GDINA) Model
 }
 \description{
-    This function implements the generalized DINA model 
-    (GDINA; de la Torre, 2011). See the paper
-    for details about estimable cognitive diagnosis models. 
+    This function implements the generalized DINA model for dichotomous
+    attributes (GDINA; de la Torre, 2011) and polytomous attributes
+    (pGDINA; Chen & de la Torre, 2013). 
+    See the papers for details about estimable cognitive diagnosis models. 
     In addition, multiple group estimation 
     is also possible using the \code{gdina} function. This function also
     allows for the estimation of a higher order GDINA model
@@ -33,12 +34,15 @@ gdina(data, q.matrix, conv.crit=0.0001, dev.crit=.1 ,  maxit=1000,
     \eqn{n}th row of the matrix represents the binary response pattern of respondent
     \eqn{n}.  \code{NA} values are allowed.  }
     
-  \item{q.matrix}{A required binary \eqn{J} times \eqn{K} containing the 
-    attributes not required or required, 0 or 1, to master the items.  The
-    jth row of the matrix is a binary indicator vector indicating which 
-    attributes are not required (coded by 0) and which attributes are 
-    required (coded by 1) to master item \eqn{j}.  }
+  \item{q.matrix}{A required integer \eqn{J} times \eqn{K} matrix containing
+    attributes not required or required, 0 or 1, to master the items in case
+    of dichotomous attributes or integers in case of polytomous attributes.    
+  }
 
+% The jth row of the matrix is a binary indicator vector indicating which 
+%    attributes are not required (coded by 0) and which attributes are 
+%    required (coded by 1) to master item \eqn{j}.  
+  
 \item{conv.crit}{
     Convergence criterion for maximum absolut change in item parameters
         }
@@ -153,6 +157,12 @@ An optional vector of sample weights.
     Item parameters are contained in the \code{delta} vector which is a list where
     the \eqn{j}th entry corresponds to item parameters of the \eqn{j}th item. 
     
+    The following description refers to the case of dichotomous attributes.
+    For using polytomous attributes see Chen and de la Torre (2013) and 
+    Example 7 for a definition of the Q-matrix. In this case, \eqn{Q_{ik}=l}
+    means that the \eqn{i}th item requires the mastery (at least) of level 
+    \eqn{l} of attribute \eqn{k}. 
+    
     Assume that two skills \eqn{\alpha_1} and \eqn{\alpha_2} are required for 
     mastering item \eqn{j}. Then the GDINA model can be written as
     \deqn{ g [ P( X_{nj} = 1 | \alpha_n ) ] = \delta_{j0} + \delta_{j1} \alpha_{n1} +
@@ -254,6 +264,10 @@ An object of class \code{gdina} with following entries
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
 \references{
+  Chen, J., & de la Torre, J. (2013). 
+  A general cognitive diagnosis model for expert-defined polytomous attributes.
+  \emph{Applied Psychological Measurement}, \bold{37}, 419-437.	
+	
   de la Torre, J., & Douglas, J. A. (2004). Higher-order latent trait models 
   for cognitive diagnosis. \emph{Psychometrika}, \bold{69}, 333-353.
 	
@@ -517,7 +531,27 @@ colnames(Z.skillspace)
 
 mod3 <- gdina( data=dat , q.matrix = q.matrix , 
         Z.skillspace=Z.skillspace , rule="DINA")
-summary(mod1); summary(mod2); summary(mod3)}
+summary(mod1); summary(mod2); summary(mod3)
+
+
+#############################################################################
+# EXAMPLE 7: polytomous GDINA model
+#############################################################################
+data(data.pgdina)
+dat <- data.pgdina$dat
+q.matrix <- data.pgdina$q.matrix
+
+# pGDINA model with "DINA rule"
+mod1 <- gdina( dat , q.matrix=q.matrix , rule="DINA")
+summary(mod1)
+# no reduced skill space
+mod1a <- gdina( dat , q.matrix=q.matrix , rule="DINA",reduced.skillspace=FALSE)
+summary(mod1)
+
+# pGDINA model with "GDINA rule"
+mod2 <- gdina( dat , q.matrix=q.matrix , rule="GDINA")
+summary(mod2)
+}
 }
 
 % Add one or more standard keywords, see file 'KEYWORDS' in the

@@ -3,7 +3,7 @@
 # function for calculating attribute response function
 .attr.rpf <- function( attr.patt , attr.prob , theta.k , wgt.theta ,
 	HOGDINA ){ 
-	library(psych)
+#	library(psych)
 	# use weights for calculation of tetrachoric correlation
 	wc <- .tetrachoric.hogdina( dat=attr.patt , weights= attr.prob )
 	b <-  wc$tau

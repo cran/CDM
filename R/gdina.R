@@ -60,7 +60,7 @@ function( data, q.matrix, conv.crit = 0.0001,
     cat("---------------------------------------------------------------------------------\n")
 		d1 <- packageDescription("CDM")
 		cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n" )		
-
+    time1 <- list( "s1" = Sys.time() )
 
 ########################################################
 # add item and attribute labels	if necessary
@@ -181,7 +181,7 @@ function( data, q.matrix, conv.crit = 0.0001,
     I <- nrow(dat.items)   # number of persons
     J <- ncol(dat.items)   # number of items
     K <- ncol(q.matrix)       # number of attributes
-    L <- 2^K               # number of latent class pattern of attributes
+#    L <- 2^K               # number of latent class pattern of attributes
     dat.items <- as.matrix( dat.items)
     q.matrix <- as.matrix( q.matrix)
             
@@ -263,21 +263,19 @@ function( data, q.matrix, conv.crit = 0.0001,
 # generate all attribute patterns                                              #
 ################################################################################
 
-    attr.patt <- matrix( rep( 0, K*L) , ncol=K)
-    h1 <- 2
 
-	if (K>1){ 
-		for(ll in 1:(K-1) ){
-			lk <- combn( 1:K, ll ) 
-			lk		
-			for ( jj in 1:( ncol(lk) ) ){ 
-				attr.patt[ h1, lk[,jj] ] <- 1
-				h1 <- h1 + 1
-				}
-			}
-		attr.patt[ L, ] <- rep( 1, K )
-			}
-	 if (K==1){ attr.patt[,K] <- c(0,1) }
+		# extract unique Q-matrix entries
+		K <- ncol(q.matrix)
+		q.entries <- as.list( 1:K )
+		maxAttr <- rep(1,K)
+		for (kk in 1:K){ 
+			q.entries[[kk]] <- sort(unique( q.matrix[,kk] ))
+			maxAttr[kk] <- length( q.entries[[kk]] )
+					}
+
+		attr.patt <- as.matrix( expand.grid( q.entries ) )
+		colnames(attr.patt) <- colnames(q.matrix)
+		L <- nrow(attr.patt)
 
     # combine all attributes in an attribute pattern as a string
     attr.patt.c <- apply( attr.patt, 1, FUN = function(ll){ paste(ll,collapse="" ) } )
@@ -307,11 +305,18 @@ function( data, q.matrix, conv.crit = 0.0001,
 		v1 <- c(v1,apply( kombis , 2 , FUN = function(ll){ 
 			paste( paste( "A" , ll , sep="") , collapse="_" ) } ))
 		colnames(Z) <- v1	
+		m1 <- which( maxAttr > 1 )
+		if ( max(m1) > 1 ){
+		   Z1 <- Z[ , m1 , drop=FALSE ]^2
+		   colnames(Z1) <- paste0( colnames(q.matrix)[m1] , "*2")
+		   Z <- cbind( Z , Z1 )
+						}
 		if ( ! is.null(Z.skillspace) ){ 
 				Z <- Z.skillspace
 						}
 		 ncolZ <- ncol(Z)						
 			}
+# print(head(Z))
 
 # print("a400")			
 # vv <- "attribute patterns" ; a1 <- Sys.time() ; cat( vv , a1-a0 , "\n") ; a0 <- Sys.time()			
@@ -337,7 +342,7 @@ function( data, q.matrix, conv.crit = 0.0001,
 					}
 	# Notation for Mj and Aj follows De La Torre (2011)
 	Aj <- NULL
-	Nattr.items <- rowSums(q.matrix)
+	Nattr.items <- rowSums(q.matrix >= 1)
 	# list of necessary attributes per item
 	necc.attr <- as.list( rep(NA,J) )
 	# list of rows in attr.patt which correspond to attribute classes 
@@ -347,27 +352,28 @@ function( data, q.matrix, conv.crit = 0.0001,
 	#    aggregated for each item
 	aggr.attr.patt <- NULL
 	for (jj in 1:J){ 	# loop over items jj
-
+		# jj <- 10
 		nj1 <- necc.attr[[jj]] <- which( q.matrix[jj,] > 0 )
 		if ( length(nj1)==0 ){ 
 				stop( paste("Q matrix row " , jj , " has only zero entries\n" , sep="") ) 
 						}	
 		Aj1 <- Aj[[jj]] <- .create.Aj( Nattr.items[jj] )
 		if ( ! Mj.userdefined ){ 
-				Mj[[jj]] <- .create.Mj( Aj[[jj]] , rule = rule[jj] )
+				Mj[[jj]] <- .create.Mj( Aj[[jj]] , rule = rule[jj] )	
 						}
  		l1 <- as.list( 1 )
 		l2 <- rep(0,L)	
-		for (zz in seq(1,nrow(Aj1)) ){ 
-			#	zz <- 1
- 			Aj1zz <- outer( rep(1,nrow(attr.patt)) , Aj1[zz,] )			
-			l1[[zz]] <- which( rowMeans( attr.patt[ , nj1 ] == Aj1zz  ) == 1)
+		for (zz in seq(1,nrow(Aj1)) ){  # begin row zz
+ 			Aj1zz <- outer( rep(1,nrow(attr.patt)) , Aj1[zz,] )
+			apzz <- attr.patt[ , nj1 ]
+			apzz <- 1 * ( apzz >= q.matrix[ rep(jj,L) ,nj1] )
+			l1[[zz]] <- which( rowMeans( apzz == Aj1zz  ) == 1)
 			l2[ l1[[zz]] ] <- zz
-						}
+						  }   # end row zz
 		attr.items[[jj]] <- l1
-		aggr.attr.patt[[jj]] <- l2
+		aggr.attr.patt[[jj]] <- l2		
 						}	# end item jj
-						
+
     #******						
 	# indices for Mj
 	Mj.index <- matrix( 0 , J , 6 )
@@ -511,7 +517,7 @@ function( data, q.matrix, conv.crit = 0.0001,
     while ( ( iter <= maxit ) & 
 				( ( max.par.change > conv.crit ) | ( devchange > dev.crit  ) )
 					){
-#a0 <- Sys.time()
+# a0 <- Sys.time()
 ################################################################################
 # STEP I:                                                                      #
 # calculate P(X_i | alpha_l):                                                  # 
@@ -560,7 +566,7 @@ function( data, q.matrix, conv.crit = 0.0001,
 		p.xi.aj[ , zeroprob.skillclasses ] <- 0
 								}	
 	
-# cat( "\n Step 1 (calc likelihood)\n" ) ; a1 <- Sys.time() ; print(a1-a0) ; a0 <- a1	
+# cat( "\n Step 1 (calc individual likelihood)\n" ) ; a1 <- Sys.time() ; print(a1-a0) ; a0 <- a1	
 	
 ################################################################################
 # STEP II:                                                                     #
@@ -621,10 +627,7 @@ if (HOGDINA >= 0){
 					}
 				}
 
-
-
-
-					
+				
 #######################################################################
 # STEP IIa: reduction of skill space					
 #######################################################################
@@ -752,7 +755,7 @@ if (HOGDINA >= 0){
 				pjjj[ pjjj < eps ] <- eps
 				pjjj <- qlogis( pjjj ) 
 								}
-		if (linkfct == "log" ){ 
+	if (linkfct == "log" ){ 
 				pjjj[ pjjj < eps ] <- eps
 				pjjj <- log( pjjj ) 
 # print(pjjj)				
@@ -768,7 +771,7 @@ if (HOGDINA >= 0){
 								}
 		djj <- delta.jj[,1]
 		djj.change <- djj - delta[[jj]]
-		if (linkfct == "identity" & iter > 3 ){ 
+		if (linkfct == "identity" & (iter > 3) ){ 
 			step.change <- .20
  			djj.change <- ifelse( abs(djj.change) > step.change ,
 									step.change*sign(djj.change) , djj.change )
@@ -859,6 +862,8 @@ if (HOGDINA >= 0){
     flush.console() # Output is flushing on the console
     iter <- iter + 1 # new iteration number                                    
 	devchange <- abs( 2*(like.new-loglikeold) )
+
+# cat( "\n Step 5 likelihood \n" ) ; a1 <- Sys.time() ; print(a1-a0) ; a0 <- a1									
 	
 	}
 
@@ -1048,22 +1053,49 @@ if (HOGDINA >= 0){
 		rownames( attr.prob ) <- attr.patt.c
 
 	
+	mA <- max( maxAttr)
+	
 	if (G==1){   
+	    sp <- NULL 
 		# pattern for separate skills
-		skill.patt <- matrix(apply( matrix( rep(  attr.prob, K ), ncol=K) * attr.patt, 2, sum ),ncol=1)
-#		rownames(skill.patt) <- paste("Skill_", colnames(q.matrix),sep="")
-		rownames(skill.patt) <- colnames(q.matrix)
-		colnames(skill.patt) <- "skill.prob" 
+		for (kk in 0:( mA -1) ){
+	#		kk <- 0
+			skill.patt <- matrix(apply( matrix( rep(  attr.prob, K ), ncol=K) * (attr.patt==kk), 2, sum ),ncol=1)
+	#		rownames(skill.patt) <- paste("Skill_", colnames(q.matrix),sep="")
+			rownames(skill.patt) <- colnames(q.matrix)
+			colnames(skill.patt) <- paste0("skill.prob" ,kk )
+			sp <- cbind( sp , skill.patt )
+						}
+            skill.patt <- sp
+			for (kk in 1:K){ 
+				ind.kk <- setdiff( 1:mA , 1 + q.entries[[kk]] )
+				if ( length(ind.kk) > 0 ){ 	skill.patt[ kk ,ind.kk ] <- NA 	}	
+							}
+# print(q.entries)			
 				}
 	if (G>1){   
+	sp <- NULL
+	for (kk in 0:( mA -1) ){	
+	# kk <- 0
 		skill.patt <- matrix( 0 , K , G )
 		for (gg in 1:G){
 		skill.patt[,gg] <- matrix(apply( matrix( rep(  attr.prob[,gg], K ), ncol=K) * 
-									attr.patt , 2, sum ),ncol=1)
+									( attr.patt == kk ), 2, sum ),ncol=1)
 						}
 		#		rownames(skill.patt) <- paste("Skill_", colnames(q.matrix),sep="")
 		rownames(skill.patt) <- colnames(q.matrix)
-		colnames(skill.patt) <- paste( "skill.prob.group"  , 1:G , sep="")
+		colnames(skill.patt) <- paste0( "skill.prob" , kk , ".group"  , 1:G )				
+		sp <- cbind( sp , skill.patt )
+						}
+        skill.patt <- sp
+
+			for (kk in 1:K){ 
+			    v1 <- rep(1:mA,each=G)
+				ind.kk <- setdiff( v1 , rep(1 + q.entries[[kk]],each=G) )
+				ind.kk <- which( v1 %in% ind.kk )
+				if ( length(ind.kk) > 0 ){ 	skill.patt[ kk ,ind.kk ] <- NA 	}	
+							}
+		
 				}
 				
 				
@@ -1162,9 +1194,10 @@ if (HOGDINA >= 0){
 				 "rrum.model" = rrum.model ,
 				 "rrum.params"= rrum.params ,
 				 "group.stat" = group.stat , 
+				 "NAttr" = maxAttr , 
 #				 "q.matrix" = q.matrix ,
 				 "HOGDINA" = HOGDINA
-				 ) 
+				 ) 				 
 	if (HOGDINA>=0) { 
 	    colnames(a.attr) <- paste0( "a.Gr" , 1:G )
 		colnames(b.attr) <- paste0( "b.Gr" , 1:G )
@@ -1173,6 +1206,9 @@ if (HOGDINA >= 0){
 		res$b.attr <- b.attr
 		res$attr.rf <- cbind( b.attr , a.attr )
 				}
+	# computation time
+    time1$s2 <- Sys.time()
+	res$time <- time1
     class(res) <- "gdina"
     return(res)
 }

@@ -6,12 +6,13 @@
 skill.cor <- function( object){
 	options( warn=-1)
 	# need polycor library
-    library(polycor)
+#    library(polycor)
     ap <- object$attribute.patt
     aps <- object$attribute.patt.splitted
 #    object$skill.patt
     # collect all skill combinations
-    skill.combis <- t( combn( length(object$skill.patt ) , 2) )
+#    skill.combis <- t( combn( length(object$skill.patt ) , 2) )
+    skill.combis <- t( combn( nrow(object$skill.patt ) , 2) )
     # create contingency tables
     skills.bivariate <- t( apply( skill.combis , 1 , FUN = function(ll){
                 ss1 <- ll[1] ; ss2 <- ll[2]

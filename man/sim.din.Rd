@@ -83,7 +83,9 @@
 }
 
 \examples{
-## simulate DINA and DINO data according to a tetrachoric correlation
+#############################################################################	
+## EXAMPLE 1: simulate DINA/DINO data according to a tetrachoric correlation
+#############################################################################
 
 # define Q-matrix for 4 items and 2 attributes
 q.matrix <- matrix(c(1,0,0,1,1,1,1,1), ncol = 2, nrow = 4)
@@ -119,9 +121,40 @@ head( res$alpha )
 ##   [5,]    1    1
 ##   [6,]    1    0
 
-# simulate data based on given attributes
-# -> 5 persons with 2 attributes -> see the Q-matrix above
+#  simulate data based on given attributes
+#          -> 5 persons with 2 attributes -> see the Q-matrix above
 alpha <- matrix( c(1,0,1,0,1,1,0,1,1,1) , 
     nrow=5,ncol=2, byrow=TRUE )
 sim.din(  q.matrix = q.matrix , alpha = alpha )
+
+\dontrun{
+#############################################################################
+# EXAMPLE 2: Simulation based on attribute vectors
+#############################################################################
+set.seed(76)
+# define Q-matrix
+Qmatrix <- matrix(c(1,0,1,0,1,0,0,1,0,1,0,1,1,1,1,1) , 8 , 2 , byrow=TRUE)
+colnames(Qmatrix) <- c("Attr1","Attr2")
+# define skill patterns
+alpha.patt <- matrix(c(0,0,1,0,0,1,1,1) , 4 ,2,byrow=TRUE )
+AP <- nrow(alpha.patt)
+# define pattern probabilities
+alpha.prob <- c( .20 , .40 , .10 , .30 )
+# simulate alpha latent responses
+N <- 1000     # number of persons
+ind <- sample( x=1:AP , size=N, replace = TRUE , prob=alpha.prob)
+alpha <- alpha.patt[ ind , ]    # (true) latent responses
+# define guessing and slipping parameters
+guess <- c(.26,.3,.07,.23,.24,.34,.05,.1)
+slip <- c(.05,.16,.19,.03,.03,.19,.15,.05)
+# simulation of the DINA model
+dat <- sim.din(N=0, q.matrix= Qmatrix, guess = guess ,
+        slip = slip , alpha=alpha)$dat
+# estimate model
+res <- din( dat , q.matrix=Qmatrix )
+# extract maximum likelihood estimates for individual classifications
+est <- paste( res$pattern$mle.est )
+# calculate classification accuracy
+mean( est == apply( alpha , 1 , FUN = function(ll){ paste0(ll[1],ll[2] ) } ) )
+##   [1] 0.935 }
 }

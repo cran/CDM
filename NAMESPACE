@@ -7,9 +7,10 @@ export(din, sim.din , gdina ,
     modelfit.cor.din,
     modelfit.cor ,
     gdm ,
-#    din.latent.response ,
     din.equivalent.class ,
-    itemfit.rmsea
+    itemfit.rmsea ,
+    din.validate.qmatrix ,
+    din.deterministic
     )
 # internal functions; not intended to be visible to users
 # export(check.input, rowMaxs, rowProds2, plot.din, print.din, summary.din,
@@ -34,3 +35,9 @@ S3method(coef, gdm)
 S3method(logLik, din)
 S3method(logLik, gdina)
 S3method(logLik, gdm)
+
+
+import(MASS)
+importFrom(polycor,polychor)
+import(psych)
+import(mvtnorm)

@@ -183,7 +183,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 	
 	# starting values for distributions
 	Sigma <- diag(1,D)
-	library(mvtnorm)
+#	library(mvtnorm)
 	pik <- dmvnorm( matrix( theta.k ,ncol=D) , 
 				mean=rep(0,D) , sigma = Sigma )
 	pi.k <- matrix( 0 , TP , G )

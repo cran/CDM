@@ -14,6 +14,20 @@ a.robitzsch /-\ bifie.at
 
 
 --------------------------------------------------------------
+CDM 2.2 (2013-08-20)
+--------------------------------------------------------------
+
+x accelerated rowMaxs function
+x included Q-matrix validation function (de la Torre, 2008)
+x included joint maximum likelihood estimation and
+  classification function for the mixed DINA/DINO model
+  -> function din.deterministic
+x included another example (based on attribute vectors) 
+  in sim.din function
+x included polytomous GDINA model (Chen & de la Torre, 2013)  
+
+
+--------------------------------------------------------------
 CDM 2.01 (2013-07-27)
 --------------------------------------------------------------
 
