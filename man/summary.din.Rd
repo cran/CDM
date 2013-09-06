@@ -16,18 +16,18 @@
 }
 
 \arguments{
-  \item{object}{a required object of class \code{din}, obtained
+  \item{object}{A required object of class \code{din}, obtained
     from a call to the function \code{\link{din}}.  }
   
-  \item{top.n.skill.classes}{a numeric, specifying the number of skill 
+  \item{top.n.skill.classes}{A numeric, specifying the number of skill 
     classes, starting with the most frequent, to be returned.  
     Default value is 6.  }
     
-  \item{log.file}{an optional character vector, specifying the 
+  \item{log.file}{An optional character vector, specifying the 
     directory and/or filename to which an extensive summary 
     output should be written.  }
     
-  \item{overwrite}{an optional boolean, specifying wether or not 
+  \item{overwrite}{An optional boolean, specifying wether or not 
     the method is supposed to overwrite an existing \code{log.file}. 
     If the \code{log.file} exists and \code{overwrite} is 
     \code{FALSE}, the user is asked to confirm the overwriting.  }
@@ -50,41 +50,39 @@
   \code{summary.din} returns a named list, of the class
   \code{summary.din}, consisting of the following seven components:
   
-  \item{CALL}{a character specifying the model rule, the number of
+  \item{CALL}{A character specifying the model rule, the number of
     items and the number of attributes underlying the items.  }
     
-  \item{IDI}{a matrix giving the item discrimination
+  \item{IDI}{A matrix giving the item discrimination
     index (IDI; Lee, de la Torre & Park, 2012) for each item \eqn{j}
     \deqn{ IDI_j = 1 - s_j - g_j , }{ IDI_j = 1 - s_j - g_j , }
-    where a high IDI corresponds to good test items
-    which have both low guessing and slipping rates.  Note that
-    a negative IDI contradicts the monotonicity condition 
-    \eqn{g_j < 1 - s_j}.  See \code{\link{din}} for help.  }
+    where a high IDI corresponds to favorable test items
+    which have both low guessing and slipping rates. }
     
-  \item{SKILL.CLASSES}{a vector giving the \code{top.n.skill.classes} 
+  \item{SKILL.CLASSES}{A vector giving the \code{top.n.skill.classes} 
     most frequent skill classes and the corresponding class probability.  }
     
-  \item{AIC}{a numeric giving the AIC of the specified model
+  \item{AIC}{A numeric giving the AIC of the specified model
     \code{object}.  }
     
-  \item{BIC}{a numeric giving the BIC of the specified model
+  \item{BIC}{A numeric giving the BIC of the specified model
     \code{object}.  }
   
-  \item{log.file}{a character giving the path and file of a specified 
+  \item{log.file}{A character giving the path and file of a specified 
     log file.  }
   
-  \item{din.object}{the object of class \code{din} for which the summary 
+  \item{din.object}{The object of class \code{din} for which the summary 
     was requested.  }
 }
 
 \references{
-  Lee, Y.-S., de la Torre, J., & Park, Y. S. (2012). Relationships between 
-  cognitive diagnosis, CTT, and IRT indices: An empirical investigation.
-    \emph{Asia Pacific Educational Research}, \bold{13}, 333-345.
+Lee, Y.-S., de la Torre, J., & Park, Y. S. (2012). Relationships between 
+cognitive diagnosis, CTT, and IRT indices: An empirical investigation.
+\emph{Asia Pacific Educational Research}, \bold{13}, 333-345.
 
-  Rupp, A. A., Templin, J. L., & Henson, R. A. (2010) \emph{Diagnostic
-  Measurement: Theory, Methods, and Applications}.  New York: The Guilford
-  Press.
+Rupp, A. A., Templin, J. L., & Henson, R. A. (2010) \emph{Diagnostic
+Measurement: Theory, Methods, and Applications}.  New York: The Guilford
+Press.
 }
 
 \seealso{

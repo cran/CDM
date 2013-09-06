@@ -15,7 +15,7 @@
 }
 
 \arguments{
-  \item{x}{a required object of class \code{summary.din}, obtained
+  \item{x}{A required object of class \code{summary.din}, obtained
     from a call to the function \code{\link{summary.din}} (through
     generic function \code{\link[base]{summary}}).  }
     

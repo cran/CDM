@@ -29,22 +29,22 @@ An optional vector of item names. Default is \code{NULL}.
 }
 }
 \details{
-For item \eqn{i}, the RMSEA itemfit in this function is calculated
+For item \eqn{j}, the RMSEA itemfit in this function is calculated
 as follows:
-\deqn{ RMSEA_i = \sqrt{ \sum_k \sum_c \pi ( \bold{\theta}_c)
-    \left( P_i ( \bold{\theta}_c ) -
-\frac{n_{ikc}}{N_{ic}} \right)^2 } }
+\deqn{ RMSEA_j = \sqrt{ \sum_k \sum_c \pi ( \bold{\theta}_c)
+    \left( P_j ( \bold{\theta}_c ) -
+\frac{n_{jkc}}{N_{jc}} \right)^2 } }
 where \eqn{c} denotes the class of the skill vector 
 \eqn{\bold{\theta}}, \eqn{k} is the item category,
 \eqn{\pi ( \bold{\theta}_c)} is the estimated class probability 
 of \eqn{\bold{\theta}_c}, 
-\eqn{P_i} is the estimated item response function,
-\eqn{n_{ikc}} is the expected number of students with
+\eqn{P_j} is the estimated item response function,
+\eqn{n_{jkc}} is the expected number of students with
 skill \eqn{\bold{\theta}_c} on
-item \eqn{i} in category \eqn{k} and 
-\eqn{N_{ic}} is the expected number of students with
+item \eqn{j} in category \eqn{k} and 
+\eqn{N_{jc}} is the expected number of students with
 skill \eqn{\bold{\theta}_c} on
-item \eqn{i}.
+item \eqn{j}.
 }
 \value{
 A list with two entries:
@@ -54,7 +54,8 @@ A list with two entries:
 \references{
 Kunina-Habenicht, O., Rupp, A. A., & Wilhelm, O. (2009). 
 A practical illustration of multidimensional diagnostic skills profiling: 
-Comparing results from confirmatory factor analysis and diagnostic classification models. 
+Comparing results from confirmatory factor analysis and diagnostic 
+classification models. 
 \emph{Studies in Educational Evaluation}, \bold{35}, 64--70.
 
 von Davier, M. (2005). \emph{A general diagnostic model applied to language 

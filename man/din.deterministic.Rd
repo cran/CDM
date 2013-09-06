@@ -25,14 +25,14 @@ din.deterministic(dat, q.matrix, rule="DINA" , method = "JML", conv = 0.001,
 Data frame of dichotomous item responses
 }
   \item{q.matrix}{
-Q-matrix with binary entries
+Q-matrix with binary entries (see \code{\link{din}})
 }
 \item{rule}{The condensation rule. See \code{\link{din}}}
 \item{method}{
-Estimation method. Options are joint maximum likelihood estimation
-(\code{JML}), an adaptive estimation of guessing and slipping parameters
-(\code{adaptive}) while using these estimated parameters as weights in
-the individual deviation function and classification based on
+Estimation method. The deault is joint maximum likelihood estimation
+(\code{JML}). Other options include an adaptive estimation of guessing and 
+slipping parameters (\code{adaptive}) while using these estimated parameters 
+as weights in the individual deviation function and classification based on
 the Hamming distance (\code{hamming}) and the weighted Hamming
 distance (\code{weighted.hamming}) (see Chiu & Douglas, 2013).
 }
@@ -43,13 +43,12 @@ Convergence criterion for guessing and slipping parameters
 Maximum number of iterations
 }
   \item{increment.factor}{
-A value of at least one to improve convergence behavior and 
-decreasing increments in every iteration. This option is
+A numeric value of at least one which could help to improve convergence 
+behavior and decreases parameter increments in every iteration. This option is
 disabled by setting this argument to 1.
 }
- \item{progress}{
-Print progress?
-}
+\item{progress}{An optional logical indicating whether the function
+    should print the progress of iteration in the estimation process.  } 
 }
 
 %\details{

@@ -18,13 +18,15 @@ modelfit.cor.din( dinobj )
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{data}{
-An \eqn{N} times \eqn{I} data frame of dichotomous item responses
+An \eqn{N \times I} data frame of dichotomous item responses
 }
   \item{posterior}{
-Posterior distribution
+A matrix containing the posterior distribution (e.g. obtained as
+an output of the \code{\link{din}} function).
 }
   \item{probs}{
-Probabilities as an array: [items,categories,attribute classes]
+An array of dimension [items,categories,attribute classes]
+containing probabilities
 }
 \item{dinobj}{An object of class \code{din}, \code{gdina} or
 \code{gdm}}
@@ -34,7 +36,6 @@ Probabilities as an array: [items,categories,attribute classes]
 %}
 \value{
 A list with following entries
-%%  If it is a LIST, use
   \item{modelfit}{Model fit statistics:
   	  
    \code{MADcor}: mean of absolute deviations in observed and expected correlations 
@@ -52,16 +53,16 @@ A list with following entries
 }
 \references{
 Chen, W., & Thissen, D. (1997). Local dependence indexes for item pairs 
- using item response theory. \emph{Journal of Educational and Behavioral Statistics},
- \bold{22}, 265-289.
+using item response theory. \emph{Journal of Educational and Behavioral Statistics},
+\bold{22}, 265-289.
 
-  DiBello, L. V., Roussos, L. A., & Stout, W. F. (2007). Review of
-  cognitively diagnostic assessment and a summary of psychometric models.
-  In C. R. Rao and S. Sinharay (Eds.), \emph{Handbook of Statistics},
-  Vol. 26 (pp. 979--1030). Amsterdam: Elsevier.
+DiBello, L. V., Roussos, L. A., & Stout, W. F. (2007). Review of
+cognitively diagnostic assessment and a summary of psychometric models.
+In C. R. Rao and S. Sinharay (Eds.), \emph{Handbook of Statistics},
+Vol. 26 (pp. 979--1030). Amsterdam: Elsevier.
 
-  McDonald, R. P., & Mok, M. M.-C. (1995). Goodness of fit in item response models.
-  \emph{Multivariate Behavioral Research}, \bold{30}, 23-40.
+McDonald, R. P., & Mok, M. M.-C. (1995). Goodness of fit in item response models.
+\emph{Multivariate Behavioral Research}, \bold{30}, 23-40.
 
 Yen, W. M. (1984). Effects of local item dependence on the fit and equating 
 performance of the three-parameter logistic model. 

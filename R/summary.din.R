@@ -86,7 +86,10 @@ function(object, top.n.skill.classes = 6, log.file = NULL, overwrite = FALSE, ..
 #			"SKILL.CLASSES"=SKILL.CLASSES, 
 			"AIC"=AIC, "BIC"=BIC, "item" = item , 
 			"Npars" = object$Npars , 
-			"log.file" = log.file, "din.object" = object)
+			"log.file" = log.file, "din.object" = object,
+			"start.analysis"=object$start.analysis ,
+			"end.analysis"=object$end.analysis
+			)
 	class(out) <- "summary.din"
 	return(out)
 }

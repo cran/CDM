@@ -8,8 +8,8 @@
 \description{
   \code{sim.din} can be used to simulate dichotomous response data according to a CDM 
   model.  The model type DINA or DINO can be specified item wise.  The number of items,
-  the sample size, and two parameters for each item, the slipping and guessing errors,
-  can be set explicitly.  
+  the sample size, and two parameters for each item, 
+  the slipping and guessing parameters, can be set explicitly.  
 }
 
 \usage{
@@ -19,33 +19,33 @@
 }
 
 \arguments{
-  \item{N}{a numeric value specifying the number \eqn{N} of requested
+  \item{N}{A numeric value specifying the number \eqn{N} of requested
     response patterns. If \code{alpha} is specified, then \code{N} is set
     by default to 0.}
 
-  \item{q.matrix}{a required binary \eqn{J} times \eqn{K} matrix describing which
+  \item{q.matrix}{A required binary \eqn{J \times K} matrix describing which
     of the \eqn{K} attributes are required, coded by 1, and which attributes 
     are not required, coded by 0, to master the items.   }
     
-  \item{guess}{ an optional vector of guessing parameters.  Default is 
+  \item{guess}{An optional vector of guessing parameters.  Default is 
     0.2 for each item.  }
   
-  \item{slip}{ an optional vector of slipping parameters.  Default is 
+  \item{slip}{An optional vector of slipping parameters.  Default is 
     0.2 for each item.  }
   
-  \item{mean}{a numeric vector of length \code{ncol(q.matrix)} indicating 
+  \item{mean}{A numeric vector of length \code{ncol(q.matrix)} indicating 
     the mean vector of the continuous version of the dichotomous skill vector.  
     Default is \code{rep(0, length = ncol(q.matrix))}.  
     That is, having a probability of \code{0.5} for possessing each of the 
     attributes.  }
 
-  \item{Sigma}{a matrix of dimension \code{ncol(q.matrix)} times \code{ncol(q.matrix)}
+  \item{Sigma}{A matrix of dimension \code{ncol(q.matrix)} times \code{ncol(q.matrix)}
      specifying the covariance matrix of the continuous version of the dichotomous skill 
      vector (i.e., the tetrachoric correlation of the dichotomous skill vector).  
      Default is \code{diag( 1, ncol(q.matrix))}.  That is, by default the possession of 
      the attributes is assumed to be uncorrelated.  }
 
-  \item{rule}{an optional character string or vector of character strings 
+  \item{rule}{An optional character string or vector of character strings 
   	specifying the model rule that is used.  The character strings must be 
   	of \code{"DINA"} or \code{"DINO"}.  If a vector of character strings is 
   	specified, implying an itemwise condensation rule, the vectore must 
@@ -58,7 +58,8 @@
 }
 
 \value{A list with following entries
-    \item{dat}{A matrix of simulated dichotoumos response data according to the specified CDM model. 
+    \item{dat}{A matrix of simulated dichotomuos response data 
+    	    according to the specified CDM model. 
                 }
     \item{alpha}{Simulated attributes}
 }
@@ -105,9 +106,8 @@ dat1 <- sim.din(N = 200, q.matrix, slip, guess,
 head(dat1)
 
 set.seed(15367) # fix random numbers
-res <- sim.din(N = 200, q.matrix, slip, guess, mean = 
-  c(0.5,0.2), Sigma = matrix(c(1,0.2,0.2,1), ncol=2),
-  rule = "DINO")
+res <- sim.din(N = 200, q.matrix, slip, guess, mean = c(0.5,0.2), 
+         Sigma = matrix(c(1,0.2,0.2,1), ncol=2), rule = "DINO")
 
 # extract simulated data
 dat2 <- res$dat

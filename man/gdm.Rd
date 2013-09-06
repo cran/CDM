@@ -32,7 +32,7 @@ gdm( data, theta.k, irtmodel="2PL", group=NULL, weights=rep(1, nrow(data)),
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{data}{
-    An \eqn{N} times \eqn{I} matrix of polytomous item
+    An \eqn{N \times I} matrix of polytomous item
     responses with categories \eqn{k=0,1,...,K}
 }
   \item{theta.k}{
@@ -58,10 +58,10 @@ An optional vector of group identifiers for
 multiple group estimation
 }
   \item{weights}{
-Sample weights
+An optional vector of sample weights
 }
   \item{Qmatrix}{
-An optional array \eqn{I} times \eqn{D} times \eqn{K} 
+An optional array of dimension \eqn{I \times D \times K} 
 which indicates pre-specified item loadings
 on dimensions. The default for category \eqn{k} is the score \eqn{k}, i.e.
 the scoring in the (generalized) partial credit model.
@@ -93,12 +93,12 @@ In this optional matrix with \eqn{C_a} rows and four columns,
 1st column: item index, 2nd column: dimension index,
 3rd column: category index, 4th column: fixed item slopes \cr
 }
-\item{mean.constraint}{A \eqn{C} times 3 matrix for 
+\item{mean.constraint}{A \eqn{C \times 3} matrix for 
   constraining \eqn{C} means in the
   normal distribution assumption (\code{skillspace="normal"}).
   1st column: Dimension, 2nd column: Group, 3rd column: Value
         }
-\item{Sigma.constraint}{A \eqn{C} times 4 matrix for 
+\item{Sigma.constraint}{A \eqn{C \times 4} matrix for 
   constraining \eqn{C} covariances in the
   normal distribution assumption (\code{skillspace="normal"}).
   1st column: Dimension 1, 2nd column: Dimension 2, 
@@ -109,23 +109,23 @@ The design matrix of \eqn{\delta} parameters
 for the reduced skillspace estimation (see Xu &
 von Davier, 2008)
 }
-\item{standardized.latent}{Should in a uni- or multidimensional
-model all latent variables of the first group be normally distributed and standardized?
-The default is \code{FALSE}.}
+\item{standardized.latent}{A logical indicating whether in a uni- or multidimensional
+model all latent variables of the first group should be normally distributed 
+and standardized. The default is \code{FALSE}.}
 \item{centered.latent}{
-	Should in a uni- or multidimensional
-	model all latent variables of the first group be normally distributed
-	and have zero means? The default is \code{FALSE}.
+	A logical indicating whether in a uni- or multidimensional
+	model all latent variables of the first group should be normally 
+	distributed and do have zero means? The default is \code{FALSE}.
 		}
 \item{centerintercepts}{
-	Should intercepts be centerred to have a mean of 0 for
-	all dimensions? This argument does not (yet) work properly
+	A logical indicating whether intercepts should be centered to have a 
+	mean of 0 for all dimensions. This argument does not (yet) work properly
 	for varying numbers of item categories.
 		}
 \item{centerslopes}{
-	Should slopes be centered to have a mean of 1 for all dimensions?
-	This argument only works for \code{irtmodel="2PL"}. The default is
-	\code{FALSE}.
+	A logical indicating whether item slopes should be centered to have 
+	a mean of 1 for all dimensions. This argument only works for 
+	\code{irtmodel="2PL"}. The default is \code{FALSE}.
 		}
   \item{maxiter}{
 Maximum number of iterations
@@ -139,7 +139,7 @@ Global deviance convergence criterion
 }
 \item{msteps}{
 	Maximum number of M steps in estimating \eqn{b} and
-	\eqn{a} item parameters. The default is 4 M steps.
+	\eqn{a} item parameters. The default is to use 4 M steps.
 }
 \item{convM}{
 	Convergence criterion in M step
@@ -151,13 +151,13 @@ Global deviance convergence criterion
     is recommended.
 }
 \item{use.freqpatt}{
-	Should frequencies of unique item response patterns
-	be used. In case of large data set \code{use.freqpatt=TRUE}
-	can speed calculations. Note that in this case, not all
-	person parameters are calculated as usual in the
-	output.
+	A logical indicating whether frequencies of unique item response patterns
+	should be used. In case of large data set \code{use.freqpatt=TRUE}
+	can speed calculations (depending on the problem). 
+	Note that in this case, not all person parameters are calculated 
+	as usual in the output.
 		}
-  \item{object}{a required object of class \code{gdm}}
+  \item{object}{A required object of class \code{gdm}}
   \item{\dots}{Optional parameters to be passed to or from other
     methods will be ignored.  }  		
 }
@@ -195,7 +195,7 @@ In general, the number of functions \eqn{t_1 , ... , t_H} will be
 larger than the \eqn{\theta} dimension of \eqn{D}.
 
 The estimation follows an EM algorithm as described in von Davier and
-Yamamoto (2004) and von Davier (2008)
+Yamamoto (2004) and von Davier (2008).
 
 In case of \code{skillspace="est"}, the \eqn{\bold{\theta}} vectors 
 (the grid of the theta distribution) are estimated (Bartolucci, 2007;
@@ -210,7 +210,6 @@ latent class item response model.
 \value{
 An object of class \code{gdm}. The list contains the
 following entries:
-% \item{xxx}{yyy}
 \item{item}{Data frame with item parameters}
 \item{person}{Data frame with person parameters:
     \code{EAP} denotes the mean of the individual posterior distribution,
@@ -262,21 +261,20 @@ following entries:
 \item{time}{Info about computation time}
 \item{skillspace}{Used skillspace parametrization}
 \item{iter}{Number of iterations}
-\item{object}{a required object of class \code{gdm}}
+\item{object}{Object of class \code{gdm}}
 \item{\dots}{Optional parameters to be passed to or from other
     methods will be ignored.  }  
-
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% REFERENCES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\references{	
+\references{
 Bacci, S., Bartolucci, F., & Gnaldi, M. (2012). 
 A class of Multidimensional Latent Class IRT models for ordinal 
 polytomous item responses. \emph{arXiv preprint}, \emph{arXiv:1201.4667}.
-	
+
 Bartolucci, F. (2007). A class of multidimensional IRT models for testing 
 unidimensionality and clustering items. \emph{Psychometrika}, \bold{72}, 141-157.
 
@@ -286,8 +284,8 @@ of Mathematical and Statistical Psychology}, \bold{61}, 287-307.
 
 von Davier, M., & Yamamoto, K. (2004). Partially observed mixtures of IRT models: 
 An extension of the generalized partial-credit model. 
-\emph{Applied Psychological Measurement}, \bold{28}, 389-406.  
-  
+\emph{Applied Psychological Measurement}, \bold{28}, 389-406.
+
 Xu, X., & von Davier, M. (2008). \emph{Fitting the structured general diagnostic
 model to NAEP data}. ETS Research Report ETS RR-08-27. Princeton, ETS.
 }
@@ -309,9 +307,8 @@ For assessment of model fit see \code{\link{modelfit.cor.din}} and
 \code{\link{anova.gdm}}.
 
 For the estimation of the multidimensional
-latent class item response model see the \pkg{MultiLCIRT}
-and \pkg{sirt} packages.
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+latent class item response model see the \pkg{MultiLCIRT} package
+and \pkg{sirt} package (function \code{rasch.mirtlc}).
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -418,10 +415,11 @@ summary(mod3)
 #***
 # Model 4: Model with pre-specified item weights in Q-matrix
 Qmatrix <- array( 1 , dim=c(5,1,2) )
-Qmatrix[,1,2] <- 2
+Qmatrix[,1,2] <- 2 	# default is score 2 for category 2
+# now change the scoring of category 2:
 Qmatrix[c(2,4),1,1] <- .74
 Qmatrix[c(2,4),1,2] <- 2.3
-# score for category 1 is 1.2 and for category 2 is 1.8
+# for items 2 and 4 the score for category 1 is .74 and for category 2 it is 2.3
 mod4 <- gdm( dat , irtmodel="1PL" , theta.k=theta.k , Qmatrix=Qmatrix ,
            skillspace="normal"  , centered.latent=TRUE)
 summary(mod4)
@@ -512,7 +510,7 @@ mod6 <- gdm( dat , irtmodel="2PL" , theta.k=theta.k ,
             a.constraint=a.constraint , decrease.increments=TRUE , 
             skillspace="normal" , maxiter=400)
 summary(mod6)
-
+           
 #***
 # Model 7: multdimensional 2PL model (loglinear distribution)
 a.constraint <- cbind( c(8,1,3) , 1:3 , 1 , 1 )
@@ -534,6 +532,7 @@ N <- 2000   # number of persons
 theta <- c( -2 , 0 , 1 , 2 )
 theta <- rep( theta , c(N/4,N/4 , 3*N/8 , N/8)  ) 
 b <- seq(-2,2,len=I)
+library(sirt)   # use function sim.raschtype from sirt package
 dat <- sim.raschtype( theta=theta , b=b )
 
 theta.k <- seq(-1 , 1 , len=4)      # initial vector of theta
@@ -553,10 +552,10 @@ N <- 2400   # number of persons
 theta <- c( -2 , 0 , 1 , 2 )
 theta <- rep( theta , c(N/4,N/4 , 3*N/8 , N/8)  ) 
 b <- seq(-2,2,len=I)
+library(sirt)  # use simulation function from sirt package
 dat1 <- sim.raschtype( theta=theta , b=b )
-
 theta <- c( -3 , 0 , 1.5 , 2 )
-theta <- rep( theta , c(N/4,N/4 , 3*N/8 , N/8)  ) 
+theta <- rep( theta , c(N/4,N/4 , 3*N/8 , N/8)  )
 dat2 <- sim.raschtype( theta=theta , b=b )
 colnames(dat2) <- gsub( "I" , "U" , colnames(dat2))
 dat <- cbind( dat1 , dat2 )

@@ -1,8 +1,8 @@
 Package: CDM
 Type: Package
 Title: Cognitive Diagnosis Modeling
-Version: 2.2-20
-Date: 2013-08-21
+Version: 2.3-15
+Date: 2013-09-06
 Author: Alexander Robitzsch [aut, cre], Thomas Kiefer [aut], 
      Ann Cathrice George [aut], Ali Uenlue [aut]
 Maintainer: Alexander Robitzsch <a.robitzsch@bifie.at>
@@ -20,12 +20,13 @@ Description: Functions for cognitive diagnosis modeling
     special case.
 Depends: R (>= 2.15.0), mvtnorm
 Imports: MASS, psych, polycor
+Suggests: sirt, TAM
 LinkingTo: Rcpp, RcppArmadillo
 LazyLoad: yes
 LazyData: yes
 License: GPL (>= 2)
 URL: https://sites.google.com/site/alexanderrobitzsch/software
-Packaged: 2013-08-21 08:46:57 UTC; robitzsch
+Packaged: 2013-09-06 18:52:04 UTC; robitzsch
 NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2013-08-21 11:32:32
+Date/Publication: 2013-09-06 22:01:44

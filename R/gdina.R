@@ -453,7 +453,8 @@ function( data, q.matrix, conv.crit = 0.0001,
 	invM.list <- list( 1:J )
 	for (jj in 1:J){
 		Mjjj <- Mj[[jj]][[1]]
-		invM.list[[jj]] <- solve( t(Mjjj) %*% Mjjj	)
+#		invM.list[[jj]] <- solve( t(Mjjj) %*% Mjjj	)
+		invM.list[[jj]] <- solve( crossprod(Mjjj))
 				}
 
 # print("a700")
@@ -640,10 +641,12 @@ if (HOGDINA >= 0){
 		ntheta <- colSums( outer( item.patt.freq , rep( 1 , L) )*p.aj.xi )
 		lntheta <- matrix(log(ntheta+eps),ncol=1 )
 		V <- diag( ntheta)
-		Z1 <- t(Z) %*% V %*% Z
+#		Z1 <- t(Z) %*% V %*% Z
+		Z1 <- crossprod(Z , V ) %*% Z
 		diag(Z1) <- diag(Z1)+eps
 		covbeta <- solve( Z1 )
-		beta <- covbeta  %*% ( t(Z) %*% V %*% lntheta )
+#		beta <- covbeta  %*% ( t(Z) %*% V %*% lntheta )
+		beta <- covbeta  %*% ( crossprod(Z , V ) %*% lntheta )
 		pred.ntheta <- exp( Z %*% beta )
 		# calculate attribute probability
 		attr.prob <- ( pred.ntheta / sum(pred.ntheta ) )[,1]
@@ -669,7 +672,8 @@ if (HOGDINA >= 0){
 #			for (i in 1:J){ 
 #				I.lj[i,] <- colSums(  item.patt.freq*resp.patt[,i] * p.aj.xi  )
 #						}
-			I.lj <- t( item.patt.freq*resp.patt	) %*% p.aj.xi
+#			I.lj <- t( item.patt.freq*resp.patt	) %*% p.aj.xi
+			I.lj <- crossprod( item.patt.freq*resp.patt	, p.aj.xi )
 					} else {
 #			I.lj <- matrix( colSums(  item.patt.freq * p.aj.xi  ) , nrow=J , ncol=L , byrow=T )
 #			I.lj <- t( item.patt.freq ) %*% p.aj.xi
@@ -682,7 +686,8 @@ if (HOGDINA >= 0){
 #			R.lj[i,] <- colSums(  ipr[,i] * p.aj.xi  )
 #			R.lj[i,] <-  t( ipr[,i] ) %*% p.aj.xi 
 #					}
-		R.lj <- t(ipr) %*% p.aj.xi				
+#		R.lj <- t(ipr) %*% p.aj.xi				
+		R.lj <- crossprod(ipr ,  p.aj.xi )
 		colnames(I.lj) <- colnames(R.lj) <- attr.patt.c
 		rownames(I.lj) <- rownames(R.lj) <- colnames(data)
 
@@ -696,19 +701,22 @@ if (HOGDINA >= 0){
 #			for (i in 1:J){ 
 #				I.lj.gg2[i,,gg] <- colSums(  item.patt.freq[,gg]*resp.patt[,i] * p.aj.xi[,,gg]  )
 #						}								
-				I.lj.gg[,,gg] <- t( item.patt.freq[,gg]*resp.patt	) %*% p.aj.xi[,,gg]	
+#				I.lj.gg[,,gg] <- t( item.patt.freq[,gg]*resp.patt	) %*% p.aj.xi[,,gg]	
+				I.lj.gg[,,gg] <- crossprod( item.patt.freq[,gg]*resp.patt , p.aj.xi[,,gg] )
 					} else {
 #			I.lj.gg2[,,gg] <- matrix( colSums(  item.patt.freq[,gg] * p.aj.xi[,,gg]  ) , 
 #							nrow=J , ncol=L , byrow=T )
 #			I.lj.gg[,,gg] <- t( item.patt.freq[,gg] ) %*% p.aj.xi[,,gg]
-			I.lj.gg[,,gg] <- t( item.patt.freq[,gg]*resp.patt ) %*% p.aj.xi[,,gg]
+#			I.lj.gg[,,gg] <- t( item.patt.freq[,gg]*resp.patt ) %*% p.aj.xi[,,gg]
+			I.lj.gg[,,gg] <- crossprod( item.patt.freq[,gg]*resp.patt , p.aj.xi[,,gg] )
 					}
 #		for (i in 1:J){ 
 #			R.lj.gg[i,,gg] <- colSums(  item.patt.split[,i] * 
 #					item.patt.freq[,gg]*resp.patt[,i] * p.aj.xi[,,gg]  )
 #					}
 # 		R.lj <- t(ipr) %*% p.aj.xi	
-		    R.lj.gg[,,gg] <- t( item.patt.split  * item.patt.freq[,gg] * resp.patt ) %*% p.aj.xi[,,gg]
+#		    R.lj.gg[,,gg] <- t( item.patt.split  * item.patt.freq[,gg] * resp.patt ) %*% p.aj.xi[,,gg]
+		    R.lj.gg[,,gg] <- crossprod( item.patt.split  * item.patt.freq[,gg] * resp.patt , p.aj.xi[,,gg] )
 			colnames(I.lj.gg) <- colnames(R.lj.gg) <- attr.patt.c
 			rownames(I.lj.gg) <- rownames(R.lj.gg) <- colnames(data)
 						}
@@ -764,10 +772,13 @@ if (HOGDINA >= 0){
 		Wj <- diag( Ilj.ast )
 	    if ( ( rule[jj] == "GDINA" )| ( method == "ULS" ) ){ 
 				invM <- invM.list[[jj]] 
-				delta.jj <- invM %*% t(Mjjj) %*% pjjj				
+#				delta.jj <- invM %*% t(Mjjj) %*% pjjj				
+				delta.jj <- invM %*% crossprod(Mjjj ,pjjj)
 							} else { 
-				invM <- solve( t(Mjjj) %*% Wj %*% Mjjj + diag( rep( eps2 , ncol(Mjjj) )) )
-				delta.jj <- invM %*% t(Mjjj) %*% Wj %*% pjjj
+#				invM <- solve( t(Mjjj) %*% Wj %*% Mjjj + diag( rep( eps2 , ncol(Mjjj) )) )
+				invM <- solve( crossprod(Mjjj , Wj ) %*% Mjjj + diag( rep( eps2 , ncol(Mjjj) )) )				
+#				delta.jj <- invM %*% t(Mjjj) %*% Wj %*% pjjj
+				delta.jj <- tcrossprod( invM , Mjjj ) %*% Wj %*% pjjj
 								}
 		djj <- delta.jj[,1]
 		djj.change <- djj - delta[[jj]]

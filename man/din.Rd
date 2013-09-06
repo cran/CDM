@@ -27,13 +27,13 @@
 
 
 \arguments{
-  \item{data}{a required \eqn{N} times \eqn{J} data matrix 
+  \item{data}{A required \eqn{N \times J} data matrix 
     containing the binary responses, 0 or 1, of \eqn{N} respondents to \eqn{J}
     test items, where 1 denotes a correct anwer and 0 an incorrect one. The 
     nth row of the matrix represents the binary response pattern of respondant
     n.  \code{NA} values are allowed.  }
     
-  \item{q.matrix}{a required binary \eqn{J} times \eqn{K} containing the 
+  \item{q.matrix}{A required binary \eqn{J \times K} containing the 
     attributes not required or required, 0 or 1, to master the items.  The
     jth row of the matrix is a binary indicator vector indicating which 
     attributes are not required (coded by 0) and which attributes are 
@@ -44,45 +44,48 @@
   }
    
     
-  \item{conv.crit}{termination criterion of iterations in the parameter 
+  \item{conv.crit}{A numeric which defines the termination criterion 
+    of iterations in the parameter 
     estimation process.  Iteration ends if the maximal change in parameter
     estimates is below this value.  }
 
-  \item{dev.crit}{termination criterion of iterations in relative change in
-        deviance.}
+  \item{dev.crit}{A numeric value which defines the termination criterion 
+  	of iterations in relative change in deviance.}
 
 
-  \item{maxit}{maximal number of iterations in the estimation process.  }
+  \item{maxit}{An integer which defines the maximum number 
+  of iterations in the estimation process.  }
     
-  \item{constraint.guess}{an optional matrix of fixed guessing
+  \item{constraint.guess}{An optional matrix of fixed guessing
     parameters.  The first column of this matrix indicates the numbers of the
     items whose guessing parameters are fixed and the second 
     column the values the guessing parameters are fixed to.  }
     
-  \item{constraint.slip}{an optional matrix of fixed slipping
+  \item{constraint.slip}{An optional matrix of fixed slipping
     parameters.  The first column of this matrix indicates the numbers of the 
     items whose guessing parameters are fixed and the second column 
     the values the guessing parameters are fixed to.  }
     
-  \item{guess.init}{an optional initial vector of guessing parameters.  
+  \item{guess.init}{An optional initial vector of guessing parameters.  
     Guessing parameters are bounded between 0 and 1.  }
     
-  \item{slip.init}{an optional initial vector of guessing parameters.  
+  \item{slip.init}{An optional initial vector of guessing parameters.  
     Slipping parameters are bounded between 0 and 1.  }
     
-  \item{guess.equal}{an optional logical indicating if all guessing parameters are equal to each other.
-            Default is FALSE.}
+  \item{guess.equal}{An optional logical indicating if all guessing parameters 
+  are equal to each other. Default is \code{FALSE}.}
 
- \item{slip.equal}{an optional logical indicating if all slipping parameters are equal to each other.
-            Default is FALSE.}
+ \item{slip.equal}{An optional logical indicating if all slipping parameters 
+ are equal to each other. Default is \code{FALSE}.}
   
-\item{zeroprob.skillclasses}{an optional vector of integers which indicates which skill classes should have zero probability. Default is NULL 
+\item{zeroprob.skillclasses}{An optional vector of integers which indicates 
+which skill classes should have zero probability. Default is \code{NULL} 
     (no skill classes with zero probability).}
  
-     \item{weights}{an optional vector of weights for the response pattern. 
+     \item{weights}{An optional vector of weights for the response pattern. 
   	Non-integer weights allow for different sampling schemes.  }
     
-  \item{rule}{an optional character string or vector of character strings 
+  \item{rule}{An optional character string or vector of character strings 
   	specifying the model rule that is used. The character strings must be 
   	of \code{"DINA"} or \code{"DINO"}.  If a vector of character strings is 
   	specified, implying an item wise condensation rule, the vector must 
@@ -96,9 +99,10 @@
 \item{wgtest.overrelax}{A logical which indicates if the overrelexation 
     parameter being estimated during iterations}
 
-\item{param.history}{Save parameter history?}
+\item{param.history}{A logical which indicates if the parameter history during
+iterations should be saved. The default is \code{FALSE}.}
    
-\item{progress}{an optional logical indicating whether the function
+\item{progress}{An optional logical indicating whether the function
     should print the progress of iteration in the estimation process.  } 
 }
 
@@ -145,14 +149,14 @@
 }
 
 \value{
-  \item{coef}{a dataframe giving for each item condensation rule, the 
+  \item{coef}{A data frame giving for each item condensation rule, the 
     estimated guessing and slipping parameters and their standard errors.  
     All entries are rounded to 3 digits.  }
-  \item{guess}{a dataframe giving the estimated guessing parameters
+  \item{guess}{A data frame giving the estimated guessing parameters
     and their standard errors for each item.  }
-  \item{slip}{a dataframe giving the estimated slipping parameters
+  \item{slip}{A data frame giving the estimated slipping parameters
     and their standard errors for each item.  }
-  \item{IDI}{a matrix giving the item discrimination
+  \item{IDI}{A matrix giving the item discrimination
     index (IDI; Lee, de la Torre & Park, 2012) for each item \eqn{j}
     \deqn{ IDI_j = 1 - s_j - g_j , }{ IDI_j = 1 - s_j - g_j , }
     where a high IDI corresponds to good test items
@@ -163,38 +167,38 @@
             }
 \item{mean.rmsea}{Mean of RMSEA item fit indexes.
             }            
-  \item{loglike}{a numeric giving the value of the maximized
+  \item{loglike}{A numeric giving the value of the maximized
     log likelihood.  }
-  \item{AIC}{a numeric giving the AIC value of the model.  }
-  \item{BIC}{a numeric giving the BIC value of the model.  }
-  \item{Npars}{number of estimated parameters}  
-  \item{posterior}{a matrix given the posterior skill distribution
+  \item{AIC}{A numeric giving the AIC value of the model.  }
+  \item{BIC}{A numeric giving the BIC value of the model.  }
+  \item{Npars}{Number of estimated parameters}  
+  \item{posterior}{A matrix given the posterior skill distribution
     for all respondents.  The nth row of the matrix gives the probabilities for 
-    respondent n to possess any of the \code{2^K} skill classes.  }
-  \item{like}{a matrix giving the values of the maximized likelihood
+    respondent n to possess any of the \eqn{2^K} skill classes.  }
+  \item{like}{A matrix giving the values of the maximized likelihood
     for all respondents.  }
-  \item{data}{the input matrix of binary response data.  }
-  \item{q.matrix}{the input matrix of the required attributes.  }
-  \item{pattern}{a matrix giving the skill classes leading to highest endorsement 
+  \item{data}{The input matrix of binary response data.}
+  \item{q.matrix}{The input matrix of the required attributes.  }
+  \item{pattern}{A matrix giving the skill classes leading to highest endorsement 
     probability for the respective response pattern (\code{mle.est}) with the 
     corresponding posterior class probability (\code{mle.post}), the attribute 
     classes having the highest occurrence posterior probability given the 
     response pattern (\code{map.est}) with the corresponding posterior class 
     probability (\code{map.post}), and the estimated posterior for each 
     response pattern (\code{pattern}).  }
-  \item{attribute.patt}{a data frame giving the estimated occurrence
+  \item{attribute.patt}{A data frame giving the estimated occurrence
     probabilities of the skill classes and the expected frequency of the
     attribute classes given the model.  }
-  \item{skill.patt}{a matrix given the population prevalences of the
+  \item{skill.patt}{A matrix given the population prevalences of the
     skills.  }
-  \item{subj.pattern}{a vector of strings indicating the item response
+  \item{subj.pattern}{A vector of strings indicating the item response
     pattern for each subject.  }
-  \item{attribute.patt.splitted}{a dataframe giving the skill class 
+  \item{attribute.patt.splitted}{A dataframe giving the skill class 
     of the respondents.  }
-  \item{display}{a character giving the model specified under 
+  \item{display}{A character giving the model specified under 
     \code{rule}.  }
-  \item{item.patt.split}{a matrix giving the splitted response pattern.  }
-  \item{item.patt.freq}{a numeric vector given the frequencies of the response
+  \item{item.patt.split}{A matrix giving the splitted response pattern.  }
+  \item{item.patt.freq}{A numeric vector given the frequencies of the response
     pattern in \code{item.patt.split}.  }
 }
 
@@ -257,9 +261,9 @@
 }
 
 \examples{
-##
-## (1) examples based on dataset fractions.subtraction.data
-##
+#############################################################################
+# EXAMPLE 1: Examples based on dataset fractions.subtraction.data
+#############################################################################
 
 ## dataset fractions.subtraction.data and corresponding Q-Matrix
 head(fraction.subtraction.data)
@@ -319,10 +323,9 @@ fractions.dina.fixed <- din(data = fraction.subtraction.data,
 ## The second plot shows the expected (MAP) and observed skill 
 ## probabilities. The third plot visualizes the skill class
 ## occurrence probabilities; Only the 'top.n.skill.classes' most frequent 
-## skill classes are labeled; it
-## is obvious that the skill class '11111111' (all skills are
-## mastered) is the most probable in this population. The fourth
-## plot shows the skill probabilities conditional on response
+## skill classes are labeled; it is obvious that the skill class '11111111' 
+## (all skills are mastered) is the most probable in this population. 
+## The fourth plot shows the skill probabilities conditional on response
 ## patterns; in this population the skills 3 and 6 seem to be
 ## mastered easier than the others. The fifth plot shows the
 ## skill probabilities conditional on a specified response
@@ -339,9 +342,9 @@ plot(fractions.dina.fixed, uncertainty = 0.1, top.n.skill.classes = 6,
   pattern = pattern)
 
 \dontrun{  
-##
-## (2) examples based on dataset sim.dina
-##
+#############################################################################
+# EXAMPLE 2: Examples based on dataset sim.dina
+#############################################################################
 
 # DINA Model
 d1 <- din(sim.dina, q.matr = sim.qmatrix, rule = "DINA",
@@ -363,19 +366,21 @@ d0$attribute.patt.splitted
 # [7,]    0    1    1
 # [8,]    1    1    1
 #
-# In this example, following hierarchical skill classes shall only allowed:
+# In this example, following hierarchical skill classes are only allowed:
 # 000, 001, 011, 111
 # We define therefore a vector of indices for skill classes with
-# zero probabilities (see entries in the rows of the matrix d0$attribute.patt.splitted above)
+# zero probabilities (see entries in the rows of the matrix 
+# d0$attribute.patt.splitted above)
 zeroprob.skillclasses <- c(2,3,5,6)     # classes 100, 010, 110, 101
 # estimate the hierarchical DINA model
-d1a <- din(sim.dina, q.matr = sim.qmatrix, zeroprob.skillclasses =zeroprob.skillclasses )
+d1a <- din(sim.dina, q.matr = sim.qmatrix, 
+          zeroprob.skillclasses =zeroprob.skillclasses )
 summary(d1a)
 
 # Mixed DINA and DINO Model
 d1b <- din(sim.dina, q.matr = sim.qmatrix, rule = 
-  c(rep("DINA", 7), rep("DINO", 2)), conv.crit = 0.01,
-  maxit = 500, progress = FALSE)
+          c(rep("DINA", 7), rep("DINO", 2)), conv.crit = 0.01,
+          maxit = 500, progress = FALSE)
 summary(d1b)
 
 # DINO Model
@@ -412,34 +417,33 @@ d2b <- din( data = sim.dina , q.matrix = sim.qmatrix ,
             guess.equal = TRUE , slip.equal = TRUE )
 d2b$coef
 
-##
-## (3) examples based on dataset sim.dino
-##
+#############################################################################
+# EXAMPLE 3: Examples based on dataset sim.dino
+#############################################################################
 
 # DINO Estimation
 d3 <- din(sim.dino, q.matr = sim.qmatrix, rule = "DINO",
-  conv.crit = 0.005, progress = FALSE)
+        conv.crit = 0.005, progress = FALSE)
 
 # Mixed DINA and DINO Model
-d3b <- din(sim.dino, q.matr = sim.qmatrix, rule = 
-  c(rep("DINA", 4), rep("DINO", 5)), conv.crit = 0.001, 
-  progress = FALSE)
+d3b <- din(sim.dino, q.matr = sim.qmatrix, 
+          rule = c(rep("DINA", 4), rep("DINO", 5)), conv.crit = 0.001, 
+          progress = FALSE)
                         
 # DINA Estimation
 d4 <- din(sim.dino, q.matr = sim.qmatrix, rule = "DINA",
   conv.crit = 0.005, progress = FALSE)
             
 # Comparison of DINA and DINO estimates
-lapply(list("guessing" = rbind("DINO" = d3$guess[,1],
-  "DINA" = d4$guess[,1]), "slipping" = rbind("DINO" = 
-  d3$slip[,1], "DINA" = d4$slip[,1])), round, 2)
+lapply(list("guessing" = rbind("DINO" = d3$guess[,1],  "DINA" = d4$guess[,1]), 
+       "slipping" = rbind("DINO" =d3$slip[,1], "DINA" = d4$slip[,1])), round, 2)
 
 # Comparison of the information criteria
 c("DINO"=d3$AIC, "MIXED"=d3b$AIC, "DINA"=d4$AIC)
 
-##
-## (4) example estimation with weights based on dataset sim.dina
-##
+#############################################################################
+# EXAMPLE 4: Example estimation with weights based on dataset sim.dina
+#############################################################################
 
 # Here, a weighted maximum likelihood estimation is used 
 # This could be useful for survey data.
@@ -453,15 +457,15 @@ d5 <- din(sim.dina, sim.qmatrix, rule = "DINA", conv.crit =
 # Comparison of the information criteria
 c("DINA"=d1$AIC, "WEIGHTS"=d5$AIC)
 
-##
-## (5) example estimation within a Balanced Incomplete 
-##     Block (BIB) Design generated on dataset sim.dina
-##
+#############################################################################
+# EXAMPLE 5: Example estimation within a balanced incomplete 
+##           block (BIB) design generated on dataset sim.dina
+#############################################################################
 
 # generate BIB data
 
-# The next example shows that the din and nida functions
-# work for (relatively arbitrary) missing value pattern
+# The next example shows that the din function works for 
+# (relatively arbitrary) missing value pattern
 
 # Here, a missing by design is generated in the dataset dinadat.bib
 sim.dina.bib <- sim.dina
@@ -470,10 +474,10 @@ sim.dina.bib[101:300, 4:8] <- NA
 sim.dina.bib[301:400, c(1,2,9)] <- NA
 
 d6 <- din(sim.dina.bib, sim.qmatrix, rule = "DINA", 
-  conv.crit = 0.0005, weights = weights, maxit=200)
+         conv.crit = 0.0005, weights = weights, maxit=200)
 
 d7 <- din(sim.dina.bib, sim.qmatrix, rule = "DINO",
-  conv.crit = 0.005, weights = weights)
+         conv.crit = 0.005, weights = weights)
 
 # Comparison of DINA and DINO estimates
 lapply(list("guessing" = rbind("DINA" = d6$guess[,1],

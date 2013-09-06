@@ -16,6 +16,12 @@ if(is.null(x$log.file)){
   packageStartupMessage(paste(d$Package," " , d$Version," (Built ",d$Date,")",sep=""))
   cat("Call:\n",
       x$CALL, "\n")
+	  
+	cat( "Date of Analysis:" , paste( x$end.analysis ) , "\n" )
+	cat("Computation Time:" , print( 
+			x$end.analysis - x$start.analysis),"\n\n")
+	  
+	  
 #      "\nItem discrimination index:\n")
 #      print(as.table(x$IDI))    
 #      cat("\nSummary of skill pattern distribution:\n")

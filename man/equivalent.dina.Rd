@@ -18,7 +18,7 @@ equivalent.dina(q.matrix, reparametrization = "B")
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{q.matrix}{
-A Q-matrix
+The Q-matrix (see \code{\link{din}})
 }
   \item{reparametrization}{
 The used reparametrization (see von Davier, 2013). \code{A} and \code{B}
@@ -59,10 +59,10 @@ diagnostic model: Two variants of a model equivalency.
 \examples{
 # define a Q-matrix
 Q <- matrix( c( 1,0,0 ,  0,1,0 , 
-        0,0,1, 1,0,1 ,  1,1,1 ) , byrow=TRUE , ncol=3 )
+        0,0,1,   1,0,1 ,  1,1,1 ) , byrow=TRUE , ncol=3 )
 Q <- Q[ rep(1:(nrow(Q)),each=2) , ]
 
-# equivalent DINA model (reparametrization B)
+# equivalent DINA model (using the default reparametrization B)
 res1 <- equivalent.dina( q.matrix=Q )
 res1
 

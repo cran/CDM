@@ -57,11 +57,8 @@
   problems}. Final Report for NIE-G-81-0002, University of Illinois, Urbana-Champaign.  
 }
 
-\examples{
-##
-## (1) example based on corresponding dataset see
-##     fractions.subtraction.data
-##
-}
+%\examples{
+%##
+%}
 
 \keyword{datasets}

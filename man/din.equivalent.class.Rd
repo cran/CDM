@@ -13,7 +13,7 @@ din.equivalent.class(q.matrix, rule = "DINA")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{q.matrix}{The Q-matrix}
+  \item{q.matrix}{The Q-matrix (see \code{\link{din}}).}
   \item{rule}{
     The condensation rule. If it is a string, then the rule applies
     to all items. If it is a vector, then for each item \code{DINA}

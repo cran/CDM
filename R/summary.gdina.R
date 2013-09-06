@@ -28,6 +28,7 @@ summary.gdina <- function( object , rdigits = 4 , ... ){
     cat( "Deviance =" , round( object$deviance , 2 ) ) 
 	cat( "  | Loglikelihood =" , round( - object$deviance / 2 , 2 ) ,	"\n" )
     cat( "Number of persons =" , object$N , "\n" )    
+	    cat( "Number of items =" , ncol(object$data) , "\n" )    
     cat( "Number of estimated parameters =" , object$Npars , "\n" )    
     cat( "Number of estimated item parameters =" , object$Nipar , "\n" )    	
     cat( "Number of estimated skill class parameters =" , object$Nskillpar )    		

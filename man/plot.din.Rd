@@ -17,40 +17,40 @@
 }
 
 \arguments{
-  \item{x}{a required object of class \code{din}, obtained from a
+  \item{x}{A required object of class \code{din}, obtained from a
     call to the function \code{\link{din}}.  }
     
-  \item{items}{an index vector giving the items to be visualized in the first
+  \item{items}{An index vector giving the items to be visualized in the first
     plot, see \sQuote{Details}.  The default is 
     \code{items = c(1:ncol(x$data))}, which is all items.  }
 	  
-  \item{pattern}{an optional character specifying a response pattern
+  \item{pattern}{An optional character specifying a response pattern
     of an respondent, whose attributes are analyzed in a separate
     graphic.  It is required to choose a pattern from the empirical
-    data set.  }
+    data set (see Example).  }
 	
-  \item{uncertainty}{a numeric between 0 and 0.5 giving the
+  \item{uncertainty}{A numeric between 0 and 0.5 giving the
     uncertainty bounds for deriving the observed skill occurrence probabilities 
     in plot 2 and the simplified deterministic attribute profiles in plot 5.  }
 
-  \item{top.n.skill.classes}{a numeric, specifying the number of skill classes, 
+  \item{top.n.skill.classes}{A numeric, specifying the number of skill classes, 
     starting with the most frequent, to be labeled in plot 3.  
     Default value is 6.  }
     
-  \item{pdf.file}{an optional character string. If specified the graphics 
+  \item{pdf.file}{An optional character string. If specified the graphics 
     obtained from the function \code{plot.din} are provided in a pdf file.  
     The default is \code{pdf.file=""}, which is not providing a pdf file.  
     Otherwise specify a directory and filename ending with \code{.pdf} where to 
     write the document.  }
   
-  \item{hide.idi}{an optional logical value. If set to \code{TRUE}, the IDI 
+  \item{hide.idi}{An optional logical value. If set to \code{TRUE}, the IDI 
     curve in first graphic is not displayed.   }
 
-  \item{hide.obs}{an optional logical value. If set to \code{TRUE}, the 
+  \item{hide.obs}{An optional logical value. If set to \code{TRUE}, the 
     polygonal chain for observed frequencies of skill class probabilities in the 
     second graphic is not displayed.  }
     
-  \item{display.nr}{an optional numeric or numeric vector. If specified, only the plots in
+  \item{display.nr}{An optional numeric or numeric vector. If specified, only the plots in
     \code{display.nr} are displayed. Default is \code{display.nr = 1:5} causing the display of 
     all five plots.   }
   
@@ -74,7 +74,7 @@
   attribute increases the observed occurrence probability of that attribute.  
   
   The third graphic illustrates the distribution of the skill class occurrence
-  probabilities.  The \code{top.n.skill.classes} most frequent skill classes are labeled.  
+  probabilities.  The \cr \code{top.n.skill.classes} most frequent skill classes are labeled.  
   
   The forth plot is a parallel coordinate plot of the individual skill profiles.
   Each line represents an individual skill profile.  For each of these skill profiles
@@ -91,7 +91,7 @@
 
 \value{
   If the argument \code{x} is of required type,
-  and if the optional arguments \code{items}, \code{uncertainty},
+  and if the optional arguments \code{items}, \code{uncertainty},\cr
   \code{top.n.skill.classes} and \code{pdf.file} are specified as required, the
   \code{plot.din} produces several graphics to analyze a CDM model.  
 }
@@ -134,14 +134,12 @@ fractions.dina.fixed <- din(data = fraction.subtraction.data,
   q.matrix = fraction.subtraction.qmatrix, 
   constraint.guess=constraint.guess)
 
-
 ## The second plot shows the expected (MAP) and observed skill 
 ## probabilities. The third plot visualizes the skill class
 ## occurrence probabilities; Only the 'top.n.skill.classes' most frequent 
-## skill classes are labeled; it
-## is obvious that the skill class '11111111' (all skills are
-## mastered) is the most probable in this population. The fourth
-## plot shows the skill probabilities conditional on response
+## skill classes are labeled; it is obvious that the skill class '11111111' 
+## (all skills are mastered) is the most probable in this population. 
+## The fourth plot shows the skill probabilities conditional on response
 ## patterns; in this population the skills 3 and 6 seem to be
 ## mastered easier than the others. The fifth plot shows the
 ## skill probabilities conditional on a specified response

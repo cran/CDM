@@ -8,9 +8,9 @@ Q-Matrix Validation (Q-Matrix Modification) for Mixed DINA/DINO Model
 Q-matrix entries can be modified by the Q-matrix validation method
 of de la Torre (2008). After estimating a mixed DINA/DINO model
 using the \code{\link{din}} function, item parameters and the item
-discrimination parameters \eqn{IDI} are recalculated. Q-matrix rows
+discrimination parameters \eqn{IDI_j} are recalculated. Q-matrix rows
 are determined by maximizing the estimated item discrimination index
-\eqn{IDI_i = 1-s_i -g_i}.
+\eqn{IDI_j = 1-s_j -g_j}.
 }
 
 \usage{
@@ -26,9 +26,8 @@ Object of class \code{din}
   \item{digits}{
 Number of digits for rounding the output matrix
 }
-  \item{print}{
-Print output? The default is \code{TRUE}.
-}
+\item{print}{An optional logical indicating whether the function
+    should print the progress of iteration in the estimation process.  } 
 }
 
 %\details{

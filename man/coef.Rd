@@ -19,7 +19,7 @@
   \item{object}{An object inheriting from either class \code{din}, 
   class \code{gdina} or class \code{gdm}. 
   			}
-  \item{\dots}{Additional arguments; currently none is used. }
+  \item{\dots}{Additional arguments to be passed.}
 }
 
 %%\details{

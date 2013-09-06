@@ -29,7 +29,7 @@ Note that the simulation does (up to now) only work for
 CDMs of class \code{din}.
 }
   \item{seed}{
-Simulation seed
+An integer which indicates the simulation seed.
 }
 }
 \details{

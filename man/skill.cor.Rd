@@ -21,13 +21,12 @@ Object of class \code{din} or \code{gdina}
 %\details{
 %%  ~~ If necessary, more details than the description above ~~
 %}
-%\value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
-%}
+\value{
+A list with following entries:
+ \item{conttable.skills}{Bivariate contingency table of all skill pairs}
+  \item{cor.skills}{Tetrachoric correlation matrix for skill
+    distribution}
+}
 \references{
 Templin, J., & Henson, R. (2006). Measurement of psychological disorders 
 using cognitive diagnosis models. \emph{Psychological Methods}, 

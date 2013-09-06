@@ -233,7 +233,10 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
     # calculate for each item how many attributes are necessary for solving the items
     # according to the specified DINA or DINO rule                                  
     comp <- ( rowSums(q.matrix)  )*( rule=="DINA")   + 1* ( rule == "DINO" )               
-
+	# need number of components for I.lj ...
+	compL <- outer(  comp, rep(1,L) )
+	attrpatt.qmatr <- t(( attr.patt %*% t(q.matrix) ) )                      
+	
 	# compute latent response
     latresp <- apply( attr.patt, 1, FUN = function(attr.patt.ll){
 		# form attribute pattern (Lx1) in matrix (J x 1 )
@@ -342,12 +345,14 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 		R.lj <- I.lj <- matrix( 0 , nrow=J , ncol=L )
 			
 		if ( some.missings ){
-			I.lj <- t( item.patt.freq*resp.patt	) %*% p.aj.xi
+#			I.lj <- t( item.patt.freq*resp.patt	) %*% p.aj.xi
+			I.lj <- crossprod( item.patt.freq*resp.patt	, p.aj.xi )
 					} else {
 			I.lj <- matrix( t( item.patt.freq ) %*% p.aj.xi , nrow=J , 
 							ncol=L , byrow=TRUE )
 					}
-		R.lj <- t(ipr) %*% p.aj.xi		
+#		R.lj <- t(ipr) %*% p.aj.xi		
+		R.lj <- crossprod(ipr , p.aj.xi	)
 		colnames(I.lj) <- colnames(R.lj) <- attr.patt.c
 		rownames(I.lj) <- rownames(R.lj) <- colnames(data)
 			
@@ -361,11 +366,11 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 # I_{j0}, R_{j0} ... expected frequencies of students which incorrectly        #
 #                      solve the item                                          #
 ################################################################################
-                      
-    I.j0 <- rowSums( ( t(( attr.patt %*% t(q.matrix) ) )  <  outer(  comp, rep(1,L) ) ) * I.lj ) 
-    I.j1 <- rowSums( ( t(( attr.patt %*% t(q.matrix) ) )  >= outer(  comp, rep(1,L) ) ) * I.lj )             
-    R.j0 <- rowSums( ( t(( attr.patt %*% t(q.matrix) ) )  <  outer(  comp, rep(1,L) ) ) * R.lj )
-    R.j1 <- rowSums( ( t(( attr.patt %*% t(q.matrix) ) )  >= outer(  comp, rep(1,L) ))  * R.lj )
+
+    I.j0 <- rowSums( ( attrpatt.qmatr  < compL  ) * I.lj ) 
+    I.j1 <- rowSums( ( attrpatt.qmatr  >= compL ) * I.lj )             
+    R.j0 <- rowSums( ( attrpatt.qmatr  <  compL ) * R.lj )
+    R.j1 <- rowSums( ( attrpatt.qmatr  >= compL )  * R.lj )
 
 	
 ################################################################################

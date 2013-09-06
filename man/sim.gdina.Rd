@@ -28,7 +28,7 @@ sim.gdina.prepare( q.matrix )
 Number of persons
 }
   \item{q.matrix}{
-Q-matrix
+Q-matrix (see \code{\link{sim.din}})
 }
   \item{delta}{
 List with \eqn{J} entries where \eqn{J} is the number of items. 
@@ -66,8 +66,8 @@ The output of \code{sim.gdina} is a list with following entries:
   \item{alpha}{Data frame with simulated attributes}
   \item{q.matrix}{Used Q-matrix}
   \item{delta}{Used delta item parameters}
-  \item{Aj}{Design matrices Aj}
-  \item{Mj}{Design matrices Mj}
+  \item{Aj}{Design matrices \eqn{A_j}}
+  \item{Mj}{Design matrices \eqn{M_j}}
   \item{link}{Used link function}
 
 The function \code{sim.gdina.prepare} possesses the following values as output

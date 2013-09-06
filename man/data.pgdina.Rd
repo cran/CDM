@@ -6,7 +6,6 @@ Dataset for Polytomous GDINA Model
 }
 \description{
 Dataset for the estimation of the polytomous GDINA model.
-See Example 7 in \code{gdina}. 
 }
 
 \usage{data(data.pgdina)}
@@ -74,6 +73,10 @@ The dataset was simulated by the following \R code:
 %\source{
 %}
 
+\seealso{
+See Example 7 in \code{\link{gdina}}. 
+}
+
 \references{
 Chen, J., & de la Torre, J. (2013). 
 A general cognitive diagnosis model for expert-defined polytomous attributes.
@@ -84,4 +87,5 @@ A general cognitive diagnosis model for expert-defined polytomous attributes.
 %data(data.pgdina)
 %## maybe str(data.pgdina) ; plot(data.pgdina) ...
 %}
+
 \keyword{datasets}

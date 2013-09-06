@@ -76,7 +76,8 @@
 #			dkk <- (dat.ind[[kk]])
 #			dkk2 <- dkk * dat.resp * weights
             dkk2 <- dat.ind2[[kk]][[gg]]
-			n.ik[,,kk,gg] <- t( p.aj.xi ) %*% dkk2
+#			n.ik[,,kk,gg] <- t( p.aj.xi ) %*% dkk2
+			n.ik[,,kk,gg] <- crossprod( p.aj.xi , dkk2 )
 			N.ik[,,gg] <- N.ik[,,gg] + n.ik[,,kk,gg]
 						}	
 				}
@@ -86,9 +87,11 @@
 		if ( ! use.freqpatt ){	
 			ind.gg <- ind.group[[gg]]
 			t.p.aj.xi.gg <- t( p.aj.xi[ind.gg,] )
+#			p.aj.xi.gg <- p.aj.xi[ind.gg,] 
 					} 
 		if (  use.freqpatt ){	
 			t.p.aj.xi.gg <- t( p.aj.xi[[gg]] )
+#			p.aj.xi.gg <- p.aj.xi[[gg]]
 					} 
 					
 			for (kk in 1:(K+1)){   #		kk <- 1	# category 0 ( -> 1 )
@@ -100,6 +103,7 @@
 #				  if (G==1){ dkk2 <- dkk2[ which(weights[,gg] > 0) , ] }
 									}
 				n.ik[,,kk,gg] <- t.p.aj.xi.gg %*% dkk2
+#				n.ik[,,kk,gg] <- crossprod( p.aj.xi.gg , dkk2 )
 				N.ik[,,gg] <- N.ik[,,gg] + n.ik[,,kk,gg]
 						}						
 					}

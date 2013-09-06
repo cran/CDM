@@ -2,15 +2,25 @@
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
 CDM package
-A. Robitzsch, T. Kiefer, A. C. George & A. Uenlue
+
+A. Robitzsch, T. Kiefer, A. C. George, & A. Uenlue
 
 mailto:
 a.robitzsch /-\ bifie.at
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+
+--------------------------------------------------------------
+CDM 2.3 (2013-09-06)
+--------------------------------------------------------------
+
+x worked on slight improvements of computation time in din
+  and gdina
+x included multiple group dataset 'data.mg'
+x cleaned CDM manual (thanks to Michaela Mayr)
 
 
 --------------------------------------------------------------
@@ -25,7 +35,6 @@ x included joint maximum likelihood estimation and
 x included another example (based on attribute vectors) 
   in sim.din function
 x included polytomous GDINA model (Chen & de la Torre, 2013)  
-
 
 --------------------------------------------------------------
 CDM 2.01 (2013-07-27)
@@ -115,49 +124,49 @@ x fixed a bug in gdina function when creating design matrices
 CDM 1.2.0 (2012-09-30)
 --------------------------------------------------------------
 
- x implemented the latent skill space reduction according
-   to Xu and von Davier (2008)
- x fixed a bug in calculation of estimated parameters
- x fixed a bug in IDI calculation
- x corrected MLE based classification in case of latent
-   classes with a priori spceified zero probability in the
-   din function (yet to be done in gdina)
- x fixed a bug in standard error calculation in gdina
- x speed improvements in din and gdina function
-   - included a C function for calculating the posterior 
-     distribution
- x check of admissible rule in gdina
- x include rule "GDINA2" and "GDINA1" ("GDINA1" is 
-   equivalent to "ACDM")
- x Simulation function for the GDINA model included
- x multiple group gdina function for estimation of
-   generalized DINA models (de la Torre, 2011)
- x new function summary.gdina
+x implemented the latent skill space reduction according
+  to Xu and von Davier (2008)
+x fixed a bug in calculation of estimated parameters
+x fixed a bug in IDI calculation
+x corrected MLE based classification in case of latent
+  classes with a priori spceified zero probability in the
+  din function (yet to be done in gdina)
+x fixed a bug in standard error calculation in gdina
+x speed improvements in din and gdina function
+  - included a C function for calculating the posterior 
+    distribution
+x check of admissible rule in gdina
+x include rule "GDINA2" and "GDINA1" ("GDINA1" is 
+  equivalent to "ACDM")
+x Simulation function for the GDINA model included
+x multiple group gdina function for estimation of
+  generalized DINA models (de la Torre, 2011)
+x new function summary.gdina
 
 --------------------------------------------------------------
 CDM 1.1 (2012-07-29)
 --------------------------------------------------------------
 
- x highest argument deleted from print.din method
- x new argument for summary.din n.skill.classes
- x skill pattern probabilities deleted from print.din
- x skill pattern summary replaced by n most frequent skill 
-   classes in summary.din
- x (argument ask=TRUE in summary.din placed by overwrite=FALSE)
- x use a different item discrimination index (Lee et al., 2012)
- x remove GDINA estimation from this package version because
-   it is in an experimental status 
-     -> gdina will be included in CDM >= 1.1-1
- x new optional attribute for q-matrix specification list of skill 
-   labels
- x changed ouput in din function
-    -> pattern, like and posterior are sorted according to the original 
-       input data frame
- x remove a bug for models with only attribute
- x new argument for din method zeroprob.skillclasses
- x new argument for din method equal.itempars
- x new arguments for summary.din method log.file and ask
- x minor bug fixes in print.din method
- x replace internal method rowProds with faster rowProds2
- x option for writing an output file of model results included in 
-   function summary.din 
+x highest argument deleted from print.din method
+x new argument for summary.din n.skill.classes
+x skill pattern probabilities deleted from print.din
+x skill pattern summary replaced by n most frequent skill 
+  classes in summary.din
+x (argument ask=TRUE in summary.din placed by overwrite=FALSE)
+x use a different item discrimination index (Lee et al., 2012)
+x remove GDINA estimation from this package version because
+  it is in an experimental status 
+    -> gdina will be included in CDM >= 1.1-1
+x new optional attribute for q-matrix specification list of skill 
+  labels
+x changed ouput in din function
+   -> pattern, like and posterior are sorted according to the original 
+      input data frame
+x remove a bug for models with only attribute
+x new argument for din method zeroprob.skillclasses
+x new argument for din method equal.itempars
+x new arguments for summary.din method log.file and ask
+x minor bug fixes in print.din method
+x replace internal method rowProds with faster rowProds2
+x option for writing an output file of model results included in 
+  function summary.din 

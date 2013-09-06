@@ -28,13 +28,13 @@ gdina(data, q.matrix, conv.crit=0.0001, dev.crit=.1 ,  maxit=1000,
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{data}{A required \eqn{N} times \eqn{J} data matrix 
+  \item{data}{A required \eqn{N \times J} data matrix 
     containing the binary responses, 0 or 1, of \eqn{N} respondents to \eqn{J}
     test items, where 1 denotes a correct anwer and 0 an incorrect one. The 
     \eqn{n}th row of the matrix represents the binary response pattern of respondent
     \eqn{n}.  \code{NA} values are allowed.  }
     
-  \item{q.matrix}{A required integer \eqn{J} times \eqn{K} matrix containing
+  \item{q.matrix}{A required integer \eqn{J \times K} matrix containing
     attributes not required or required, 0 or 1, to master the items in case
     of dichotomous attributes or integers in case of polytomous attributes.    
   }
@@ -91,19 +91,19 @@ default analysis. See Example 3.
     i.e. \code{delta.designmatrix} is not NULL.
 }
 
-\item{zeroprob.skillclasses}{an optional vector of integers which indicates which skill
+\item{zeroprob.skillclasses}{An optional vector of integers which indicates which skill
   classes should have zero probability. Default is NULL 
     (no skill classes with zero probability).}
     
 
-\item{reduced.skillspace}{Logical which indicates if the latent class skill space should be
+\item{reduced.skillspace}{A logical which indicates if the latent class skill space should be
         dimensionally reduced (see Xu & von Davier, 2008). Default is \code{TRUE}.
         The dimensional reduction is only well defined for more than three skills.
         The dimensional reduction is not yet implemented for multiple groups.
         If the argument \code{zeroprob.skillclasses} is not \code{NULL}, then
         \code{reduced.skillspace} is set to \code{FALSE}.}
 
-\item{HOGDINA}{Values of -1, 0 or 1 which indicate if a higher order GDINA
+\item{HOGDINA}{Values of -1, 0 or 1 indicating if a higher order GDINA
  	model (see Details) should be estimated. 
  	The default value of -1 corresponds to the case that no higher order
  	factor is assumed to exist. A value of 0 corresponds to independent
@@ -135,15 +135,15 @@ An optional vector of sample weights.
     If \code{rule} is a vector, condensation rules can be specified itemwise. 
     The default is \code{GDINA} for all items.
 }
-  \item{progress}{
-    Display progress on the \R console?
-}
+\item{progress}{An optional logical indicating whether the function
+    should print the progress of iteration in the estimation process.  }     
   \item{progress.item}{
-    Display itemwise progress
+    An optional logical indicating whether item wise progress should
+    be displayed
         }
-  \item{object}{a required object of class \code{gdina}, obtained
+  \item{object}{A required object of class \code{gdina}, obtained
     from a call to the function \code{\link{gdina}}.  }
-  \item{rdigits}{number of digits after decimal separator to display.  }                
+  \item{rdigits}{Number of digits after decimal separator to display.  }                
   \item{\dots}{Optional parameters to be passed to or from other
     methods will be ignored.  }
 }
@@ -207,8 +207,8 @@ independent of each other:
     
 \value{
 An object of class \code{gdina} with following entries  
-\item{coef}{Item parameters}
-\item{delta}{Basis item parameters}
+\item{coef}{Data frame of item parameters}
+\item{delta}{List with basis item parameters}
 \item{se.delta}{Standard errors of basis item parameters}
 \item{itemfit.rmsea}{The RMSEA item fit index (see \code{\link{itemfit.rmsea}}).
             }
@@ -226,7 +226,6 @@ An object of class \code{gdina} with following entries
 \item{Nskillpar}{Number of parameters for skill class distribution}
 \item{Nskillclasses}{Number of skill classes}
 \item{varmat.delta}{Covariance matrix of \eqn{\delta} item parameters}
-\item{varmat.plaj}{XXX}
 \item{posterior}{Individual posterior distribution}
 \item{like}{Individual likelihood}
 \item{data}{Original data}
@@ -245,7 +244,6 @@ An object of class \code{gdina} with following entries
 \item{Z.skillspace}{Design matrix for skillspace reduction}
 \item{beta}{Parameters \eqn{\delta} for skill class representation}
 \item{covbeta}{Standard errors of \eqn{\delta} parameters}
-\item{model.type}{XXX}
 \item{iter}{Number of iterations}
 \item{rrum.params}{Parameters in the parametrization of the reduced RUM model
 	if \code{rule="RRUM"}.}
@@ -266,13 +264,13 @@ An object of class \code{gdina} with following entries
 \references{
   Chen, J., & de la Torre, J. (2013). 
   A general cognitive diagnosis model for expert-defined polytomous attributes.
-  \emph{Applied Psychological Measurement}, \bold{37}, 419-437.	
-	
+  \emph{Applied Psychological Measurement}, \bold{37}, 419-437.
+  
   de la Torre, J., & Douglas, J. A. (2004). Higher-order latent trait models 
   for cognitive diagnosis. \emph{Psychometrika}, \bold{69}, 333-353.
-	
+  
   de la Torre, J. (2011). The generalized {DINA} model framework. 
-  \emph{Psychometrika}, \bold{76}, 179--199.    
+  \emph{Psychometrika}, \bold{76}, 179-199.
   
   Xu, X., & von Davier, M. (2008). \emph{Fitting the structured general diagnostic
   model to NAEP data}. ETS Research Report ETS RR-08-27. Princeton, ETS.
@@ -403,9 +401,8 @@ mod0 <- gdina( data = sim.dino ,  q.matrix = sim.qmatrix ,  maxit=1)
 # extract default design matrices
 Mj <- mod0$Mj
 Mj.user <- Mj   # these user defined design matrices are modified.
-#~~~
-# For the second item, the following model should hold
-# X1 ~ V2 + V2*V3
+#~~~  For the second item, the following model should hold
+#     X1 ~ V2 + V2*V3
 mj <- Mj[[2]][[1]]
 mj.lab <- Mj[[2]][[2]]
 mj <- mj[,-3]
@@ -419,9 +416,8 @@ Mj.user[[2]] <- list( mj , mj.lab )
 #    [4,]    1    1    1
 #    [[2]]
 #    [1] "0"   "1"   "1-2"    
-#~~~
-# For the eight item an equality constraint should hold
-# X8 ~ a*V2 + a*V3 + V2*V3
+#~~~  For the eight item an equality constraint should hold
+#     X8 ~ a*V2 + a*V3 + V2*V3
 mj <- Mj[[8]][[1]]
 mj.lab <- Mj[[8]][[2]]
 mj[,2] <- mj[,2] + mj[,3]
@@ -437,8 +433,7 @@ summary(mod)
 # EXAMPLE 4: Design matrix for delta parameters
 #############################################################################
 
-#~~~
-# estimate an initial model
+#~~~ estimate an initial model
 mod0 <- gdina( data = sim.dino ,  q.matrix = sim.qmatrix , 
             rule="ACDM" , maxit=1)
 # extract coefficients
@@ -512,7 +507,7 @@ mod1a <- gdina( data=dat , q.matrix = q.matrix , maxit= 1 , rule="DINA")
 # estimate also "full" model
 mod1 <- gdina( data=dat , q.matrix = q.matrix , rule="DINA")
 
-#~~~ Step2: modify designmatrix for reduced skillspace
+#~~~ Step 2: modify designmatrix for reduced skillspace
 Z.skillspace <- data.frame( mod1a$Z.skillspace )
 # set correlations of A2/A4 and A3/A4 to zero
 vars <- c("A2_A3","A2_A4") 
@@ -525,8 +520,7 @@ mod2 <- gdina( data=dat , q.matrix = q.matrix ,
 #~~~ eliminate all covariances
 Z.skillspace <- data.frame( mod1$Z.skillspace )
 colnames(Z.skillspace)
-Z.skillspace <- Z.skillspace[ , - 
-	grep( "_" , colnames(Z.skillspace ) , fixed=TRUE)]
+Z.skillspace <- Z.skillspace[, -grep( "_" , colnames(Z.skillspace),fixed=TRUE)]
 colnames(Z.skillspace)
 
 mod3 <- gdina( data=dat , q.matrix = q.matrix , 

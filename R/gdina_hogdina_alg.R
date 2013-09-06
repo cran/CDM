@@ -55,11 +55,20 @@
 	I <- ncol(dat)
 	# calculate frequencies
 	dfr <- data.frame( "item1" = rep(1:I,I) , "item2" = rep(1:I, each=I ) )
-	h1 <- t( ( dat==1 ) ) %*% ( dat==0 )
-	dfr$f11 <- matrix( t( ( dat==1 )*w2 ) %*% (w2*( dat==1 )) , ncol=1 , byrow=TRUE ) 
-	dfr$f10 <- matrix( t( ( dat==1 )*w2 ) %*% (w2*( dat==0 )) , ncol=1 , byrow=TRUE ) 
-	dfr$f01 <- matrix( t( ( dat==0 )*w2 ) %*% (w2*( dat==1 )) , ncol=1 , byrow=TRUE ) 
-	dfr$f00 <- matrix( t( ( dat==0 )*w2 ) %*% (w2*( dat==0 )) , ncol=1 , byrow=TRUE )  
+#	h1 <- t( ( dat==1 ) ) %*% ( dat==0 )
+#	dfr$f11 <- matrix( t( ( dat==1 )*w2 ) %*% (w2*( dat==1 )) , ncol=1 , byrow=TRUE ) 
+#	dfr$f10 <- matrix( t( ( dat==1 )*w2 ) %*% (w2*( dat==0 )) , ncol=1 , byrow=TRUE ) 
+#	dfr$f01 <- matrix( t( ( dat==0 )*w2 ) %*% (w2*( dat==1 )) , ncol=1 , byrow=TRUE ) 
+#	dfr$f00 <- matrix( t( ( dat==0 )*w2 ) %*% (w2*( dat==0 )) , ncol=1 , byrow=TRUE )  
+
+	h1 <- crossprod( 1*(dat==1 ) , ( dat==0 ) )
+	dfr$f11 <- matrix( crossprod( ( dat==1 )*w2 , (w2*( dat==1 ))) , 
+					ncol=1 , byrow=TRUE )
+	dfr$f10 <- matrix( crossprod( ( dat==1 )*w2 , (w2*( dat==0 ))) , ncol=1 , byrow=TRUE )
+	dfr$f01 <- matrix( crossprod( ( dat==0 )*w2 , (w2*( dat==1 ))) , ncol=1 , byrow=TRUE ) 
+	dfr$f00 <- matrix( crossprod( ( dat==0 )*w2 , (w2*( dat==0 ))) , ncol=1 , byrow=TRUE )  
+
+	
 	dfr$ftot <- dfr$f11 + dfr$f10 + dfr$f01 + dfr$f00
 	dfr$p11 <- dfr$f11 / dfr$ftot
 	dfr$pi1 <- ( dfr$f11 + dfr$f10 ) / dfr$ftot
