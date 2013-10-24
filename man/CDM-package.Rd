@@ -22,7 +22,7 @@ Functions for cognitive diagnosis modeling
   \tabular{ll}{
     Package: \tab \pkg{CDM}\cr
     Type: \tab Package\cr
-    Version: \tab 2.3\cr
+    Version: \tab 2.4\cr
     Publication Year: \tab 2013\cr
     License: \tab \acronym{GPL} (>= 2) \cr
     URL: \tab \url{https://sites.google.com/site/alexanderrobitzsch/software} \cr            
@@ -95,9 +95,11 @@ Functions for cognitive diagnosis modeling
 }
 
 \seealso{
-    See also the \pkg{NPCD} package for nonparametric cognitive 
-    diagnostic models. In \pkg{NPCD} joint maximum likelihood estimation 
-    of several cognitive diagnostic models is implemented.
+    See also the \pkg{ACTCD} and \pkg{NPCD} packages for nonparametric cognitive 
+    diagnostic models. 
+    
+    In \pkg{NPCD} joint maximum likelihood estimation 
+    of several cognitive diagnostic models are implemented.
         }
 
 \references{

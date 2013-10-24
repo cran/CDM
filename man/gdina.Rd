@@ -88,7 +88,7 @@ default analysis. See Example 3.
   \item{delta.basispar.init}{
     An optional vector of starting values for the basis parameters of delta. 
     This argument only applies when using a designmatrix for delta, 
-    i.e. \code{delta.designmatrix} is not NULL.
+    i.e. \code{delta.designmatrix} is not \code{NULL}.
 }
 
 \item{zeroprob.skillclasses}{An optional vector of integers which indicates which skill
