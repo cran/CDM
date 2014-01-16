@@ -69,7 +69,7 @@ A list with following entries
 \references{
 Chiu, C. Y., & Douglas, J. (2013). A nonparametric approach to 
 cognitive diagnosis by proximity to ideal response patterns. 
-\emph{Journal of Classification}, \bold{xx}, xxx-xxx.
+\emph{Journal of Classification}, \bold{30}, 225-250.
 }
 
 %\author{
@@ -84,12 +84,16 @@ cognitive diagnosis by proximity to ideal response patterns.
 \seealso{
 For estimating the mixed DINA/DINO model using marginal maximum
 likelihood estimation see \code{\link{din}}.
+
+See also the \code{JMLE} function in the \pkg{NPCD} package for 
+joint maximum likelihood estimation of the DINA or the DINO model.
 }
 
 \examples{
-###############################################################
-# SIMULATED EXAMPLE 1
-###############################################################	
+#############################################################################
+# SIMULATED EXAMPLE 1: 13 items and 3 attributes
+#############################################################################
+
 set.seed(679)
 N <- 3000
 # specify true Q-matrix

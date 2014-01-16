@@ -24,7 +24,8 @@ summary.gdina <- function( object , rdigits = 4 , ... ){
 			print( object$group.stat )				
 			cat("\n")
 						}
-	cat( "\nNumber of iterations =" , object$iter , "\n" )
+	cat( "\nNumber of iterations =" , object$iterused )
+	cat( "\nIteration with minimal deviance =" , object$iter , "\n" )	
     cat( "Deviance =" , round( object$deviance , 2 ) ) 
 	cat( "  | Loglikelihood =" , round( - object$deviance / 2 , 2 ) ,	"\n" )
     cat( "Number of persons =" , object$N , "\n" )    
@@ -67,7 +68,12 @@ summary.gdina <- function( object , rdigits = 4 , ... ){
 		print( round( object$rrum.params,3) , na  ="")
 		cat("\n")
 					}
-	
+
+	cat("----------------------------------------------------------------------------\n")
+	cat("Model Implied Conditional Item Probabilities \n\n")
+	obji <- object$probitem
+	obji[,"prob"] <- round( obji$prob, 4 )	
+	print(obji)					
 	cat("----------------------------------------------------------------------------\n")
 	cat("\nSkill Probabilities \n\n")
 	print(round(object$skill.patt ,rdigits) )

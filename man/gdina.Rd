@@ -1,6 +1,7 @@
 \name{gdina}
 \alias{gdina}
 \alias{summary.gdina}
+\alias{plot.gdina}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Function for Estimating the Generalized DINA (GDINA) Model
@@ -16,15 +17,18 @@ Function for Estimating the Generalized DINA (GDINA) Model
     (de la Torre & Douglas, 2004).
 }
 \usage{
-gdina(data, q.matrix, conv.crit=0.0001, dev.crit=.1 ,  maxit=1000, 
+gdina(data, q.matrix, skillclasses=NULL, conv.crit=0.0001, dev.crit=.1 ,  maxit=1000, 
     linkfct="identity", Mj=NULL, group=NULL , method="WLS" , 
     delta.designmatrix=NULL, delta.basispar.lower=NULL, 
     delta.basispar.upper=NULL, delta.basispar.init=NULL, 
     zeroprob.skillclasses=NULL, reduced.skillspace=TRUE , HOGDINA=-1,
-    Z.skillspace=NULL, weights=rep(1, nrow(data)), rule="GDINA", progress=TRUE,
-    progress.item=FALSE , ...)
+    Z.skillspace=NULL, weights=rep(1, nrow(data)), rule="GDINA", 
+    progress=TRUE, progress.item=FALSE , increment.factor=1.01,
+    fac.oldxsi=0 , ...)
 
-\method{summary}{gdina}(object, rdigits = 4 ,  \dots)    
+\method{summary}{gdina}(object, rdigits = 4 ,  \dots)
+
+\method{plot}{gdina}(x , ask=FALSE ,  \dots) 
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -39,6 +43,10 @@ gdina(data, q.matrix, conv.crit=0.0001, dev.crit=.1 ,  maxit=1000,
     of dichotomous attributes or integers in case of polytomous attributes.    
   }
 
+  \item{skillclasses}{An optional matrix for determining the skill space.
+    The argument can be used if a user wants less than \eqn{2^K} skill classes.    
+  }
+  
 % The jth row of the matrix is a binary indicator vector indicating which 
 %    attributes are not required (coded by 0) and which attributes are 
 %    required (coded by 1) to master item \eqn{j}.  
@@ -141,9 +149,19 @@ An optional vector of sample weights.
     An optional logical indicating whether item wise progress should
     be displayed
         }
+ \item{increment.factor}{A factor larger than 1 (say 1.1) to control
+ 	 maximum increments in item parameters. This parameter 
+ 	 can be used in case of nonconvergence. 	 
+ }
+ \item{fac.oldxsi}{A convergence acceleration factor between 0 and 1 which 
+ 	 defines the weight of previously estimated values in
+ 	current parameter updates.}
   \item{object}{A required object of class \code{gdina}, obtained
     from a call to the function \code{\link{gdina}}.  }
-  \item{rdigits}{Number of digits after decimal separator to display.  }                
+  \item{rdigits}{Number of digits after decimal separator to display.  }
+  \item{x}{A required object of class \code{gdina} }
+  \item{ask}{A logical indicating whether every separate item should
+  be displayed in \code{plot.gdina}}
   \item{\dots}{Optional parameters to be passed to or from other
     methods will be ignored.  }
 }
@@ -210,6 +228,10 @@ An object of class \code{gdina} with following entries
 \item{coef}{Data frame of item parameters}
 \item{delta}{List with basis item parameters}
 \item{se.delta}{Standard errors of basis item parameters}
+\item{probitem}{Data frame with model implied conditional item probabilities
+	\eqn{P(X_i=1 | \bold{\alpha})}. These probabilities are displayed
+	in \code{plot.gdina}.
+}
 \item{itemfit.rmsea}{The RMSEA item fit index (see \code{\link{itemfit.rmsea}}).
             }
 \item{mean.rmsea}{Mean of RMSEA item fit indexes.
@@ -239,6 +261,8 @@ An object of class \code{gdina} with following entries
 \item{pjk}{Array of item response probabilities}
 \item{Mj}{Design matrix \eqn{M_j} in GDINA algorithm (see de la Torre, 2011)}  
 \item{Aj}{Design matrix \eqn{A_j} in GDINA algorithm (see de la Torre, 2011)}
+\item{rule}{Used condensation rules}
+\item{linkfct}{Used link function}
 \item{delta.designmatrix}{Designmatrix for item parameters}
 \item{reduced.skillspace}{A logical if skillspace reduction was performed}
 \item{Z.skillspace}{Design matrix for skillspace reduction}
@@ -253,6 +277,7 @@ An object of class \code{gdina} with following entries
 \item{b.attr}{Attribute parameters \eqn{b_k} in case of \code{HOGDINA>=0}}
 \item{attr.rf}{Attribute response functions. This matrix contains all 
 	\eqn{a_k} and \eqn{b_k} parameters}
+  \item{control}{Optimization parameters used in estimation}	
 \item{\dots}{Further values}
     }
     
@@ -300,14 +325,15 @@ See also the \code{\link{din}} function (for DINA and DINO estimation).
 For assessment of model fit see \code{\link{modelfit.cor.din}} and 
 \code{\link{anova.gdina}}.
 
+See \code{\link{itemfit.sx2}} for item fit statistics.  
+
 See \code{\link{sim.gdina}} for simulating the GDINA model.
 }
 
 
 \examples{
 #############################################################################
-# EXAMPLE 1: Simulated DINA data
-#    different condensation rules 
+# EXAMPLE 1: Simulated DINA data | different condensation rules 
 #############################################################################
 data(sim.dina)
 
@@ -315,19 +341,25 @@ data(sim.dina)
 # Model 1: estimation of the GDINA model (identity link)
 mod1 <- gdina( data = sim.dina ,  q.matrix = sim.qmatrix , maxit=700)
 summary(mod1)
+plot(mod1) # apply plot function
 
 #***
 # Model 2: estimation of the DINA model with gdina function
 mod2 <- gdina( data = sim.dina ,  q.matrix = sim.qmatrix , rule="DINA")
 summary(mod2)
+plot(mod2)
 
 #***
-# Model 3: compare results with din function
+# Model 2b: compare results with din function
 mod2b <- din( data = sim.dina ,  q.matrix = sim.qmatrix , rule="DINA")
 summary(mod2b)
 cbind( mod2$coef , mod2b$coef )
 
 \dontrun{
+# Model 2: estimation of the DINO model with gdina function
+mod3 <- gdina( data = sim.dina ,  q.matrix = sim.qmatrix , rule="DINO")
+summary(mod3)
+
 #***
 # Model 4: DINA model with logit link
 mod4 <- gdina( data = sim.dina ,  q.matrix = sim.qmatrix , maxit= 20 , 
@@ -357,26 +389,22 @@ summary(mod8)
 
 #############################################################################
 # EXAMPLE 2: Simulated DINO data
-#    additive cognitive diagnosis model
-#    with different link functions
+#    additive cognitive diagnosis model with different link functions
 #############################################################################
 
 #***
 # Model 1: additive cognitive diagnosis model (ACDM; identity link)
-mod1 <- gdina( data=sim.dino,  q.matrix=sim.qmatrix,  
-                    rule="ACDM")
+mod1 <- gdina( data=sim.dino,  q.matrix=sim.qmatrix,  rule="ACDM")
 summary(mod1)
 
 #***
 # Model 2: ACDM logit link
-mod2 <- gdina( data=sim.dino, q.matrix=sim.qmatrix,  
-                    rule="ACDM", linkfct="logit" )
+mod2 <- gdina( data=sim.dino, q.matrix=sim.qmatrix, rule="ACDM", linkfct="logit" )
 summary(mod2)
 
 #***
 # Model 3: ACDM log link
-mod3 <- gdina( data=sim.dino,  q.matrix=sim.qmatrix,  
-                rule="ACDM", linkfct="log" )
+mod3 <- gdina( data=sim.dino,  q.matrix=sim.qmatrix, rule="ACDM", linkfct="log" )
 summary(mod3)
 
 #***
@@ -424,7 +452,16 @@ mj[,2] <- mj[,2] + mj[,3]
 mj <- mj[,-3]
 mj.lab <- c("0" , "1=2" , "1-2" )
 Mj.user[[8]] <- list( mj , mj.lab )
-Mj.user
+Mj.user[[8]]
+##   [[1]]
+##        [,1] [,2] [,3]
+##   [1,]    1    0    0
+##   [2,]    1    1    0
+##   [3,]    1    1    0
+##   [4,]    1    2    1
+##   
+##   [[2]]
+##   [1] "0"   "1=2" "1-2"
 mod <- gdina( data = sim.dino ,  q.matrix = sim.qmatrix ,
                     Mj = Mj.user ,  maxit=200 )
 summary(mod)
@@ -485,8 +522,7 @@ mod <- gdina( data = dat , q.matrix = q.matrix ,  group= group)
 summary(mod)
 
 # estimate DINA model
-mod2 <- gdina( data = dat , q.matrix = q.matrix , 
-                group= group , rule="DINA")
+mod2 <- gdina( data = dat , q.matrix = q.matrix , group= group , rule="DINA")
 summary(mod2)                       
 
 #############################################################################
@@ -527,9 +563,8 @@ mod3 <- gdina( data=dat , q.matrix = q.matrix ,
         Z.skillspace=Z.skillspace , rule="DINA")
 summary(mod1); summary(mod2); summary(mod3)
 
-
 #############################################################################
-# EXAMPLE 7: polytomous GDINA model
+# EXAMPLE 7: Polytomous GDINA model (Chen & de la Torre, 2013)
 #############################################################################
 data(data.pgdina)
 dat <- data.pgdina$dat
@@ -545,6 +580,44 @@ summary(mod1)
 # pGDINA model with "GDINA rule"
 mod2 <- gdina( dat , q.matrix=q.matrix , rule="GDINA")
 summary(mod2)
+
+#############################################################################
+# EXAMPLE 8: Fraction subtraction data: DINA and HO-DINA model
+#############################################################################
+
+data(fraction.subtraction.data)
+data(fraction.subtraction.qmatrix)
+
+# Model 1: DINA model
+mod1 <- gdina(fraction.subtraction.data, q.matrix = fraction.subtraction.qmatrix,
+       rule = "DINA")
+summary(mod1)
+
+# Model 2: HO-DINA model
+mod2 <- gdina(fraction.subtraction.data, q.matrix = fraction.subtraction.qmatrix,
+             HOGDINA = 1, rule = "DINA")
+summary(mod2)
+
+#############################################################################
+# EXAMPLE 9: Skill space approximation data.jang
+#############################################################################
+
+data(data.jang)
+data <- data.jang$data
+q.matrix <- data.jang$q.matrix
+
+#*** Model 1: Reduced RUM model
+mod1 <- gdina( data , q.matrix , rule="RRUM"  , conv.crit=.001 , maxit=500 )
+
+#*** Model 2: Reduced RUM model with skill space approximation
+# use 300 instead of 2^9 = 512 skill classes
+skillspace <- skillspace.approximation( L=300 , K=ncol(q.matrix) )
+mod2 <- gdina( data , q.matrix , rule="RRUM"  , conv.crit=.001 ,
+            skillclasses=skillspace )
+##   > logLik(mod1)
+##   'log Lik.' -30318.08 (df=153)
+##   > logLik(mod2)
+##   'log Lik.' -30326.52 (df=153)
 }
 }
 
@@ -555,4 +628,5 @@ summary(mod2)
 \keyword{DINA}
 \keyword{Higher order GDINA model}
 \keyword{summary}
+\keyword{plot}
 %%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

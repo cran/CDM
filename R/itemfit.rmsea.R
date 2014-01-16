@@ -28,13 +28,14 @@ itemfit.rmsea <- function( n.ik , pi.k , probs , itemnames=NULL){
 	
 ##########################################
 # auxiliary function
-.rmsea.aux <- function( n.ik , pi.k , probs ){
+.rmsea.aux <- function( n.ik , pi.k , probs , eps=10^(-30) ){
 	# probs ... [ classes , items , categories ]
 	# n.ik ... [ classes , items , categories , groups ]	
 	# N.ik ... [ classes , items , categories]	
 	N.ik <- n.ik[,,,1]
 	G <- dim(n.ik)[4]
 	pitot <- pi.k[,1]
+	eps <- 10^(-10)
 	if (G>1){ 
 		for (gg in 2:G ){
 			N.ik <- N.ik + n.ik[,,,gg]
@@ -51,7 +52,7 @@ itemfit.rmsea <- function( n.ik , pi.k , probs , itemnames=NULL){
 
 	for (kk in 2:K){	N.ik_tot[,,kk] <- N.ik_tot[,,1] }
 	# calculate itemwise statistics
-	p.ik_observed <- N.ik / N.ik_tot
+	p.ik_observed <- N.ik / ( N.ik_tot + eps )
 	p.ik_observed[ is.na( p.ik_observed ) ] <- 0
 	
 	# define class weights 

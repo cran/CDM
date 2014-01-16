@@ -156,5 +156,33 @@ res <- din( dat , q.matrix=Qmatrix )
 est <- paste( res$pattern$mle.est )
 # calculate classification accuracy
 mean( est == apply( alpha , 1 , FUN = function(ll){ paste0(ll[1],ll[2] ) } ) )
-##   [1] 0.935 }
+##   [1] 0.935
+
+#############################################################################
+# EXAMPLE 3: Simulation based on already estimated DINA model for data.ecpe
+#############################################################################
+
+data(data.ecpe)
+dat <- data.ecpe$data
+q.matrix <- data.ecpe$q.matrix
+
+#***
+# (1) estimate DINA model
+mod <- din( data=dat[,-1] , q.matrix=q.matrix , rule="DINA")
+
+#***
+# (2) simulate data according to DINA model
+set.seed(977)
+# number of subjects to be simulated
+n <- 3000
+# simulate attribute patterns
+probs <- mod$attribute.patt$class.prob   # probabilities
+patt <- mod$attribute.patt.splitted      # response patterns
+alpha <- patt[ sample( 1:(length(probs) ) , n , prob=probs , replace=TRUE) , ]
+# simulate data using estimated item parameters
+res <- sim.din(N=n, q.matrix=q.matrix, guess = mod$guess$est , slip=mod$slip$est , 
+        rule = "DINA", alpha=alpha)
+# extract data
+dat <- res$dat
+}
 }

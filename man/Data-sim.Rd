@@ -50,6 +50,26 @@
   Press.
 }
 
+
+\section{Example Index}{
+
+%%%%%%% sim.dina
+\emph{Dataset} \code{sim.dina} 	
+	
+\code{\link{anova}} (Examples 1, 2), 
+\code{\link{din}} (Examples 2, 4, 5),
+\code{\link{gdina}} (Example 1),
+\code{\link{itemfit.sx2}} (Example 2),
+\code{\link{modelfit.cor.din}} (Example 1)
+\cr
+
+%%%%%%% sim.dino
+\emph{Dataset} \code{sim.dino} 	
+	
+\code{\link{cdm.est.class.accuracy}} (Example 1), 
+\code{\link{din}} (Example 3), \code{\link{gdina}} (Examples 2, 3, 4),
+}
+
 %% \examples{
 %% ## (2) examples based on dataset sim.dina
 %% }

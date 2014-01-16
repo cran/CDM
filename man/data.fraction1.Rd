@@ -13,7 +13,8 @@ and 15 items. The Q-matrix was defined in de la Torre (2009).
 This dataset is a list with the dataset (\code{data}) and
 the Q-matrix as entries. 
 
-The format is: \cr
+The format is: 
+
 \code{List of 2} \cr
 \code{ $ data    :'data.frame':} \cr
 \code{  ..$ T01: int [1:536] 0 1 1 1 0 0 0 0 0 0 ...} \cr
@@ -43,6 +44,13 @@ The format is: \cr
 See \code{\link{fraction.subtraction.data}} for more information
 about data source.
 }
+
+
+\section{Example Index}{
+\code{\link{gdm}} (Example 1),
+\code{\link[sirt:lsdm]{lsdm}} (Example 4, \pkg{sirt})
+}
+
 \references{
   de la Torre, J. (2009). DINA model parameter estimation:
   A didactic. \emph{Journal of Educational and Behavioral

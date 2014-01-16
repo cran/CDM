@@ -90,8 +90,9 @@ in a list: \code{delta}, \code{necc.attr}, \code{Aj} and \code{Mj}.
 For estimating the GDINA model see \code{\link{gdina}}.
 }
 \examples{
-##############################################
-# Example: Simulating the GDINA model
+#############################################################################
+# EXAMPLE 1: Simulating the GDINA model
+#############################################################################
 
 n <- 50             # number of persons
 # define Q-matrix
@@ -137,10 +138,79 @@ delta[[9]] <- c( .2 , .2 , 0 , .3 )
 #******************************************
 # Now, the "real simulation" starts
 sim.res <- sim.gdina( n=n, q.matrix =q.matrix, delta=delta, link = "identity", 
-            thresh.alpha=thresh.alpha , cov.alpha=cov.alpha ,
+                thresh.alpha=thresh.alpha , cov.alpha=cov.alpha ,
                 Mj=Mj , Aj=Aj , necc.attr =necc.attr)
-# sim.res$data      # data
-# sim.res$alpha     # alpha
+# sim.res$data      # simulated data
+# sim.res$alpha     # simulated alpha
+
+\dontrun{
+#############################################################################
+# EXAMPLE 2: Simulation based on already estimated GDINA model for data.ecpe
+#############################################################################
+
+data(data.ecpe)
+dat <- data.ecpe$data
+q.matrix <- data.ecpe$q.matrix
+
+#***
+# (1) estimate GDINA model
+mod <- gdina( data=dat[,-1] , q.matrix=q.matrix )
+
+#***
+# (2) simulate data according to GDINA model
+set.seed(977)
+
+# prepare design matrix by applying sim.gdina.prepare function
+rp <- sim.gdina.prepare( q.matrix )
+necc.attr <- rp$necc.attr
+
+# number of subjects to be simulated
+n <- 3000
+# simulate attribute patterns
+probs <- mod$attribute.patt$class.prob   # probabilities
+patt <- mod$attribute.patt.splitted      # response patterns
+alpha <- patt[ sample( 1:(length(probs) ) , n , prob=probs , replace=TRUE) , ]
+
+# simulate data using estimated item parameters
+sim.res <- sim.gdina( n=n, q.matrix =q.matrix, delta=mod$delta, link = "identity", 
+                alpha=alpha , Mj=mod$Mj , Aj= mod$Aj , necc.attr = rp$necc.attr)               
+# extract data
+dat <- sim.res$data
+
+#############################################################################
+# EXAMPLE 3: Simulation based on already estimated RRUM model for data.ecpe
+#############################################################################
+
+data(data.ecpe)
+dat <- data.ecpe$data
+q.matrix <- data.ecpe$q.matrix
+
+#***
+# (1) estimate reduced RUM model
+mod <- gdina( data=dat[,-1] , q.matrix=q.matrix , rule="RRUM" )
+summary(mod)
+
+#***
+# (2) simulate data according to RRUM model
+set.seed(977)
+
+# prepare design matrix by applying sim.gdina.prepare function
+rp <- sim.gdina.prepare( q.matrix )
+necc.attr <- rp$necc.attr
+
+# number of subjects to be simulated
+n <- 5000
+# simulate attribute patterns
+probs <- mod$attribute.patt$class.prob   # probabilities
+patt <- mod$attribute.patt.splitted      # response patterns
+alpha <- patt[ sample( 1:(length(probs) ) , n , prob=probs , replace=TRUE) , ]
+
+# simulate data using estimated item parameters
+sim.res <- sim.gdina( n=n, q.matrix =q.matrix, delta=mod$delta, link = mod$link , 
+                alpha=alpha , Mj=mod$Mj , Aj=mod$Aj , necc.attr = rp$necc.attr)               
+# extract data
+dat <- sim.res$data
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

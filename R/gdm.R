@@ -166,7 +166,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 	# item x category slopes are in principle also possible
 	KK <- K	# if KK == 1 then a slope parameter for all items is estimated
 	a <- array( 1 , dim=c(I,TD,KK) )
-
+# print("a310")
 	# define Q matrix
 	res <- .gdm.Qmatrix(Qmatrix,irtmodel,I,TD,K,a)
 	.attach.environment( res , envir=e1 )
@@ -184,7 +184,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 	# starting values for distributions
 	Sigma <- diag(1,D)
 #	library(mvtnorm)
-	pik <- dmvnorm( matrix( theta.k ,ncol=D) , 
+	pik <- mvtnorm::dmvnorm( matrix( theta.k ,ncol=D) , 
 				mean=rep(0,D) , sigma = Sigma )
 	pi.k <- matrix( 0 , TP , G )
 	for (gg in 1:G){ pi.k[,gg] <- pik }
@@ -273,7 +273,6 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 		b0 <- b ; a0 <- a ; dev0 <- dev
 		delta0 <- delta ; pi.k0 <- pi.k
 
-		
 # z0 <- Sys.time()
  		
 		#****
@@ -495,6 +494,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 	res$BIC <- res$ic$BIC	
 	res$Npars <- res$ic$np	
 	res$loglike <- - res$deviance / 2
+	res$irtmodel <- irtmodel
 	
                 cat("----------------------------------- \n")
                 cat("Start:" , paste( s1) , "\n")

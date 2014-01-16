@@ -1,23 +1,8 @@
 
-#############################################################
-# Model fit for din object
-modelfit.cor.din <- function( dinobj ){
-    mod <- dinobj
-    data <- as.matrix( mod$data )
-    posterior <- mod$posterior
-    probs <- mod$pjk
-	data <- as.matrix(data )	
-    res <- modelfit.cor( data , posterior , probs ) 
-	return(res)	
-                        }
-##############################################################
-
-
-
 #############################################################################
 modelfit.cor <-
 function( data , posterior , probs ){
-	K <- max( apply( data , 2 , max , na.rm=T ) )
+	K <- max( apply( data , 2 , max , na.rm=TRUE ) )
 	if ( K>1 ){ stop("modelfit.cor only allows for dichotomous data\n") }
     data.resp <- 1 - is.na(data)
     data[ is.na(data) ] <- 9
@@ -29,18 +14,18 @@ function( data , posterior , probs ){
     n01 <- t(  ( data==0) * data.resp ) %*% ( ( data==1) * data.resp )
     n00 <- t(  ( data==0) * data.resp ) %*% ( ( data==0) * data.resp )
     
-    p1 <- colMeans(  ( data==1) * data.resp ) 
+#    p1 <- colMeans(  ( data==1) * data.resp ) 
     # p0 <- colMeans(  ( data==0) * data.resp ) 
     
     # expected counts
-    exp1 <- rep(NA, I )
-    for (ii in 1:I){
+#    exp1 <- rep(NA, I )
+#    for (ii in 1:I){
         # ii <- 1
 #        pr.ii1 <- matrix( probs[ii,2,] , nrow= nrow(data) , ncol= dim(probs)[3] , byrow=T )
 #        p3ii <-  pr.ii1 * posterior
 #        exp1[ii] <- sum( rowSums( p3ii ) * data.resp[,ii ] ) / sum( data.resp[,ii] )
-		 exp1[ii] <- sum( colSums( posterior * data.resp[,ii] ) * probs[ii,2,] ) / sum( data.resp[,ii] )
-                }
+#		 exp1[ii] <- sum( colSums( posterior * data.resp[,ii] ) * probs[ii,2,] ) / sum( data.resp[,ii] )
+#                }
     
     #********************************
     # covariances 
@@ -140,25 +125,59 @@ function( data , posterior , probs ){
     itempairs$item1 <- colnames(data)[ itempairs$item1 ]
     itempairs$item2 <- colnames(data)[ itempairs$item2 ]
 
+	# fisherz from psych package
+	# residual of correlation
+	itempairs$fcor <- psych::fisherz( itempairs$corObs ) - psych::fisherz( itempairs$corExp )
+	
+	#----
+	# p values and p value adjustments adjustments
+	
+	# X2 statistic
+	itempairs$X2_df <- 1
+	itempairs$X2_p <- 1 - pchisq(itempairs$X2 , df=1 )
+	itempairs$X2_p.holm <- p.adjust( itempairs$X2_p , method="holm")
+	itempairs$X2_sig.holm <- 1 * ( itempairs$X2_p.holm < .05 )	
+	itempairs$X2_p.fdr <- p.adjust( itempairs$X2_p , method="fdr")
+	# fcor statistic
+	itempairs$fcor_se <- ( itempairs$n - 3 )^(-1/2)
+	itempairs$fcor_z <- itempairs$fcor / itempairs$fcor_se
+	itempairs$fcor_p <- 1 - pnorm( abs(itempairs$fcor_z ) )
+	itempairs$fcor_p.holm <- p.adjust( itempairs$fcor_p , method="holm")
+	itempairs$fcor_p.fdr <- p.adjust( itempairs$fcor_p , method="fdr")
+
+	
+	#**********************
+	# model fit
 	modelfit <- data.frame( "est" = c( 
 			mean( abs( itempairs$corObs - itempairs$corExp ) ) ,
+			sqrt( mean( ( itempairs$corObs - itempairs$corExp )^2 ) ) ,			
 			mean( itempairs$X2 ) , # mean( itempairs$G2) ,
 			mean( 100*abs(itempairs$RESIDCOV ) ) ,
 			mean( abs( itempairs$Q3 ) )
 						) )
-	rownames(modelfit) <- c("MADcor" , "MX2" , # "MG2",
+	rownames(modelfit) <- c("MADcor" , "SRMSR" , "MX2" , # "MG2",
 				"100*MADRESIDCOV" , "MADQ3" )
     
-    "pfit" <- data.frame( "item" = colnames(data) , "pObs" = p1 , "pExp" = exp1 )
-	print( round(modelfit,5) , digits=5 )   
+#    "pfit" <- data.frame( "item" = colnames(data) , "pObs" = p1 , "pExp" = exp1 )
+
+	#*****
+	# summary statistics
+	modelfit.test <- data.frame("type" = c("max(X2)","abs(fcor)") , 
+			"value" = c( max( itempairs$X2) , max( abs(itempairs$fcor) )  ) ,
+			"p" = c( min( itempairs$X2_p.holm) , min( itempairs$fcor_p.holm)  ) 
+				)	
+				
+	#****
+	# print results
+#	print( round(modelfit,5) , digits=3 )   
 #    cat("MAD Correlation (Observed minus Expected)" , round( MADcor , 4 ) , "\n" )    
-    res <- list( "modelfit" = modelfit , "itempairs" = itempairs , "pfit" = pfit )
+    res <- list( "modelfit.stat" = modelfit , "itempairs" = itempairs , 
+		"modelfit.test" = modelfit.test  )
     return(res)
     }
 
 #######################################################################	
 	
-
 
 .corr.wt <- function( x, y, w = rep(1,length(x))) {
 #  stopifnot(length(x) == dim(y)[2] )
@@ -174,3 +193,18 @@ function( data , posterior , probs ){
   # Compute the correlation
   vxy / sqrt(vx * vy)
 }
+
+## 00 n00
+## 10 n10
+## 01 n01
+## 11 n11
+
+## w <- w / sum(w)
+## w <- nij / ( n00 + n01 + n10 + n11 )
+## xm = sum( x * w ) = ( 0*n00  + 1*n10 + 0*n01 + 1*n11 ) / N = ( n10 + n11 ) / N
+## ym = sum( y*w) = (n01+n11) / N
+## ---
+## variance:  Because it is a binary variable, it is p(1-p)
+##   if p denotes proportion
+##  Cov( X , Y ) = E(X*Y) - E(X)*E(Y)
+## E(X*Y) = n11 / N

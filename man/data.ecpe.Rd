@@ -60,6 +60,10 @@ Obtaining diagnostic classification model estimates using Mplus.
 \emph{Educational Measurement: Issues and Practice}, \bold{32}, 37-50.
 }
 
+\section{Example Index}{
+\code{\link{sim.din}} (Example 3),
+\code{\link{sim.gdina}} (Examples 2, 3)
+}
 
 \examples{
 \dontrun{

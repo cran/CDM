@@ -80,6 +80,11 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 # check consistency of input (data, q.matrix, ...)                             #
 ################################################################################
 
+	if ( is.null( colnames(data) ) ){
+		I <- ncol(data) 
+		colnames(data) <- paste0("I" , 1:I )
+					}
+
     clean <- check.input(data, q.matrix, conv.crit, maxit, constraint.guess,
         constraint.slip, guess.init, slip.init, weights, rule, progress)   
 
@@ -91,6 +96,7 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
     slip.init <- clean$slip.init; weights <- clean$weights; rule <- clean$rule;
     progress <- clean$progress    
 
+	
 ################################################################################
 # model specification: DINA, DINO or itemwise specification of DINA or DINO    #
 ################################################################################
@@ -191,7 +197,7 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 		attr.patt <- skillclasses
 		L <- nrow(attr.patt)
 			}		
-	
+		
     # combine all attributes in an attribute pattern as a string
     attr.patt.c <- apply( attr.patt, 1, FUN = function(ll){ paste(ll,collapse="" ) } )
 
@@ -461,7 +467,7 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 		p.xi.aj[ , zeroprob.skillclasses ] <- 0
 								}
     # calculate posterior probability for each attribute pattern
-    pattern <- cbind( freq = round(as.numeric(item.patt[,-1]),3),
+    pattern <- data.frame( freq = round(as.numeric(item.patt[,-1]),3),
                     mle.est = attr.patt.c[ max.col( p.xi.aj ) ], 
                     mle.post = rowMaxs( p.xi.aj ) / rowSums( p.xi.aj ), 
                     map.est = attr.patt.c[ max.col( p.aj.xi ) ], 
@@ -532,7 +538,7 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 	# collect number of parameters
 	pars <- data.frame( "itempars" = 2*J - bb )
 	# number of skill classes
-	pars$skillpars <- L - 1 + length(  zeroprob.skillclasses )
+	pars$skillpars <- L - 1 - length(  zeroprob.skillclasses )
 	Np <- pars$itempars + pars$skillpars
     aic <- -2*loglike + 2*( Np )
     bic <- -2*loglike + ( Np )*log(I)
@@ -594,7 +600,8 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 				"mean.rmsea" = mean(itemfit.rmsea) , 
 				loglike = loglike, AIC = aic, BIC = bic, 
 				"Npars" = pars ,
-                 posterior = p.aj.xi, "like" = p.xi.aj, "data" = data, "q.matrix" = q.matrix,
+                 posterior = p.aj.xi, "like" = p.xi.aj, 
+				 "data" = data, "q.matrix" = q.matrix,
                  pattern = pattern , attribute.patt = attr.prob, skill.patt = skill.patt,
                  "subj.pattern" = item.patt.subj, "attribute.patt.splitted" = attr.patt, 
                  "display" = disp, "item.patt.split" = item.patt.split, 
@@ -609,6 +616,16 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 				"guess.history" = guess.history )
 		res$param.history <- param.history
 					}		
+	# control parameters
+	control <- list( q.matrix=q.matrix , skillclasses = skillclasses , conv.crit = conv.crit , 
+					dev.crit = dev.crit , maxit = maxit ,
+                    constraint.guess = constraint.guess , constraint.slip = constraint.slip ,
+                    guess.init = guess.init , slip.init = slip.init ,
+                    guess.equal = guess.equal , slip.equal = slip.equal , 
+					zeroprob.skillclasses = zeroprob.skillclasses , 
+                    weights = weights ,  rule = rule , 
+					wgt.overrelax = wgt.overrelax , wgtest.overrelax = wgtest.overrelax )
+    res$control <- control										
     class(res) <- "din"
     return(res)
 }

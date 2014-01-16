@@ -13,15 +13,19 @@
 #	fm1 <- fa(r=wc$rho, nfactors=1 , fm="minres")
 #	fm1 <- fa(r=wc$rho, nfactors=1 , fm="gls")
     if (HOGDINA>0){
-		fm1 <- fa(r=wc$rho, nfactors=1 , fm="pa" , max.iter=5 , warnings=FALSE)
+#		fm1 <- fa(r=wc$rho, nfactors=1 , fm="pa" , max.iter=5 , warnings=FALSE)
+		fm1 <- fa(r=wc$rho, nfactors=1 , fm="minres" , max.iter=15 , warnings=FALSE)
 		# fm1 <- factor.pa(r=wc$rho, nfactors=1 , fm="pa" , max.iter=5)		
 		L <- as.vector( fm1$loadings )
-		L[ L>1] <- .999
-		L1 <- L / sqrt( ( 1 - L^2 ) )
+		L <- L / ( max(1,max(L)) + .0025 )
+#		L[ L>1] <- .99
+		L1 <- L / sqrt(  1 - L^2  ) 
+#		L1 <- L / sqrt( ifelse( 1 - L^2 < 0 , .001 , 1-L^2 ))
 			} else  {
 		L1 <- L <- rep(0,NB)
 					}
-	b1 <- b / sqrt( ( 1 - L^2 ) )
+	# b1 <- b / sqrt( ifelse( 1 - L^2 < 0 , .001 , 1-L^2 ))
+	b1 <- b / sqrt( 1-L^2 )
 	# calculate probabilities using the factor model
 	probs <- pnorm( L1 * matrix( theta.k , nrow= NB , ncol=TP , byrow=TRUE) - b1 )
 	probsL <- array( 0 , dim= c( NB  , 2 , TP ) )
@@ -44,7 +48,7 @@
 # hogdina 
 # tetrachoric correlation
 .tetrachoric.hogdina <- function( dat , weights , delta=.007 , 
-	maxit = 1000000  ){
+	maxit = 10000  ){
 	# process data
 	dat <- as.matrix(dat)
 	# calculate tau

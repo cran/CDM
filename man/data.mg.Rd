@@ -37,12 +37,17 @@ Subsample of a large-scale dataset of 11 survey questions.
 %\references{
 %%  ~~ possibly secondary sources and usages ~~
 %}
+
+\section{Example Index}{
+\code{\link{gdm}} (Example 6)
+}
+
 \examples{
 \dontrun{
 data(data.mg)
 library(psych)
-describe(data.mg)
-##   > describe(data.mg)
+psych::describe(data.mg)
+##   > psych::describe(data.mg)
 ##          var     n       mean       sd     median    trimmed      mad        min        max
 ##   idstud   1 38243 1039653.91 19309.80 1037899.00 1039927.73 30240.59 1007168.00 1069949.00
 ##   group    2 38243       8.06     4.07       7.00       8.06     5.93       2.00      14.00

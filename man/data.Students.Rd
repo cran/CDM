@@ -42,6 +42,13 @@ of 8th grade students.
 %\references{
 %%  ~~ possibly secondary sources and usages ~~
 %}
+
+
+\section{Example Index}{
+\code{\link{gdm}} (Example 2), \code{\link[sirt:isop]{isop}} (Example 3, \pkg{sirt}),
+\code{\link[sirt:isop.scoring]{isop.scoring}} (Example 2, \pkg{sirt})
+}
+
 \examples{
 \dontrun{
 data(data.Students)

@@ -73,8 +73,12 @@ The dataset was simulated by the following \R code:
 %\source{
 %}
 
-\seealso{
-See Example 7 in \code{\link{gdina}}. 
+%\seealso{
+%See Example 7 in \code{\link{gdina}}. 
+%}
+
+\section{Example Index}{
+\code{\link{gdina}} (Example 7)
 }
 
 \references{

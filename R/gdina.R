@@ -5,7 +5,7 @@
 ################################################################################
 
 gdina <-
-function( data, q.matrix, conv.crit = 0.0001, 
+function( data, q.matrix, skillclasses=NULL , conv.crit = 0.0001, 
 					dev.crit = .1 , maxit = 1000,
 					linkfct = "identity" , Mj = NULL , 
 					group = NULL , 
@@ -22,6 +22,8 @@ function( data, q.matrix, conv.crit = 0.0001,
                     weights = rep( 1, nrow( data ) ),  rule = "GDINA", 
                     progress = TRUE , 
 					progress.item = FALSE , 
+					increment.factor = 1.01 ,
+					fac.oldxsi = 0 , 
 					...
 						){
                     
@@ -56,10 +58,16 @@ function( data, q.matrix, conv.crit = 0.0001,
 #
 # progress: an optional logical indicating whether the function should print the progress of iteration.
 
+#	skillclasses <- NULL
 
+max.increment <- .5
+# increment.factor <- 1.05
+
+if (progress){
     cat("---------------------------------------------------------------------------------\n")
 		d1 <- packageDescription("CDM")
 		cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n" )		
+		}
     time1 <- list( "s1" = Sys.time() )
 
 ########################################################
@@ -116,6 +124,7 @@ function( data, q.matrix, conv.crit = 0.0001,
 #****
 	r1 <- "GDINA Model"
 
+
 ################################################################################
 # multiple group estimation
 ################################################################################
@@ -163,17 +172,22 @@ function( data, q.matrix, conv.crit = 0.0001,
 ################################################################################
 
     disp <- r1      
-    cat(disp,"\n")
-	cat( " Link function:" , linkfct , "\n")
-	if (G>1){ 
-		cat(" Multiple group estimation with",G,"groups\n")
-		if (groupre){ cat( "  Renumbered group identifier from 1 to",G,"\n") }
+	if (progress){
+		cat(disp,"\n")
+		cat( " Link function:" , linkfct , "\n")
+		if (G>1){ 
+			cat(" Multiple group estimation with",G,"groups\n")
+			if (groupre){ cat( "  Renumbered group identifier from 1 to",G,"\n") }
+				}
+				}
+		s1 <- Sys.time()
+	if (progress){		
+		cat( "**", paste(s1), "\n"   )
+		cat("---------------------------------------------------------------------------------\n")
+		flush.console()
 			}
-    s1 <- Sys.time()
-    cat( "**", paste(s1), "\n"   )
-    cat("---------------------------------------------------------------------------------\n")
-    flush.console()
 
+		
 ################################################################################
 # definition of model parameters                                               # 
 ################################################################################
@@ -274,7 +288,10 @@ function( data, q.matrix, conv.crit = 0.0001,
 					}
 
 		attr.patt <- as.matrix( expand.grid( q.entries ) )
+		if ( ! is.null(skillclasses) ){   attr.patt <- skillclasses  }
 		colnames(attr.patt) <- colnames(q.matrix)
+		
+	
 		L <- nrow(attr.patt)
 
     # combine all attributes in an attribute pattern as a string
@@ -426,7 +443,17 @@ function( data, q.matrix, conv.crit = 0.0001,
 			l1 <- rep(0,N1jj)
 			l1[1] <- -1
 			l1[N1jj] <- 1
+
+# new inits   # -77770
+# l1[1] <- -1.5
+#			l1[2:N1jj] <- rep( 2*1 / N1jj , N1jj - 1 )
+			
+# new inits    # 77839   
+#l1[1] <- -1
+#			l1[2:N1jj] <- rep( 3*1 / N1jj , N1jj - 1 )
+
 			delta[[jj]] <- l1
+			
 						}
 					}
 	#*****
@@ -460,7 +487,10 @@ function( data, q.matrix, conv.crit = 0.0001,
 # print("a700")
 
  #vv <- "Mj / Aj" ; a1 <- Sys.time() ; cat( vv , a1-a0 , "\n") ; a0 <- Sys.time()			
-
+		if ( fac.oldxsi>= 1){ fac.oldxsi <- 0 }
+djj_old <- as.list( 1:J )
+# print(djj)
+# stop()
 				
 ################################################################################
 # some prelimaries for EM algorithm                                            #  
@@ -509,7 +539,13 @@ function( data, q.matrix, conv.crit = 0.0001,
 
 
 # vv <- "item patt" ; a1 <- Sys.time() ; cat( vv , a1-a0 , "\n") ; a0 <- Sys.time()			
+    
+	#********************************
+	# extract parameters with minimal deviances
 
+    dev.min <- 10^99
+	
+	#*********************************
 
 ################################################################################
 # BEGIN OF THE ITERATION LOOP                                                  #
@@ -639,7 +675,11 @@ if (HOGDINA >= 0){
 #		p.aj.xi1 <- p.aj.xi
 #		p.aj.xi1[ p.aj.xi1 < 0 ] <- 0
 		ntheta <- colSums( outer( item.patt.freq , rep( 1 , L) )*p.aj.xi )
+		#****
+		# inclusion ARb 2014-01-14
+		ntheta <- ntheta / sum(ntheta)
 		lntheta <- matrix(log(ntheta+eps),ncol=1 )
+#		lntheta <- matrix(qlogis(ntheta+eps),ncol=1 )
 		V <- diag( ntheta)
 #		Z1 <- t(Z) %*% V %*% Z
 		Z1 <- crossprod(Z , V ) %*% Z
@@ -648,6 +688,7 @@ if (HOGDINA >= 0){
 #		beta <- covbeta  %*% ( t(Z) %*% V %*% lntheta )
 		beta <- covbeta  %*% ( crossprod(Z , V ) %*% lntheta )
 		pred.ntheta <- exp( Z %*% beta )
+#		pred.ntheta <- plogis( Z %*% beta )		
 		# calculate attribute probability
 		attr.prob <- ( pred.ntheta / sum(pred.ntheta ) )[,1]
 			}
@@ -729,7 +770,6 @@ if (HOGDINA >= 0){
 						}
 				}				
 
-	a0 <- Sys.time()
 # cat( "\n Step 3 (calculate expected counts) \n" ) ; a1 <- Sys.time() ; print(a1-a0) ; a0 <- a1					
 	
 ################################################################################
@@ -746,29 +786,32 @@ if (HOGDINA >= 0){
 	eps <- 10^(-10)
 	eps2 <- 10^(-10)
 
+   max.increment <- max.increment / increment.factor
+	
 	delta.new <- NULL
 	for (jj in 1:J){ 	# begin item
 	#	jj <- 2 
 		Ajjj <- Aj[[jj]]
 		Mjjj <- Mj[[jj]][[1]]
-#		Rlj.ast <- aggregate( R.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
-#		Ilj.ast <- aggregate( I.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )	
-#		pjjj <- Rlj.ast[,2] / Ilj.ast[,2]		
 		Rlj.ast <- R.ljM[ jj, Mj.index[jj,5]:Mj.index[jj,6] ]
 		Ilj.ast <- I.ljM[ jj, Mj.index[jj,5]:Mj.index[jj,6] ]
-		pjjj <- Rlj.ast / Ilj.ast
-#		pjjj <- Rlj.ast[,2] / Ilj.ast[,2]
+		pjjj <- Rlj.ast / ( Ilj.ast + eps2 )
+		
 		if (linkfct == "logit" ){ 
+
 				pjjj[ pjjj > 1-eps ] <- 1 - eps
 				pjjj[ pjjj < eps ] <- eps
 				pjjj <- qlogis( pjjj ) 
+#				maxval <- 5
+#				pjjj <- squeeze.cdm( pjjj , c(-maxval , maxval ) )
 								}
+		#*****
 	if (linkfct == "log" ){ 
 				pjjj[ pjjj < eps ] <- eps
-				pjjj <- log( pjjj ) 
-# print(pjjj)				
+				pjjj <- log( pjjj ) 						
 								}
-#		Wj <- diag( Ilj.ast[,2] )
+
+								
 		Wj <- diag( Ilj.ast )
 	    if ( ( rule[jj] == "GDINA" )| ( method == "ULS" ) ){ 
 				invM <- invM.list[[jj]] 
@@ -783,27 +826,58 @@ if (HOGDINA >= 0){
 		djj <- delta.jj[,1]
 		djj.change <- djj - delta[[jj]]
 		if (linkfct == "identity" & (iter > 3) ){ 
+#		if ( (iter > 3) ){ 
 			step.change <- .20
+# 			djj.change <- ifelse( abs(djj.change) > step.change ,
+#									step.change*sign(djj.change) , djj.change )
  			djj.change <- ifelse( abs(djj.change) > step.change ,
-									step.change*sign(djj.change) , djj.change )
+									djj.change / 2 , djj.change )
+							}
+
+									
 			djj <- delta[[jj]] + djj.change
-				if ( sum(djj) > 1 ){ 
-					djj <- djj / sum( djj ) 
-							}											
+		if ( linkfct == "identity"){
+				if ( sum(djj) > 1 ){ 	djj <- djj / ( sum( djj ) )  }											
 									}
+
 		#######################################################################
-		if (linkfct == "log" & iter > 10 ){ 
-			if ( rule[jj] == "ACDM" ){
-				if ( sum( djj ) > 0 ){
-					djj <- djj - sum(djj )
-									}
-								}
-								}				
+#		if (linkfct == "log" & iter > 10 ){ 
+#			if ( rule[jj] == "ACDM" ){
+#				if ( sum( djj ) > 0 ){
+#					djj <- djj - sum(djj )
+#									}
+#								}
+#								}				
 		djj <- ifelse ( is.na(djj) , delta[[jj]] , djj )
+		
+#		if ( fac.oldxsi > 0 & (iter > 1 ) ){ 
+#				djj <- ( 1 - fac.oldxsi ) * djj + fac.oldxsi * djj_old[[jj]]
+#				djj_old[[jj]] <- djj				
+#								}
+		
+		# control
+        djj.change <- djj - delta[[jj]]		
+		while( max(abs(djj.change)) > max.increment ){
+#					djj.change <- djj.change / 2 
+				djj.change <- ifelse( abs(djj.change) > max.increment , djj.change / 2 , djj.change )
+						}
+		djj <- delta[[jj]] + djj.change						
+
+#		if ( rrum.model & (iter > 1) ){
+#			d1 <- djj[-1]
+#			d1 <- ifelse( d1 < 0 , 0.01 , d1 )
+#			djj[-1] <- d1
+#						}
 		delta.new[[jj]] <- djj
+		if ( (fac.oldxsi > 0 ) & (iter>3)){
+			delta.new[[jj]] <- fac.oldxsi*delta[[jj]] + ( 1 - fac.oldxsi ) * delta.new[[jj]]
+						}		
+
 					}		# end item
 	#.............................................................					
 
+	
+	
 	##########################################################################
 	# estimation with a design matrix for delta parameters
 	##########################################################################
@@ -858,6 +932,7 @@ if (HOGDINA >= 0){
 	
     # define estimates which are updated in this iteration
     delta <- delta.new
+	
     if (progress) {  
 	if (progress.item){ 
 			g1 <- unlist( lapply( delta , FUN = function(ll){ paste( round(ll,4) , collapse= " " ) } ))
@@ -865,8 +940,10 @@ if (HOGDINA >= 0){
 			print(g1)
 			}
 		cat( "Deviance = "  , round( -2*like.new , 5 ) )
+        g11 <- 2*(like.new-loglikeold)		
 			if (iter >1){ cat(" | Deviance change = " , round( 2*(like.new-loglikeold), 7) ) }
 			cat("\n" )
+			if (g11 < 0 ){ cat( "**** Deviances decreases! Check for nonconvergence.   ****\n") }
 		cat("Maximum parameter change:" , round( max.par.change, 6), "\n") 			
 			}
     
@@ -875,14 +952,46 @@ if (HOGDINA >= 0){
 	devchange <- abs( 2*(like.new-loglikeold) )
 
 # cat( "\n Step 5 likelihood \n" ) ; a1 <- Sys.time() ; print(a1-a0) ; a0 <- a1									
+    
 	
+	#******************************
+	# update parameters at minimal deviance
+	dev <- -2*like.new
+	if ( dev < dev.min ){
+		iter.min <- iter-1	
+		delta.min <- delta
+		dev.min <- dev
+		p.aj.xi.min <- p.aj.xi
+		p.xi.aj.min <- p.xi.aj
+		R.lj.min <- R.lj
+		I.lj.min <- I.lj		
+		attr.prob.min <- attr.prob
+		loglike.min <- loglike
+				}		
+	#********************************
+		
 	}
 
-
+	
 	
 ################################################################################
 # END OF THE ITERATION LOOP                                                    #
 ################################################################################
+
+	#***************************************
+	# use parameters with minimal deviance
+	iterused <- iter - 1
+		iter.min -> iter	
+		delta.min -> delta
+		dev.min -> dev
+		p.aj.xi.min -> p.aj.xi
+		p.xi.aj.min -> p.xi.aj
+		R.lj.min -> R.lj
+		I.lj.min -> I.lj		
+		attr.prob.min -> attr.prob
+		loglike.min -> loglike		
+		
+	#****************************************
 
 
     # calculate posterior probability for each attribute pattern
@@ -892,7 +1001,8 @@ if (HOGDINA >= 0){
 	 if ( ! is.null(zeroprob.skillclasses) ){
 		p.xi.aj[ , zeroprob.skillclasses ] <- 0
 								}
-		pattern <- cbind( 
+#		pattern <- cbind( 
+		pattern <- data.frame( 
 						freq = round(as.numeric(item.patt[,-1]),3),
 						mle.est = attr.patt.c[ max.col( p.xi.aj ) ], 
 						mle.post = rowMaxs( p.xi.aj ) / rowSums( p.xi.aj ), 
@@ -900,6 +1010,8 @@ if (HOGDINA >= 0){
 						map.post = rowMaxs( p.aj.xi )
 						)
 				}
+
+				
 	if (G>1){
 # work on this pattern
 #		pattern <- cbind( 
@@ -945,6 +1057,7 @@ if (HOGDINA >= 0){
 	if (G==1){ item.patt.freq <- matrix( item.patt.freq , ncol=1 ) }
 	freq.pattern <- rowSums( item.patt.freq )
 	
+
 	for (jj in 1:J){	
 	# cat("........",jj,".,,,\n")
 			#	jj <- 1		# Item jj
@@ -967,12 +1080,12 @@ if (HOGDINA >= 0){
 								}	
 				Rlj.ast <- aggregate( R.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
 				Ilj.ast <- aggregate( I.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
-				pjjj <- Rlj.ast[,2] / Ilj.ast[,2]
+				pjjj <- Rlj.ast[,2] / Ilj.ast[,2]		
 				pjjjM <- outer( rep(1,IP) , pjjj )
 				nM <- ncol(pjjjM) 
 				x1 <- outer( item.patt.split[,jj] , rep(1,nM) )
 				r1 <- outer( resp.patt[,jj] * item.patt.freq , rep(1,ncol(pjjjM) ) )
-				# Formula (17) for calculating the standard error
+				# Formula (17) for calculating the standard error	
 				mat.jj <- p.ajast.xi * ( x1 - pjjjM) / ( pjjjM * ( 1 - pjjjM ) )	
 				infomat.jj <- matrix( 0 , nM , nM )
 				for (kk1 in 1:nM){
@@ -992,23 +1105,27 @@ if (HOGDINA >= 0){
 #				try( a1 <- solve( infomat.jj ) )
 				try( a1 <- solve( infomat.jj + diag( eps2 , ncol(infomat.jj) ) ) )
 				if ( is.null(a1)){ 
-						cat( "Item" , colnames(data)[jj] , "Singular covariance matrix\n")
+						cat( "Item" , colnames(data)[jj] , "Singular item parameter covariance matrix\n")
 						a1 <- NA*infomat.jj 
 							}
 				varmat.palj[[jj]] <- Ijj <- a1
 				Wj <- diag( Ilj.ast[,2] )	
-				if ( ( method == "ULS" ) ){ 
-					Wjjj <- solve( t(Mjjj) %*% Mjjj ) %*% t(Mjjj)
+				if ( ( method == "ULS" ) ){ 			
+				    x1 <- t(Mjjj) %*% Mjjj	
+				    diag(x1) <- diag(x1) + 10^(-8)						
+					Wjjj <- solve( x1 ) %*% t(Mjjj)
 									} else {
-					Wjjj <- solve( t(Mjjj) %*% Wj %*% Mjjj ) %*% t(Mjjj) %*% Wj
+					x1 <- t(Mjjj) %*% Wj %*% Mjjj									
+					diag(x1) <- diag(x1) + 10^(-8)					
+					Wjjj <- solve( x1 ) %*% t(Mjjj) %*% Wj
 											}
 				if ( linkfct == "logit" ){
-					pjjj.link <- 1 / ( pjjj * ( 1 - pjjj ) )
+					pjjj.link <- 1 / ( ( pjjj * ( 1 - pjjj ) ) + eps2 )
 					pjjj.link <- diag( pjjj.link )
 				    Wjjj <- Wjjj %*% pjjj.link
 						}
 				if ( linkfct == "log" ){
-					pjjj.link <- 1 /  pjjj 
+					pjjj.link <- 1 /  ( pjjj  + eps2 )
 					pjjj.link <- diag( pjjj.link )
 					Wjjj <- Wjjj %*% pjjj.link
 						}
@@ -1180,9 +1297,20 @@ if (HOGDINA >= 0){
 		probs <- aperm( pjM , c(3,1,2) )
 		itemfit.rmsea <- itemfit.rmsea( n.ik , pi.k , probs )$rmsea	
 		names(itemfit.rmsea) <- colnames(data)
-
-    cat("---------------------------------------------------------------------------------\n")
+	#********************************************************	
+	# calculate model implied probabilities
+	probitem <- gdina.probitem( Mj, Aj , delta , rule , linkfct , delta.summary )
+	
+	# labels likelihood
+	colnames(p.xi.aj) <- paste(rownames(attr.prob))
+	
+	
+	#************** OUTPUT **********************************
+	if (progress){
+		cat("---------------------------------------------------------------------------------\n")
+			}
     res <- list( coef = delta.summary , delta = delta , se.delta = se.delta , 
+			    "probitem"=probitem , 
 				"itemfit.rmsea" = itemfit.rmsea , 
 				"mean.rmsea" = mean(itemfit.rmsea) ,	
 				loglike = loglike, deviance = -2*loglike , G = G , N = colSums( as.matrix(item.patt.freq) ) , 
@@ -1194,14 +1322,16 @@ if (HOGDINA >= 0){
                  pattern = pattern , attribute.patt = attr.prob, skill.patt = skill.patt,
                  "subj.pattern" = item.patt.subj, "attribute.patt.splitted" = attr.patt, 
 				 "pjk" = pjM , 
-				 Mj = Mj , Aj = Aj , delta.designmatrix = delta.designmatrix , 
+				 Mj = Mj , Aj = Aj , "rule"=rule , "linkfct"=linkfct ,
+				 delta.designmatrix = delta.designmatrix , 
 				 "reduced.skillspace" = reduced.skillspace , 
 				 "Z.skillspace" = if(reduced.skillspace){ Z } else { NULL } , 
 #				 "delta.index" = if( reduced.skillspace){ sum( abs( ntheta-pred.ntheta) )/ (2*sum(ntheta)) } ,
 				 beta = beta , covbeta = covbeta , 
 				 "display" = disp,
                  "item.patt.split" = item.patt.split, "item.patt.freq" = item.patt.freq,
-                 "model.type" = r1 , iter = iter-1 ,
+                 "model.type" = r1 , "iter" = iter , 
+				 "iterused" = iterused ,
 				 "rrum.model" = rrum.model ,
 				 "rrum.params"= rrum.params ,
 				 "group.stat" = group.stat , 
@@ -1216,10 +1346,26 @@ if (HOGDINA >= 0){
 		res$a.attr <- a.attr 
 		res$b.attr <- b.attr
 		res$attr.rf <- cbind( b.attr , a.attr )
-				}
+				}							
 	# computation time
     time1$s2 <- Sys.time()
 	res$time <- time1
+	# control parameter
+	control <- list( skillclasses=skillclasses , q.matrix=q.matrix, conv.crit = conv.crit , 
+					dev.crit = dev.crit , maxit = maxit ,
+					linkfct = linkfct , Mj = Mj , 
+					group = group , 
+					method = method , 
+					delta.designmatrix = delta.designmatrix , 
+					delta.basispar.lower = delta.basispar.lower , 
+					delta.basispar.upper = delta.basispar.upper , 					
+					delta.basispar.init = delta.basispar.init , 
+					zeroprob.skillclasses = zeroprob.skillclasses , 
+					reduced.skillspace=reduced.skillspace , 
+					HOGDINA = HOGDINA , 
+					Z.skillspace = Z.skillspace , 
+                    weights = weights ,  rule = rule ) 	
+	res$control <- control	
     class(res) <- "gdina"
     return(res)
 }

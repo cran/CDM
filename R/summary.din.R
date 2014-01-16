@@ -31,7 +31,6 @@ function(object, top.n.skill.classes = 6, log.file = NULL, overwrite = FALSE, ..
 	IDI <- t(matrix(round(object$IDI, 4)))
 	rownames(IDI) <- ""
 	colnames(IDI) <- rownames(object$coef)
-
 	# item parameters
 	item <- data.frame( "item" = colnames(object$data) , "guess" = object$guess[,1] , 
 				"slip" = object$slip[,1] , "IDI" = object$IDI , "rmsea" = object$itemfit.rmsea )

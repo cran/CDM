@@ -14,6 +14,52 @@ a.robitzsch /-\ bifie.at
 
 
 --------------------------------------------------------------
+CDM 2.5 (2014-01-16)
+--------------------------------------------------------------
+
+x fixed a bug when inverting a singular matrix in standard error
+  calculation in gdina function (thanks to Hsin-Hao Chen)
+x included conditional item probabilities in gdina output
+x included gdina plot function (thanks to a discussion with 
+  Hamdollah Ravand)
+x fixed a bug in summary.dina if data without column names
+  is provided (thanks to Hu Jinxiang)
+x removed a bug in gdina function which occured sometimes
+  due to division by zero (thanks to Hu Jinxiang)
+x fixed a bug in cdm.est.class.accuracy for GDINA models
+  (thanks to Hamdollah Ravand)
+x fixed some instable numerical behavior for higher order
+  GDINA models (thanks to Ed Merkle)
+x fixed a bug in calculating number of estimated parameters for
+  'din' function in case of skill classes with zero probability
+  (thanks to Juergen Gross)
+x added some explanations in 'modelfit.cor'
+x included S-X2 item fit statistic ('itemfit.sx2') accompanied
+  with a summary and a plot method
+x included marginal skill classification reliability in
+  'cdm.est.class.accuracy' function
+x implemented significance tests in modelfit.cor and modelfit.cor.din
+x included jackknife estimation of standard
+  errors and bias corrected estimators in modelfit.cor.din
+x speeded function 'modelfit.cor' by moving some parts of the code
+  to Rcpp
+x included warnings in case of nonconvergence in gdina function
+  (thanks to a dataset provided by Hamdollah Ravand)
+x slight change of algorithm for skill space reduction which
+  seems to improve convergence behavior
+x included a function for skill space approximation
+x included a function for calculation reduced skill spaces
+  if hierarchies among skills exist ('skillspace.hierarchy')
+x included generalized distance discriminating method and a function
+  for computing ideal response patterns
+
+* included/modified datasets: data.hr, data.melab, data.jang, 
+  data.dtmr
+* included/modified examples: gdm (4,5,6), gdina (8,9), sim.din (3), 
+  sim.gdina (2,3), itemfit.sx2 (1,2), din(6)
+
+
+--------------------------------------------------------------
 CDM 2.4 (2013-10-24)
 --------------------------------------------------------------
 

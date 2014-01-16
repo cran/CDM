@@ -16,13 +16,13 @@ itemfit.rmsea(n.ik, pi.k, probs, itemnames=NULL)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{n.ik}{
-An array of four dimensions: Classes x Items x Categories x Groups
+An array of four dimensions: Classes x items x categories x groups
 }
   \item{pi.k}{
-An array of two dimensions: Classes x Groups
+An array of two dimensions: Classes x groups
 }
   \item{probs}{
-An array of four dimensions: Classes x Items x Categories x Groups
+An array of four dimensions: Classes x items x categories x groups
 }
   \item{itemnames}{
 An optional vector of item names. Default is \code{NULL}.

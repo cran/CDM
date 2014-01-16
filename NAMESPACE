@@ -1,4 +1,5 @@
 useDynLib(CDM)
+
 export(din, sim.din , gdina ,
     sim.gdina, sim.gdina.prepare ,
     skill.cor  , # , gdina.fit
@@ -6,19 +7,23 @@ export(din, sim.din , gdina ,
     cdm.est.class.accuracy,
     modelfit.cor.din,
     modelfit.cor ,
+    modelfit.cor2 , 
     gdm ,
     din.equivalent.class ,
     itemfit.rmsea ,
     din.validate.qmatrix ,
-    din.deterministic
+    din.deterministic ,
+    itemfit.sx2 ,
+    skillspace.approximation ,
+    skillspace.hierarchy ,
+    ideal.response.pattern ,
+    gdd
     )
+
 # internal functions; not intended to be visible to users
 # export(check.input, rowMaxs, rowProds2, plot.din, print.din, summary.din,
 #        print.summary.din)
 
-import(graphics, stats)
-
-importFrom(utils,packageDescription)
 
 
 S3method(plot, din)
@@ -35,9 +40,16 @@ S3method(coef, gdm)
 S3method(logLik, din)
 S3method(logLik, gdina)
 S3method(logLik, gdm)
+S3method(plot, gdina)
+S3method(summary,itemfit.sx2)
+S3method(plot,itemfit.sx2)
+S3method(summary,modelfit.cor.din)
 
 
 import(MASS)
 importFrom(polycor,polychor)
 import(psych)
 import(mvtnorm)
+import(graphics, stats)
+importFrom(utils,packageDescription)
+importFrom(sfsmisc,QUnif)

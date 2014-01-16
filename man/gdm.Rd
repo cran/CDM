@@ -40,8 +40,8 @@ In the one-dimensional case it must be a vector.
 For multidimensional models it has to be a list
 of skill vectors if the theta grid differs between
 dimensions. If not, a vector input can be supplied.
-If an estimated skillspace (\code{skillspace="est"}, a vector or
-a matrix \code{theta.k} will be initial values of the estimated 
+If an estimated skillspace (\code{skillspace="est"} should be estimated, 
+a vector or a matrix \code{theta.k} will be used as initial values of the estimated 
 \eqn{\bold{\theta}} grid.
 }
   \item{irtmodel}{
@@ -272,7 +272,7 @@ following entries:
 
 \references{
 Bacci, S., Bartolucci, F., & Gnaldi, M. (2012). 
-A class of Multidimensional Latent Class IRT models for ordinal 
+A class of multidimensional latent class IRT models for ordinal 
 polytomous item responses. \emph{arXiv preprint}, \emph{arXiv:1201.4667}.
 
 Bartolucci, F. (2007). A class of multidimensional IRT models for testing 
@@ -305,6 +305,8 @@ with \code{\link{din}} (DINA or DINO model) or \code{\link{gdina}}
 
 For assessment of model fit see \code{\link{modelfit.cor.din}} and 
 \code{\link{anova.gdm}}.
+
+See \code{\link{itemfit.sx2}} for item fit statistics.  
 
 For the estimation of the multidimensional
 latent class item response model see the \pkg{MultiLCIRT} package
@@ -540,20 +542,32 @@ theta.k <- seq(-1 , 1 , len=4)      # initial vector of theta
 mod1 <- gdm( dat , theta.k = theta.k , skillspace="est" , irtmodel="1PL",
         centerintercepts=TRUE , maxiter=200)
 summary(mod1)
+##   Estimated Skill Distribution
+##         F1    pi.k
+##   1 -1.988 0.24813
+##   2 -0.055 0.23313
+##   3  0.940 0.40059
+##   4  2.000 0.11816
 
 #############################################################################
 # SIMULATED EXAMPLE 5: Multidimensional latent class IRT model
 #############################################################################
 
+# We simulate a two-dimensional IRT model in which theta vectors
+# are observed at a fixed discrete grid (see below).
+
 # simulate data
 set.seed(754)
 I <- 13     # number of items
 N <- 2400   # number of persons
+
+# simulate Dimension 1 at 4 discrete theta points
 theta <- c( -2 , 0 , 1 , 2 )
 theta <- rep( theta , c(N/4,N/4 , 3*N/8 , N/8)  ) 
 b <- seq(-2,2,len=I)
 library(sirt)  # use simulation function from sirt package
 dat1 <- sim.raschtype( theta=theta , b=b )
+# simulate Dimension 2 at 4 discrete theta points
 theta <- c( -3 , 0 , 1.5 , 2 )
 theta <- rep( theta , c(N/4,N/4 , 3*N/8 , N/8)  )
 dat2 <- sim.raschtype( theta=theta , b=b )
@@ -571,7 +585,28 @@ colnames(theta.k) <- c("Dim1","Dim2")
 # estimate model
 mod2 <- gdm( dat , theta.k = theta.k , skillspace="est" , irtmodel="1PL",
         Qmatrix=Qmatrix , centerintercepts=TRUE , maxiter=200)
-summary(mod2)}
+summary(mod2)
+##   Estimated Skill Distribution
+##     theta.k.Dim1 theta.k.Dim2    pi.k
+##   1       -2.022       -3.035 0.25010
+##   2        0.016        0.053 0.24794
+##   3        0.956        1.525 0.36401
+##   4        1.958        1.919 0.13795
+
+#############################################################################
+# EXAMPLE 6: Large-scale dataset data.mg
+#############################################################################
+
+data(data.mg)
+dat <- data.mg[ , paste0("I" , 1:11 ) ]
+theta.k <- seq(-6,6,len=21)
+
+#***
+# Model 1: Generalized partial credit model with multiple groups
+mod1 <- gdm( dat , irtmodel="2PL" , theta.k=theta.k ,   group=data.mg$group , 
+          skillspace="normal" , standardized.latent=TRUE , maxiter=50 )
+summary(mod1)
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

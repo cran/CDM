@@ -6,7 +6,7 @@ Calculation of Equivalent Skill Classes in the DINA/DINO Model
 }
 \description{
 This function computes nondistinguishable skill classes for the DINA and
-DINO model (Gross & George, in Review; Zhang, DeCarlo & Ying, 2013).
+DINO model (Gross & George, in press; Zhang, DeCarlo & Ying, 2013).
 }
 \usage{
 din.equivalent.class(q.matrix, rule = "DINA")
@@ -37,8 +37,9 @@ A list with following entries:
     }
 }
 \references{
-Gross, J. & George, A. C. (in Review). \emph{On prerequisite relations between 
-attributes in noncompensatory diagnostic classification.}
+Gross, J. & George, A. C. (in press). On prerequisite relations between 
+attributes in noncompensatory diagnostic classification.
+\emph{Methodology}, \bold{xx}, xxx-xxx.
 
 Zhang, S. S., DeCarlo, L. T., & Ying, Z. (2013). 
 Non-identifiability, equivalence classes, and attribute-specific classification 

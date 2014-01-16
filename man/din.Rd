@@ -200,6 +200,7 @@ iterations should be saved. The default is \code{FALSE}.}
   \item{item.patt.split}{A matrix giving the splitted response pattern.  }
   \item{item.patt.freq}{A numeric vector given the frequencies of the response
     pattern in \code{item.patt.split}.  }
+  \item{control}{Optimization parameters used in estimation}
 }
 
 \references{
@@ -252,6 +253,8 @@ iterations should be saved. The default is \code{FALSE}.}
   
   For assessment of model fit see \code{\link{modelfit.cor.din}} and 
   \code{\link{anova.din}}.
+  
+  See \code{\link{itemfit.sx2}} for item fit statistics.  
   
   See also \code{\link{CDM-package}} for general
   information about this package.  
@@ -482,7 +485,68 @@ d7 <- din(sim.dina.bib, sim.qmatrix, rule = "DINO",
 # Comparison of DINA and DINO estimates
 lapply(list("guessing" = rbind("DINA" = d6$guess[,1],
   "DINO" = d7$guess[,1]), "slipping" = rbind("DINA" =
-  d6$slip[,1], "DINO" = d7$slip[,1])), round, 2) }
+  d6$slip[,1], "DINO" = d7$slip[,1])), round, 2) 
+
+#############################################################################
+# EXAMPLE 6: DINA model with attribute hierarchy
+#############################################################################
+
+set.seed(987)
+# assumed skill distribution: P(000)=P(100)=P(110)=P(111)=.245 and 
+#     "deviant pattern": P(010)=.02
+K <- 3 # number of skills
+
+# define alpha
+alpha <- scan()
+    0 0 0
+    1 0 0
+    1 1 0
+    1 1 1
+    0 1 0
+    
+alpha <- matrix( alpha , length(alpha)/K , K  , byrow=TRUE )
+alpha <- alpha[ c( rep(1:4,each=245) , rep(5,20) ),  ]
+
+# define Q-matrix
+q.matrix <- scan()
+    1 0 0   1 0 0   1 0 0
+    0 1 0   0 1 0   0 1 0
+    0 0 1   0 1 0   0 0 1
+    1 1 0   1 0 1   0 1 1
+
+q.matrix <- matrix( q.matrix , nrow=length(q.matrix)/K , ncol=K , byrow=TRUE )
+
+# simulate DINA data
+dat <- sim.din( alpha=alpha , q.matrix=q.matrix )$dat
+
+#*** Model 1: estimate DINA model | no skill space restriction
+mod1 <- din( dat , q.matrix )
+
+#*** Model 2: DINA model | hierarchy A2 > A3
+B <- "A2 > A3"
+skill.names <- paste0("A",1:3)
+skillspace <- skillspace.hierarchy( B , skill.names )$skillspace.reduced
+mod2 <- din( dat , q.matrix , skillclasses = skillspace )
+
+#*** Model 3: DINA model | linear hierarchy A1 > A2 > A3
+#   This is a misspecied model because due to P(010)=.02 the relation A1>A2
+#   does not hold.
+B <- "A1 > A2
+      A2 > A3"
+skill.names <- paste0("A",1:3)
+skillspace <- skillspace.hierarchy( B , skill.names )$skillspace.reduced
+mod3 <- din( dat , q.matrix , skillclasses = skillspace )
+
+anova(mod1,mod2)
+##       Model   loglike Deviance Npars      AIC      BIC  Chisq df       p
+##   2 Model 2 -7052.460 14104.92    29 14162.92 14305.24 0.9174  2 0.63211
+##   1 Model 1 -7052.001 14104.00    31 14166.00 14318.14     NA NA      NA
+
+anova(mod2,mod3)
+##       Model   loglike Deviance Npars      AIC      BIC    Chisq df       p
+##   2 Model 2 -7059.058 14118.12    27 14172.12 14304.63 13.19618  2 0.00136
+##   1 Model 1 -7052.460 14104.92    29 14162.92 14305.24       NA NA      NA
+}
 }
 
 \keyword{Cognitive Diagnosis Models}

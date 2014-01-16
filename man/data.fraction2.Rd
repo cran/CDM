@@ -18,7 +18,8 @@ The third entry \code{q.matrix2} is an alternative
 Q-matrix of de la Torre (2009). The fourth entry is a
 modified Q-matrix of \code{q.matrix1}.
 
-The format is: \cr
+The format is:
+
 \code{ $ data     :'data.frame':} \cr
 \code{  ..$ H01: int [1:536] 1 1 1 1 1 0 0 1 0 0 ...} \cr
 \code{  ..$ H02: int [1:536] 1 1 1 0 0 0 0 0 0 0 ...} \cr
@@ -51,6 +52,12 @@ The format is: \cr
 See \code{\link{fraction.subtraction.data}} for more information
 about data source.
 }
+
+\section{Example Index}{
+\code{\link{gdm}} (Example 3)
+}
+
+
 \references{
   de la Torre, J. (2009). DINA model parameter estimation:
   A didactic. \emph{Journal of Educational and Behavioral

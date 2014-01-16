@@ -62,12 +62,17 @@ validation for the DINA model: Development and applications.
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-Estimated the mixed DINA/DINO model with \code{\link{din}}.
+The mixed DINA/DINO model can be estimated with \code{\link{din}}.
+
+See also the \code{Qrefine} function in the \pkg{NPCD} package.
 }
+
+
 \examples{
-#################################################################
+#############################################################################
 # SIMULATED EXAMPLE 1: Detection of a mis-specified Q-matrix
-#################################################################
+#############################################################################
+
 set.seed(679)
 # specify true Q-matrix
 q.matrix <- matrix( 0 , 12 , 3 )
@@ -86,7 +91,58 @@ Q1[10,] <- c(1,0,0)
 # estimate DINA model
 mod <- din( dat , q.matr = Q1, rule = "DINA")
 # apply Q-matrix validation
-res <- din.validate.qmatrix( mod )	
+res <- din.validate.qmatrix( mod )  
+## item itemindex Skill1 Skill2 Skill3 guess  slip   IDI qmatrix.orig IDI.orig delta.IDI max.IDI
+## I001         1      1      0      0 0.309 0.251 0.440            0    0.431     0.009   0.440
+## I010        10      1      1      0 0.235 0.329 0.437            0    0.320     0.117   0.437
+## I010        10      1      1      1 0.296 0.301 0.403            0    0.320     0.083   0.437
+##   
+##   Proposed Q-matrix:
+##   
+##          Skill1 Skill2 Skill3
+##   Item1       1      0      0
+##   Item2       1      0      0
+##   Item3       1      0      0
+##   Item4       0      1      0
+##   Item5       0      1      0
+##   Item6       0      1      0
+##   Item7       0      0      1
+##   Item8       0      0      1
+##   Item9       0      0      1
+##   Item10      1      1      0
+##   Item11      1      0      1
+##   Item12      0      1      1
+
+\dontrun{
+#*****************
+# Q-matrix estimation ('Qrefine') in the NPCD package
+#*****************
+
+library(NPCD)
+Qrefine.out <- Qrefine( dat, Q1, gate="AND", max.ite=50)
+print(Qrefine.out)
+##   The modified Q-matrix
+##           Attribute 1 Attribute 2 Attribute 3
+##   Item 1            1           0           0
+##   Item 2            1           0           0
+##   Item 3            1           0           0
+##   Item 4            0           1           0
+##   Item 5            0           1           0
+##   Item 6            0           1           0
+##   Item 7            0           0           1
+##   Item 8            0           0           1
+##   Item 9            0           0           1
+##   Item 10           1           1           0
+##   Item 11           1           0           1
+##   Item 12           0           1           1
+##   
+##   The modified entries
+##        Item Attribute
+##   [1,]    1         2
+##   [2,]   10         2
+
+plot(Qrefine.out)
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

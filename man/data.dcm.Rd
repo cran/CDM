@@ -84,7 +84,7 @@ summary(mod5)
 
 # Model 6: GDINA additive model logit link function
 mod6 <- gdina( data.dcm$data[,-1] , q.matrix=data.dcm$q.matrix , link="logit" , 
-		rule="ACDM")
+          rule="ACDM")
 summary(mod6)
 
 # Model 7: reduced RUM model

@@ -184,6 +184,7 @@
 	iter <- 1
 	parchange <- 1
 	a00 <- a
+	maxa <- max.increment + 0 * a
 	while( ( iter <= msteps ) & ( parchange > convM )  ){
 		a0 <- a
 		probs <- .gdm.calc.prob( a,b,thetaDes,Qmatrix,I,K,TP,TD)
@@ -216,12 +217,14 @@
 					}
 			increment <-  d1.b / abs( d2.b + 10^(-10) )
 			increment[ is.na(increment) ] <- 0		
-			increment <- ifelse(abs(increment)> max.increment, 
-						   sign(increment)*max.increment , increment )	
-	#		ci <- ceiling( abs(increment) / ( abs( max.increment ) + 10^(-10) ) )
-	#        increment <- ifelse( abs(increment)> max.increment  , 
-	#                                  increment /(2*ci) , increment)					
-			a[,,1] <- a[,,1] + increment
+#			increment <- ifelse(abs(increment)> max.increment, 
+#						   sign(increment)*max.increment , increment )							   					  
+			increment <- ifelse(abs(increment)> max.increment / sqrt( iter)  , 
+						   sign(increment)*max.increment / sqrt(iter ) , increment )							   					  
+#			ci <- ceiling( abs(increment) / ( abs( max.increment ) + 10^(-10) ) )
+#	        increment <- ifelse( abs(increment)> max.increment  , 
+#	                                  increment /(2*ci) , increment)					
+			a[,,1] <- a[,,1] + increment	
 			se.a <- sqrt( 1 / abs( d2.b + 10^(-10) ) )
 			if (K>1){ for (kk in 2:K){ a[,,kk] <- a[,,1] }	 }	
 			if ( ! is.null( a.constraint) ){
@@ -243,6 +246,7 @@
 			iter <- iter + 1
 			}	# end iter
 		max.increment <- max(abs(a-a00))
+#		max.increment <- max(abs(a-a00)) / 1.005
 		res <- list( "a" = a , "se.a" = se.a , "max.increment.a" = max.increment)
 		return(res)
 		}		
@@ -324,6 +328,9 @@
 	covdelta <- as.list(1:G)
 	for (gg in 1:G){
 		ntheta <- Ngroup[gg] * pi.k[,gg]
+		#*****
+		# ARb 2014-01-14 inclusion
+		ntheta <- ntheta / sum(ntheta )		
 		lntheta <- log(ntheta+eps)
 		mod <- lm( lntheta ~ 0 + Z , weights = ntheta )
 		covbeta <- vcov(mod)		
