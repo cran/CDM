@@ -42,6 +42,10 @@ A list with following entries
 \item{skillspace.reduced}{Reduced skill space fulfilling the specified
 hierarchy}
 \item{skillspace.complete}{Complete skill space}
+\item{zeroprob.skillclasses}{Indices of skill patterns in
+	\code{skillspace.complete} which were removed for defining
+	\code{skillspace.reduced}
+}
 }
 
 \references{
@@ -172,8 +176,7 @@ sp3$skillspace.reduced
 
 #*** Model 4: Unstructured hierarchy (D)
 B <- "A1 > A2 \n A1 > A3 \n A1 > A4 \n A1 > A5 \n A1 > A6"
-# This specification of B is equivalent to writing separate
-# lines:
+# This specification of B is equivalent to writing separate lines:
 # B <- "A1 > A2
 #       A1 > A3
 #       A1 > A4

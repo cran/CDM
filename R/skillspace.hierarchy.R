@@ -30,6 +30,12 @@ skillspace.hierarchy <- function( B , skill.names  ){
 	dfr <- rbind( rep(0,K) , rep(1,K) )
 	skillspace <- expand.grid( as.list(as.data.frame(dfr) ) )
 	colnames(skillspace) <- skill.names
+	# attribute pattern labels
+	n1 <- paste0("A" , skillspace[,1] )
+	for (nn in 2:K){
+		n1 <- paste0( n1 , skillspace[,nn] )
+				}
+	rownames(skillspace) <- n1	
 	skillspace0 <- skillspace
 
 	# compute reachability
@@ -49,9 +55,14 @@ skillspace.hierarchy <- function( B , skill.names  ){
 										}
 							}
 			}
+	#**** determine skill classes which were removed	
+	zeroprob.skillclasses <- which( ! ( rownames(skillspace0)  %in% rownames(skillspace) ) )
+	
+	#**************************************
 	# output        
 	res <- list("R" = V1 , "skillspace.reduced" = as.matrix(skillspace) ,
-			"skillspace.complete" = as.matrix(skillspace0) )
+			"skillspace.complete" = as.matrix(skillspace0) , 
+			"zeroprob.skillclasses" =zeroprob.skillclasses )
 	return(res)
 		}
 ############################################################################		

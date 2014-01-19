@@ -17,6 +17,7 @@ function( data, q.matrix, skillclasses=NULL , conv.crit = 0.0001,
 					delta.basispar.init = NULL , 
 					zeroprob.skillclasses = NULL , 
 					reduced.skillspace=TRUE , 
+					reduced.skillspace.method=2 , 
 					HOGDINA = -1 , 
 					Z.skillspace = NULL , 
                     weights = rep( 1, nrow( data ) ),  rule = "GDINA", 
@@ -281,12 +282,14 @@ if (progress){
 		# extract unique Q-matrix entries
 		K <- ncol(q.matrix)
 		q.entries <- as.list( 1:K )
+
 		maxAttr <- rep(1,K)
 		for (kk in 1:K){ 
-			q.entries[[kk]] <- sort(unique( q.matrix[,kk] ))
-			maxAttr[kk] <- length( q.entries[[kk]] )
+#			q.entries[[kk]] <- sort(unique( q.matrix[,kk] ))
+			q.entries[[kk]] <- sort(unique( c(0,q.matrix[,kk] )))
+			maxAttr[kk] <- length( q.entries[[kk]] ) - 1
 					}
-
+					
 		attr.patt <- as.matrix( expand.grid( q.entries ) )
 		if ( ! is.null(skillclasses) ){   attr.patt <- skillclasses  }
 		colnames(attr.patt) <- colnames(q.matrix)
@@ -307,6 +310,11 @@ if (progress){
 			}
 	Z <- NULL ; covbeta <- NULL ; beta <- NULL
 	ncolZ <- nrow(attr.patt)-1
+# print(attr.patt)
+# print(ncolZ)
+# Reval("print(reduced.skillspace)")
+
+	
 	if ( reduced.skillspace ){
 		A <- attr.patt
 		# combinations
@@ -322,8 +330,9 @@ if (progress){
 		v1 <- c(v1,apply( kombis , 2 , FUN = function(ll){ 
 			paste( paste( "A" , ll , sep="") , collapse="_" ) } ))
 		colnames(Z) <- v1	
+	
 		m1 <- which( maxAttr > 1 )
-		if ( max(m1) > 1 ){
+		if ( max(maxAttr) > 1 ){
 		   Z1 <- Z[ , m1 , drop=FALSE ]^2
 		   colnames(Z1) <- paste0( colnames(q.matrix)[m1] , "*2")
 		   Z <- cbind( Z , Z1 )
@@ -333,10 +342,11 @@ if (progress){
 						}
 		 ncolZ <- ncol(Z)						
 			}
-# print(head(Z))
-
+# print(ncolZ)
 # print("a400")			
 # vv <- "attribute patterns" ; a1 <- Sys.time() ; cat( vv , a1-a0 , "\n") ; a0 <- Sys.time()			
+
+
 
 ################################################################################
 # uniform prior distribution of all latent class patterns                      #
@@ -671,30 +681,16 @@ if (HOGDINA >= 0){
 
 # This currently only works in case of a single group
 	if (reduced.skillspace){
-		eps <- 10^(-10)
-#		p.aj.xi1 <- p.aj.xi
-#		p.aj.xi1[ p.aj.xi1 < 0 ] <- 0
 		ntheta <- colSums( outer( item.patt.freq , rep( 1 , L) )*p.aj.xi )
-		#****
-		# inclusion ARb 2014-01-14
-		ntheta <- ntheta / sum(ntheta)
-		lntheta <- matrix(log(ntheta+eps),ncol=1 )
-#		lntheta <- matrix(qlogis(ntheta+eps),ncol=1 )
-		V <- diag( ntheta)
-#		Z1 <- t(Z) %*% V %*% Z
-		Z1 <- crossprod(Z , V ) %*% Z
-		diag(Z1) <- diag(Z1)+eps
-		covbeta <- solve( Z1 )
-#		beta <- covbeta  %*% ( t(Z) %*% V %*% lntheta )
-		beta <- covbeta  %*% ( crossprod(Z , V ) %*% lntheta )
-		pred.ntheta <- exp( Z %*% beta )
-#		pred.ntheta <- plogis( Z %*% beta )		
-		# calculate attribute probability
-		attr.prob <- ( pred.ntheta / sum(pred.ntheta ) )[,1]
+		res <- gdina.reduced.skillspace( ntheta , Z , 
+			reduced.skillspace.method= reduced.skillspace.method )		
+		beta <- res$beta
+		attr.prob <- res$attr.prob
+		pred.ntheta <- res$pred.ntheta
 			}
 
 # cat( "\n Step 2a (reduced skillspace) \n" ) ; a1 <- Sys.time() ; print(a1-a0) ; a0 <- a1				
-			
+ 
 ################################################################################
 # STEP III:                                                                    #
 # calculate I_{lj} and R_{lj}                                                  #
@@ -1237,7 +1233,8 @@ if (HOGDINA >= 0){
 		if ( ! is.null( delta.designmatrix ) ){ 
 			Nipar <- ncol(delta.designmatrix ) }
 		
-		Nskillpar <- G*ncolZ - length( zeroprob.skillclasses )		
+		Nskillpar <- G*ncolZ - length( zeroprob.skillclasses )	
+		
 		if (HOGDINA==1){ Nskillpar <- 2*K*G }
 		if (HOGDINA==0){ Nskillpar <- K*G }
 		Npars <- Nipar  - bb + Nskillpar
@@ -1350,6 +1347,9 @@ if (HOGDINA >= 0){
 	# computation time
     time1$s2 <- Sys.time()
 	res$time <- time1
+	res$time$timediff <- print(res$time$s2 - res$time$s1)	
+
+	
 	# control parameter
 	control <- list( skillclasses=skillclasses , q.matrix=q.matrix, conv.crit = conv.crit , 
 					dev.crit = dev.crit , maxit = maxit ,

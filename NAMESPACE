@@ -17,7 +17,8 @@ export(din, sim.din , gdina ,
     skillspace.approximation ,
     skillspace.hierarchy ,
     ideal.response.pattern ,
-    gdd
+    gdd ,
+    sequential.items
     )
 
 # internal functions; not intended to be visible to users

@@ -47,7 +47,7 @@ which is employed in the \code{gdm} function.
 \value{
 A list with following entries
 
-  \item{skillclass.est}{EStimated skill class}
+  \item{skillclass.est}{Estimated skill class}
   \item{distmatrix}{Distances for every person and every skill class}
   \item{skillspace}{Used skill space for estimation}
   \item{theta}{Used person parameter estimate}

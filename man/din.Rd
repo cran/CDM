@@ -488,7 +488,7 @@ lapply(list("guessing" = rbind("DINA" = d6$guess[,1],
   d6$slip[,1], "DINO" = d7$slip[,1])), round, 2) 
 
 #############################################################################
-# EXAMPLE 6: DINA model with attribute hierarchy
+# SIMULATED EXAMPLE 6: DINA model with attribute hierarchy
 #############################################################################
 
 set.seed(987)
@@ -537,6 +537,11 @@ skill.names <- paste0("A",1:3)
 skillspace <- skillspace.hierarchy( B , skill.names )$skillspace.reduced
 mod3 <- din( dat , q.matrix , skillclasses = skillspace )
 
+#*** Model 4: 2PL model in gdm
+mod4 <- gdm( dat , theta.k=seq(-5,5,len=21) , 
+           decrease.increments= TRUE , skillspace="normal" )
+summary(mod4)
+
 anova(mod1,mod2)
 ##       Model   loglike Deviance Npars      AIC      BIC  Chisq df       p
 ##   2 Model 2 -7052.460 14104.92    29 14162.92 14305.24 0.9174  2 0.63211
@@ -546,6 +551,15 @@ anova(mod2,mod3)
 ##       Model   loglike Deviance Npars      AIC      BIC    Chisq df       p
 ##   2 Model 2 -7059.058 14118.12    27 14172.12 14304.63 13.19618  2 0.00136
 ##   1 Model 1 -7052.460 14104.92    29 14162.92 14305.24       NA NA      NA
+
+anova(mod2,mod4)
+##       Model  loglike Deviance Npars      AIC      BIC    Chisq df  p
+##   2 Model 2 -7220.05 14440.10    24 14488.10 14605.89 335.1805  5  0
+##   1 Model 1 -7052.46 14104.92    29 14162.92 14305.24       NA NA NA
+
+# compare fit statistics
+summary( modelfit.cor.din( mod2 ) )
+summary( modelfit.cor.din( mod4 ) )
 }
 }
 

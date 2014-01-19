@@ -12,6 +12,21 @@ a.robitzsch /-\ bifie.at
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
+--------------------------------------------------------------
+CDM 2.6 (2014-01-19)
+--------------------------------------------------------------
+
+x fixed a bug in polytomous GDINA models with only one skill
+x included value 'zeroprob.skillclasses' in skillspace.hierarchy
+x included a more efficient skill space reduction method in
+  gdina: using the argument 'reduced.skillspace.method',
+  the new implemented method is now the default
+x included data transformation function 'sequential.items' for
+  constructing dichtomous pseudo items from polytomous items
+
+* included/modified datasets: data.sda6, data.timss03.G8.su,
+  data.timss07.G4.lee
+* included/modified examples: gdm (10)
 
 --------------------------------------------------------------
 CDM 2.5 (2014-01-16)
@@ -57,7 +72,6 @@ x included generalized distance discriminating method and a function
   data.dtmr
 * included/modified examples: gdm (4,5,6), gdina (8,9), sim.din (3), 
   sim.gdina (2,3), itemfit.sx2 (1,2), din(6)
-
 
 --------------------------------------------------------------
 CDM 2.4 (2013-10-24)

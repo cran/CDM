@@ -39,7 +39,8 @@ Subsample of a large-scale dataset of 11 survey questions.
 %}
 
 \section{Example Index}{
-\code{\link{gdm}} (Example 6)
+\code{\link{gdm}} (Example 6),
+\code{\link{sequential.items}} (Example 1)
 }
 
 \examples{

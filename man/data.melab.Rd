@@ -74,7 +74,7 @@ mod3 <- gdina( data , q.matrix , rule="DINA" )
 summary(mod3)
 
 #*** Model 4: 2PL model
-mod4 <- gdm( data , theta.k=seq(-6,6,len=21) )
+mod4 <- gdm( data , theta.k=seq(-6,6,len=21) , center )
 summary(mod4)
 
 #----

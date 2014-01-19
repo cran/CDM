@@ -284,7 +284,8 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 # calculate P(X_i | alpha_l):                                                  # 
 # probability of each item response pattern given an attribute pattern         #
 ################################################################################
-                    
+
+# z0 <- Sys.time()                    
 				
 	slipM <- matrix( slip , nrow= nrow(latresp) , ncol=ncol(latresp))
 	guessM <- matrix( guess , nrow= nrow(latresp) , ncol=ncol(latresp))
@@ -303,7 +304,8 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 	if ( ! is.null(zeroprob.skillclasses) ){
 		p.xi.aj[ , zeroprob.skillclasses ] <- 0
 								}
-           
+
+# cat("calc.like") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1										
 	   
 ################################################################################
 # STEP II:                                                                     #
@@ -324,6 +326,8 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
     # calculate marginal probability P(\alpha_l) for attribute alpha_l
     attr.prob <- colSums( p.aj.xi * item.patt.freq / I )
 
+# cat("calc.post") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1											
+	
 	#***
 	# include structural constraints for high-dimensional skill vectors here!
 	#***
@@ -363,6 +367,8 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 		rownames(I.lj) <- rownames(R.lj) <- colnames(data)
 			
 
+# cat("calc R and I ") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1											
+			
 ################################################################################
 # STEP IV:                                                                     #
 # calculate R_j0, I_j0, I_j1, R_j1                                             #
@@ -378,6 +384,7 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
     R.j0 <- rowSums( ( attrpatt.qmatr  <  compL ) * R.lj )
     R.j1 <- rowSums( ( attrpatt.qmatr  >= compL )  * R.lj )
 
+# cat("calc suff stats m step") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1												
 	
 ################################################################################
 # STEP V:                                                                      #
@@ -427,7 +434,9 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
     # maximum parameter change
     max.par.change <- max( abs( guess.new - guess ), abs( slip.new - slip ) ,
 				abs( attr.prob - attr.prob0 ) )
-            
+
+# cat("calc pars and like") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1												
+				
     # define estimates which are updated in this iteration
     guess <- guess.new
     slip <- slip.new
@@ -608,8 +617,10 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
                  "item.patt.freq" = item.patt.freq, "model.type" = r1 , 
 				 "rule" = rule , "zeroprob.skillclasses" = zeroprob.skillclasses , 
 				 "weights" = weights , "pjk" = pjM , "I" = I , 
-				 "start.analysis" = s1 , "end.analysis" = s2 ,
-				 "I.lj"=I.lj , "R.lj" = R.lj ) 
+				 "I.lj"=I.lj , "R.lj" = R.lj ,
+				 "start.analysis" = s1 , "end.analysis" = s2 				 
+					) 
+	res$timediff <- print(s2 - s1)						
 	if (param.history){
 		param.history <- list( "likelihood.history" = likelihood.history , 
 				"slip.history" = slip.history , 

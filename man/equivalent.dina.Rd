@@ -6,7 +6,7 @@ Determination of a Statistically Equivalent DINA Model
 }
 \description{
 This function determines a statistically equivalent DINA model
-given a Q-matrix using the method of von Davier (2013).
+given a Q-matrix using the method of von Davier (2014).
 Thereby, the dimension of the skill space is expanded, but in the
 reparametrized version, the Q-matrix has a simple structure
 or the IRT model is no longer be conjuctive (like in DINA) due
@@ -30,20 +30,22 @@ are possible reparametrizations.
 %}
 \value{
 A list with following entries
-%%  ~Describe the value returned
-%%  If it is a LIST, use
+
   \item{q.matrix}{Original Q-matrix}
   \item{q.matrix.ast}{Reparametrized Q-matrix}  
   \item{alpha}{Original skill space}
   \item{alpha.ast}{Reparametrized skill space}  
-%% ...
 }
+
+
 \references{
-von Davier, M. (2013). The DINA model as a constrained general
+von Davier, M. (2014). The DINA model as a constrained general
 diagnostic model: Two variants of a model equivalency.
 \emph{British Journal of Mathematical and Statistical Psychology},
-\bold{xx}, xxx-xxx.
+\bold{67}, 49-71.
 }
+
+
 %\author{
 %Alexander Robitzsch
 %}

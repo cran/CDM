@@ -273,21 +273,20 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 		b0 <- b ; a0 <- a ; dev0 <- dev
 		delta0 <- delta ; pi.k0 <- pi.k
 
-# z0 <- Sys.time()
+ # z0 <- Sys.time()
  		
 		#****
 		#1 calculate probabilities
 		probs <- .gdm.calc.prob( a,b,thetaDes,Qmatrix,I,K,TP,TD)
  
-#  cat("calc.prob") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1		
+  # cat("calc.prob") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1		
  
  
 		#*****
 		#2 calculate individual likelihood
 		h1 <- matrix( 1 , nrow=n , ncol=TP )
 		res.hwt <- calc_posterior.v2(rprobs= probs , gwt=h1 , 
-					 resp=dat , 
-					 nitems= I , 
+					 resp=dat , nitems= I , 
 					 resp.ind.list=resp.ind.list , normalization=FALSE , 
 					 thetasamp.density= NULL , snodes=0 )	
 		p.xi.aj <- res.hwt$hwt 	
@@ -504,5 +503,41 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 	class(res) <- "gdm"
 	return(res)
 				
-		}
-
+		}		
+###################################################
+# computation time example:
+# ---
+# data.read (see Examples in sirt package)
+# 3-dimensional 2PL model 
+#   (15 quadrature points per dimension)
+# ---
+# calc.probTime difference of 0.03120017 secs
+# calc.likeTime difference of 0.375402 secs
+# calc.postTime difference of 0.109201 secs
+# calc.countsTime difference of 0.09360099 secs
+# est bTime difference of 0.1092 secs
+# est aTime difference of 0.3276019 secs
+# skillspaceTime difference of 0 secs
+# calc LLTime difference of 0.1092012 secs
+##################################################
+# 3 dimensions fraction subtraction
+# 2PL; 536 subjects, 11 items
+# *** 21 quadrature points
+# calc.probTime difference of 0.03800392 secs
+# calc.likeTime difference of 0.90009 secs
+# calc.postTime difference of 0.3970401 secs
+# calc.countsTime difference of 0.1750169 secs
+# est bTime difference of 0.07800794 secs
+# est aTime difference of 0.3670371 secs
+# skillspaceTime difference of 0.006999969 secs
+# calc LLTime difference of 0.2280231 secs
+#**** 11 quadrature points
+# calc.probTime difference of 0.003999949 secs
+# calc.likeTime difference of 0.114012 secs
+# calc.postTime difference of 0.02400184 secs
+# calc.countsTime difference of 0.02200222 secs
+# est bTime difference of 0.01200199 secs
+# est aTime difference of 0.062006 secs
+# skillspaceTime difference of 0.001999855 secs
+# calc LLTime difference of 0.02800298 secs
+##################################################

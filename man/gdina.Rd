@@ -20,8 +20,8 @@ Function for Estimating the Generalized DINA (GDINA) Model
 gdina(data, q.matrix, skillclasses=NULL, conv.crit=0.0001, dev.crit=.1 ,  maxit=1000, 
     linkfct="identity", Mj=NULL, group=NULL , method="WLS" , 
     delta.designmatrix=NULL, delta.basispar.lower=NULL, 
-    delta.basispar.upper=NULL, delta.basispar.init=NULL, 
-    zeroprob.skillclasses=NULL, reduced.skillspace=TRUE , HOGDINA=-1,
+    delta.basispar.upper=NULL, delta.basispar.init=NULL, zeroprob.skillclasses=NULL, 
+    reduced.skillspace=TRUE , reduced.skillspace.method=2 , HOGDINA=-1,
     Z.skillspace=NULL, weights=rep(1, nrow(data)), rule="GDINA", 
     progress=TRUE, progress.item=FALSE , increment.factor=1.01,
     fac.oldxsi=0 , ...)
@@ -111,6 +111,15 @@ default analysis. See Example 3.
         If the argument \code{zeroprob.skillclasses} is not \code{NULL}, then
         \code{reduced.skillspace} is set to \code{FALSE}.}
 
+\item{reduced.skillspace.method}{Computation method for skill space reduction
+	in case of \code{reduced.skillspace=TRUE}. The default is \code{2}
+	which is computationally more efficient but introduced in \pkg{CDM} 2.6.
+	For reasons of compatibility of former \pkg{CDM} versions (\eqn{\leq} 2.5),
+	\code{reduced.skillspace.method=1} uses the older implemented
+	method. In case of non-convergence with the new method, please try
+	the older method.
+}        
+        
 \item{HOGDINA}{Values of -1, 0 or 1 indicating if a higher order GDINA
  	model (see Details) should be estimated. 
  	The default value of -1 corresponds to the case that no higher order
@@ -618,6 +627,56 @@ mod2 <- gdina( data , q.matrix , rule="RRUM"  , conv.crit=.001 ,
 ##   'log Lik.' -30318.08 (df=153)
 ##   > logLik(mod2)
 ##   'log Lik.' -30326.52 (df=153)
+
+#############################################################################
+# SIMULATED EXAMPLE 10: CDM with a linear hierarchy
+#############################################################################
+# This model is equivalent to a unidimensional IRT model with an ordered
+# ordinal latent trait and is actually a probabilistic Guttman model.
+set.seed(789)
+
+# define 3 compentency levels
+alpha <- scan()
+   0 0 0   1 0 0   1 1 0   1 1 1
+
+# define skill class distribution
+K <- 3
+skillspace <- alpha <- matrix( alpha, K + 1 ,  K , byrow= TRUE )
+alpha <- alpha[ rep(  1:4 ,  c(300,300,200,200) ) , ]
+# P(000)=P(100)=.3, P(110)=P(111)=.2
+# define Q-matrix
+Q <- scan()  
+    1 0 0   1 1 0   1 1 1
+
+Q <- matrix( Q , K ,  K , byrow= TRUE )
+Q <- Q[ rep(1:K , each=4 ) , ]
+colnames(skillspace) <- colnames(Q) <- paste0("A",1:K)
+I <- nrow(Q)
+
+# define guessing and slipping parameters
+guess <- runif( I , 0 , .3 )
+slip <- runif( I , 0 , .2 )
+# simulate data
+dat <- sim.din( q.matrix=Q , alpha=alpha , slip=slip , guess=guess )$dat
+
+#*** Model 1: DINA model with linear hierarchy
+mod1 <- din( dat , q.matrix=Q , rule="DINA" ,   skillclasses = skillspace )
+summary(mod1)
+
+#*** Model 2: pGDINA model with 3 levels
+#    The multidimensional CDM with a linear hierarchy is a unidimensional
+#    polytomous GDINA model.
+Q2 <- matrix( rowSums(Q) , nrow=I , ncol=1 )
+mod2 <- gdina( dat , q.matrix=Q2 , rule="DINA" )
+summary(mod2)
+
+#*** Model 3: Probabilistic Guttman Model (in sirt)
+#    Proctor, C. H. (1970). A probabilistic formulation and statistical 
+#    analysis for Guttman scaling. Psychometrika, 35, 73-78. 
+library(sirt)
+mod3 <- prob.guttman( dat , itemlevel=Q2[,1] )
+summary(mod3)
+# -> The three models result in nearly equivalent fit.
 }
 }
 

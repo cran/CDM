@@ -3,10 +3,26 @@
 # Model fit for din object
 modelfit.cor.din <- function( dinobj , jkunits = 0 ){
     mod <- dinobj
-    data <- as.matrix( mod$data )
-    posterior <- mod$posterior
-    probs <- mod$pjk
-	data <- as.matrix(data )	
+	
+	# classes din and gdm
+	if ( class(dinobj) %in% c("din","gdina") ){
+		data <- as.matrix( mod$data )
+		posterior <- mod$posterior
+		probs <- mod$pjk
+				}
+	# class gdm
+    if (class(mod) == "gdm"){
+		jkunits <- 0
+		probs <- aperm( mod$pjk , c(2,3,1) )
+		posterior <- mod$posterior
+		data <- as.matrix(mod$data)
+			}
+##   R>  print( str (probs)) 
+##    num [1:12, 1:2, 1:6] 0.816 0.722 0.749 0.788 0.847 ...
+##   [ items , categ , skills ]
+##   R>  print( str (posterior)) 
+##    num [1:1000, 1:6] 0.986 0.9 0.986 0.986 0.88 ...
+##  [ persons , skills ]
 #    res <- modelfit.cor( data , posterior , probs ) 
     res <- modelfit.cor2( data , posterior , probs ) 
 
