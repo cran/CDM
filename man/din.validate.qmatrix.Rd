@@ -38,7 +38,7 @@ Number of digits for rounding the output matrix
 \value{
 A list with following entries:
 \item{coef.modified}{Estimated parameters by applying Q-matrix
-   modificatioons}
+   modifications}
 \item{coef.modified.short}{A shorted matrix of \code{coef.modified}.
 	Only Q-matrix rows which increase the \eqn{IDI} are displayed.
 	}

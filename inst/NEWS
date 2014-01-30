@@ -12,6 +12,21 @@ a.robitzsch /-\ bifie.at
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
+
+--------------------------------------------------------------
+CDM 2.7 (2014-01-30)
+--------------------------------------------------------------
+
+x included cognitive diagnostic indices based on Kullback-Leibler
+   information ('cdi.kli')
+x changed NAMESPACE and DESCRIPTION files due to a change in Rcpp
+x included non-exported Rcpp files for calculating individual 
+  likelihood and posterior distribution for polytomous items and
+  multiple groups
+
+* included/modified datasets: ---
+* included/modified examples: cdi.kli (1)
+
 --------------------------------------------------------------
 CDM 2.6 (2014-01-19)
 --------------------------------------------------------------

@@ -114,7 +114,7 @@ default analysis. See Example 3.
 \item{reduced.skillspace.method}{Computation method for skill space reduction
 	in case of \code{reduced.skillspace=TRUE}. The default is \code{2}
 	which is computationally more efficient but introduced in \pkg{CDM} 2.6.
-	For reasons of compatibility of former \pkg{CDM} versions (\eqn{\leq} 2.5),
+	For reasons of compatibility of former \pkg{CDM} versions (\eqn{\le} 2.5),
 	\code{reduced.skillspace.method=1} uses the older implemented
 	method. In case of non-convergence with the new method, please try
 	the older method.

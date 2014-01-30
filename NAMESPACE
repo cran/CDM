@@ -18,7 +18,8 @@ export(din, sim.din , gdina ,
     skillspace.hierarchy ,
     ideal.response.pattern ,
     gdd ,
-    sequential.items
+    sequential.items ,
+    cdi.kli
     )
 
 # internal functions; not intended to be visible to users
@@ -54,3 +55,4 @@ import(mvtnorm)
 import(graphics, stats)
 importFrom(utils,packageDescription)
 importFrom(sfsmisc,QUnif)
+importFrom(Rcpp,evalCpp)

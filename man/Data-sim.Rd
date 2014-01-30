@@ -57,6 +57,7 @@
 \emph{Dataset} \code{sim.dina} 	
 	
 \code{\link{anova}} (Examples 1, 2), 
+\code{\link{cdi.kli}} (Example 1),
 \code{\link{din}} (Examples 2, 4, 5),
 \code{\link{gdina}} (Example 1),
 \code{\link{itemfit.sx2}} (Example 2),
