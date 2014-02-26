@@ -24,7 +24,7 @@ gdina(data, q.matrix, skillclasses=NULL, conv.crit=0.0001, dev.crit=.1 ,  maxit=
     reduced.skillspace=TRUE , reduced.skillspace.method=2 , HOGDINA=-1,
     Z.skillspace=NULL, weights=rep(1, nrow(data)), rule="GDINA", 
     progress=TRUE, progress.item=FALSE , increment.factor=1.01,
-    fac.oldxsi=0 , ...)
+    fac.oldxsi=0 , avoid.zeroprobs = FALSE , ...)
 
 \method{summary}{gdina}(object, rdigits = 4 ,  \dots)
 
@@ -165,6 +165,12 @@ An optional vector of sample weights.
  \item{fac.oldxsi}{A convergence acceleration factor between 0 and 1 which 
  	 defines the weight of previously estimated values in
  	current parameter updates.}
+ 	
+\item{avoid.zeroprobs}{An optional logical indicating whether for estimating
+	item parameters probabilities occur. Especially if
+	not a skill classes are used, it is recommended to switch
+	the argument to \code{TRUE}.
+		} 	
   \item{object}{A required object of class \code{gdina}, obtained
     from a call to the function \code{\link{gdina}}.  }
   \item{rdigits}{Number of digits after decimal separator to display.  }
@@ -337,6 +343,12 @@ For assessment of model fit see \code{\link{modelfit.cor.din}} and
 See \code{\link{itemfit.sx2}} for item fit statistics.  
 
 See \code{\link{sim.gdina}} for simulating the GDINA model.
+
+See \code{\link{gdina.wald}} for a Wald test for testing the DINA and ACDM
+rules at the item-level.
+
+See \code{\link{gdina.dif}} for assessing differential item
+functioning.
 }
 
 
@@ -635,7 +647,7 @@ mod2 <- gdina( data , q.matrix , rule="RRUM"  , conv.crit=.001 ,
 # ordinal latent trait and is actually a probabilistic Guttman model.
 set.seed(789)
 
-# define 3 compentency levels
+# define 3 competency levels
 alpha <- scan()
    0 0 0   1 0 0   1 1 0   1 1 1
 

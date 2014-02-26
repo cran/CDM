@@ -1,6 +1,7 @@
 \name{anova.din}
 \alias{anova.din}
 \alias{anova.gdina}
+\alias{anova.mcdina}
 \alias{anova.gdm}
 
 
@@ -17,15 +18,17 @@ or \code{gdm} using a likelihood ratio test.
 
 \method{anova}{gdina}(object,object1,\dots)
 
+\method{anova}{mcdina}(object,object1,\dots)
+
 \method{anova}{gdm}(object,object1,\dots)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{
-Object of class \code{din}, \code{gdina} or \code{gdm}
+Object of class \code{din}, \code{gdina}, \code{mcdina} or \code{gdm}
 }
   \item{object1}{
-Object of class \code{din}, \code{gdina} or \code{gdm}
+Object of class \code{din}, \code{gdina}, \code{mcdina} or \code{gdm}
 }
   \item{\dots}{
 Further arguments to be passed

@@ -31,3 +31,4 @@ anova.din <- function( object , object1 , ...){
 
 anova.gdina <- anova.din
 anova.gdm <- anova.din
+anova.mcdina <- anova.din

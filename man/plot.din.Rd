@@ -13,7 +13,7 @@
 \usage{
   \method{plot}{din}(x, items = c(1:ncol(x$data)), pattern = "",
     uncertainty = 0.1, top.n.skill.classes = 6, pdf.file = "", 
-    hide.idi = FALSE, hide.obs = FALSE, display.nr = 1:5, \dots)
+    hide.idi = FALSE, hide.obs = FALSE, display.nr = 1:4, ask=TRUE , \dots)
 }
 
 \arguments{
@@ -31,7 +31,7 @@
 	
   \item{uncertainty}{A numeric between 0 and 0.5 giving the
     uncertainty bounds for deriving the observed skill occurrence probabilities 
-    in plot 2 and the simplified deterministic attribute profiles in plot 5.  }
+    in plot 2 and the simplified deterministic attribute profiles in plot 4.  }
 
   \item{top.n.skill.classes}{A numeric, specifying the number of skill classes, 
     starting with the most frequent, to be labeled in plot 3.  
@@ -51,16 +51,19 @@
     second graphic is not displayed.  }
     
   \item{display.nr}{An optional numeric or numeric vector. If specified, only the plots in
-    \code{display.nr} are displayed. Default is \code{display.nr = 1:5} causing the display of 
-    all five plots.   }
+    \code{display.nr} are displayed. Default is \code{display.nr = 1:4} causing the display of 
+    all four plots.   }
   
+  \item{ask}{An optional logical indicating whether a request for a user input 
+  	  is necessary before the next figure is drawn.}    
+    
   \item{\dots}{Optional graphical parameters to be passed to or from other
     methods will be ignored.  }
 }
 
 \details{
   The \code{plot} method graphs the results obtained from a CDM analysis.  
-  Four or five graphics to analyze the fitted model are produced, respectively.  
+  Four graphics to analyze the fitted model are produced, respectively.  
   
   The first graphic depicts the parameter estimates their diagnostic accuracy
   for each of chosen the items in \code{items}.  Parameter estimates are 
@@ -149,7 +152,7 @@ fractions.dina.fixed <- din(data = fraction.subtraction.data,
 ## 527th respondent was chosen; if no response pattern is 
 ## specified, the plot will not be shown (of course)
 pattern <- paste(fraction.subtraction.data[527, ], collapse = "")
-plot(fractions.dina.fixed, pattern = pattern, display.nr = 5)
+plot(fractions.dina.fixed, pattern = pattern, display.nr = 4)
 
 #uncertainty = 0.1, top.n.skill.classes = 6 are default
 plot(fractions.dina.fixed, uncertainty = 0.1, top.n.skill.classes = 6, 

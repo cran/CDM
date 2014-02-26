@@ -52,7 +52,7 @@ Simulated dataset according to Bradshaw et al. (2014).
 \references{
 Bradshaw, L., Izsak, A., Templin, J., & Jacobson, E. (2014). 
 Diagnosing teachers' understandings of rational numbers: Building a 
-multidimensional test within the diagnostic Classification framework. 
+multidimensional test within the diagnostic classification framework. 
 \emph{Educational Measurement: Issues and Practice}, \bold{xx}, xxx-xxx.
 }
 

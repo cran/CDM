@@ -1,16 +1,21 @@
 \name{skill.cor}
 \alias{skill.cor}
+\alias{skill.polychor}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Tetrachoric Correlations between Attributes
+Tetrachoric or Polychoric Correlations between Attributes
 }
 \description{
 This function takes the results of \code{din} or \code{gdina} and
-computes tetrachoric correlations between attributes (see e.g. 
+computes tetrachoric or polychoric correlations between attributes (see e.g. 
 Templin & Henson, 2006).
 }
 \usage{
-skill.cor(object)
+# tetrachoric correlations
+skill.cor(object)     
+
+# polychoric correlations
+skill.polychor(object) 
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

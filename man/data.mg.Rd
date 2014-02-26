@@ -41,6 +41,9 @@ Subsample of a large-scale dataset of 11 survey questions.
 \section{Example Index}{
 \code{\link{gdm}} (Example 6),
 \code{\link{sequential.items}} (Example 1)
+%% \code{\link[sirt:rasch.evm.pcm]{rasch.evm.pcm}} (Examples 4, 5, \pkg{sirt})
+%% _INCLUDE_
+
 }
 
 \examples{

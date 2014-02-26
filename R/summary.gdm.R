@@ -21,7 +21,7 @@ summary.gdm <- function( object , ... ){
 		cat("    Log-linear Smoothing (up to 3 Moments)\n" ) 
 					}
 	if (object$skillspace=="full" ){
-		cat("    Satured skill space\n" ) 
+		cat("    Saturated skill space\n" ) 
 					}
 	if (object$skillspace=="est" ){
 		cat("    Saturated skill space with estimated trait grid\n" ) 

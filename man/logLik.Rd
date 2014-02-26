@@ -1,17 +1,20 @@
 \name{logLik}
 \alias{logLik.din}
 \alias{logLik.gdina}
+\alias{logLik.mcdina}
 \alias{logLik.gdm}
 
 \title{Extract Log-Likelihood}
 \description{
-  Extracts the log-likelihood from either \code{din}, \code{gdina}
-  or \code{gdm} objects.
+  Extracts the log-likelihood from either \code{din}, \code{gdina},
+  \code{mcdina} or \code{gdm} objects.
 }
 \usage{
 \method{logLik}{din}(object, \dots)
 
 \method{logLik}{gdina}(object, \dots)
+
+\method{logLik}{mcdina}(object, \dots)
 
 \method{logLik}{gdm}(object, \dots)
 }

@@ -1,8 +1,8 @@
 Package: CDM
 Type: Package
 Title: Cognitive Diagnosis Modeling
-Version: 2.7-7
-Date: 2014-01-30
+Version: 3.0-29
+Date: 2014-02-26
 Author: Alexander Robitzsch [aut, cre], Thomas Kiefer [aut], 
      Ann Cathrice George [aut], Ali Uenlue [aut]
 Maintainer: Alexander Robitzsch <a.robitzsch@bifie.at>
@@ -14,19 +14,19 @@ Authors@R: c( person("Alexander", "Robitzsch", role = c("aut", "cre"),
 Description: Functions for cognitive diagnosis modeling
     and multidimensional item response modeling for dichotomous
     and polytomous data. This package enables the estimation of the
-    DINA and DINO model, the multiple group (polytomous) GDINA model 
-    and the general diagnostic model (GDM) which contains the 
-    multidimensional linear compensatory item response model as a 
-    special case.
+    DINA and DINO model, the multiple group (polytomous) GDINA model,
+    the multiple choice DINA model and the general diagnostic model (GDM) 
+    which contains the multidimensional linear compensatory item response 
+    model as a special case.
 Depends: R (>= 2.15.0), mvtnorm
-Imports: MASS, psych, polycor, sfsmisc, Rcpp
-Suggests: sirt, TAM, NPCD, ACTCD
+Imports: MASS, psych, polycor, sfsmisc, Rcpp (>= 0.11)
+Suggests: sirt, TAM, NPCD, ACTCD, pks
 LinkingTo: Rcpp, RcppArmadillo
 LazyLoad: yes
 LazyData: yes
 License: GPL (>= 2)
 URL: https://sites.google.com/site/alexanderrobitzsch/software
-Packaged: 2014-01-30 09:24:08 UTC; robitzsch
+Packaged: 2014-02-26 08:36:01 UTC; robitzsch
 NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2014-01-30 12:43:47
+Date/Publication: 2014-02-26 09:50:49

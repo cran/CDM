@@ -51,7 +51,10 @@ summary.gdina <- function( object , rdigits = 4 , ... ){
 	ds[,ind] <- round( ds[,ind] , rdigits )
 	cat("----------------------------------------------------------------------------\n")
 	cat("\nItem Parameter Estimates \n\n")
+	r1 <- options()
+	options(scipen=999)
 	print(ds)
+	options(scipen=r1$scipen)
     	if ( ! is.null( object$delta.designmatrix ) ){ 
 			cat("\nNote: Standard errors are not (yet) correctly implemented!\n")
 											}	
@@ -78,16 +81,27 @@ summary.gdina <- function( object , rdigits = 4 , ... ){
 	cat("\nSkill Probabilities \n\n")
 	print(round(object$skill.patt ,rdigits) )
 	if ( ( object$G == 1 ) & (ncol(object$q.matrix ) > 1 ) & 
-			max(object$NAttr ==2 ) ){ 
+			max(object$NAttr ==1 ) ){ 
 		cat("----------------------------------------------------------------------------\n")
-		cat("\nTetrachoric Correlations \n\n")
-		gt1 <- skill.cor( object )
+		QM <- max(object$q.matrix)
+		if (QM == 1){ 
+			cat("\nTetrachoric Correlations \n\n")
+			gt1 <- skill.cor( object )
+				} else {
+			cat("\nPolychoric Correlations \n\n")
+			gt1 <- skill.polychor( object )				
+				}
 		print(round(gt1$cor.skills,3))
 			}
 	cat("\n----------------------------------------------------------------------------\n")	
 	cat("\nSkill Pattern Probabilities \n\n")
-	xt <- round( object$attribute.patt[,1] , rdigits )
-	names(xt) <- rownames( object$attribute.patt )
+	if ( object$G == 1 ){
+		xt <- round( object$attribute.patt[,1] , rdigits )
+		names(xt) <- rownames( object$attribute.patt )
+			} else {
+	xt <- round( object$attribute.patt , rdigits )
+	rownames(xt) <- rownames( object$attribute.patt )
+					}
 	print(xt)
 
 		if (object$HOGDINA>=0){

@@ -560,6 +560,69 @@ anova(mod2,mod4)
 # compare fit statistics
 summary( modelfit.cor.din( mod2 ) )
 summary( modelfit.cor.din( mod4 ) )
+
+#############################################################################
+# EXAMPLE 7: Fitting the basic local independence model (BLIM) with din
+#############################################################################
+
+library(pks)
+data(DoignonFalmagne7 , package="pks")
+##  str(DoignonFalmagne7)
+##    $ K  : int [1:9, 1:5] 0 1 0 1 1 1 1 1 1 0 ...
+##     ..- attr(*, "dimnames")=List of 2
+##     .. ..$ : chr [1:9] "00000" "10000" "01000" "11000" ...
+##     .. ..$ : chr [1:5] "a" "b" "c" "d" ...
+##    $ N.R: Named int [1:32] 80 92 89 3 2 1 89 16 18 10 ...
+##     ..- attr(*, "names")= chr [1:32] "00000" "10000" "01000" "00100" ...
+
+# The idea is to fit the local independence model with the din function.
+# This can be accomplished by specifying a DINO model with
+# prespecified skill classes.
+
+# extract dataset
+dat <- as.numeric( unlist( sapply( names(DoignonFalmagne7$N.R)  , 
+    FUN = function( ll){ strsplit( ll , split="") } ) ) )
+dat <- matrix( dat , ncol=5 , byrow=TRUE )
+colnames(dat) <- colnames(DoignonFalmagne7$K)
+rownames(dat) <- names(DoignonFalmagne7$N.R)
+
+# sample weights
+weights <- DoignonFalmagne7$N.R
+
+# define Q-matrix
+q.matrix <- t(DoignonFalmagne7$K)
+v1 <- colnames(q.matrix) <- paste0("S" , colnames(q.matrix))
+q.matrix <- q.matrix[ , - 1] # remove S00000
+
+# define skill classes
+SC <- ncol(q.matrix)
+skillclasses <- matrix( 0 , nrow=SC+1 , ncol=SC)
+colnames(skillclasses) <- colnames(q.matrix)
+rownames(skillclasses) <- v1
+skillclasses[ cbind( 2:(SC+1) , 1:SC ) ] <- 1
+
+# estimate BLIM with din function
+mod1 <- din(data= dat, q.matrix=q.matrix, skillclasses = skillclasses , 
+            rule="DINO" , weights=weights   )
+summary(mod1)
+##   Item parameters
+##     item guess  slip   IDI rmsea
+##   a    a 0.158 0.162 0.680 0.011
+##   b    b 0.145 0.159 0.696 0.009
+##   c    c 0.008 0.181 0.811 0.001
+##   d    d 0.012 0.129 0.859 0.001
+##   e    e 0.025 0.146 0.828 0.007
+
+# estimate basic local independence model with pks package
+mod2 <- pks::blim(K, N.R, method="ML") # maximum likelihood estimation by EM algorithm
+mod2
+##   Error and guessing parameters
+##         beta      eta
+##   a 0.164871 0.103065
+##   b 0.163113 0.095074
+##   c 0.188839 0.000004
+##   d 0.079835 0.000003
+##   e 0.088648 0.019910
 }
 }
 

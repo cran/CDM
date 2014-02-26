@@ -24,7 +24,8 @@ function( data, q.matrix, skillclasses=NULL , conv.crit = 0.0001,
                     progress = TRUE , 
 					progress.item = FALSE , 
 					increment.factor = 1.01 ,
-					fac.oldxsi = 0 , 
+					fac.oldxsi = 0 ,
+					avoid.zeroprobs = FALSE , 		
 					...
 						){
                     
@@ -343,7 +344,10 @@ if (progress){
 		 ncolZ <- ncol(Z)						
 			}
 # print(ncolZ)
-# print("a400")			
+# print("a400")		
+#print(attr.patt)
+#print(Z)
+#stop()	
 # vv <- "attribute patterns" ; a1 <- Sys.time() ; cat( vv , a1-a0 , "\n") ; a0 <- Sys.time()			
 
 
@@ -454,14 +458,6 @@ if (progress){
 			l1[1] <- -1
 			l1[N1jj] <- 1
 
-# new inits   # -77770
-# l1[1] <- -1.5
-#			l1[2:N1jj] <- rep( 2*1 / N1jj , N1jj - 1 )
-			
-# new inits    # 77839   
-#l1[1] <- -1
-#			l1[2:N1jj] <- rep( 3*1 / N1jj , N1jj - 1 )
-
 			delta[[jj]] <- l1
 			
 						}
@@ -554,6 +550,7 @@ djj_old <- as.list( 1:J )
 	# extract parameters with minimal deviances
 
     dev.min <- 10^99
+	R.lj.gg <- I.lj.gg <- NULL
 	
 	#*********************************
 
@@ -683,7 +680,7 @@ if (HOGDINA >= 0){
 	if (reduced.skillspace){
 		ntheta <- colSums( outer( item.patt.freq , rep( 1 , L) )*p.aj.xi )
 		res <- gdina.reduced.skillspace( ntheta , Z , 
-			reduced.skillspace.method= reduced.skillspace.method )		
+			      reduced.skillspace.method= reduced.skillspace.method )		
 		beta <- res$beta
 		attr.prob <- res$attr.prob
 		pred.ntheta <- res$pred.ntheta
@@ -792,6 +789,11 @@ if (HOGDINA >= 0){
 		Rlj.ast <- R.ljM[ jj, Mj.index[jj,5]:Mj.index[jj,6] ]
 		Ilj.ast <- I.ljM[ jj, Mj.index[jj,5]:Mj.index[jj,6] ]
 		pjjj <- Rlj.ast / ( Ilj.ast + eps2 )
+
+# if (jj==1 ){
+# print(pjjj)
+# }
+# Problem: some entries in pjjj can be zero
 		
 		if (linkfct == "logit" ){ 
 
@@ -809,6 +811,17 @@ if (HOGDINA >= 0){
 
 								
 		Wj <- diag( Ilj.ast )
+
+		
+		if ( avoid.zeroprobs ){
+			 ind <- which( Ilj.ast  < 10^(-10)  )
+			 if ( length(ind) > 0 ){
+				 Wj <- diag( Ilj.ast[-ind] )
+				 Mjjj <- Mjjj[ - ind , ]
+				 pjjj <- pjjj[ - ind  ]
+						}
+					}
+		
 	    if ( ( rule[jj] == "GDINA" )| ( method == "ULS" ) ){ 
 				invM <- invM.list[[jj]] 
 #				delta.jj <- invM %*% t(Mjjj) %*% pjjj				
@@ -1077,7 +1090,8 @@ if (HOGDINA >= 0){
 				Rlj.ast <- aggregate( R.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
 				Ilj.ast <- aggregate( I.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
 				pjjj <- Rlj.ast[,2] / Ilj.ast[,2]		
-				pjjjM <- outer( rep(1,IP) , pjjj )
+				pjjjM <- outer( rep(1,IP) , pjjj ) + 10^(-20)
+				
 				nM <- ncol(pjjjM) 
 				x1 <- outer( item.patt.split[,jj] , rep(1,nM) )
 				r1 <- outer( resp.patt[,jj] * item.patt.freq , rep(1,ncol(pjjjM) ) )
@@ -1098,6 +1112,14 @@ if (HOGDINA >= 0){
 										}
 									}
 				a1 <- NULL
+		if ( avoid.zeroprobs ){
+			 ind <- which( is.na(diag(infomat.jj) ))
+			 if ( length(ind) > 0 ){
+				infomat.jj <- infomat.jj[-ind, -ind]	
+						}			 
+			 
+					}				
+		
 #				try( a1 <- solve( infomat.jj ) )
 				try( a1 <- solve( infomat.jj + diag( eps2 , ncol(infomat.jj) ) ) )
 				if ( is.null(a1)){ 
@@ -1106,6 +1128,16 @@ if (HOGDINA >= 0){
 							}
 				varmat.palj[[jj]] <- Ijj <- a1
 				Wj <- diag( Ilj.ast[,2] )	
+			
+		if ( avoid.zeroprobs ){
+			 ind <- which( Ilj.ast[,2]  < 10^(-10)  )
+			 if ( length(ind) > 0 ){
+				 Wj <- diag( Ilj.ast[-ind,2] )
+				 Mjjj <- Mjjj[ - ind , ]
+				 pjjj <- pjjj[ - ind  ]
+						}
+					}
+				
 				if ( ( method == "ULS" ) ){ 			
 				    x1 <- t(Mjjj) %*% Mjjj	
 				    diag(x1) <- diag(x1) + 10^(-8)						
@@ -1182,9 +1214,11 @@ if (HOGDINA >= 0){
 	if (G==1){   
 	    sp <- NULL 
 		# pattern for separate skills
-		for (kk in 0:( mA -1) ){
+#		for (kk in 0:( mA -1) ){
+		for (kk in 0:mA ){
 	#		kk <- 0
-			skill.patt <- matrix(apply( matrix( rep(  attr.prob, K ), ncol=K) * (attr.patt==kk), 2, sum ),ncol=1)
+			skill.patt <- matrix(apply( matrix( rep(  attr.prob, K ), ncol=K) * 
+					(attr.patt==kk), 2, sum ),ncol=1)
 	#		rownames(skill.patt) <- paste("Skill_", colnames(q.matrix),sep="")
 			rownames(skill.patt) <- colnames(q.matrix)
 			colnames(skill.patt) <- paste0("skill.prob" ,kk )
@@ -1195,11 +1229,10 @@ if (HOGDINA >= 0){
 				ind.kk <- setdiff( 1:mA , 1 + q.entries[[kk]] )
 				if ( length(ind.kk) > 0 ){ 	skill.patt[ kk ,ind.kk ] <- NA 	}	
 							}
-# print(q.entries)			
 				}
 	if (G>1){   
 	sp <- NULL
-	for (kk in 0:( mA -1) ){	
+	for (kk in 0:( mA ) ){	
 	# kk <- 0
 		skill.patt <- matrix( 0 , K , G )
 		for (gg in 1:G){
@@ -1343,12 +1376,11 @@ if (HOGDINA >= 0){
 		res$a.attr <- a.attr 
 		res$b.attr <- b.attr
 		res$attr.rf <- cbind( b.attr , a.attr )
-				}							
+				}						
 	# computation time
     time1$s2 <- Sys.time()
 	res$time <- time1
 	res$time$timediff <- print(res$time$s2 - res$time$s1)	
-
 	
 	# control parameter
 	control <- list( skillclasses=skillclasses , q.matrix=q.matrix, conv.crit = conv.crit , 
@@ -1364,7 +1396,14 @@ if (HOGDINA >= 0){
 					reduced.skillspace=reduced.skillspace , 
 					HOGDINA = HOGDINA , 
 					Z.skillspace = Z.skillspace , 
-                    weights = weights ,  rule = rule ) 	
+                    weights = weights ,  rule = rule ,
+					I.lj=I.lj , R.lj=R.lj , I.lj.gg = I.lj.gg , 
+					R.lj.gg = R.lj.gg , aggr.patt.designmatrix=aggr.patt.designmatrix ,
+					Mj.index=Mj.index , method=method ,
+					aggr.attr.patt=aggr.attr.patt,IP=IP,
+					p.aj.xi=p.aj.xi,item.patt.split=item.patt.split,
+					resp.patt=resp.patt,freq.pattern=freq.pattern ,
+					item.patt.freq=item.patt.freq,invM.list=invM.list) 	
 	res$control <- control	
     class(res) <- "gdina"
     return(res)

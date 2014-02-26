@@ -184,22 +184,24 @@
 	iter <- 1
 	parchange <- 1
 	a00 <- a
+
 	maxa <- max.increment + 0 * a
+# Reval("print(maxa)")	
 	while( ( iter <= msteps ) & ( parchange > convM )  ){
 		a0 <- a
 		probs <- .gdm.calc.prob( a,b,thetaDes,Qmatrix,I,K,TP,TD)
-		# 1st derivative
+		# 1st derivative	
 		d2.b <- d1.b <- array( 0 , dim=c(I , TD ) )
 		for (td in 1:TD){
 			for (gg in 1:G){
-				for (kk in 2:(K+1)){
-					v1 <- colSums( n.ik[,,kk,gg] * Qmatrix[  , td , kk-1 ] * thetaDes[ , td ] )
-					v2 <- N.ik[,,gg] * matrix( Qmatrix[,td,kk-1] , nrow=TP , ncol=I) * thetaDes[,td] * 
-							t( probs[,kk,] )
+				for (kk in 2:(K+1)){		
+					QM <- matrix( Qmatrix[  , td , kk-1 ]  , nrow=TP , ncol=I , byrow=TRUE )
+					v1 <- colSums( n.ik[,,kk,gg] * QM * thetaDes[ , td ] )
+					v2 <- N.ik[,,gg] * QM * thetaDes[,td] *  t( probs[,kk,] )
 					v2 <- colSums(v2)
 					d1.b[  , td] <- d1.b[,td] + v1 - v2
 							}
-						}	
+						}
 						}
 		# 2nd derivative
 		for (td in 1:TD){
@@ -273,9 +275,9 @@
 		for (td in 1:TD){
 		for (kk in 2:(K+1)){	
 			for (gg in 1:G){
-					v1 <- colSums( n.ik[,,kk,gg] * Qmatrix[  , td , kk-1 ] * thetaDes[ , td ] )
-					v2 <- N.ik[,,gg] * matrix( Qmatrix[,td,kk-1] , nrow=TP , ncol=I) * thetaDes[,td] * 
-							t( probs[,kk,] )
+					QM <- matrix( Qmatrix[,td,kk-1] , nrow=TP , ncol=I, byrow=TRUE)
+					v1 <- colSums( n.ik[,,kk,gg] * QM * thetaDes[ , td ] )
+					v2 <- N.ik[,,gg] * QM * thetaDes[,td] *  t( probs[,kk,] )
 					v2 <- colSums(v2)
 					d1.b[  , td , kk-1] <- d1.b[  , td , kk-1] + v1 - v2
 							}
@@ -300,7 +302,7 @@
 			increment <-  d1.b / abs( d2.b + 10^(-10) )
 			increment[ is.na(increment) ] <- 0		
 			increment <- ifelse(abs(increment)> max.increment, 
-						sign(increment)*max.increment , increment )	
+						    sign(increment)*max.increment , increment )	
 	#        ci <- ceiling( abs(increment) / ( abs( max.increment ) + 10^(-10) ) )
 	#        increment <- ifelse( abs(increment)> max.increment  , 
 	#                                  increment /(2*ci) , increment)					

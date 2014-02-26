@@ -12,6 +12,33 @@ a.robitzsch /-\ bifie.at
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
+--------------------------------------------------------------
+CDM 3.0 (2014-02-26)
+--------------------------------------------------------------
+
+x changed output in summary.gdina a bit (fixed a bug for
+  the output of skill probabilities)
+x included the argument 'avoid.zeroprobs' in gdina function
+   to avoid zero probabilities of skill classes and inversion
+   of singular matrices   
+x fixed problems in itemfit.sx2 for empty cells (thanks to
+   Balal Izanloo)
+x included a Wald test for the GDINA model (gdina.wald)
+x included assessment of item-wise differential item functioning 
+   in the GDINA model (gdina.dif)
+x removed minor bug in summary.gdina
+x fixed a bug with singular design matrix in skill space reduction    
+x included calculation of polychoric correlation in summary.gdina
+   and an additional function skill.polychor
+x removed parallel plot form plot.din
+x fixed a (crucial) bug for in the multidimensional GDMs with item slope
+  parameter estimation
+x included function 'mcdina' for estimating the multiple group multiple
+  choice DINA (MCDINA) model with polytomous attributes
+
+* included/modified datasets: data.cdm01, data.cdm02
+* included/modified examples: data.ecpe, gdina.wald (1), 
+   gdina.dif (1), din (7), mcdina (1,2,3)
 
 --------------------------------------------------------------
 CDM 2.7 (2014-01-30)

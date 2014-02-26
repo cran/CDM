@@ -21,7 +21,9 @@ using namespace Rcpp;
 // declarations
 extern "C" {
 SEXP probs_pcm_groups_C( SEXP dat_, SEXP dat_resp_, SEXP group_, SEXP probs_, SEXP CC_, SEXP TP_) ;
+SEXP calccounts_pcm_groups_C( SEXP dat_, SEXP dat_resp_, SEXP group_, SEXP fyiqk_, SEXP pik_, SEXP CC_, SEXP weights_) ;
 }
+
 
 // definition
 
@@ -75,10 +77,7 @@ END_RCPP
 
 
 
-// declarations
-extern "C" {
-SEXP calccounts_pcm_groups_C( SEXP dat_, SEXP dat_resp_, SEXP group_, SEXP fyiqk_, SEXP pik_, SEXP CC_, SEXP weights_) ;
-}
+
 
 // definition
 
@@ -104,12 +103,13 @@ BEGIN_RCPP
      Rcpp::NumericMatrix fqkyi(N,TP) ;  
      Rcpp::NumericMatrix pik1(TP,G);  
        
-     double t1 = 0 ;  
+     double t1 = 0 ;
+     double eps=1e-30 ;
        
      //**************  
      // calculate posterior  
      for (int nn=0;nn<N;nn++){  
-     	t1 = 0 ;  
+     	t1 = eps ;  
      	for (int tt=0;tt<TP;tt++){  
      		fqkyi(nn,tt) = fyiqk(nn,tt) * pik( tt , group[nn] ) ;  
      		t1 += fqkyi(nn,tt) ;  
@@ -149,7 +149,7 @@ BEGIN_RCPP
                 total += fyiqk(nn,tt) * pik(tt,group[nn]);    
                 pik1(tt,group[nn]) += fqkyi(nn,tt)*weights[nn] ;   
                            } // end tt    
-          LL += log( total ) * weights[nn] ;    
+          LL += log( total+eps ) * weights[nn] ;    
                       }  // end nn        
            
      ///////////////////////////////////////  

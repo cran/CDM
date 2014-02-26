@@ -25,9 +25,10 @@ din.deterministic(dat, q.matrix, rule="DINA" , method = "JML", conv = 0.001,
 Data frame of dichotomous item responses
 }
   \item{q.matrix}{
-Q-matrix with binary entries (see \code{\link{din}})
+Q-matrix with binary entries (see \code{\link{din}}).
 }
-\item{rule}{The condensation rule. See \code{\link{din}}}
+\item{rule}{The condensation rule (see \code{\link{din}}).
+}
 \item{method}{
 Estimation method. The deault is joint maximum likelihood estimation
 (\code{JML}). Other options include an adaptive estimation of guessing and 

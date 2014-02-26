@@ -10,19 +10,19 @@
 
 \description{
 Functions for cognitive diagnosis modeling
-    and multidimensional item respose modeling for dichotomous
-    and polytomous data. This package implements parameter 
-    estimation procedures for the DINA, DINO,  the multiple
-    group (polytomous) GDINA model and the general diagnostic model (GDM)
-    which contains the multidimensional linear compensatory
-    item response model.
+    and multidimensional item response modeling for dichotomous
+    and polytomous data. This package enables the estimation of the
+    DINA and DINO model, the multiple group (polytomous) GDINA model,
+    the multiple choice DINA model and the general diagnostic model (GDM) 
+    which contains the multidimensional linear compensatory item response 
+    model as a special case.
 }
 
 \details{
   \tabular{ll}{
     Package: \tab \pkg{CDM}\cr
     Type: \tab Package\cr
-    Version: \tab 2.7\cr
+    Version: \tab 3.0\cr
     Publication Year: \tab 2014\cr
     License: \tab \acronym{GPL} (>= 2) \cr
     URL: \tab \url{https://sites.google.com/site/alexanderrobitzsch/software} \cr            
@@ -70,7 +70,7 @@ Functions for cognitive diagnosis modeling
   book about diagnostic measurement and CDMs by
   Rupp, Templin and Henson (2010), and in such survey articles as
   DiBello, Roussos and Stout (2007) and
-  upp and Templin (2008).  
+  Rupp and Templin (2008).  
 
   The package \code{CDM} is implemented based on the S3 system.  It comes
   with a namespace and consists of several external functions (functions the
@@ -82,7 +82,7 @@ Functions for cognitive diagnosis modeling
   \code{\link{print.din}}, \code{\link{summary.din}}), a \code{print} method for 
   objects of the class \code{summary.din} (\code{\link{print.summary.din}}), 
   and three functions for checking the input format and computing intermediate 
-  information (\link{CDM-internal}).  The features of the package \code{CDM} are 
+  information.  The features of the package \code{CDM} are 
   illustrated with an accompanying real dataset and Q-matrix 
   (\code{\link{fraction.subtraction.data}} and \code{\link{fraction.subtraction.qmatrix}}) 
   and artificial examples (\code{\link{Data-sim}}).  
@@ -154,12 +154,12 @@ Functions for cognitive diagnosis modeling
 
 \keyword{package}
 \section{\R Function Versions }{
-\emph{anova.din__1.04.R}, 
+\emph{anova.din__1.05.R}, 
 \emph{calc_posterior__1.01.R}, 
 \emph{cdi.kli__0.03.R}, \cr
 \emph{cdm.est.calc.accuracy__2.09.R}, 
 \emph{check.input__1.01.R}, 
-\emph{coef__0.01.R}, \cr
+\emph{coef__0.02.R}, \cr
 \emph{din.deterministic__1.01.R}, 
 \emph{din.deterministic_alg__0.06.R}, \cr
 \emph{din.validate.qmatrix__1.03.R}, 
@@ -167,96 +167,107 @@ Functions for cognitive diagnosis modeling
 \emph{equivalent.dina__1.01.R}, \cr
 \emph{equivalent.skillclasses__0.04.R}, 
 \emph{gdd__0.02.R}, 
+\emph{gdina.dif__0.03.R}, 
+\emph{gdina.dif_aux__0.03.R}, \cr
 \emph{gdina.postproc__0.02.R}, 
-\emph{gdina__8.52.R}, \cr
-\emph{gdina_aux__0.01.R}, 
+\emph{gdina.wald__0.02.R}, 
+\emph{gdina__8.70.R}, 
+\emph{gdina_aux__0.01.R}, \cr
 \emph{gdina_designmatrices__0.01.R}, 
 \emph{gdina_hogdina_alg__1.06.R}, \cr
-\emph{gdina_reduced_skillspace__0.02.R}, 
-\emph{gdm__8.12.R}, 
-\emph{gdm_algorithm__7.16.R}, \cr
+\emph{gdina_reduced_skillspace__0.03.R}, 
+\emph{gdm__8.14.R}, 
+\emph{gdm_algorithm__7.20.R}, \cr
 \emph{gdm_postproc__3.01.R}, 
 \emph{gdm_preproc__2.10.R}, 
 \emph{ideal.response.pattern__0.03.R}, \cr
 \emph{itemfit.rmsea__0.12.R}, 
-\emph{itemfit.sx2__1.11.R}, 
+\emph{itemfit.sx2__1.12.R}, 
 \emph{itemfit.sx2_aux__1.13.R}, \cr
-\emph{logLik_CDM__0.01.R}, 
-\emph{mcdina_alg_cppcall__0.01.R}, 
-\emph{mcdina_prepare__0.10.R}, \cr
+\emph{logLik_CDM__0.03.R}, 
+\emph{mcdina.est.item__0.07.R}, 
+\emph{mcdina.postproc__0.08.R}, \cr
+\emph{mcdina.simul__0.02.R}, 
+\emph{mcdina__0.52.R}, 
+\emph{mcdina_alg_cppcall__0.01.R}, \cr
+\emph{mcdina_prepare__0.18.R}, 
 \emph{modelfit.cor.din__2.07.R}, 
-\emph{modelfit.cor__1.14.R}, 
-\emph{modelfit.cor2__3.07.R}, \cr
-\emph{plot.din__1.01.R}, 
+\emph{modelfit.cor__1.14.R}, \cr
+\emph{modelfit.cor2__3.07.R}, 
+\emph{plot.din__2.01.R}, 
 \emph{plot.gdina__0.01.R}, 
-\emph{print.din__1.01.R}, 
-\emph{print.summary.din__1.04.R}, \cr
+\emph{print.din__1.01.R}, \cr
+\emph{print.summary.din__1.04.R}, 
 \emph{rowMaxs__1.05.R}, 
 \emph{rowProds__1.01.R}, 
-\emph{sequential.items__0.02.R}, 
-\emph{sim.din__1.02.R}, \cr
+\emph{sequential.items__0.02.R}, \cr
+\emph{sim.din__1.02.R}, 
 \emph{sim.gdina__2.02.R}, 
-\emph{skill.cor__1.02.R}, 
-\emph{skillspace.approximation__0.02.R}, \cr
+\emph{skill.cor__1.06.R}, \cr
+\emph{skillspace.approximation__0.02.R}, 
 \emph{skillspace.hierarchy__0.05.R}, 
-\emph{summary.din__1.05.R}, 
-\emph{summary.gdina__1.08.R}, \cr
-\emph{summary.gdm__1.08.R}, 
+\emph{summary.din__1.05.R}, \cr
+\emph{summary.gdina__1.13.R}, 
+\emph{summary.gdm__1.09.R}, 
+\emph{summary.mcdina__0.04.R}, 
 \emph{zzz__1.09.R}, 
 }
 \section{\emph{Rcpp} Function Versions }{
-\emph{cdm_kli_id_c.cpp}, 
-\emph{din.deterministic.devcrit_c.cpp}, 
-\emph{din.jml.devcrit_c.cpp}, 
-\emph{gdd__c.cpp}, \cr
-\emph{modelfit_cor2_c.cpp}, 
-\emph{probs_multcat_items_counts_c.cpp}, 
 \emph{calc_posterior.c}, 
+\emph{cdm_kli_id_c.cpp}, 
+\emph{din.deterministic.devcrit_c.cpp}, \cr
+\emph{din.jml.devcrit_c.cpp}, 
+\emph{gdd__c.cpp}, 
+\emph{modelfit_cor2_c.cpp}, \cr
+\emph{probs_multcat_items_counts_c.cpp}, 
 }
 \section{\emph{Rd} Documentation Versions }{
-\emph{anova.din__1.13.Rd}, 
+\emph{anova.din__1.14.Rd}, 
 \emph{cdi.kli__0.04.Rd}, 
-\emph{CDM-internal__1.01.Rd}, 
-\emph{CDM-package__2.20.Rd}, \cr
+\emph{CDM-package__2.24.Rd}, \cr
 \emph{cdm.est.class.accuracy__1.11.Rd}, 
-\emph{coef__0.08.Rd}, 
+\emph{coef__0.09.Rd}, 
 \emph{Data-sim__1.12.Rd}, 
-\emph{data.dcm__0.05.Rd}, \cr
-\emph{data.dtmr__0.06.Rd}, 
-\emph{data.ecpe__0.05.Rd}, 
+\emph{data.cdm__0.05.Rd}, \cr
+\emph{data.dcm__0.05.Rd}, 
+\emph{data.dtmr__0.07.Rd}, 
+\emph{data.ecpe__0.07.Rd}, 
 \emph{data.fraction1__0.09.Rd}, \cr
 \emph{data.fraction2__0.13.Rd}, 
 \emph{data.hr__0.06.Rd}, 
 \emph{data.jang__0.06.Rd}, 
 \emph{data.melab__0.06.Rd}, \cr
-\emph{data.mg__0.10.Rd}, 
+\emph{data.mg__0.13.Rd}, 
 \emph{data.pgdina__0.12.Rd}, 
 \emph{data.sda6__0.05.Rd}, 
-\emph{data.Students__0.05.Rd}, \cr
+\emph{data.Students__0.07.Rd}, \cr
 \emph{data.timss03.G8.su__0.03.Rd}, 
 \emph{data.timss07.G4.lee__0.03.Rd}, \cr
-\emph{din.deterministic__0.08.Rd}, 
+\emph{din.deterministic__0.09.Rd}, 
 \emph{din.equivalent.class__0.14.Rd}, \cr
-\emph{din.validate.qmatrix__1.10.Rd}, 
-\emph{din__2.10.Rd}, 
+\emph{din.validate.qmatrix__1.12.Rd}, 
+\emph{din__2.11.Rd}, 
 \emph{equivalent.dina__1.10.Rd}, \cr
 \emph{fraction.subtraction.data__2.01.Rd}, 
 \emph{fraction.subtraction.qmatrix__1.03.Rd}, \cr
 \emph{gdd__0.08.Rd}, 
-\emph{gdina__2.31.Rd}, 
-\emph{gdm__4.10.Rd}, 
-\emph{ideal.response.pattern__0.04.Rd}, \cr
+\emph{gdina.dif__0.07.Rd}, 
+\emph{gdina.wald__0.07.Rd}, 
+\emph{gdina__2.35.Rd}, 
+\emph{gdm__4.10.Rd}, \cr
+\emph{ideal.response.pattern__0.04.Rd}, 
 \emph{itemfit.rmsea__1.06.Rd}, 
-\emph{itemfit.sx2__1.09.Rd}, 
-\emph{logLik__0.04.Rd}, 
-\emph{modelfit.cor__1.34.Rd}, \cr
-\emph{plot.din__1.05.Rd}, 
+\emph{itemfit.sx2__1.09.Rd}, \cr
+\emph{logLik__0.05.Rd}, 
+\emph{mcdina__0.09.Rd}, 
+\emph{modelfit.cor__1.34.Rd}, 
+\emph{plot.din__2.03.Rd}, \cr
 \emph{print.din__1.06.Rd}, 
-\emph{print.summary.din__1.04.Rd}, \cr
-\emph{sequential.items__0.05.Rd}, 
+\emph{print.summary.din__1.04.Rd}, 
+\emph{sequential.items__0.05.Rd}, \cr
 \emph{sim.din__2.02.Rd}, 
 \emph{sim.gdina__1.14.Rd}, 
-\emph{skill.cor__2.01.Rd}, \cr
+\emph{skill.cor__2.02.Rd}, \cr
 \emph{skillspace.approximation__0.05.Rd}, 
 \emph{skillspace.hierarchy__0.09.Rd}, \cr
 \emph{summary.din__2.01.Rd}, 

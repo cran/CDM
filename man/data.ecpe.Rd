@@ -47,7 +47,8 @@ The skills are
 %%  ~~ If necessary, more details than the __description__ above ~~
 %}
 \source{
-The dataset is used in Templin and Hoffman (2013).
+The dataset is used in Templin and Hoffman (2013) and
+Templin and Bradshaw (2014).
 
 The dataset was downloaded from
 \url{http://psych.unl.edu/jtemplin/teaching/dcm/dcm12ncme/}.
@@ -55,6 +56,10 @@ The dataset was downloaded from
 
 
 \references{
+Templin, J., & Bradshaw, L. (2014). Hierarchical diagnostic classification
+models: A family of models for estimating and testing attribute
+hierarchies. \emph{Psychometrika}, \bold{xx}, xxx-xxx.
+	
 Templin, J., & Hoffman, L. (2013). 
 Obtaining diagnostic classification model estimates using Mplus. 
 \emph{Educational Measurement: Issues and Practice}, \bold{32}, 37-50.
@@ -69,11 +74,11 @@ Obtaining diagnostic classification model estimates using Mplus.
 \dontrun{
 data(data.ecpe)
 
-# Model 1: LCDM model 
+#*** Model 1: LCDM model 
 mod1 <- gdina( data.ecpe$data[,-1], q.matrix= data.ecpe$q.matrix , link="logit")
 summary(mod1)
 
-# Model 2: DINA model 
+#*** Model 2: DINA model 
 mod2 <- gdina( data.ecpe$data[,-1], q.matrix= data.ecpe$q.matrix , rule="DINA")
 summary(mod2)
 
@@ -82,6 +87,38 @@ anova(mod1,mod2)
 ##       Model   loglike Deviance Npars      AIC      BIC    Chisq df  p
 ##   2 Model 2 -42841.61 85683.23    63 85809.23 86185.97 206.0359 18  0
 ##   1 Model 1 -42738.60 85477.19    81 85639.19 86123.57       NA NA NA
+
+#*** Model 3: Hierarchical LCDM (HLCDM) | Templin and Bradshaw (2014)
+#      Testing a linear hierarchy
+hier <- "skill3 > skill2 > skill1"
+skill.names <- colnames( data.ecpe$q.matrix )
+# define skill space with hierarchy
+skillspace <- skillspace.hierarchy( hier , skill.names= skill.names )
+skillspace$skillspace.reduced
+##        skill1 skill2 skill3
+##   A000      0      0      0
+##   A001      0      0      1
+##   A011      0      1      1
+##   A111      1      1      1
+zeroprob.skillclasses <- skillspace$zeroprob.skillclasses
+
+# define user-defined parameters in LCDM: hierarchical LCDM (HLCDM)
+Mj.user <- mod1$Mj
+# select items with require two attributes
+items <- which( rowSums( data.ecpe$q.matrix ) > 1 )
+# modify design matrix for item parameters
+for (ii in items){
+    m1 <- Mj.user[[ii]]
+    Mj.user[[ii]][[1]] <- (m1[[1]])[,-2]
+    Mj.user[[ii]][[2]] <- (m1[[2]])[-2]
+                }
+
+# estimate model
+#    note that avoid.zeroprobs is set to TRUE to avoid algorithmic instabilities
+mod3 <- gdina( data.ecpe$data[,-1] , q.matrix= data.ecpe$q.matrix ,  link="logit" ,
+            zeroprob.skillclasses=zeroprob.skillclasses , Mj=Mj.user ,
+            avoid.zeroprobs=TRUE )
+summary(mod3)
 }
 }
 \keyword{datasets}

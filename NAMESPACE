@@ -19,7 +19,11 @@ export(din, sim.din , gdina ,
     ideal.response.pattern ,
     gdd ,
     sequential.items ,
-    cdi.kli
+    cdi.kli ,
+    gdina.wald ,
+    gdina.dif ,
+    skill.polychor ,
+    mcdina
     )
 
 # internal functions; not intended to be visible to users
@@ -36,17 +40,23 @@ S3method(summary, gdm)
 S3method(print, summary.din)
 S3method(anova, din)
 S3method(anova, gdina)
+S3method(anova, mcdina)
+S3method(anova, gdm)
 S3method(coef, din)
 S3method(coef, gdina)
+S3method(coef, mcdina)
 S3method(coef, gdm)
 S3method(logLik, din)
 S3method(logLik, gdina)
 S3method(logLik, gdm)
+S3method(logLik, mcdina)
 S3method(plot, gdina)
 S3method(summary,itemfit.sx2)
 S3method(plot,itemfit.sx2)
 S3method(summary,modelfit.cor.din)
-
+S3method(summary, gdina.wald)
+S3method(summary, gdina.dif)
+S3method(summary,mcdina)
 
 import(MASS)
 importFrom(polycor,polychor)

@@ -1,8 +1,78 @@
+##############################################
+# modify q-matrix
+mcdina.modify.qmatrix <- function( q.matrix , skillclasses){	
+	# create new q.matrix
+	K <- ncol(q.matrix) - 2
+	maxattr <- apply( q.matrix[,-c(1:2) ] , 2 , max )
+	qmatrix_mod <- NULL
+	q.matrix1 <- q.matrix[,1:2]	
+	K1 <- max(maxattr)	
+	res <- list( "q.matrix" = q.matrix , "q.matrix0" = NULL , 
+			"maxmaxattr" = K1 , "skillclasses" = skillclasses ,
+			"skillclasses0" = skillclasses , "qmatrix_mod" = NULL )
+	if (K1 > 1 ){	
+		m1 <- matrix( 0:K1 , nrow=K1+1 , ncol=K )
+		skillclasses <- as.matrix( expand.grid( as.data.frame( m1) ) )
+		colnames(skillclasses) <- colnames(q.matrix)[ -c(1:2) ]
+		# create modified q-matrix
+		for (kk in 1:K){ # kk <- 1
+			qmatrix_mod.kk <- data.frame( "attr_index" = kk  , 
+				"maxattr" = maxattr[kk] )
+			skillclasses <- skillclasses[ skillclasses[,kk] <= maxattr[kk] , ]
+			for (zz in 1:(maxattr[kk] ) ){ # 	zz <- 1
+				name <- paste0( colnames(q.matrix)[kk+2] , ".L" , zz )
+				q.matrix1[ ,  name ] <- 1 * ( q.matrix[ , kk + 2] >= zz )
+						}
+			qmatrix_mod <- rbind( qmatrix_mod , qmatrix_mod.kk )		
+					}
+		qmatrix_mod$start <- c(1,cumsum( qmatrix_mod$maxattr)[ - K ] + 1  )
+		qmatrix_mod$end <- cumsum( qmatrix_mod$maxattr)
+		skillclasses0 <- skillclasses	
+		rownames(skillclasses0) <- .matrixstring( skillclasses0 , "P" )
+		skillclasses <- as.data.frame(skillclasses)		
+		# create modified skillclasses
+		for (kk in 1:K){ # kk <- 1
+			for (zz in 1:(maxattr[kk] ) ){ # 	zz <- 1
+				name <- paste0( colnames(q.matrix)[kk+2] , ".L" , zz )
+				skillclasses[ ,  name ] <- 1 * ( skillclasses[ , kk ] >= zz )
+						}
+					}	
+		skillclasses <- skillclasses[ , - c(1:K) ]
+		rownames(skillclasses) <- .matrixstring( skillclasses , "P" )	
+		res$q.matrix <- q.matrix1
+		res$skillclasses <- as.matrix(skillclasses)
+		res$skillclasses0 <- skillclasses0
+		res$q.matrix0 <- q.matrix
+		res$qmatrix_mod <- qmatrix_mod		
+		}
+	return(res)
+	}	
+########################################################	
+	
+######################################################
+.mcdina.prepare.qmatrix <- function( dat , q.matrix ){	
+	if ( min( dat , na.rm=TRUE ) == 0 ){
+		dat <- dat + 1
+		I <- ncol(dat)
+		if ( nrow(q.matrix) == I ){
+			q1 <- data.frame( "item" = 1:I , "categ" = 2 , q.matrix )
+			q0 <- data.frame( "item" = 1:I , "categ" = 1 , 0+0*q.matrix )			
+			q.matrix <- rbind( q0 , q1 )
+			q.matrix <- q.matrix[ order( 100 * q.matrix$item + q.matrix$categ ) , ]
+					}
+				}
+	res <- list("dat"=dat , "q.matrix" = q.matrix )
+	return(res)
+		}
+
+
 ###################################################
 # initial estimate of item parameters delta
 .mcdina.init.delta <- function( lc , lr ){
     I <- max( lc$item )
-    CC <- max( lc$cats )
+	lc$cats <- lc$cats
+	#	lc.cats <- lc$cats
+    CC <- max(lc$cats)
     delta_ideal <- delta <- array( 0 , dim=c(I , CC , CC ) )
     delta_ideal[ as.matrix( lc[ , c("item" , "cats" , "lr_index" ) ] ) ] <- 1
     eps <- 1E-10
@@ -31,14 +101,14 @@
 ##########################################
 # preparation function for whole test
 .mcdina.prep.test.latent.response <- 
-function( q.matrix , K , TP , skillclasses ){
+function( q.matrix , K , TP , skillclasses , classes ){
 	I <- length( unique(q.matrix[,1]))
 	lr <- NULL
 	lc <- NULL
 	itemstat <- NULL
     for (ii in 1:I){ 
 	   res <- .mcdina.prep.item.latent.response( ii , q.matrix , 
-				K , TP , skillclasses )
+				K , TP , skillclasses , classes )
 		lr <- rbind( lr , res$lr )
 		lc <- rbind( lc , res$lc )
 		itemstat <- rbind( itemstat , res$itemstat )
@@ -51,14 +121,15 @@ function( q.matrix , K , TP , skillclasses ){
 ##############################################
 # compute preparation table for one item
 .mcdina.prep.item.latent.response <- 
-function( ii , q.matrix , K , TP , skillclasses ){
-	q.ii <- q.matrix[ q.matrix[,1] == ii , ]
-	classes <- rownames(skillclasses)
+function( ii , q.matrix , K , TP , skillclasses , classes ){
+	q.ii <- q.matrix[ q.matrix[,1] == ii , ]	
+#	classes <- rownames(skillclasses)
 	# categories
 	cats.ii <- q.ii[,2]
 	CC <- length(cats.ii)
 	# calculate relevant attributes
-	qsum <- rowSums( q.ii[ , 1:K + 2  ] )
+#	qsum <- rowSums( q.ii[ , 1:K + 2  ] )
+	qsum <- rowSums( q.ii[ , 1:K + 2  ]  )
 	index.max <- which( qsum == max(qsum) )
 	# necessary attributes for item ii
 	attr.ii <- which( q.ii[ index.max[1] , 1:K + 2] > 0 )
@@ -72,13 +143,14 @@ function( ii , q.matrix , K , TP , skillclasses ){
 		tmp1 <- skillclasses[ , attr.ii , drop=FALSE] %*% t( q.ii.red[cc,]  )
 		sk.ii1[ , cc] <- 1 * ( tmp1 >=  sum( q.ii.red[cc ,] ) ) 
 		sk.ii1[ , cc] <-  tmp1*sk.ii1[ , cc]
-				}
+				}				
 	sk.ii1 <- 1 * ( sk.ii1 > 0 )
 	v1.ii <- which( rowSums( sk.ii1 ) == 0 )
 	i5 <- which( rowSums( q.ii.red ) == 0 )
 	sk.ii1[ v1.ii , i5 ] <- 1
 	ind.ii <- which( rowSums( sk.ii2 ) == 0 )
 	sk.ii2[ind.ii , ] <- sk.ii1[ ind.ii , ]
+	
 	# define latent response groups
 	lg <- "LR"
 	for (cc in 1:CC){
@@ -86,7 +158,6 @@ function( ii , q.matrix , K , TP , skillclasses ){
 				}
 #	sk.ii3 <- cbind( sk.ii2 , lg )
 	groups <- sort( unique(lg) )
-
 	lr <- data.frame("item" = ii , "skillclass" = classes , 
 		"skillclass_index" = 1:TP , "lr" = lg )
 	lr$lr_index <- match( lr$lr , groups )
@@ -94,10 +165,16 @@ function( ii , q.matrix , K , TP , skillclasses ){
 	lg1 <- sapply( cats.ii , FUN = function(cc){ grep( cc , groups) } )
 	lc <- data.frame("item"=ii , "cats"=cats.ii ,
 				"lr"= groups[ lg1 ] )
+			
 	lc$max.cat <- 0
 	lc$max.cat[ index.max ] <- 1
 	lc$lr_index <- match( lc$lr , groups )
 	lc$Q <- .matrixstring( q.ii[ , 1:K + 2  ] , "Q" )
+	lc$lr_level <- rowSums( q.ii[ , 1:K + 2  ])
+	lc <- lc[ order( paste( lc$lr_level , lc$cats) ) , ]
+	lc$lr_level <- paste0( lc$lr_level , 
+		LETTERS[ match( lc$lr , unique(lc$lr) ) ] )
+	lc <- lc[ order( paste( lc$cats) ) , ]	
 	# item statistics
 	itemstat <- data.frame("item" = ii , "N.cat" = CC ,
 			"N.lr" = length(groups) )

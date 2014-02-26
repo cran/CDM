@@ -11,6 +11,10 @@ using the \code{\link{din}} function, item parameters and the item
 discrimination parameters \eqn{IDI_j} are recalculated. Q-matrix rows
 are determined by maximizing the estimated item discrimination index
 \eqn{IDI_j = 1-s_j -g_j}.
+
+See Chiu (2014) for an alternative estimation approach based on 
+residual sum of squares which is implemented in the \pkg{NPCD}
+package.
 }
 
 \usage{
@@ -47,6 +51,9 @@ A list with following entries:
 
 
 \references{
+Chiu, C. Y. (2014). Statistical refinement of the Q-matrix in cognitive 
+diagnosis. \emph{Applied Psychological Measurement}, \bold{xx}, xxx-xxx.	
+	
 de la Torre, J. (2008). An empirically based method of Q-matrix 
 validation for the DINA model: Development and applications. 
 \emph{Journal of Educational Measurement}, \bold{45}, 343-362.
@@ -116,6 +123,7 @@ res <- din.validate.qmatrix( mod )
 \dontrun{
 #*****************
 # Q-matrix estimation ('Qrefine') in the NPCD package
+# See Chiu (2014, APM).
 #*****************
 
 library(NPCD)

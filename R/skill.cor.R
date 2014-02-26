@@ -44,3 +44,26 @@ skill.cor <- function( object){
     return(res) 
     }
 ######################################################################################
+# polychoric correlations
+skill.polychor <- function( object){
+    ap <- object$attribute.patt
+    aps <- object$attribute.patt.splitted
+    # collect all skill combinations
+    skill.combis <- t( combn( nrow(object$skill.patt ) , 2) )
+    skill.cors <- matrix(1 , ncol(aps) , ncol(aps) )
+    ZZ <- nrow(skill.combis)
+    for (zz in 1:ZZ){
+        # zz <- 8
+        ll <- skill.combis[zz,]
+        ss1 <- ll[1]
+        ss2 <- ll[2]
+        v1 <- aggregate( ap[ , "class.prob" ] , list( aps[,ss1] , aps[,ss2] ) , sum )
+        NR <- length( unique( aps[,ss1] ) )
+        NC <- length( unique( aps[,ss2] ) )
+        v1 <- matrix(  v1[,3] , NR , NC )
+        skill.cors[ss1,ss2] <- skill.cors[ss2,ss1] <- polychor( v1 )    
+                }
+	rownames(skill.cors) <- colnames(skill.cors) <- rownames(object$skill.patt)
+    res <- list(  "cor.skills" = skill.cors )
+		}
+#####################################################

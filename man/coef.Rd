@@ -1,23 +1,26 @@
 \name{coef}
 \alias{coef.din}
 \alias{coef.gdina}
+\alias{coef.mcdina}
 \alias{coef.gdm}
 \title{Extract Estimated Item Parameters}
 \description{
   Extracts the estimated parameters from either 
-  \code{din}, \code{gdina} or \code{gdm} objects.
+  \code{din}, \code{gdina},  \code{gdina} or \code{gdm} objects.
 }
 \usage{
 \method{coef}{din}(object, \dots)
 
 \method{coef}{gdina}(object, \dots)
 
+\method{coef}{mcdina}(object, \dots)
+
 \method{coef}{gdm}(object, \dots)
 }
 
 \arguments{
   \item{object}{An object inheriting from either class \code{din}, 
-  class \code{gdina} or class \code{gdm}. 
+  class \code{gdina},  class \code{mcdina} or class \code{gdm}. 
   			}
   \item{\dots}{Additional arguments to be passed.}
 }

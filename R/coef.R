@@ -28,3 +28,14 @@ function (object, ...) {
 	cof <- object$item
     cof
 }
+
+
+########################
+# coef for gdm object
+coef.mcdina <-
+function (object, ...) {
+    if (!inherits(object, "mcdina"))
+        stop("Use only with 'mcdina' objects.\n")
+	cof <- object$item
+    cof
+}

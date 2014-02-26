@@ -19,6 +19,7 @@ gdina.reduced.skillspace <- function( ntheta , Z ,
 		if ( reduced.skillspace.method == 2){		
 			mod <- lm( lntheta ~ 0 + Z , weights = ntheta )
 			beta <- matrix( mod$coef , nrow=ncol(Z) , ncol=1 )
+			beta[ is.na(beta ) ] <- 0
 						}
 		#*******************************************
 		pred.ntheta <- exp( Z %*% beta )
