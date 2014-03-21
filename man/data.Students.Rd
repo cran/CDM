@@ -48,8 +48,7 @@ of 8th grade students.
 \code{\link{gdm}} (Example 2), 
 \code{\link[sirt:isop]{isop}} (Example 3, \pkg{sirt}),
 \code{\link[sirt:isop.scoring]{isop.scoring}} (Example 2, \pkg{sirt}),
-%% \code{\link[sirt:isop.test]{isop.test}} (Example 1, \pkg{sirt})
-%% _INCLUDE_
+\code{\link[sirt:isop.test]{isop.test}} (Example 1, \pkg{sirt})
 }
 
 

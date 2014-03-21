@@ -13,6 +13,19 @@ a.robitzsch /-\ bifie.at
 
 
 --------------------------------------------------------------
+CDM 3.1 (2014-mm-dd)
+--------------------------------------------------------------
+
+x fixed a bug when printing objects of class 'din'
+x allowed vector input of item response pattern in 'plot.din'
+x disabled argument log.file in 'summary.din'
+x included random initial parameter values in 'din' and 'gdina'
+x changed some settings in plot.din
+
+* included/modified datasets: din (1), gdina (1)
+* included/modified examples: plot.din
+
+--------------------------------------------------------------
 CDM 3.0 (2014-02-26)
 --------------------------------------------------------------
 

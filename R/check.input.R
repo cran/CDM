@@ -95,9 +95,9 @@ if(conv.crit<=0||maxit<1) return(warning("Check your routine criteria"))
 	       return(warning("check your error parameter constraints. See Help-files."))
 	    }
 	    if(is.vector(constraint.slip)) 
-	      try(constraint.slip <- matrix(constraint.slip, ncol=2, byrow=T))                 
-	    if(data.class(constraint.slip) == "data.frame") 
-	      try(constraint.slip <- as.matrix(constraint.slip))
+#	      try(constraint.slip <- matrix(constraint.slip, ncol=2, byrow=T))                 
+	    if(data.class(constraint.slip) == "data.frame"){ 
+			onstraint.slip <- as.matrix(constraint.slip) }
 	    
 	    if(any(duplicated(constraint.slip[,1]))||                                   #no duplicates
 	    any(!constraint.slip[,1]%in%1:ncol(data))||                            		#first column may only be indicees
@@ -114,13 +114,14 @@ if(conv.crit<=0||maxit<1) return(warning("Check your routine criteria"))
 	    (length(constraint.guess)%%2!=0 && ncol(constraint.guess)!=2)){            	#two columns!                            
 	       return(warning("check your error parameter constraints. See Help-files."))
 	    }
-	    if(is.vector(constraint.guess)) 
-	      try(constraint.guess <- matrix(constraint.guess, ncol=2, byrow=T))                 
-	    if(data.class(constraint.guess) == "data.frame") 
-	      try(constraint.guess <- as.matrix(constraint.guess))
+#	    if(is.vector(constraint.guess)) 
+#	      try(constraint.guess <- matrix(constraint.guess, ncol=2, byrow=T))                 
+	    if(data.class(constraint.guess) == "data.frame"){ 
+			constraint.guess <- as.matrix(constraint.guess)
+									}
 	    
 	    if(any(duplicated(constraint.guess[,1])) ||                                 #no duplicates
-	    any(!constraint.guess[,1]%in%1:ncol(data))||                           		#first column may only be indicees
+	    any(!constraint.guess[,1] %in% 1:ncol(data))||                           		#first column may only be indicees
 	    all(!(constraint.guess[,2]>=0&&constraint.guess[,2]<=1))){                  #all entries between 0 and 1
 	       return(warning("check your error parameter constraints. See Help-files."))
 	    }   
@@ -131,8 +132,8 @@ if(conv.crit<=0||maxit<1) return(warning("Check your routine criteria"))
 ################################################################################
 
 	# slipping initialization see help files
-	try({slip.init <- as.vector(slip.init)
-	     guess.init <- as.vector(guess.init)}, silent=T)
+#	try({slip.init <- as.vector(slip.init)
+#	     guess.init <- as.vector(guess.init)}, silent=T)
 	if(!is.null(slip.init)){     
 	if(any(is.na(slip.init))||
 	  !all(is.numeric(slip.init))||
@@ -155,7 +156,7 @@ if(conv.crit<=0||maxit<1) return(warning("Check your routine criteria"))
 ################################################################################
 
 	# weight see help files	
-	try(weights <- as.vector(weights), silent=T)     
+#	try(weights <- as.vector(weights), silent=T)     
 	if(any(is.na(weights)) || is.null(weights) || !all(is.numeric(weights)) ||
 	  !all(weights>0)|| (length(weights)!=nrow(data)))
 	 return(warning("Check your specificated weights of the response patterns. See Help-files."))
@@ -169,16 +170,18 @@ if(conv.crit<=0||maxit<1) return(warning("Check your routine criteria"))
 		return(warning("Check the condensation rule for parameter estimation. The character string has
 		to be of length 1 or of length ncol(data)."))
 	}
-	try(if(!all(unique(rule)%in%c("DINA", "DINO")))  
-		return(warning("Check the condensation rule for parameter estimation. Only \"DINA\" and \"DINO\" possible.")))
+#	try(if(!all(unique(rule)%in%c("DINA", "DINO")))  
+	if(!all(unique(rule)%in%c("DINA", "DINO"))){  
+		return(warning("Check the condensation rule for parameter estimation. Only \"DINA\" and \"DINO\" possible.")) }
 
 ################################################################################
 # check consistency of progress argument                                       #
 ################################################################################
 
 	# progress see help files	
-	try(if(!(is.logical(progress)))  
-		return(warning("Check specification whether or not the estimation progress should be printed.")))
+	if(!(is.logical(progress))){
+		return(warning("Check specification whether or not the estimation progress should be printed."))
+					}
  
 	return(list("data"=data, "q.matrix"=q.matrix,
 	  "conv.crit"=conv.crit, "maxit"=maxit, "constraint.guess"=constraint.guess,

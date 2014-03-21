@@ -22,7 +22,7 @@
       guess.equal = FALSE, slip.equal = FALSE, zeroprob.skillclasses = NULL,  
       weights = rep(1, nrow(data)), rule = "DINA", 
       wgt.overrelax = 0 , wgtest.overrelax = FALSE , param.history=FALSE , 
-      progress = TRUE)
+      seed=0 , progress = TRUE)
 }
 
 
@@ -101,7 +101,11 @@ which skill classes should have zero probability. Default is \code{NULL}
 
 \item{param.history}{A logical which indicates if the parameter history during
 iterations should be saved. The default is \code{FALSE}.}
-   
+
+\item{seed}{Simulation seed for initial parameters. A value of zero corresponds
+to deterministic starting values, an integer value different from
+zero to random initial values with \code{set.seed(seed)}.}
+
 \item{progress}{An optional logical indicating whether the function
     should print the progress of iteration in the estimation process.  } 
 }
@@ -127,20 +131,6 @@ iterations should be saved. The default is \code{FALSE}.}
   a priori distribution of the skill vectors is a uniform distribution.  
   The implementation follows the EM algorithm by de la Torre (2009).  
   
-  A monotonicity condition in parameter estimation in DINA and
-  DINO models is 
-  	\deqn{g_j < 1 - s_j}
-  for each item.
-  That is, the probability of guessing an item without possessing the required
-  skills is supposed to be smaller than the probability of not slipping the item 
-  when possessing all the required skills for that item.  However, the EM algorithm
-  needs not satisfy that constraint.  In that cases there will be a
-  warning during the estimation algorithm.  Possible problem solving
-  strategies are to adjust the convergence criteria \code{conv.crit},
-  \code{maxit}, \code{guess.init} and \code{slip.init} or to put
-  constraints on the guessing and slipping parameters (\code{constraint.guess}
-  and \code{constraint.slip}) of the items that violate the additional condition.  
-
   The function \code{din} returns an object of the class
   \code{din} (see \sQuote{Value}), for which \code{plot},
   \code{print}, and \code{summary} methods are provided;
@@ -161,7 +151,7 @@ iterations should be saved. The default is \code{FALSE}.}
     \deqn{ IDI_j = 1 - s_j - g_j , }{ IDI_j = 1 - s_j - g_j , }
     where a high IDI corresponds to good test items
     which have both low guessing and slipping rates.  Note that
-    a negative IDI contradicts the monotonicity condition 
+    a negative IDI indicates violation of the monotonicity condition 
     \eqn{g_j < 1 - s_j}.  See \code{\link{din}} for help.  }
 \item{itemfit.rmsea}{The RMSEA item fit index (see \code{\link{itemfit.rmsea}}).
             }
@@ -200,6 +190,7 @@ iterations should be saved. The default is \code{FALSE}.}
   \item{item.patt.split}{A matrix giving the splitted response pattern.  }
   \item{item.patt.freq}{A numeric vector given the frequencies of the response
     pattern in \code{item.patt.split}.  }
+   \item{seed}{Used simulation seed for initial parameters}
   \item{control}{Optimization parameters used in estimation}
 }
 
@@ -316,6 +307,10 @@ plot(fractions.dina)
 ## The reason therefore is a high guessing parameter
 round(fractions.dina$guess[,1], 2)
 
+## Estimate DINA model with different random initial parameters using seed=1345
+fractions.dina1 <- din(data = fraction.subtraction.data,
+  q.matrix = fraction.subtraction.qmatrix, rule = "DINA" , seed=1345)
+  
 ## Fix the guessing parameters of items 5, 8 and 9 equal to .20
 # define a constraint.guess matrix
 constraint.guess <-  matrix(c(5,8,9, rep(0.2, 3)), ncol = 2)

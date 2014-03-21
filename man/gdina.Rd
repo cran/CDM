@@ -24,7 +24,7 @@ gdina(data, q.matrix, skillclasses=NULL, conv.crit=0.0001, dev.crit=.1 ,  maxit=
     reduced.skillspace=TRUE , reduced.skillspace.method=2 , HOGDINA=-1,
     Z.skillspace=NULL, weights=rep(1, nrow(data)), rule="GDINA", 
     progress=TRUE, progress.item=FALSE , increment.factor=1.01,
-    fac.oldxsi=0 , avoid.zeroprobs = FALSE , ...)
+    fac.oldxsi=0 , avoid.zeroprobs = FALSE , seed=0, ...)
 
 \method{summary}{gdina}(object, rdigits = 4 ,  \dots)
 
@@ -170,7 +170,12 @@ An optional vector of sample weights.
 	item parameters probabilities occur. Especially if
 	not a skill classes are used, it is recommended to switch
 	the argument to \code{TRUE}.
-		} 	
+		}
+
+\item{seed}{Simulation seed for initial parameters. A value of zero corresponds
+to deterministic starting values, an integer value different from
+zero to random initial values with \code{set.seed(seed)}.}
+		
   \item{object}{A required object of class \code{gdina}, obtained
     from a call to the function \code{\link{gdina}}.  }
   \item{rdigits}{Number of digits after decimal separator to display.  }
@@ -288,6 +293,7 @@ An object of class \code{gdina} with following entries
 	if \code{rule="RRUM"}.}
 \item{group.stat}{Group statistics (sample sizes, group labels)}                
 \item{HOGDINA}{The used value of \code{HOGDINA}}
+\item{seed}{Used simulation seed}
 \item{a.attr}{Attribute parameters \eqn{a_k} in case of \code{HOGDINA>=0}}
 \item{b.attr}{Attribute parameters \eqn{b_k} in case of \code{HOGDINA>=0}}
 \item{attr.rf}{Attribute response functions. This matrix contains all 
@@ -363,6 +369,10 @@ data(sim.dina)
 mod1 <- gdina( data = sim.dina ,  q.matrix = sim.qmatrix , maxit=700)
 summary(mod1)
 plot(mod1) # apply plot function
+
+# Model 1a: estimate model with different simulation seed
+mod1a <- gdina( data = sim.dina ,  q.matrix = sim.qmatrix , seed=9089)
+summary(mod1a)
 
 #***
 # Model 2: estimation of the DINA model with gdina function

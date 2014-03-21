@@ -13,7 +13,7 @@
 \usage{
   \method{plot}{din}(x, items = c(1:ncol(x$data)), pattern = "",
     uncertainty = 0.1, top.n.skill.classes = 6, pdf.file = "", 
-    hide.idi = FALSE, hide.obs = FALSE, display.nr = 1:4, ask=TRUE , \dots)
+    hide.obs = FALSE, display.nr = 1:4, ask=TRUE , \dots)
 }
 
 \arguments{
@@ -24,7 +24,7 @@
     plot, see \sQuote{Details}.  The default is 
     \code{items = c(1:ncol(x$data))}, which is all items.  }
 	  
-  \item{pattern}{An optional character specifying a response pattern
+  \item{pattern}{An optional character or a numeric vector specifying a response pattern
     of an respondent, whose attributes are analyzed in a separate
     graphic.  It is required to choose a pattern from the empirical
     data set (see Example).  }
@@ -43,9 +43,6 @@
     Otherwise specify a directory and filename ending with \code{.pdf} where to 
     write the document.  }
   
-  \item{hide.idi}{An optional logical value. If set to \code{TRUE}, the IDI 
-    curve in first graphic is not displayed.   }
-
   \item{hide.obs}{An optional logical value. If set to \code{TRUE}, the 
     polygonal chain for observed frequencies of skill class probabilities in the 
     second graphic is not displayed.  }
@@ -71,10 +68,7 @@
   for further information.  
   
   The second graphic shows the estimated occurrence probabilities of the attributes
-  underlying the items.  The included polygonal line gives the observed occurrence 
-  probabilities in the sample.  They are determined by evaluation of the simplified
-  deterministic attribute profiles.  Classifying a respondent as master of a certain 
-  attribute increases the observed occurrence probability of that attribute.  
+  underlying the items.   
   
   The third graphic illustrates the distribution of the skill class occurrence
   probabilities.  The \cr \code{top.n.skill.classes} most frequent skill classes are labeled.  
@@ -153,6 +147,9 @@ fractions.dina.fixed <- din(data = fraction.subtraction.data,
 ## specified, the plot will not be shown (of course)
 pattern <- paste(fraction.subtraction.data[527, ], collapse = "")
 plot(fractions.dina.fixed, pattern = pattern, display.nr = 4)
+
+# It is also possible to input a vector of item responses
+plot(fractions.dina.fixed, pattern=fraction.subtraction.data[527, ] ,display.nr = 4)
 
 #uncertainty = 0.1, top.n.skill.classes = 6 are default
 plot(fractions.dina.fixed, uncertainty = 0.1, top.n.skill.classes = 6, 

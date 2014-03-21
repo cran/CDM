@@ -11,8 +11,7 @@
 }
 
 \usage{
-\method{summary}{din}(object, top.n.skill.classes = 6, 
-     log.file = NULL, overwrite = FALSE, \dots)
+\method{summary}{din}(object, top.n.skill.classes = 6, overwrite = FALSE, \dots)
 }
 
 \arguments{
@@ -22,11 +21,7 @@
   \item{top.n.skill.classes}{A numeric, specifying the number of skill 
     classes, starting with the most frequent, to be returned.  
     Default value is 6.  }
-    
-  \item{log.file}{An optional character vector, specifying the 
-    directory and/or filename to which an extensive summary 
-    output should be written.  }
-    
+        
   \item{overwrite}{An optional boolean, specifying wether or not 
     the method is supposed to overwrite an existing \code{log.file}. 
     If the \code{log.file} exists and \code{overwrite} is 

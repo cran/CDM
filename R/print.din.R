@@ -15,33 +15,33 @@ function(x, highest=0.05, ... ){
 # extract output from din object                                               #
 ################################################################################
 
-	patt.fq <- x$attribute.patt[,1]
-	main.effects <- which(patt.fq >= ifelse(ceiling((highest)*length(patt.fq))>0,
-	  sort(patt.fq,decreasing=TRUE)[ceiling((highest)*length(patt.fq))],1))
+#	patt.fq <- x$attribute.patt[,1]
+#	main.effects <- which(patt.fq >= ifelse(ceiling((highest)*length(patt.fq))>0,
+#	  sort(patt.fq,decreasing=TRUE)[ceiling((highest)*length(patt.fq))],1))
 
-	class.prob <- matrix(round(x$attribute.patt[main.effects,1] , 3),
-  		dimnames=list("",rownames(x$attribute.patt[main.effects,])),nrow=1)
-	class.prob <- t(matrix(class.prob[,order(class.prob[1,],decreasing = TRUE)],
-                                    dimnames = list(colnames(class.prob)[order(class.prob[1,],decreasing = TRUE)], "")))
+#	class.prob <- matrix(round(x$attribute.patt[main.effects,1] , 3),
+#  		dimnames=list("",rownames(x$attribute.patt[main.effects,])),nrow=1)
+#	class.prob <- t(matrix(class.prob[,order(class.prob[1,],decreasing = TRUE)],
+#                                    dimnames = list(colnames(class.prob)[order(class.prob[1,],decreasing = TRUE)], "")))
 
-	skill.patts <- x$skill.patt
-	colnames(skill.patts)<-""
-	rownames(skill.patts)<- colnames(x$q.matrix)
+#	skill.patts <- x$skill.patt
+#	colnames(skill.patts)<-""
+#	rownames(skill.patts)<- colnames(x$q.matrix)
 
-	skill.prob <- cbind(rownames(t(x$coef)),t(x$coef))
-	rownames(skill.prob) <- rep("",5)
+#	skill.prob <- cbind(rownames(t(x$coef)),t(x$coef))
+#	rownames(skill.prob) <- rep("",5)
 
 ################################################################################
 # print                                                                        #
 ################################################################################
 
-	cat("Slipping and guessing parameters:", "\n" )
-	print(skill.prob, quote=F)
-    cat(paste("\n",highest*100,"%",sep=""),"highest skill pattern probabilities:\n")
-    print(class.prob)
-    cat("\nSkill probabilities:", "\n" )
-    print(t(round(skill.patts, 3)))
-    invisible(x)
-    
+#	cat("Slipping and guessing parameters:", "\n" )
+#	print(skill.prob, quote=F)
+#    cat(paste("\n",highest*100,"%",sep=""),"highest skill pattern probabilities:\n")
+#    print(class.prob)
+#    cat("\nSkill probabilities:", "\n" )
+#    print(t(round(skill.patts, 3)))
+#    invisible(x)
+	return(x)	
 }
 

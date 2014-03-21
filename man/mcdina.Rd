@@ -41,11 +41,7 @@ The Q-matrix has \eqn{K+2} columns for a model with \eqn{K} skills.
 In the first column should be the item index, in the second column the 
 category integer and the rest of the columns contains the 'ordinary'
 Q-matrix specification. See \code{data.cdm01$q.matrix} for the layout of such a 
-Q-matrix.
-
-\emph{Note that in the current implementation only dichotomous attributes
-are allowed.}.
-}
+Q-matrix. }
   \item{group}{
 An optional vector of group identifiers for multiple group estimation.
 }

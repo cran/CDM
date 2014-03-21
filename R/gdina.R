@@ -25,7 +25,8 @@ function( data, q.matrix, skillclasses=NULL , conv.crit = 0.0001,
 					progress.item = FALSE , 
 					increment.factor = 1.01 ,
 					fac.oldxsi = 0 ,
-					avoid.zeroprobs = FALSE , 		
+					avoid.zeroprobs = FALSE , 
+					seed = 0 , 		
 					...
 						){
                     
@@ -358,8 +359,20 @@ if (progress){
 
 	if (G== 1){ 
 		attr.prob <- rep( 1/L, L )
+		if ( seed > 0 ){
+		   set.seed(seed)
+		   attr.prob <- runif( L , 0 , 10/L )
+		   attr.prob <- attr.prob / sum( attr.prob )
+						}		   
 			} else {
 		attr.prob <- matrix( 1/L , L , G )
+		if ( seed > 0 ){
+		   set.seed(seed)
+		   for (gg in 1:G){
+			   a1 <- runif( L , 0 , 10/L )
+			   attr.prob[,gg] <- a1 / sum( a1 )
+							}
+						}			
 					}
 
 ################################################################################
@@ -438,14 +451,14 @@ if (progress){
 		for ( jj in 1:J){
 			N1jj <- ncol(Mj[[jj]][[1]])
 			l1 <- rep(0,N1jj)
-			l1[1] <- .2
-#			if ( FALSE ){
-#				Qjj <- sum(q.matrix[jj,])
-#				l1[ intersect( seq(2,Qjj),1:N1jj) ] <- .7 / Qjj
-#						} else {
-#			l1[N1jj] <- .6
-			l1[2:N1jj] <- rep( .6 / (N1jj - 1) , N1jj - 1 )
-#						}
+			if ( seed == 0 ){
+				dd1 <- .2 ; dd2 <- .6 
+					} else {
+				dd1 <- runif( 1 , 0 , .4 )
+                dd2 <- runif( 1 , 0 , 1 - dd1 - .1 )				
+					}
+			l1[1] <- dd1
+			l1[2:N1jj] <- rep( dd2 / (N1jj - 1) , N1jj - 1 )
 			delta[[jj]] <- l1
 						}
 					}
@@ -455,9 +468,14 @@ if (progress){
 		for ( jj in 1:J){
 			N1jj <- ncol(Mj[[jj]][[1]])
 			l1 <- rep(0,N1jj)
-			l1[1] <- -1
-			l1[N1jj] <- 1
-
+			if ( seed == 0 ){
+				dd1 <- -1 ; dd2 <- 1
+					} else {			
+                dd1 <- runif( 1 , -2 , 0 )					
+                dd2 <- runif( 1 , 0 , 2 )					
+					}
+			l1[1] <- dd1
+			l1[N1jj] <- dd2
 			delta[[jj]] <- l1
 			
 						}
@@ -468,8 +486,14 @@ if (progress){
 		for ( jj in 1:J){
 			N1jj <- ncol(Mj[[jj]][[1]])
 			l1 <- rep(0,N1jj)
-			l1[1] <- -1.5
-			l1[N1jj] <- .75
+			if ( seed == 0 ){
+				dd1 <- -1.5 ; dd2 <- .75
+					} else {
+				dd1 <- runif( 1 , -3 , -1 )					
+				dd2 <- runif( 1 , .25 , 1 )
+					}
+			l1[1] <- dd1
+			l1[N1jj] <- dd2
 			delta[[jj]] <- l1
 						}
 					}	
@@ -495,8 +519,6 @@ if (progress){
  #vv <- "Mj / Aj" ; a1 <- Sys.time() ; cat( vv , a1-a0 , "\n") ; a0 <- Sys.time()			
 		if ( fac.oldxsi>= 1){ fac.oldxsi <- 0 }
 djj_old <- as.list( 1:J )
-# print(djj)
-# stop()
 				
 ################################################################################
 # some prelimaries for EM algorithm                                            #  
@@ -593,7 +615,7 @@ djj_old <- as.list( 1:J )
 	pj1[ pj1 < 0 ] <- eps
 	pj1[ pj1 > 1] <- 1 - eps	
 	
-# cat( "\n Step 1a (calculate P(X_j|alpha_l)\n" ) ; a1 <- Sys.time() ; print(a1-a0) ; a0 <- a1									
+# cat( "\n Step 1a (calculate P(X_j|alpha_l)\n" ) ; a1 <- Sys.time() ; print(a1-a0) ; a0 <- a1
 									
 	pjM <- array( NA , dim=c(J,2,L) )
 	pjM[,1,] <- 1 - pj1
@@ -1121,8 +1143,8 @@ if (HOGDINA >= 0){
 					}				
 		
 #				try( a1 <- solve( infomat.jj ) )
-				try( a1 <- solve( infomat.jj + diag( eps2 , ncol(infomat.jj) ) ) )
-				if ( is.null(a1)){ 
+				a1 <- try( solve( infomat.jj + diag( eps2 , ncol(infomat.jj) ) ) )
+				if ( is(a1 , "try-error") ){ 
 						cat( "Item" , colnames(data)[jj] , "Singular item parameter covariance matrix\n")
 						a1 <- NA*infomat.jj 
 							}
@@ -1367,7 +1389,8 @@ if (HOGDINA >= 0){
 				 "group.stat" = group.stat , 
 				 "NAttr" = maxAttr , 
 #				 "q.matrix" = q.matrix ,
-				 "HOGDINA" = HOGDINA
+				 "HOGDINA" = HOGDINA ,
+				 "seed"= seed 
 				 ) 				 
 	if (HOGDINA>=0) { 
 	    colnames(a.attr) <- paste0( "a.Gr" , 1:G )

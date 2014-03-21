@@ -22,7 +22,7 @@ Functions for cognitive diagnosis modeling
   \tabular{ll}{
     Package: \tab \pkg{CDM}\cr
     Type: \tab Package\cr
-    Version: \tab 3.0\cr
+    Version: \tab 3.1\cr
     Publication Year: \tab 2014\cr
     License: \tab \acronym{GPL} (>= 2) \cr
     URL: \tab \url{https://sites.google.com/site/alexanderrobitzsch/software} \cr            
@@ -158,12 +158,12 @@ Functions for cognitive diagnosis modeling
 \emph{calc_posterior__1.01.R}, 
 \emph{cdi.kli__0.03.R}, \cr
 \emph{cdm.est.calc.accuracy__2.09.R}, 
-\emph{check.input__1.01.R}, 
+\emph{check.input__1.02.R}, 
 \emph{coef__0.02.R}, \cr
 \emph{din.deterministic__1.01.R}, 
 \emph{din.deterministic_alg__0.06.R}, \cr
 \emph{din.validate.qmatrix__1.03.R}, 
-\emph{din__2.09.R}, 
+\emph{din__2.12.R}, 
 \emph{equivalent.dina__1.01.R}, \cr
 \emph{equivalent.skillclasses__0.04.R}, 
 \emph{gdd__0.02.R}, 
@@ -171,7 +171,7 @@ Functions for cognitive diagnosis modeling
 \emph{gdina.dif_aux__0.03.R}, \cr
 \emph{gdina.postproc__0.02.R}, 
 \emph{gdina.wald__0.02.R}, 
-\emph{gdina__8.70.R}, 
+\emph{gdina__8.74.R}, 
 \emph{gdina_aux__0.01.R}, \cr
 \emph{gdina_designmatrices__0.01.R}, 
 \emph{gdina_hogdina_alg__1.06.R}, \cr
@@ -194,9 +194,9 @@ Functions for cognitive diagnosis modeling
 \emph{modelfit.cor.din__2.07.R}, 
 \emph{modelfit.cor__1.14.R}, \cr
 \emph{modelfit.cor2__3.07.R}, 
-\emph{plot.din__2.01.R}, 
+\emph{plot.din__2.12.R}, 
 \emph{plot.gdina__0.01.R}, 
-\emph{print.din__1.01.R}, \cr
+\emph{print.din__1.02.R}, \cr
 \emph{print.summary.din__1.04.R}, 
 \emph{rowMaxs__1.05.R}, 
 \emph{rowProds__1.01.R}, 
@@ -206,7 +206,7 @@ Functions for cognitive diagnosis modeling
 \emph{skill.cor__1.06.R}, \cr
 \emph{skillspace.approximation__0.02.R}, 
 \emph{skillspace.hierarchy__0.05.R}, 
-\emph{summary.din__1.05.R}, \cr
+\emph{summary.din__1.07.R}, \cr
 \emph{summary.gdina__1.13.R}, 
 \emph{summary.gdm__1.09.R}, 
 \emph{summary.mcdina__0.04.R}, 
@@ -224,7 +224,7 @@ Functions for cognitive diagnosis modeling
 \section{\emph{Rd} Documentation Versions }{
 \emph{anova.din__1.14.Rd}, 
 \emph{cdi.kli__0.04.Rd}, 
-\emph{CDM-package__2.24.Rd}, \cr
+\emph{CDM-package__2.25.Rd}, \cr
 \emph{cdm.est.class.accuracy__1.11.Rd}, 
 \emph{coef__0.09.Rd}, 
 \emph{Data-sim__1.12.Rd}, 
@@ -237,31 +237,31 @@ Functions for cognitive diagnosis modeling
 \emph{data.hr__0.06.Rd}, 
 \emph{data.jang__0.06.Rd}, 
 \emph{data.melab__0.06.Rd}, \cr
-\emph{data.mg__0.13.Rd}, 
+\emph{data.mg__0.14.Rd}, 
 \emph{data.pgdina__0.12.Rd}, 
 \emph{data.sda6__0.05.Rd}, 
-\emph{data.Students__0.07.Rd}, \cr
+\emph{data.Students__0.08.Rd}, \cr
 \emph{data.timss03.G8.su__0.03.Rd}, 
 \emph{data.timss07.G4.lee__0.03.Rd}, \cr
 \emph{din.deterministic__0.09.Rd}, 
 \emph{din.equivalent.class__0.14.Rd}, \cr
 \emph{din.validate.qmatrix__1.12.Rd}, 
-\emph{din__2.11.Rd}, 
+\emph{din__2.15.Rd}, 
 \emph{equivalent.dina__1.10.Rd}, \cr
 \emph{fraction.subtraction.data__2.01.Rd}, 
 \emph{fraction.subtraction.qmatrix__1.03.Rd}, \cr
 \emph{gdd__0.08.Rd}, 
 \emph{gdina.dif__0.07.Rd}, 
 \emph{gdina.wald__0.07.Rd}, 
-\emph{gdina__2.35.Rd}, 
+\emph{gdina__2.37.Rd}, 
 \emph{gdm__4.10.Rd}, \cr
 \emph{ideal.response.pattern__0.04.Rd}, 
 \emph{itemfit.rmsea__1.06.Rd}, 
 \emph{itemfit.sx2__1.09.Rd}, \cr
 \emph{logLik__0.05.Rd}, 
-\emph{mcdina__0.09.Rd}, 
+\emph{mcdina__0.10.Rd}, 
 \emph{modelfit.cor__1.34.Rd}, 
-\emph{plot.din__2.03.Rd}, \cr
+\emph{plot.din__2.07.Rd}, \cr
 \emph{print.din__1.06.Rd}, 
 \emph{print.summary.din__1.04.Rd}, 
 \emph{sequential.items__0.05.Rd}, \cr
@@ -270,5 +270,5 @@ Functions for cognitive diagnosis modeling
 \emph{skill.cor__2.02.Rd}, \cr
 \emph{skillspace.approximation__0.05.Rd}, 
 \emph{skillspace.hierarchy__0.09.Rd}, \cr
-\emph{summary.din__2.01.Rd}, 
+\emph{summary.din__2.02.Rd}, 
 }

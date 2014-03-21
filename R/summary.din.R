@@ -4,24 +4,32 @@
 # summary method for objects of class "din"                                    #
 ################################################################################
 summary.din <-
-function(object, top.n.skill.classes = 6, log.file = NULL, overwrite = FALSE, ...){
+function(object, top.n.skill.classes = 6, overwrite = FALSE, ...){
 
 # Call: generic
 # Input: 
 #   object of class din
-#   top.n.skill.classes: a numeric, specifying the number of skill classes, starting with the most frequent, to be returned. Default value is 6.
+#   top.n.skill.classes: a numeric, specifying the number of skill classes, 
+#  starting with the most frequent, to be returned. Default value is 6.
 #   log.file: an optional character vector, specifying the directory and/or filename for an extensive log file.
-#   overwrite: an optional boolean, specifying wether or not the method is supposed to overwrite an existing log.file. If the log.file exists and overwrite is FALSE, the user is asked to confirm the overwriting.
-# Output: a named list, of the class summary.din (to be passed to print.summary.din), consisting of the following five components
-# 	CALL: a character specifying the model rule, the number of items and the number of attributes underlying the items.
+#   overwrite: an optional boolean, specifying wether or not the method is supposed to 
+#   overwrite an existing log.file. If the log.file exists and overwrite is FALSE, 
+#    the user is asked to confirm the overwriting.
+# Output: a named list, of the class summary.din (to be passed to print.summary.din), 
+#    consisting of the following five components
+# 	CALL: a character specifying the model rule, the number of items and the 
+#      number of attributes underlying the items.
 #	  IDI: a vector giving the item discrimination index. (see help file)
-#	  SKILL.CLASSES: a vector giving the top.n.skill.classes most frequent skill classes and the corresponding class probability.
+#	  SKILL.CLASSES: a vector giving the top.n.skill.classes most frequent skill 
+#             classes and the corresponding class probability.
 #	  AIC: a numeric giving the AIC of the specified model object.
 #	  BIC: a numeric giving the BIC of the specified model object.
 
 ################################################################################
 # extract output from din object                                               #
 ################################################################################
+
+	log.file <- NULL
 
 	CALL <- paste(object$display,"on", ncol(object$data), "items for", nrow(object$skill.patt),"attributes")
 	

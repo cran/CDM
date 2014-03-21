@@ -25,6 +25,7 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 					wgt.overrelax = 0 , 
 					wgtest.overrelax = FALSE , 
 					param.history = FALSE , 
+					seed = 0 , 
                     progress = TRUE ){
                     
 # data: a required matrix of binary response data, whereas the items are in the columns 
@@ -80,11 +81,18 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 # check consistency of input (data, q.matrix, ...)                             #
 ################################################################################
 
+	I <- ncol(data) 
 	if ( is.null( colnames(data) ) ){
-		I <- ncol(data) 
 		colnames(data) <- paste0("I" , 1:I )
 					}
 
+	# different inits if seed larger than zero
+    if ( seed > 0 ){
+		set.seed(seed) 
+		slip.init <- runif( I , 0 , .4 )
+		guess.init <- runif( I , 0 , .4 )
+					}
+					
     clean <- check.input(data, q.matrix, conv.crit, maxit, constraint.guess,
         constraint.slip, guess.init, slip.init, weights, rule, progress)   
 
@@ -206,6 +214,10 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 ################################################################################
 
     attr.prob <- rep( 1/L, L )
+	if ( seed > 0 ){
+		attr.prob <- runif( L , 0 , 10/ L )
+		attr.prob <- attr.prob / sum( attr.prob )
+				}
             
 ################################################################################
 # some prelimaries for EM algorithm                                            #  
@@ -603,8 +615,8 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 	
 	
     if (progress){ cat("---------------------------------------------------------------------------------\n") }
-    res <- list( coef = datfr, guess = guess, slip = slip, 
-				"IDI" = round(1 - guess[,1] - slip[,1] ,4) ,
+    res <- list( coef = datfr, guess = guess, slip = slip  , 
+				"IDI" = round(1 - guess[,1] - slip[,1] ,4)  ,
 				"itemfit.rmsea" = itemfit.rmsea , 
 				"mean.rmsea" = mean(itemfit.rmsea) , 
 				loglike = loglike, AIC = aic, BIC = bic, 
@@ -618,6 +630,7 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 				 "rule" = rule , "zeroprob.skillclasses" = zeroprob.skillclasses , 
 				 "weights" = weights , "pjk" = pjM , "I" = I , 
 				 "I.lj"=I.lj , "R.lj" = R.lj ,
+				 "seed" = seed , 
 				 "start.analysis" = s1 , "end.analysis" = s2 				 
 					) 
 	res$timediff <- print(s2 - s1)						
@@ -626,7 +639,7 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 				"slip.history" = slip.history , 
 				"guess.history" = guess.history )
 		res$param.history <- param.history
-					}		
+					}					
 	# control parameters
 	control <- list( q.matrix=q.matrix , skillclasses = skillclasses , conv.crit = conv.crit , 
 					dev.crit = dev.crit , maxit = maxit ,
@@ -635,8 +648,8 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
                     guess.equal = guess.equal , slip.equal = slip.equal , 
 					zeroprob.skillclasses = zeroprob.skillclasses , 
                     weights = weights ,  rule = rule , 
-					wgt.overrelax = wgt.overrelax , wgtest.overrelax = wgtest.overrelax )
+					wgt.overrelax = wgt.overrelax , wgtest.overrelax = wgtest.overrelax )	
     res$control <- control										
-    class(res) <- "din"
+    class(res) <- "din"					
     return(res)
 }
