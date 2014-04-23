@@ -7,6 +7,7 @@
     scored.ii <- .calc.scoredistribution.cdm( pjk[,-ii,] )
     eik_t2 <- colSums( scoredistribution * pi.k )
     eik_t1 <- c(0,colSums( P1[,ii] * scored.ii * pi.k  ) )
+	# P1 is the probability of passing the item
     eik <- eik_t1 / eik_t2
 	N <- nrow(data)
     oik <- sapply( 0:I , FUN = function(ss){ mean( data[ sumscore == ss , ii ] ) } )
@@ -24,6 +25,8 @@
     x1 <- floor( I/2 )
     dfr2.ii <- NULL
     mm1 <- 2
+	
+	#** from below
     while( mm1 <= x1 ){
         t1 <- 0
         ss <- mm1-1
@@ -46,6 +49,7 @@
                 }
     dfr2a.ii <- dfr2.ii
 
+	#*** from above
     dfr2.ii <- NULL
     mm1 <- I
     while( mm1 > x1 ){
@@ -89,15 +93,16 @@
     score <- seq( 0 , I , 1 )
     scoredistribution <- matrix(NA , TP , I+1 )
     scoredistribution[,1] <- Q1[,1]
-    scoredistribution[,2] <- P1[,2]
+    scoredistribution[,2] <- P1[,1]	
     for (ii in 2:I){
         scoredistribution0 <- scoredistribution
         scoredistribution[,ii+1] <- P1[,ii] * scoredistribution0[,ii]
         for (kk in seq( 0 , ii - 2 , 1 ) ){
-            scoredistribution[,ii-kk] <- Q1[,ii] * scoredistribution0[,ii-kk] + P1[,ii] * scoredistribution0[,ii-kk-1]
+            scoredistribution[,ii-kk] <- Q1[,ii] * scoredistribution0[,ii-kk] + 
+					P1[,ii] * scoredistribution0[,ii-kk-1]
                         }
         scoredistribution[,1] <- Q1[,ii] * scoredistribution0[,1]
-                }
+                }			
     return(scoredistribution)
             }
 ##############################################################################

@@ -13,7 +13,23 @@ a.robitzsch /-\ bifie.at
 
 
 --------------------------------------------------------------
-CDM 3.1 (2014-mm-dd)
+CDM 3.2 (2014-04-23)
+--------------------------------------------------------------
+
+x included an argument save.devmin in 'gdina' for more parsimonious
+  savings of output values to avoid wprking memory overflow for 
+  large datasets
+x included effect size of differential item functioning in
+  gdina model (included in 'gdina.dif')
+x fixed a bug in itemfit.sx2
+
+* included/modified datasets: ---
+* included/modified examples: gdina.dif (1)
+
+
+
+--------------------------------------------------------------
+CDM 3.1 (2014-03-21)
 --------------------------------------------------------------
 
 x fixed a bug when printing objects of class 'din'
@@ -22,8 +38,8 @@ x disabled argument log.file in 'summary.din'
 x included random initial parameter values in 'din' and 'gdina'
 x changed some settings in plot.din
 
-* included/modified datasets: din (1), gdina (1)
-* included/modified examples: plot.din
+* included/modified datasets: ---
+* included/modified examples: din (1), gdina (1), plot.din
 
 --------------------------------------------------------------
 CDM 3.0 (2014-02-26)

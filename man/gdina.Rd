@@ -24,7 +24,7 @@ gdina(data, q.matrix, skillclasses=NULL, conv.crit=0.0001, dev.crit=.1 ,  maxit=
     reduced.skillspace=TRUE , reduced.skillspace.method=2 , HOGDINA=-1,
     Z.skillspace=NULL, weights=rep(1, nrow(data)), rule="GDINA", 
     progress=TRUE, progress.item=FALSE , increment.factor=1.01,
-    fac.oldxsi=0 , avoid.zeroprobs = FALSE , seed=0, ...)
+    fac.oldxsi=0 , avoid.zeroprobs = FALSE , seed=0, save.devmin=TRUE , ...)
 
 \method{summary}{gdina}(object, rdigits = 4 ,  \dots)
 
@@ -175,7 +175,12 @@ An optional vector of sample weights.
 \item{seed}{Simulation seed for initial parameters. A value of zero corresponds
 to deterministic starting values, an integer value different from
 zero to random initial values with \code{set.seed(seed)}.}
-		
+
+\item{save.devmin}{An optional logical indicating whether intermediate
+estimates should be saved corresponding to minimal deviance. 
+Setting the argument to \code{FALSE} could help for preventing
+working memory overflow.}
+
   \item{object}{A required object of class \code{gdina}, obtained
     from a call to the function \code{\link{gdina}}.  }
   \item{rdigits}{Number of digits after decimal separator to display.  }

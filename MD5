@@ -1,4 +1,4 @@
-4d89e9402d384d7e86517d82425abcce *DESCRIPTION
+a7fd8ed8ea4450f4a89466698d95fee2 *DESCRIPTION
 73d12561e303ea7a297f908535113b51 *NAMESPACE
 7660d1be6b936e4160440614162d594e *R/anova.din.R
 8af2c75d36a73d84cd5342c7755105d0 *R/calc_posterior.R
@@ -13,9 +13,9 @@ b3faa1601a01714462262e597fe93e35 *R/coef.R
 58de9bbe5aa2915db91891174b3d3be1 *R/equivalent.dina.R
 8fa7b995e118679faf6847fee0d10bdf *R/equivalent.skillclasses.R
 ccee1183156503948fece10febc56320 *R/gdd.R
-92bcbc8d4f7db01192c334022e655e94 *R/gdina.R
-056537e53fec8467ce905d8cdbdca88b *R/gdina.dif.R
-5f1f922f4d75e3ca4af4b443c664b071 *R/gdina.dif_aux.R
+6f5b1210e45fe3a6ac88febd4af92aec *R/gdina.R
+8a44abd5120fb342132a11b4079484e7 *R/gdina.dif.R
+d3fb4f4b1342535821873ecc7c5a1003 *R/gdina.dif_aux.R
 3624ed48f363ec153f671d9667a6e12d *R/gdina.postproc.R
 2554f52a014548a6214df66b17235633 *R/gdina.wald.R
 e1ac34b70a49f535495072f4692609ba *R/gdina_aux.R
@@ -28,8 +28,8 @@ c1f09321b613c5d832bc56f67128417b *R/gdina_designmatrices.R
 464fb794d211f27b5db342560804092e *R/gdm_preproc.R
 e97ed6103613e33d3bd8cd82e854860c *R/ideal.response.pattern.R
 0c350f27ce10ca92e341905db02c70bb *R/itemfit.rmsea.R
-96376642e7419a9981b5ad2792adbb9b *R/itemfit.sx2.R
-765a08cd4f255d6bcca44c80a5d10b6a *R/itemfit.sx2_aux.R
+b123daec295ab69661ac166f2316ec51 *R/itemfit.sx2.R
+30455123ca108e43d18ebde7da17b444 *R/itemfit.sx2_aux.R
 7aa884b8c2dbfe65bad85af4aad02ae2 *R/logLik_CDM.R
 ece3315c0d52cde7f2ede36c6fe8f2b0 *R/mcdina.R
 7fc98255f68a5a7a19bdae8de736b2a5 *R/mcdina.est.item.R
@@ -78,8 +78,8 @@ deffaff74c39c4af04bb31a587414e70 *data/data.timss03.G8.su.rda
 53cda727353bf49ac40e270b9a29731b *data/sim.dina.rda
 2bc598c88afd61afd1c0bf6f21755e49 *data/sim.dino.rda
 e17bda000a2767e6ffec77eeb33f5b8e *data/sim.qmatrix.rda
-f154652371c3e97b37dd356846b6bff6 *inst/NEWS
-933a7fc7157d6f0856e371cbe1b65f30 *man/CDM-package.Rd
+f67cf61c87e7af30a12e4506314fca4f *inst/NEWS
+581d0e15f1312b9af4ebec129cc1674b *man/CDM-package.Rd
 b5f7134425fec8f417115287dc1fdffc *man/Data-sim.Rd
 c2a83ab15769699f73150bdcca8c1476 *man/anova.din.Rd
 c9db89d5a70c6a326784748a29fe03c6 *man/cdi.kli.Rd
@@ -108,13 +108,13 @@ c0a6d31586b508ccf00c306653d2351c *man/equivalent.dina.Rd
 116de997b3a9fce7ac8af21f08be4022 *man/fraction.subtraction.data.Rd
 077e575eb4d3889eb69d758b47d4d9fc *man/fraction.subtraction.qmatrix.Rd
 788f526915d7a974b1d0996c06178b86 *man/gdd.Rd
-942174e0868a5991d6aa497720442f8b *man/gdina.Rd
-ea421a75ce17abc325d4eb48695727e4 *man/gdina.dif.Rd
+9d8b6529e7f117ce04938f5bf37f9f4a *man/gdina.Rd
+19971cd712c4e28fd24bf5b4bb119169 *man/gdina.dif.Rd
 88ad850410a4293450b4891b2c54babf *man/gdina.wald.Rd
 a2925f0dcc449f84538cff437bebf528 *man/gdm.Rd
 b88a414f3a4820de4fd9596a153473fc *man/ideal.response.pattern.Rd
 75badea38f9f651d2ef31804fd4d268d *man/itemfit.rmsea.Rd
-7c0a3d0067546c55fe5ec286a3d1d06d *man/itemfit.sx2.Rd
+450ba1a7f647b9c46861f3d486989052 *man/itemfit.sx2.Rd
 5018cb078ec9017e6c8d3a7932056e89 *man/logLik.Rd
 d45b1d21d42ef94d3d78fd58b5404852 *man/mcdina.Rd
 dd2686750235d09e46223f4c22e0e25d *man/modelfit.cor.Rd

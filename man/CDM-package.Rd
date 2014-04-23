@@ -22,7 +22,7 @@ Functions for cognitive diagnosis modeling
   \tabular{ll}{
     Package: \tab \pkg{CDM}\cr
     Type: \tab Package\cr
-    Version: \tab 3.1\cr
+    Version: \tab 3.2\cr
     Publication Year: \tab 2014\cr
     License: \tab \acronym{GPL} (>= 2) \cr
     URL: \tab \url{https://sites.google.com/site/alexanderrobitzsch/software} \cr            
@@ -167,11 +167,11 @@ Functions for cognitive diagnosis modeling
 \emph{equivalent.dina__1.01.R}, \cr
 \emph{equivalent.skillclasses__0.04.R}, 
 \emph{gdd__0.02.R}, 
-\emph{gdina.dif__0.03.R}, 
-\emph{gdina.dif_aux__0.03.R}, \cr
+\emph{gdina.dif__1.01.R}, 
+\emph{gdina.dif_aux__1.03.R}, \cr
 \emph{gdina.postproc__0.02.R}, 
 \emph{gdina.wald__0.02.R}, 
-\emph{gdina__8.74.R}, 
+\emph{gdina__8.79.R}, 
 \emph{gdina_aux__0.01.R}, \cr
 \emph{gdina_designmatrices__0.01.R}, 
 \emph{gdina_hogdina_alg__1.06.R}, \cr
@@ -182,8 +182,8 @@ Functions for cognitive diagnosis modeling
 \emph{gdm_preproc__2.10.R}, 
 \emph{ideal.response.pattern__0.03.R}, \cr
 \emph{itemfit.rmsea__0.12.R}, 
-\emph{itemfit.sx2__1.12.R}, 
-\emph{itemfit.sx2_aux__1.13.R}, \cr
+\emph{itemfit.sx2__1.14.R}, 
+\emph{itemfit.sx2_aux__2.02.R}, \cr
 \emph{logLik_CDM__0.03.R}, 
 \emph{mcdina.est.item__0.07.R}, 
 \emph{mcdina.postproc__0.08.R}, \cr
@@ -224,7 +224,7 @@ Functions for cognitive diagnosis modeling
 \section{\emph{Rd} Documentation Versions }{
 \emph{anova.din__1.14.Rd}, 
 \emph{cdi.kli__0.04.Rd}, 
-\emph{CDM-package__2.25.Rd}, \cr
+\emph{CDM-package__2.26.Rd}, \cr
 \emph{cdm.est.class.accuracy__1.11.Rd}, 
 \emph{coef__0.09.Rd}, 
 \emph{Data-sim__1.12.Rd}, 
@@ -251,13 +251,13 @@ Functions for cognitive diagnosis modeling
 \emph{fraction.subtraction.data__2.01.Rd}, 
 \emph{fraction.subtraction.qmatrix__1.03.Rd}, \cr
 \emph{gdd__0.08.Rd}, 
-\emph{gdina.dif__0.07.Rd}, 
+\emph{gdina.dif__0.09.Rd}, 
 \emph{gdina.wald__0.07.Rd}, 
-\emph{gdina__2.37.Rd}, 
+\emph{gdina__2.38.Rd}, 
 \emph{gdm__4.10.Rd}, \cr
 \emph{ideal.response.pattern__0.04.Rd}, 
 \emph{itemfit.rmsea__1.06.Rd}, 
-\emph{itemfit.sx2__1.09.Rd}, \cr
+\emph{itemfit.sx2__1.10.Rd}, \cr
 \emph{logLik__0.05.Rd}, 
 \emph{mcdina__0.10.Rd}, 
 \emph{modelfit.cor__1.34.Rd}, 

@@ -27,6 +27,7 @@ function( data, q.matrix, skillclasses=NULL , conv.crit = 0.0001,
 					fac.oldxsi = 0 ,
 					avoid.zeroprobs = FALSE , 
 					seed = 0 , 		
+					save.devmin=TRUE , 
 					...
 						){
                     
@@ -622,11 +623,11 @@ djj_old <- as.list( 1:J )
 	pjM[,2,] <- pj1
 	h1 <- matrix( 1 , nrow=IP , ncol=L )
 	
-    res.hwt <- calc_posterior.v2(rprobs= pjM , gwt=h1 , resp=item.patt.split , 
+    p.xi.aj <- calc_posterior.v2(rprobs= pjM , gwt=h1 , resp=item.patt.split , 
 								 nitems= J , 
                                  resp.ind.list=resp.ind.list , normalization=FALSE , 
-                                 thetasamp.density= NULL , snodes=0 )	
-    p.xi.aj <- res.hwt[["hwt"]]  			
+                                 thetasamp.density= NULL , snodes=0 )[["hwt"]]	
+#    p.xi.aj <- res.hwt[["hwt"]]  			
 
 	if ( ! is.null(zeroprob.skillclasses) ){
 		p.xi.aj[ , zeroprob.skillclasses ] <- 0
@@ -674,7 +675,7 @@ djj_old <- as.list( 1:J )
 						}
 					}
 
-# cat( "\n Step 2 (calc P(alpha|xi) \n" ) ; a1 <- Sys.time() ; print(a1-a0) ; a0 <- a1					
+ # cat( "\n Step 2 (calc P(alpha|xi) \n" ) ; a1 <- Sys.time() ; print(a1-a0) ; a0 <- a1					
 
 
 #######################################################################
@@ -708,7 +709,7 @@ if (HOGDINA >= 0){
 		pred.ntheta <- res$pred.ntheta
 			}
 
-# cat( "\n Step 2a (reduced skillspace) \n" ) ; a1 <- Sys.time() ; print(a1-a0) ; a0 <- a1				
+#  cat( "\n Step 2a (reduced skillspace) \n" ) ; a1 <- Sys.time() ; print(a1-a0) ; a0 <- a1				
  
 ################################################################################
 # STEP III:                                                                    #
@@ -725,24 +726,12 @@ if (HOGDINA >= 0){
 	if (G == 1){ 	
 		R.lj <- I.lj <- matrix( 0 , nrow=J , ncol=L )
 		if ( some.missings ){
-#			for (i in 1:J){ 
-#				I.lj[i,] <- colSums(  item.patt.freq*resp.patt[,i] * p.aj.xi  )
-#						}
-#			I.lj <- t( item.patt.freq*resp.patt	) %*% p.aj.xi
 			I.lj <- crossprod( item.patt.freq*resp.patt	, p.aj.xi )
 					} else {
-#			I.lj <- matrix( colSums(  item.patt.freq * p.aj.xi  ) , nrow=J , ncol=L , byrow=T )
-#			I.lj <- t( item.patt.freq ) %*% p.aj.xi
 			I.lj <- matrix( t( item.patt.freq ) %*% p.aj.xi , nrow=J , 
 							ncol=L , byrow=TRUE )
 					}
-					
-					
-#		for (i in 1:J){ 
-#			R.lj[i,] <- colSums(  ipr[,i] * p.aj.xi  )
-#			R.lj[i,] <-  t( ipr[,i] ) %*% p.aj.xi 
-#					}
-#		R.lj <- t(ipr) %*% p.aj.xi				
+												
 		R.lj <- crossprod(ipr ,  p.aj.xi )
 		colnames(I.lj) <- colnames(R.lj) <- attr.patt.c
 		rownames(I.lj) <- rownames(R.lj) <- colnames(data)
@@ -752,26 +741,14 @@ if (HOGDINA >= 0){
 				
 	if (G > 1){ 					 
 		R.lj.gg <- I.lj.gg <- array( 0 , c( J, L , G ) )
-		for (gg in 1:G){ 		
+		for (gg in 1:G){ 	
+
 		if ( some.missings ){
-#			for (i in 1:J){ 
-#				I.lj.gg2[i,,gg] <- colSums(  item.patt.freq[,gg]*resp.patt[,i] * p.aj.xi[,,gg]  )
-#						}								
-#				I.lj.gg[,,gg] <- t( item.patt.freq[,gg]*resp.patt	) %*% p.aj.xi[,,gg]	
 				I.lj.gg[,,gg] <- crossprod( item.patt.freq[,gg]*resp.patt , p.aj.xi[,,gg] )
 					} else {
-#			I.lj.gg2[,,gg] <- matrix( colSums(  item.patt.freq[,gg] * p.aj.xi[,,gg]  ) , 
-#							nrow=J , ncol=L , byrow=T )
-#			I.lj.gg[,,gg] <- t( item.patt.freq[,gg] ) %*% p.aj.xi[,,gg]
-#			I.lj.gg[,,gg] <- t( item.patt.freq[,gg]*resp.patt ) %*% p.aj.xi[,,gg]
 			I.lj.gg[,,gg] <- crossprod( item.patt.freq[,gg]*resp.patt , p.aj.xi[,,gg] )
 					}
-#		for (i in 1:J){ 
-#			R.lj.gg[i,,gg] <- colSums(  item.patt.split[,i] * 
-#					item.patt.freq[,gg]*resp.patt[,i] * p.aj.xi[,,gg]  )
-#					}
-# 		R.lj <- t(ipr) %*% p.aj.xi	
-#		    R.lj.gg[,,gg] <- t( item.patt.split  * item.patt.freq[,gg] * resp.patt ) %*% p.aj.xi[,,gg]
+
 		    R.lj.gg[,,gg] <- crossprod( item.patt.split  * item.patt.freq[,gg] * resp.patt , p.aj.xi[,,gg] )
 			colnames(I.lj.gg) <- colnames(R.lj.gg) <- attr.patt.c
 			rownames(I.lj.gg) <- rownames(R.lj.gg) <- colnames(data)
@@ -983,11 +960,14 @@ if (HOGDINA >= 0){
 	devchange <- abs( 2*(like.new-loglikeold) )
 
 # cat( "\n Step 5 likelihood \n" ) ; a1 <- Sys.time() ; print(a1-a0) ; a0 <- a1									
-    
+# stop()    
 	
 	#******************************
 	# update parameters at minimal deviance
 	dev <- -2*like.new
+	
+	if (save.devmin){
+	
 	if ( dev < dev.min ){
 		iter.min <- iter-1	
 		delta.min <- delta
@@ -999,6 +979,7 @@ if (HOGDINA >= 0){
 		attr.prob.min <- attr.prob
 		loglike.min <- loglike
 				}		
+				}
 	#********************************
 		
 	}
@@ -1012,6 +993,7 @@ if (HOGDINA >= 0){
 	#***************************************
 	# use parameters with minimal deviance
 	iterused <- iter - 1
+	if (save.devmin){
 		iter.min -> iter	
 		delta.min -> delta
 		dev.min -> dev
@@ -1021,7 +1003,7 @@ if (HOGDINA >= 0){
 		I.lj.min -> I.lj		
 		attr.prob.min -> attr.prob
 		loglike.min -> loglike		
-		
+		}
 	#****************************************
 
 

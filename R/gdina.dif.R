@@ -7,18 +7,21 @@ gdina.dif <- function( object ){
 	J <- ncol(object$dat)
 	delta.group <- as.list(1:G)
 	varmat.group <- as.list(1:G)
+	prob.exp.group <- varmat.group <- as.list(1:G)
 	ocoef <- object$coef
 	for (gg in 1:G){  # gg <- 1
 		res.gg <- gdina.dif.aux( ocontrol , gg=gg )    
+		prob.exp.group[[gg]] <- res.gg$prob_exp
 		delta.group[[gg]] <- res.gg$delta
 		varmat.group[[gg]] <- res.gg$varmat.delta
 				}
 	ndj <- res.gg$ndj
-				
+			
 	# expanded delta vectors and design matrix
 	Rdesign <- varmat_all <- delta_all <- as.list(1:J)
 	difstats <- data.frame( "item" = colnames(object$dat) , "X2" = NA , "df" = NA)  
-
+	dif_es <- rep(NA,J)
+	  
 	for (jj in 1:J){          
 		# jj <- 7           
 		nj <- ndj[[jj]]
@@ -47,13 +50,22 @@ gdina.dif <- function( object ){
 		ivm <- solve( Rdesign.jj %*% varmat.jj %*% t(Rdesign.jj ) )
 		difstats[jj,"X2"] <- ( t(d0) %*% ivm %*% d0 )[1,1]
 		difstats[jj,"df"] <- nrow(Rdesign.jj)
+		# effect size in case of two groups
+		if ( G == 2 ){
+		    tab1 <- prob.exp.group[[1]][[jj]]
+		    tab2 <- prob.exp.group[[2]][[jj]]			
+			g1 <- (tab1[,1]+tab2[,2])/2
+		    g1 <- sum( g1 * abs( tab1[,2] - tab2[,2] ) )
+			dif_es[jj]  <- g1
+				}
 			}    
 	rownames(ocoef) <- paste0(ocoef$item,"_", ocoef$partype)
 	difstats$p <- 1 - pchisq( difstats$X2 , df=difstats$df )
 	difstats$p.holm <- p.adjust( difstats$p )               
+	if (G==2){ difstats$UA <- dif_es }
 	res <- list("difstats"=difstats , "coef" = ocoef , 
 			"delta_all" = delta_all ,
-			"varmat_all" = varmat_all )
+			"varmat_all" = varmat_all , "prob.exp.group" = prob.exp.group)
 	class(res) <- "gdina.dif"
 	return(res)
 	}

@@ -112,16 +112,20 @@ summary(mod1)
 fitmod1 <- itemfit.sx2(mod1)
 summary(fitmod1)
 ##       item itemindex   S-X2 df     p S-X2_df RMSEA Nscgr Npars p.holm
-##   1  I0001         1 29.124  9 0.001   3.236 0.047    10     1  0.006
-##   2  I0002         2 14.714  9 0.099   1.635 0.025    10     1  0.676
-##   3  I0003         3  6.271  9 0.712   0.697 0.000    10     1  1.000
-##   4  I0004         4 35.479  9 0.000   3.942 0.054    10     1  0.001
-##   5  I0005         5 12.093  9 0.208   1.344 0.019    10     1  0.914
-##   6  I0006         6 19.026  9 0.025   2.114 0.033    10     1  0.225
-##   7  I0007         7 14.802  9 0.097   1.645 0.025    10     1  0.676
-##   [...]
+##   1  I0001         1  4.173  9 0.900   0.464 0.000    10     1  1.000
+##   2  I0002         2 12.365  9 0.193   1.374 0.019    10     1  1.000
+##   3  I0003         3  6.158  9 0.724   0.684 0.000    10     1  1.000
+##   4  I0004         4 37.759  9 0.000   4.195 0.057    10     1  0.000
+##   5  I0005         5 12.307  9 0.197   1.367 0.019    10     1  1.000
+##   6  I0006         6 19.358  9 0.022   2.151 0.034    10     1  0.223
+##   7  I0007         7 14.610  9 0.102   1.623 0.025    10     1  0.818
+##   8  I0008         8 15.568  9 0.076   1.730 0.027    10     1  0.688
+##   9  I0009         9  8.471  9 0.487   0.941 0.000    10     1  1.000
+##   10 I0010        10  8.330  9 0.501   0.926 0.000    10     1  1.000
+##   11 I0011        11 12.351  9 0.194   1.372 0.019    10     1  1.000
+##   
 ##   -- Average Item Fit Statistics --
-##   S-X2 = 16.102 | S-X2_df = 1.789 
+##   S-X2 = 13.768 | S-X2_df = 1.53 
 
 ## -> 4th item does not fit to the 1PL model
 
@@ -136,16 +140,17 @@ summary(mod2)
 fitmod2 <- itemfit.sx2(mod2)
 summary(fitmod2)
 ##       item itemindex   S-X2 df     p S-X2_df RMSEA Nscgr Npars p.holm
-##   1  I0001         1 35.086  8 0.000   4.386 0.058    10     2  0.000
-##   2  I0002         2 15.570  8 0.049   1.946 0.031    10     2  0.490
-##   3  I0003         3  6.233  8 0.621   0.779 0.000    10     2  1.000
-##   4  I0004         4  5.975  8 0.650   0.747 0.000    10     2  1.000
-##   5  I0005         5 12.453  8 0.132   1.557 0.024    10     2  0.793
-##   6  I0006         6 14.388  8 0.072   1.799 0.028    10     2  0.525
-##   7  I0007         7 14.680  8 0.066   1.835 0.029    10     2  0.525
+##   1  I0001         1  4.083  8 0.850   0.510 0.000    10     2  1.000
+##   2  I0002         2 13.580  8 0.093   1.697 0.026    10     2  0.747
+##   3  I0003         3  6.236  8 0.621   0.780 0.000    10     2  1.000
+##   4  I0004         4  6.049  8 0.642   0.756 0.000    10     2  1.000
+##   5  I0005         5 12.792  8 0.119   1.599 0.024    10     2  0.834
+##   6  I0006         6 14.397  8 0.072   1.800 0.028    10     2  0.648
+##   7  I0007         7 15.046  8 0.058   1.881 0.030    10     2  0.639
 ##   [...]
+##   
 ##   -- Average Item Fit Statistics --
-##   S-X2 = 13.157 | S-X2_df = 1.645
+##   S-X2 = 10.22 | S-X2_df = 1.277 
 
 #*** 1PL model estimation in smirt (sirt package)
 Qmatrix <- matrix(1 , I,1 )
@@ -195,7 +200,7 @@ summary(mod1)
 # item fit statistic
 summary( itemfit.sx2( mod1 ) )
 ##   -- Average Item Fit Statistics --
-##   S-X2 = 12.248 | S-X2_df = 2.041 
+##   S-X2 = 7.397 | S-X2_df = 1.233 
 
 #*** Model 2: Mixed DINA/DINO model
 #***  1th item is misspecified according to DINO rule
@@ -207,7 +212,7 @@ summary(mod2)
 # item fit statistic
 summary( itemfit.sx2( mod2 ) )
 ##   -- Average Item Fit Statistics --
-##   S-X2 = 25.844 | S-X2_df = 4.307 
+##   S-X2 = 9.925 | S-X2_df = 1.654 
 
 #*** Model 3: Additive GDINA model
 mod3 <- gdina( data=sim.dina , q.matrix = sim.qmatrix , rule="ACDM")
@@ -215,7 +220,7 @@ summary(mod3)
 # item fit statistic
 summary( itemfit.sx2( mod3 ) )
 ##   -- Average Item Fit Statistics --
-##   S-X2 = 12.642 | S-X2_df = 2.475
+##   S-X2 = 8.416 | S-X2_df = 1.678 
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

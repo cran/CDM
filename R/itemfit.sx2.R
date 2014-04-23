@@ -113,11 +113,12 @@ itemfit.sx2 <- function( object , Eik_min=1 , progress=TRUE ){
 	# calculate fit for item ii
 	eps <- 10^(-10)
 	for (ii in 1:I){
-		# ii <- 3
+		  #ii <- 3
 #		res <- .calc.itemfit.oneitem( data , ii , pjk , pi.k , P1 , I , 
 		res <- .calc.itemfit.oneitem( ii , pjk , pi.k , P1 , I , 
 				Eik_min , sumscore.distribution,  scoredistribution , data , sumscore )
 		itemtable <- rbind( itemtable , res$table2.ii )
+
 		r1 <- res$table2.ii
 		itemfit.stat[ ii , "S-X2" ] <- sum( r1$Nik * ( r1$oik - r1$eik )^2 / ( r1$eik * ( 1 - r1$eik)  + eps ) )
 		itemfit.stat[ ii , "df" ] <- nrow(r1) - npars[ii]
@@ -127,6 +128,7 @@ itemfit.sx2 <- function( object , Eik_min=1 , progress=TRUE ){
 		itemfit.stat[ ii , "RMSEA" ] <- sqrt( (  ifelse( xg > 0 , xg , 0 )    ) / ( N - 1) / itemfit.stat[ ii , "df" ]  )
 		itemfit.stat[ii,"Nscgr"] <- nrow(r1)
 		itemfit.stat[ii,"Npars"] <- npars[ii]
+			
 		if (progress){ if (i3[ii] == 1 ){ cat("-") ; flush.console() } }
 				}
 	if (progress){ cat("|\n") }

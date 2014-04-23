@@ -19,7 +19,7 @@ gdina.dif.aux <- function( ocontrol , gg ){
 	invM.list <- ocontrol$invM.list
 	eps <- eps2 <- 10^(-10)
 	J <- length(Mj)
-	varmat.delta <- varmat.palj <- delta <- ndj <- as.list(1:J)
+	prob_exp <- varmat.delta <- varmat.palj <- delta <- ndj <- as.list(1:J)
 	R.lj <- ocontrol$R.lj.gg[,,gg]
 	I.lj <- ocontrol$I.lj.gg[,,gg]
     # calculation of expected counts
@@ -46,13 +46,21 @@ gdina.dif.aux <- function( ocontrol , gg ){
         
         if ( ( rule[jj] == "GDINA" )| ( method == "ULS" ) ){ 
                 invM <- invM.list[[jj]] 
-                delta.jj <- invM %*% crossprod(Mjjj ,pjjj)
+                delta.jj <- invM %*% crossprod(Mjjj ,pjjj)					
                             } else { 
                 invM <- solve( crossprod(Mjjj , Wj ) %*% Mjjj + diag( rep( eps2 , ncol(Mjjj) )) )               
-                delta.jj <- tcrossprod( invM , Mjjj ) %*% Wj %*% pjjj
+                delta.jj <- tcrossprod( invM , Mjjj ) %*% Wj %*% pjjj				
                                 }
+								
+				pjj_exp <- ( Mjjj %*% delta.jj )[,1]
+				if ( linkfct == "logit" ){ pjj_exp <- plogis( pjj_exp) }
+				if ( linkfct == "log" ){ pjj_exp <- exp( pjj_exp) }	
+		# data frame with counts and expected probabilities
+		prob_exp[[jj]] <- data.frame( "freq" = Ilj.ast / sum( Ilj.ast) , "prob" = pjj_exp )
+				
         delta[[jj]] <- delta.jj[,1]
 
+		#***********************************
         #*****
         # variance matrix
         PAJXI <-  p.aj.xi
@@ -121,9 +129,9 @@ gdina.dif.aux <- function( ocontrol , gg ){
                 varmat.delta[[jj]] <- Wjjj %*% Ijj %*% t(Wjjj) 
                 
         ndj[[jj]] <- length( delta[[jj]] )
-                }
+                }   # end jj
 	res <- list( "delta" = delta , "varmat.delta" = varmat.delta ,
-		"ndj" = ndj )
+		"ndj" = ndj , "prob_exp" = prob_exp )
     return(res)
 		}
 #####################################################################
