@@ -122,6 +122,7 @@
 	iter <- 1
 	parchange <- 1
 	b00 <- b
+	
 	while( ( iter <= msteps ) & ( parchange > convM)  ){
 		b0 <- b
 		probs <- .gdm.calc.prob( a,b,thetaDes,Qmatrix,I,K,TP,TD)								
@@ -199,7 +200,18 @@
 					v1 <- colSums( n.ik[,,kk,gg] * QM * thetaDes[ , td ] )
 					v2 <- N.ik[,,gg] * QM * thetaDes[,td] *  t( probs[,kk,] )
 					v2 <- colSums(v2)
+
 					d1.b[  , td] <- d1.b[,td] + v1 - v2
+				#*****************					
+				# old gdm version
+				#					v1 <- colSums( n.ik[,,kk,gg] * Qmatrix[  , td , kk-1 ] * thetaDes[ , td ] )
+				#					v2 <- N.ik[,,gg] * matrix( Qmatrix[,td,kk-1] , 
+				#                     nrow=TP , ncol=I) * thetaDes[,td] * 
+				#							t( probs[,kk,] )
+				#					v2 <- colSums(v2)
+				# cat( "v1=",v1 , "v2=" ,v2 , "\n")			
+				#					d1.b[  , td] <- d1.b[,td] + v1 - v2					
+				#******************					
 							}
 						}
 						}
@@ -212,17 +224,20 @@
 					v1 <- v1 + N.ik[,ii,gg] * as.vector( ( Qmatrix[ii,td,kk-1] * 
 							thetaDes[ , td ] )^2 * t( probs[ii,kk,] ) )
 					l0 <- l0 + as.vector ( Qmatrix[ii,td,kk-1] * thetaDes[ , td ]  * t( probs[ii,kk,] ) )
+			
 								}
+								
+								
 							}				
 				d2.b[ii,td] <- sum(v1) - sum( l0^2 * N.ik[,ii,gg] )
 					}
 					}
 			increment <-  d1.b / abs( d2.b + 10^(-10) )
 			increment[ is.na(increment) ] <- 0		
-#			increment <- ifelse(abs(increment)> max.increment, 
-#						   sign(increment)*max.increment , increment )							   					  
-			increment <- ifelse(abs(increment)> max.increment / sqrt( iter)  , 
-						   sign(increment)*max.increment / sqrt(iter ) , increment )							   					  
+			increment <- ifelse(abs(increment)> max.increment, 
+						   sign(increment)*max.increment , increment )							   					  
+#			increment <- ifelse(abs(increment)> max.increment / sqrt( iter)  , 
+#						   sign(increment)*max.increment / sqrt(iter ) , increment )							   					  
 #			ci <- ceiling( abs(increment) / ( abs( max.increment ) + 10^(-10) ) )
 #	        increment <- ifelse( abs(increment)> max.increment  , 
 #	                                  increment /(2*ci) , increment)					
@@ -247,8 +262,8 @@
 			parchange <- max( abs(a-a0))
 			iter <- iter + 1
 			}	# end iter
-		max.increment <- max(abs(a-a00))
-#		max.increment <- max(abs(a-a00)) / 1.005
+#		max.increment <- max(abs(a-a00))
+		max.increment <- max(abs(a-a00)) / 1.005
 		res <- list( "a" = a , "se.a" = se.a , "max.increment.a" = max.increment)
 		return(res)
 		}		
@@ -325,7 +340,7 @@
 		
 ###########################################################################
 # reduced skillspace estimation
-.gdm.est.skillspace <- function(Ngroup, pi.k , Z, G , delta , eps=10^(-4) ){		
+.gdm.est.skillspace <- function(Ngroup, pi.k , Z, G , delta , eps=10^(-10) ){		
 		# gg <- 1
 	covdelta <- as.list(1:G)
 	for (gg in 1:G){
@@ -365,6 +380,7 @@
 # cat( mg , sdg , "\n" )			
 	if ( (! is.null ( mean.constraint ))  ){
 		i1 <- mean.constraint[ mean.constraint[,2] == gg , , drop=FALSE]	
+#		  if ( ( nrow(i1) == 1 ) & (G>=1) ){ 	
 		  if ( ( nrow(i1) == 1 ) & (G>1) ){ 	
 				if ( ( gg==1 ) & (i1[,1]==1) & (i1[,2]==1) ){ 
 					b <- b + ( mg - i1[3] ) 
@@ -374,7 +390,8 @@
 					}
 	if ( ( ! is.null ( Sigma.constraint ) )  ){
 		i1 <- Sigma.constraint[ Sigma.constraint[,3] == gg , , drop=FALSE]
-		  if ( ( nrow(i1) == 1 ) & (G>1) ){ 	
+#		  if ( ( nrow(i1) == 1 ) & (G>=1) ){ 	
+		  if ( ( nrow(i1) == 1 ) & (G>1) ){ 		  
 			if ( ( gg==1 ) & (i1[,1]==1) & (i1[,2]==1) ){ 
 	                a <- a * sdg / sqrt(i1[4])  
 							}		

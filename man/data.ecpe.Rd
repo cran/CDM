@@ -58,7 +58,7 @@ The dataset was downloaded from
 \references{
 Templin, J., & Bradshaw, L. (2014). Hierarchical diagnostic classification
 models: A family of models for estimating and testing attribute
-hierarchies. \emph{Psychometrika}, \bold{xx}, xxx-xxx.
+hierarchies. \emph{Psychometrika}, \bold{79}, 317-339.
 	
 Templin, J., & Hoffman, L. (2013). 
 Obtaining diagnostic classification model estimates using Mplus. 

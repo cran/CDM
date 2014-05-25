@@ -60,8 +60,8 @@ A list with following entries
 
 \item{itemfit.stat}{Data frame containing item fit statistics}
 \item{itemtable}{Data frame with expected and observed proportions
-for each score group and each item. Beside the \code{p} value,
-a p value obtained by correction due to multiple testing
+for each score group and each item. Beside the ordinary p value,
+an adjusted p value obtained by correction due to multiple testing
 is provided (\code{p.holm}, see \code{\link{p.adjust}}).
 }
 }

@@ -333,7 +333,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 			res <- .gdm.est.a(probs, n.ik, N.ik, I, K, G,a,a.constraint,TD,
 					Qmatrix,thetaDes,TP, max.increment = max.increment.a ,
 					b , msteps , convM , centerslopes )
-			a <- res$a
+			a <- res$a						
 			se.a <- res$se.a
 			if (decrease.increments){ 	max.increment.a <- res$max.increment.a/1.01	}
 						}
@@ -367,7 +367,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 						weights , b , a)
 			pi.k <- res$pi.k
 			b <- res$b 
-			a <- res$a					
+			a <- res$a		
 					}
 		
 		# estimate skillspace		

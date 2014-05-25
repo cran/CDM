@@ -1,5 +1,5 @@
 ###############################################
-# auxialiary calculations in gdina model for
+# auxiliary calculations in gdina model for
 # detection of differential item functioning
 gdina.dif.aux <- function( ocontrol , gg ){
 	aggr.patt.designmatrix <- ocontrol$aggr.patt.designmatrix
@@ -57,7 +57,8 @@ gdina.dif.aux <- function( ocontrol , gg ){
 				if ( linkfct == "log" ){ pjj_exp <- exp( pjj_exp) }	
 		# data frame with counts and expected probabilities
 		prob_exp[[jj]] <- data.frame( "freq" = Ilj.ast / sum( Ilj.ast) , "prob" = pjj_exp )
-				
+		rownames(prob_exp[[jj]]) <- apply( Ajjj , 1 , 
+				FUN = function(ll){ paste0("S" , paste0( ll , collapse="") ) } )
         delta[[jj]] <- delta.jj[,1]
 
 		#***********************************

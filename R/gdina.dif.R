@@ -8,10 +8,12 @@ gdina.dif <- function( object ){
 	delta.group <- as.list(1:G)
 	varmat.group <- as.list(1:G)
 	prob.exp.group <- varmat.group <- as.list(1:G)
+	names(varmat.group) <- names(prob.exp.group) <- paste0("Group" , 1:G )
 	ocoef <- object$coef
 	for (gg in 1:G){  # gg <- 1
 		res.gg <- gdina.dif.aux( ocontrol , gg=gg )    
 		prob.exp.group[[gg]] <- res.gg$prob_exp
+		names(prob.exp.group[[gg]]) <- colnames(object$data)
 		delta.group[[gg]] <- res.gg$delta
 		varmat.group[[gg]] <- res.gg$varmat.delta
 				}

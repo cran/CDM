@@ -1390,7 +1390,7 @@ if (HOGDINA >= 0){
 	# control parameter
 	control <- list( skillclasses=skillclasses , q.matrix=q.matrix, conv.crit = conv.crit , 
 					dev.crit = dev.crit , maxit = maxit ,
-					linkfct = linkfct , Mj = Mj , 
+					linkfct = linkfct , Mj = Mj , Aj = Aj , 
 					group = group , 
 					method = method , 
 					delta.designmatrix = delta.designmatrix , 

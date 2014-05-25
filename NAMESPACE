@@ -23,7 +23,8 @@ export(din, sim.din , gdina ,
     gdina.wald ,
     gdina.dif ,
     skill.polychor ,
-    mcdina
+    mcdina ,
+    slca
     )
 
 # internal functions; not intended to be visible to users
@@ -57,6 +58,7 @@ S3method(summary,modelfit.cor.din)
 S3method(summary, gdina.wald)
 S3method(summary, gdina.dif)
 S3method(summary,mcdina)
+S3method(summary,slca)
 
 import(MASS)
 importFrom(polycor,polychor)

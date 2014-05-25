@@ -49,6 +49,7 @@ of 8th grade students.
 \code{\link[sirt:isop]{isop}} (Example 3, \pkg{sirt}),
 \code{\link[sirt:isop.scoring]{isop.scoring}} (Example 2, \pkg{sirt}),
 \code{\link[sirt:isop.test]{isop.test}} (Example 1, \pkg{sirt})
+\code{\link[sirt:polychoric2]{polychoric2}} (Example 1, \pkg{sirt})
 }
 
 
@@ -56,8 +57,7 @@ of 8th grade students.
 \dontrun{
 data(data.Students)
 library(psych)
-describe(data.Students)
-##   > describe(data.Students)
+psych::describe(data.Students)
 ##          var    n mean   sd median trimmed  mad min max range  skew kurtosis   se
 ##   urban    1 2400 0.31 0.46    0.0    0.27 0.00   0   1     1  0.81    -1.34 0.01
 ##   female   2 2400 0.51 0.50    1.0    0.51 0.00   0   1     1 -0.03    -2.00 0.01
