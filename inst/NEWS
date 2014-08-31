@@ -9,308 +9,332 @@ A. Robitzsch, T. Kiefer, A. C. George, & A. Uenlue
 mailto:
 a.robitzsch /-\ bifie.at
 
+URL:
+https://sites.google.com/site/alexanderrobitzsch/software
+
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+--------------------------------------------------------------
+CDM 3.4 (2014-08-31)   --  CRAN CDM 3.4-21
+--------------------------------------------------------------
+
+NOTE  * speeded itemfit.sx2 a bit
+NOTE  * included output value 'pattern' in multiple group GDINA models
+        (requested by Sung Eun Kim)
+NOTE  * included adjusted mean absolute deviation of Q3 statistics (MADaQ3)
+        in modelfit.cor.din
+EXAMP * included examples for running CDMs in mirt package
+          o DINA model ('data.dcm', Model 1)
+          o additive GDINA model ('data.dcm', Model 6)
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: modelfit.cor (1), din.deterministic,
+        itemfit.sx2 (1), data.dcm (1,6) 
 
 --------------------------------------------------------------
 CDM 3.3 (2014-05-25)   --  CRAN CDM 3.3-24
 --------------------------------------------------------------
 
-x included structured latent class analysis for polytomous data ('slca')
+ADDED * included structured latent class analysis for polytomous data ('slca')
 
-* included/modified datasets: ---
-* included/modified examples: slca (1,2,3,4,5)
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: slca (1,2,3,4,5)
 
 --------------------------------------------------------------
 CDM 3.2 (2014-04-23)   --  CRAN CDM 3.2-6
 --------------------------------------------------------------
 
-x included an argument save.devmin in 'gdina' for more parsimonious
-  savings of output values to avoid working memory overflow for 
-  large datasets
-x included effect size of differential item functioning in
-  gdina model (included in 'gdina.dif')
-x fixed a bug in itemfit.sx2
+NOTE  * included an argument save.devmin in 'gdina' for more parsimonious
+        savings of output values to avoid working memory overflow for 
+        large datasets
+NOTE  * included effect size of differential item functioning in
+        gdina model (included in 'gdina.dif')
+FIXED * fixed a bug in itemfit.sx2
 
-* included/modified datasets: ---
-* included/modified examples: gdina.dif (1)
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: gdina.dif (1)
 
 --------------------------------------------------------------
 CDM 3.1 (2014-03-21)   --  CRAN CDM 3.1-14
 --------------------------------------------------------------
 
-x fixed a bug when printing objects of class 'din'
-x allowed vector input of item response pattern in 'plot.din'
-x disabled argument log.file in 'summary.din'
-x included random initial parameter values in 'din' and 'gdina'
-x changed some settings in plot.din
+FIXED * fixed a bug when printing objects of class 'din'
+NOTE  * allowed vector input of item response pattern in 'plot.din'
+NOTE  * disabled argument log.file in 'summary.din'
+NOTE  * included random initial parameter values in 'din' and 'gdina'
+NOTE  * changed some settings in plot.din
 
-* included/modified datasets: ---
-* included/modified examples: din (1), gdina (1), plot.din
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: din (1), gdina (1), plot.din
 
 --------------------------------------------------------------
 CDM 3.0 (2014-02-26)   --  CRAN CDM 3.0-29
 --------------------------------------------------------------
 
-x changed output in summary.gdina a bit (fixed a bug for
-  the output of skill probabilities)
-x included the argument 'avoid.zeroprobs' in gdina function
-   to avoid zero probabilities of skill classes and inversion
-   of singular matrices   
-x fixed problems in itemfit.sx2 for empty cells (thanks to
-   Balal Izanloo)
-x included a Wald test for the GDINA model (gdina.wald)
-x included assessment of item-wise differential item functioning 
-   in the GDINA model (gdina.dif)
-x removed minor bug in summary.gdina
-x fixed a bug with singular design matrix in skill space reduction    
-x included calculation of polychoric correlation in summary.gdina
-   and an additional function skill.polychor
-x removed parallel plot form plot.din
-x fixed a (crucial) bug for in the multidimensional GDMs with item slope
-  parameter estimation
-x included function 'mcdina' for estimating the multiple group multiple
-  choice DINA (MCDINA) model with polytomous attributes
+NOTE  * changed output in summary.gdina a bit (fixed a bug for
+        the output of skill probabilities)
+NOTE  * included the argument 'avoid.zeroprobs' in gdina function
+        to avoid zero probabilities of skill classes and inversion
+        of singular matrices   
+NOTE  * fixed problems in itemfit.sx2 for empty cells (thanks to
+        Balal Izanloo)
+ADDED * included a Wald test for the GDINA model (gdina.wald)
+ADDED * included assessment of item-wise differential item functioning 
+        in the GDINA model (gdina.dif)
+FIXED * removed minor bug in summary.gdina
+FIXED * fixed a bug with singular design matrix in skill space reduction    
+ADDED * included calculation of polychoric correlation in summary.gdina
+        and an additional function skill.polychor
+NOTE  * removed parallel plot form plot.din
+FIXED * fixed a crucial bug for in the multidimensional GDMs with item slope
+        parameter estimation
+ADDED * included function 'mcdina' for estimating the multiple group multiple
+        choice DINA (MCDINA) model with polytomous attributes
 
-* included/modified datasets: data.cdm01, data.cdm02
-* included/modified examples: data.ecpe, gdina.wald (1), 
-   gdina.dif (1), din (7), mcdina (1,2,3)
+DATA  * included/modified datasets: data.cdm01, data.cdm02
+EXAMP * included/modified examples: data.ecpe, gdina.wald (1), 
+        gdina.dif (1), din (7), mcdina (1,2,3)
 
 --------------------------------------------------------------
 CDM 2.7 (2014-01-30)   --  CRAN CDM 2.7-7
 --------------------------------------------------------------
 
-x included cognitive diagnostic indices based on Kullback-Leibler
-   information ('cdi.kli')
-x changed NAMESPACE and DESCRIPTION files due to a change in Rcpp
-x included non-exported Rcpp files for calculating individual 
-  likelihood and posterior distribution for polytomous items and
-  multiple groups
+ADDED * included cognitive diagnostic indices based on Kullback-Leibler
+        information ('cdi.kli')
+NOTE  * changed NAMESPACE and DESCRIPTION files due to a change in Rcpp
+NOTE  * included non-exported Rcpp files for calculating individual 
+        likelihood and posterior distribution for polytomous items and
+        multiple groups
 
-* included/modified datasets: ---
-* included/modified examples: cdi.kli (1)
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: cdi.kli (1)
 
 --------------------------------------------------------------
 CDM 2.6 (2014-01-19)   --  CRAN CDM 2.6-13
 --------------------------------------------------------------
 
-x fixed a bug in polytomous GDINA models with only one skill
-x included value 'zeroprob.skillclasses' in skillspace.hierarchy
-x included a more efficient skill space reduction method in
-  gdina: using the argument 'reduced.skillspace.method',
-  the new implemented method is now the default
-x included data transformation function 'sequential.items' for
-  constructing dichtomous pseudo items from polytomous items
+FIXED * fixed a bug in polytomous GDINA models with only one skill
+NOTE  * included value 'zeroprob.skillclasses' in skillspace.hierarchy
+NOTE  * included a more efficient skill space reduction method in
+        gdina: using the argument 'reduced.skillspace.method',
+        the new implemented method is now the default
+ADDED * included data transformation function 'sequential.items' for
+        constructing dichtomous pseudo items from polytomous items for
+        estimation sequential item response models 
 
-* included/modified datasets: data.sda6, data.timss03.G8.su,
-  data.timss07.G4.lee
-* included/modified examples: gdm (10)
+DATA  * included/modified datasets: data.sda6, data.timss03.G8.su,
+        data.timss07.G4.lee
+EXAMP * included/modified examples: gdm (10)
 
 --------------------------------------------------------------
 CDM 2.5 (2014-01-16)   --  CRAN CDM 2.5-48
 --------------------------------------------------------------
 
-x fixed a bug when inverting a singular matrix in standard error
-  calculation in gdina function (thanks to Hsin-Hao Chen)
-x included conditional item probabilities in gdina output
-x included gdina plot function (thanks to a discussion with 
-  Hamdollah Ravand)
-x fixed a bug in summary.dina if data without column names
-  is provided (thanks to Hu Jinxiang)
-x removed a bug in gdina function which occured sometimes
-  due to division by zero (thanks to Hu Jinxiang)
-x fixed a bug in cdm.est.class.accuracy for GDINA models
-  (thanks to Hamdollah Ravand)
-x fixed some instable numerical behavior for higher order
-  GDINA models (thanks to Ed Merkle)
-x fixed a bug in calculating number of estimated parameters for
-  'din' function in case of skill classes with zero probability
-  (thanks to Juergen Gross)
-x added some explanations in 'modelfit.cor'
-x included S-X2 item fit statistic ('itemfit.sx2') accompanied
-  with a summary and a plot method
-x included marginal skill classification reliability in
-  'cdm.est.class.accuracy' function
-x implemented significance tests in modelfit.cor and modelfit.cor.din
-x included jackknife estimation of standard
-  errors and bias corrected estimators in modelfit.cor.din
-x speeded function 'modelfit.cor' by moving some parts of the code
-  to Rcpp
-x included warnings in case of nonconvergence in gdina function
-  (thanks to a dataset provided by Hamdollah Ravand)
-x slight change of algorithm for skill space reduction which
-  seems to improve convergence behavior
-x included a function for skill space approximation
-x included a function for calculation reduced skill spaces
-  if hierarchies among skills exist ('skillspace.hierarchy')
-x included generalized distance discriminating method and a function
-  for computing ideal response patterns
+FIXED * fixed a bug when inverting a singular matrix in standard error
+        calculation in gdina function (thanks to Hsin-Hao Chen)
+NOTE  * included conditional item probabilities in gdina output
+NOTE  * included gdina plot function (thanks to a discussion with 
+        Hamdollah Ravand)
+FIXED * fixed a bug in summary.dina if data without column names
+        is provided (thanks to Hu Jinxiang)
+FIXED * removed a bug in gdina function which occured sometimes
+        due to division by zero (thanks to Hu Jinxiang)
+FIXED * fixed a bug in cdm.est.class.accuracy for GDINA models
+        (thanks to Hamdollah Ravand)
+FIXED * fixed some instable numerical behavior for higher order
+        GDINA models (thanks to Ed Merkle)
+FIXED * fixed a bug in calculating number of estimated parameters for
+        'din' function in case of skill classes with zero probability
+        (thanks to Juergen Gross)
+NOTE  * added some explanations in the manual of 'modelfit.cor'
+ADDED * included S-X2 item fit statistic ('itemfit.sx2') accompanied
+        with a summary and a plot method
+ADDED * included marginal skill classification reliability in
+        'cdm.est.class.accuracy' function
+ADDED * implemented significance tests in modelfit.cor and modelfit.cor.din
+ADDED * included jackknife estimation of standard
+        errors and bias corrected estimators in modelfit.cor.din
+NOTE  * speeded function 'modelfit.cor' by moving some parts of the code
+        to Rcpp
+NOTE  * included warnings in case of nonconvergence in gdina function
+        (thanks to a dataset provided by Hamdollah Ravand)
+NOTE  * slight change of algorithm for skill space reduction which
+        seems to improve convergence behavior
+ADDED * included a function for skill space approximation
+ADDED * included a function for calculation reduced skill spaces
+        if hierarchies among skills exist ('skillspace.hierarchy')
+ADDED * included generalized distance discriminating method and a function
+        for computing ideal response patterns
 
-* included/modified datasets: data.hr, data.melab, data.jang, 
-  data.dtmr
-* included/modified examples: gdm (4,5,6), gdina (8,9), sim.din (3), 
-  sim.gdina (2,3), itemfit.sx2 (1,2), din(6)
+DATA  * included/modified datasets: data.hr, data.melab, data.jang, 
+        data.dtmr
+EXAMP * included/modified examples: gdm (4,5,6), gdina (8,9), sim.din (3), 
+        sim.gdina (2,3), itemfit.sx2 (1,2), din(6)
 
 --------------------------------------------------------------
 CDM 2.4 (2013-10-24)   --  CRAN CDM 2.4-9
 --------------------------------------------------------------
 
-x included two datasets 'data.dcm' and 'data.ecpe'
-x eliminated a recoding error in data.Students
+DATA  * included two datasets 'data.dcm' and 'data.ecpe'
+DATA  * eliminated a recoding error in data.Students
 
 --------------------------------------------------------------
 CDM 2.3 (2013-09-06)   --  CRAN CDM 2.3-15
 --------------------------------------------------------------
 
-x worked on slight improvements of computation time in din
-  and gdina
-x included multiple group dataset 'data.mg'
-x cleaned CDM manual (thanks to Michaela Mayr)
+NOTE  * worked on slight improvements of computation time in din
+        and gdina
+DATA  * included multiple group dataset 'data.mg'
+NOTE  * cleaned CDM manual (thanks to Michaela Mayr)
 
 --------------------------------------------------------------
 CDM 2.2 (2013-08-20)   --  CRAN CDM 2.2-20
 --------------------------------------------------------------
 
-x accelerated rowMaxs function
-x included Q-matrix validation function (de la Torre, 2008)
-x included joint maximum likelihood estimation and
-  classification function for the mixed DINA/DINO model
-  -> function din.deterministic
-x included another example (based on attribute vectors) 
-  in sim.din function
-x included polytomous GDINA model (Chen & de la Torre, 2013)  
+NOTE  * accelerated rowMaxs function
+ADDED * included Q-matrix validation function (de la Torre, 2008)
+ADDED * included joint maximum likelihood estimation and
+        classification function for the mixed DINA/DINO model
+        -> function din.deterministic
+EXAMP * included another example (based on attribute vectors) 
+        in sim.din function
+ADDED * included polytomous GDINA model (Chen & de la Torre, 2013)  
 
 --------------------------------------------------------------
 CDM 2.01 (2013-07-27)   --  CRAN CDM 2.01-11
 --------------------------------------------------------------
 
-x fixed a bug in gdm in multiple group estimation: group
-  labeling was incorrect and is now included in output group.stat
-  and displayed in summary.gdm
-x improved convergence behavior for multiple group analysis
-x accelerated calculation in gdm: skillspace reduction
+FIXED * fixed a bug in gdm in multiple group estimation: group
+        labeling was incorrect and is now included in output group.stat
+        and displayed in summary.gdm
+NOTE  * improved convergence behavior for multiple group analysis
+NOTE  * accelerated calculation in gdm: skillspace reduction
 
 --------------------------------------------------------------
 CDM 1.5 (2013-07-09)   --  CRAN CDM 1.5-12
 --------------------------------------------------------------
 
-x allowed for centering of intercepts and slopes in gdm
-x included satured skill distribution estimation in gdm
-x fixed a bug in the calculation of RMSEA itemfit, although
-  is not clear if the correct formula is used
-x fixed a bug in gdm with varying number of item categories
-  (thanks to Artur Pokropek)
-x included the multidimensional latent class IRT model 
-  (Bartolucci, 2007) in gdm (skillspace="est")
-x speeded calculation of modelfit.cor
+NOTE  * allowed for centering of intercepts and slopes in gdm
+ADDED * included satured skill distribution estimation in gdm
+FIXED * fixed a bug in the calculation of RMSEA itemfit, although
+        is not clear if the correct formula is used
+FIXED * fixed a bug in gdm with varying number of item categories
+        (thanks to Artur Pokropek)
+ADDED * included the multidimensional latent class IRT model 
+        (Bartolucci, 2007) in gdm (skillspace="est")
+NOTE  * speeded calculation of modelfit.cor
 
 --------------------------------------------------------------
 CDM 1.4 (2013-06-30)   --  CRAN CDM 1.4-16
 --------------------------------------------------------------
 
-x eliminated a bug in GDINA function for link="log"
-x included the parametrization of the reduced RUM model in gdina
-x worked on higher order GDINA model which has the argument
-  HOGDINA in gdina. Now there is dependency on the fa factor 
-  analysis function in the psych package.
-x included log-likelihood extractor functions
-x included group-wise calculation of RMSEA statistics
-  see itemfit.rmsea and the gdm output (thanks to Artur Pokropek)
-x (hopefully) fixed a bug in gdm function with differing number of
-  item categories (thanks to Artur Pokropek)  
-x use frequency patterns in gdm to speed up calculations
-  for large data sets (argument 'use.freqpatt' in gdm function)
-x included more than one step in gdm function
-  - arguments msteps (set to 8 M steps as the default) and
-    convM
+FIXED * eliminated a bug in GDINA function for link="log"
+ADDED * included the parametrization of the reduced RUM model in gdina
+ADDED * worked on higher order GDINA model which has the argument
+        HOGDINA in gdina. Now there is dependency on the 'fa' factor 
+        analysis function in the psych package.
+ADDED * included log-likelihood extractor functions
+ADDED * included group-wise calculation of RMSEA statistics
+        see itemfit.rmsea and the gdm output (thanks to Artur Pokropek)
+FIXED * (hopefully) fixed a bug in gdm function with differing number of
+        item categories (thanks to Artur Pokropek)  
+NOTE  * use frequency patterns in gdm to speed up calculations
+        for large data sets (argument 'use.freqpatt' in gdm function)
+NOTE  * included more than one step in gdm function
+        - arguments msteps (set to 8 M steps as the default) and convM
 
 --------------------------------------------------------------
 CDM 1.3 (2013-05-15)   --  CRAN CDM 1.3-17
 --------------------------------------------------------------
 
-x included the general diagnostic model (function gdm)
-x included a function for calculating equivalent skill classes
-  for the DINA/DINO model
-x modelfit and anova functions are also accessible for the GDM
-x fixed a bug in the function for classification accuracy
-x included the RMSEA item fit index
-x fixed a bug in gdina estimation
-x included coef extractor function
+ADDED * included the general diagnostic model (function gdm)
+ADDED * included a function for calculating equivalent skill classes
+        for the DINA/DINO model
+ADDED * modelfit and anova functions are also accessible for the GDM
+FIXED * fixed a bug in the function for classification accuracy
+ADDED * included the RMSEA item fit index
+FIXED * fixed a bug in gdina estimation
+ADDED * included coef extractor function
 
 --------------------------------------------------------------
 CDM 1.2-3 (2013-02-12)
 --------------------------------------------------------------
 
-x included a model fit function modelfit.cor(.din) for the
-  comparison of observed and expected correlations
-x fixed a bug in the gdina function when applying the model
-  with one skill
+ADDED * included a model fit function modelfit.cor(.din) for the
+        comparison of observed and expected correlations
+FIXED * fixed a bug in the gdina function when applying the model
+        with one skill
 
 --------------------------------------------------------------
 CDM 1.2-1/1.2-2 (2013-02-01)
 --------------------------------------------------------------
 
-x allow for user specified reduced skill space designs
-x included tetrachoric correlations in summary.gdina function
-x handled zero probability classes in gdina function
-x allowed for output and input of attribute patterns in sim.din
-  function
-x included relative deviance change as convergence criterion in din
-  function
-x included function for determining a statistically equivalent 
-  DINA model (von Davier, 2013)
-x changed structure of din summary
-x included an anova function
-x included a function for estimating classification reliability
-x fixed a bug in gdina function when creating design matrices
+ADDED * allow for user specified reduced skill space designs
+ADDED * included tetrachoric correlations in summary.gdina function
+ADDED * handled zero probability classes in gdina function
+ADDED * allowed for output and input of attribute patterns in sim.din
+        function
+NOTE  * included relative deviance change as convergence criterion in din
+        function
+ADDED * included function for determining a statistically equivalent 
+        DINA model (von Davier, 2013)
+NOTE  * changed structure of din summary
+ADDED * included an anova function
+ADDED * included a function for estimating classification reliability
+FIXED * fixed a bug in gdina function when creating design matrices
 
 --------------------------------------------------------------
 CDM 1.2.0 (2012-09-30)
 --------------------------------------------------------------
 
-x implemented the latent skill space reduction according
-  to Xu and von Davier (2008)
-x fixed a bug in calculation of estimated parameters
-x fixed a bug in IDI calculation
-x corrected MLE based classification in case of latent
-  classes with a priori spceified zero probability in the
-  din function (yet to be done in gdina)
-x fixed a bug in standard error calculation in gdina
-x speed improvements in din and gdina function
-  - included a C function for calculating the posterior 
-    distribution
-x check of admissible rule in gdina
-x include rule "GDINA2" and "GDINA1" ("GDINA1" is 
-  equivalent to "ACDM")
-x Simulation function for the GDINA model included
-x multiple group gdina function for estimation of
-  generalized DINA models (de la Torre, 2011)
-x new function summary.gdina
+ADDED * implemented the latent skill space reduction according
+        to Xu and von Davier (2008)
+FIXED * fixed a bug in calculation of estimated parameters
+FIXED * fixed a bug in IDI calculation
+FIXED * corrected MLE based classification in case of latent
+        classes with a priori spceified zero probability in the
+        din function (yet to be done in gdina)
+FIXED * fixed a bug in standard error calculation in gdina
+NOTE  * speed improvements in din and gdina function
+        - included a C function for calculating the posterior 
+          distribution
+NOTE  * check of admissible rule in gdina
+ADDED * include rule "GDINA2" and "GDINA1" ("GDINA1" is 
+        equivalent to "ACDM")
+ADDED * Simulation function for the GDINA model included
+ADDED * multiple group gdina function for estimation of
+        generalized DINA models (de la Torre, 2011)
+ADDED * included new function summary.gdina
 
 --------------------------------------------------------------
 CDM 1.1 (2012-07-29)
 --------------------------------------------------------------
 
-x highest argument deleted from print.din method
-x new argument for summary.din n.skill.classes
-x skill pattern probabilities deleted from print.din
-x skill pattern summary replaced by n most frequent skill 
-  classes in summary.din
-x (argument ask=TRUE in summary.din placed by overwrite=FALSE)
-x use a different item discrimination index (Lee et al., 2012)
-x remove GDINA estimation from this package version because
-  it is in an experimental status 
-    -> gdina will be included in CDM >= 1.1-1
-x new optional attribute for q-matrix specification list of skill 
-  labels
-x changed ouput in din function
-   -> pattern, like and posterior are sorted according to the original 
-      input data frame
-x remove a bug for models with only attribute
-x new argument for din method zeroprob.skillclasses
-x new argument for din method equal.itempars
-x new arguments for summary.din method log.file and ask
-x minor bug fixes in print.din method
-x replace internal method rowProds with faster rowProds2
-x option for writing an output file of model results included in 
-  function summary.din 
+NOTE  * highest argument deleted from print.din method
+NOTE  * new argument for summary.din n.skill.classes
+NOTE  * skill pattern probabilities deleted from print.din
+NOTE  * skill pattern summary replaced by n most frequent skill 
+        classes in summary.din
+NOTE  * (argument ask=TRUE in summary.din placed by overwrite=FALSE)
+NOTE  * use a different item discrimination index (Lee et al., 2012)
+NOTE  * remove GDINA estimation from this package version because
+        it is in an experimental status 
+        -> gdina will be included in CDM >= 1.1-1
+NOTE  * new optional attribute for q-matrix specification list of skill 
+        labels
+NOTE  * changed ouput in din function
+        -> pattern, like and posterior are sorted according to the original 
+           input data frame
+FIXED * remove a bug for models with only attribute
+ADDED * new argument for din method zeroprob.skillclasses
+ADDED * new argument for din method equal.itempars
+NOTE  * new arguments for summary.din method log.file and ask
+FIXED * minor bug fixes in print.din method
+NOTE  * replace internal method rowProds with faster rowProds2
+NOTE  * option for writing an output file of model results included in 
+        function summary.din 
+
+--------------------------------------------------------------
+CDM 1.0 (2011-10-27)
+--------------------------------------------------------------
+               [--- FIRST CRAN RELEASE ---]

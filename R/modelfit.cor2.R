@@ -127,10 +127,11 @@ function( data , posterior , probs ){
 			sqrt( mean( ( itempairs$corObs - itempairs$corExp )^2 ) ) ,			
 			mean( itempairs$X2 ) , # mean( itempairs$G2) ,
 			mean( 100*abs(itempairs$RESIDCOV ) ) ,
-			mean( abs( itempairs$Q3 ) )
+			mean( abs( itempairs$Q3 ) ) ,
+			mean( abs( itempairs$Q3 - mean(itempairs$Q3) ) )
 						) )
 	rownames(modelfit) <- c("MADcor" , "SRMSR" , "MX2" , # "MG2",
-				"100*MADRESIDCOV" , "MADQ3" )
+				"100*MADRESIDCOV" , "MADQ3" , "MADaQ3" )
     
 	#*****
 	# summary statistics

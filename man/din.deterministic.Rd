@@ -123,6 +123,21 @@ res <- din.deterministic( dat , q.matrix , method="hamming" )
 
 # Classification using weighted Hamming distance
 res <- din.deterministic( dat , q.matrix , method="weighted.hamming" )
+
+\dontrun{
+#********* load NPCD library for JML estimation
+library(NPCD)
+# choose a smaller dataset for reasons of computation time
+
+# DINA model
+res <- NPCD::JMLE( Y=dat[1:100,] , Q=q.matrix , model="DINA" )
+as.data.frame(res$par.est )   # item parameters
+res$alpha.est                 # skill classifications
+
+# RRUM model
+res <- NPCD::JMLE( Y=dat[1:100,] , Q=q.matrix , model="RRUM" )
+as.data.frame(res$par.est )
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

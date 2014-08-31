@@ -60,9 +60,10 @@ coef(d2)
 
 # GDM model (use only 10 iterations for computation time reasons)
 theta.k <- seq(-4,4,len=11)
-d3 <- gdm( sim.dina , irtmodel="2PL" , theta.k=theta.k , 
-     Qmatrix=as.matrix(sim.qmatrix) , centered.latent=TRUE , maxiter=10 )
-coef(d3) }
+d3 <- gdm( sim.dina, irtmodel="2PL", theta.k=theta.k, Qmatrix=as.matrix(sim.qmatrix), 
+             centered.latent=TRUE , maxiter=10 )
+coef(d3) 
+}
 }
 
 \keyword{methods}

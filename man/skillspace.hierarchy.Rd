@@ -88,11 +88,11 @@ B[2,3] <- 1     # A2 > A3
 
 sp1 <- skillspace.hierarchy( B=B , skill.names=skill.names )
 sp1$skillspace.reduced
-##     A1 A2 A3
-##   1  0  0  0
-##   2  1  0  0
-##   4  1  1  0
-##   8  1  1  1
+  ##     A1 A2 A3
+  ##   1  0  0  0
+  ##   2  1  0  0
+  ##   4  1  1  0
+  ##   8  1  1  1
 
 #*** Model 2:  A1 > A2 and A1 > A3
 B <- B0
@@ -101,12 +101,12 @@ B[1,3] <- 1     # A1 > A3
 
 sp2 <- skillspace.hierarchy( B=B , skill.names=skill.names )
 sp2$skillspace.reduced
-##     A1 A2 A3
-##   1  0  0  0
-##   2  1  0  0
-##   4  1  1  0
-##   6  1  0  1
-##   8  1  1  1
+  ##     A1 A2 A3
+  ##   1  0  0  0
+  ##   2  1  0  0
+  ##   4  1  1  0
+  ##   6  1  0  1
+  ##   8  1  1  1
 
 #*** Model 3: A1 > A3 , A2 is not included in a hierarchical way
 B <- B0
@@ -114,13 +114,13 @@ B[1,3] <- 1     # A1 > A3
 
 sp3 <- skillspace.hierarchy( B=B , skill.names=skill.names )
 sp3$skillspace.reduced
-##     A1 A2 A3
-##   1  0  0  0
-##   2  1  0  0
-##   3  0  1  0
-##   4  1  1  0
-##   6  1  0  1
-##   8  1  1  1
+  ##     A1 A2 A3
+  ##   1  0  0  0
+  ##   2  1  0  0
+  ##   3  0  1  0
+  ##   4  1  1  0
+  ##   6  1  0  1
+  ##   8  1  1  1
 
 #~~~ Hierarchy specification using strings
 

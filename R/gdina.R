@@ -274,6 +274,8 @@ if (progress){
 						}
 			 }
 
+
+# stop()			 
 # vv <- "item response patterns" ; a1 <- Sys.time() ; cat( vv , a1-a0 , "\n") ; a0 <- Sys.time()
 # print("a300")
 		 
@@ -1026,15 +1028,22 @@ if (HOGDINA >= 0){
 
 				
 	if (G>1){
-# work on this pattern
-#		pattern <- cbind( 
-#						freq = round(as.numeric(item.patt[,-1]),3),
-#						mle.est = attr.patt.c[ max.col( p.xi.aj ) ], 
-#						mle.post = rowMaxs( p.xi.aj ) / rowSums( p.xi.aj ), 
-#						map.est = attr.patt.c[ max.col( p.aj.xi ) ], 
-#						map.post = rowMaxs( p.aj.xi )
-#						)	
-		pattern <- NULL
+		ind1 <- match( item.patt.subj , item.patt[,1] )
+		l1 <- attr.patt.c[ max.col( p.xi.aj ) ]
+		pattern <- data.frame( "mle.est" = l1[ind1] ) 
+		l1 <- rowMaxs( p.xi.aj ) / rowSums( p.xi.aj )
+		pattern$mle.post <- l1[ind1]
+		pattern$map.est <- NA
+		pattern$map.post <- NA
+		for (gg in 1:G){
+			# gg <- 1	
+			ind.gg <- which( group2 == gg )
+			ind2.gg <- match( item.patt.subj[ind.gg] , item.patt[  , 1] )
+			l1 <- attr.patt.c[ max.col( p.aj.xi[,,gg] ) ]
+			pattern$map.est[ind.gg] <- l1[ind2.gg]
+			l1 <-  rowMaxs( p.aj.xi[,,gg] )
+			pattern$map.post[ind.gg] <- l1[ind2.gg]		
+					}
 			}
 #print(pattern)
 
@@ -1306,9 +1315,11 @@ if (HOGDINA >= 0){
 		rownames(p.aj.xi) <- pattern$pattern
 		p.xi.aj <- p.xi.aj[ item.patt.subj$pattern.index , ]
 		rownames(p.xi.aj) <- pattern$pattern
-		#*****		
-		
+		#*****				
 				}
+
+
+				
 	############################################
 	# item fit [ items , theta , categories ] 
 	# # n.ik [ 1:TP , 1:I , 1:(K+1) , 1:G ]

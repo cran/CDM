@@ -1,8 +1,8 @@
 Package: CDM
 Type: Package
 Title: Cognitive Diagnosis Modeling
-Version: 3.3-24
-Date: 2014-05-25
+Version: 3.4-21
+Date: 2014-08-31
 Author: Alexander Robitzsch [aut, cre], Thomas Kiefer [aut], 
      Ann Cathrice George [aut], Ali Uenlue [aut]
 Maintainer: Alexander Robitzsch <a.robitzsch@bifie.at>
@@ -19,14 +19,15 @@ Description: Functions for cognitive diagnosis modeling
     the multidimensional linear compensatory item response model and 
     the structured latent class model (SLCA).
 Depends: R (>= 2.15.0), mvtnorm
-Imports: MASS, psych, polycor, sfsmisc, Rcpp (>= 0.11)
-Suggests: sirt, TAM, NPCD, ACTCD, pks
+Imports: MASS, psych, polycor, sfsmisc, Rcpp (>= 0.11),
+Suggests: TAM (>= 1.0-3), mirt (>= 1.5), sirt (>= 0.47), NPCD, ACTCD,
+        pks
 LinkingTo: Rcpp, RcppArmadillo
 LazyLoad: yes
 LazyData: yes
 License: GPL (>= 2)
 URL: https://sites.google.com/site/alexanderrobitzsch/software
-Packaged: 2014-05-25 07:06:24 UTC; robitzsch
+Packaged: 2014-08-31 11:29:03 UTC; robitzsch
 NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2014-05-25 10:34:41
+Date/Publication: 2014-08-31 15:03:47

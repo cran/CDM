@@ -12,17 +12,17 @@
 Functions for cognitive diagnosis modeling
     and multidimensional item response modeling for dichotomous
     and polytomous data. This package enables the estimation of the
-    DINA and DINO model, the multiple group (polytomous) GDINA model,
-    the multiple choice DINA model and the general diagnostic model (GDM) 
-    which contains the multidimensional linear compensatory item response 
-    model as a special case.
+    DINA and DINO model, the multiple group (polytomous) GDINA model, 
+    the multiple choice DINA model, the general diagnostic model (GDM), 
+    the multidimensional linear compensatory item response model and 
+    the structured latent class model (SLCA).
 }
 
 \details{
   \tabular{ll}{
     Package: \tab \pkg{CDM}\cr
     Type: \tab Package\cr
-    Version: \tab 3.3\cr
+    Version: \tab 3.4\cr
     Publication Year: \tab 2014\cr
     License: \tab \acronym{GPL} (>= 2) \cr
     URL: \tab \url{https://sites.google.com/site/alexanderrobitzsch/software} \cr            
@@ -98,6 +98,9 @@ Functions for cognitive diagnosis modeling
 \seealso{
     See also the \pkg{ACTCD} and \pkg{NPCD} packages for nonparametric cognitive 
     diagnostic models.     
+    
+%    See \href{http://cran.r-project.org/web/packages/dcmr/index.html}{\pkg{dcmr}}
+    See \pkg{dcmr} for MCMC based estimation methods.
         }
 
 %    In \pkg{NPCD} joint maximum likelihood estimation 
@@ -167,7 +170,7 @@ Formann, A. K. (1992). Linear logistic latent class analysis for polytomous data
 \emph{din.deterministic__1.01.R}, 
 \emph{din.deterministic_alg__0.06.R}, \cr
 \emph{din.validate.qmatrix__1.03.R}, 
-\emph{din__2.12.R}, 
+\emph{din__2.13.R}, 
 \emph{equivalent.dina__1.01.R}, \cr
 \emph{equivalent.skillclasses__0.04.R}, 
 \emph{gdd__0.02.R}, 
@@ -175,7 +178,7 @@ Formann, A. K. (1992). Linear logistic latent class analysis for polytomous data
 \emph{gdina.dif_aux__1.07.R}, \cr
 \emph{gdina.postproc__0.02.R}, 
 \emph{gdina.wald__0.02.R}, 
-\emph{gdina__8.80.R}, 
+\emph{gdina__8.82.R}, 
 \emph{gdina_aux__0.01.R}, \cr
 \emph{gdina_designmatrices__0.01.R}, 
 \emph{gdina_hogdina_alg__1.06.R}, \cr
@@ -187,18 +190,18 @@ Formann, A. K. (1992). Linear logistic latent class analysis for polytomous data
 \emph{gdm_temp__0.02.R}, \cr
 \emph{ideal.response.pattern__0.03.R}, 
 \emph{itemfit.rmsea__0.12.R}, 
-\emph{itemfit.sx2__1.14.R}, \cr
-\emph{itemfit.sx2_aux__2.02.R}, 
+\emph{itemfit.sx2__3.01.R}, \cr
+\emph{itemfit.sx2_aux__3.05.R}, 
 \emph{logLik_CDM__0.03.R}, 
 \emph{mcdina.est.item__0.07.R}, \cr
 \emph{mcdina.postproc__0.08.R}, 
-\emph{mcdina.simul__0.02.R}, 
+\emph{mcdina.simul__0.07.R}, 
 \emph{mcdina__0.52.R}, \cr
 \emph{mcdina_alg_cppcall__0.01.R}, 
 \emph{mcdina_prepare__0.18.R}, 
 \emph{modelfit.cor.din__2.07.R}, \cr
 \emph{modelfit.cor__1.14.R}, 
-\emph{modelfit.cor2__3.07.R}, 
+\emph{modelfit.cor2__3.08.R}, 
 \emph{plot.din__2.12.R}, 
 \emph{plot.gdina__0.01.R}, \cr
 \emph{print.din__1.02.R}, 
@@ -210,7 +213,7 @@ Formann, A. K. (1992). Linear logistic latent class analysis for polytomous data
 \emph{sim.gdina__2.02.R}, 
 \emph{skill.cor__1.06.R}, \cr
 \emph{skillspace.approximation__0.02.R}, 
-\emph{skillspace.hierarchy__0.05.R}, \cr
+\emph{skillspace.hierarchy__0.07.R}, \cr
 \emph{slca.algorithm__1.14.R}, 
 \emph{slca.postprocess__0.04.R}, 
 \emph{slca__1.25.R}, 
@@ -227,59 +230,60 @@ Formann, A. K. (1992). Linear logistic latent class analysis for polytomous data
 \emph{din.deterministic.devcrit_c.cpp}, \cr
 \emph{din.jml.devcrit_c.cpp}, 
 \emph{gdd__c.cpp}, 
-\emph{modelfit_cor2_c.cpp}, \cr
+\emph{itemfit_sx2_calc_scoredistribution_cdm.cpp}, \cr
+\emph{modelfit_cor2_c.cpp}, 
 \emph{probs_multcat_items_counts_c.cpp}, 
 \emph{slca_cfunctions.cpp}, 
 }
 \section{\emph{Rd} Documentation Versions }{
-\emph{anova.din__1.14.Rd}, 
-\emph{cdi.kli__0.04.Rd}, 
-\emph{CDM-package__2.29.Rd}, \cr
-\emph{cdm.est.class.accuracy__1.11.Rd}, 
-\emph{coef__0.09.Rd}, 
+\emph{anova.din__1.15.Rd}, 
+\emph{cdi.kli__0.05.Rd}, 
+\emph{CDM-package__2.34.Rd}, \cr
+\emph{cdm.est.class.accuracy__1.12.Rd}, 
+\emph{coef__0.10.Rd}, 
 \emph{Data-sim__1.12.Rd}, 
 \emph{data.cdm__0.05.Rd}, \cr
-\emph{data.dcm__0.05.Rd}, 
-\emph{data.dtmr__0.08.Rd}, 
-\emph{data.ecpe__0.08.Rd}, 
+\emph{data.dcm__0.11.Rd}, 
+\emph{data.dtmr__0.10.Rd}, 
+\emph{data.ecpe__0.10.Rd}, 
 \emph{data.fraction1__0.09.Rd}, \cr
 \emph{data.fraction2__0.13.Rd}, 
-\emph{data.hr__0.06.Rd}, 
-\emph{data.jang__0.06.Rd}, 
-\emph{data.melab__0.06.Rd}, \cr
-\emph{data.mg__0.14.Rd}, 
+\emph{data.hr__0.08.Rd}, 
+\emph{data.jang__0.08.Rd}, 
+\emph{data.melab__0.08.Rd}, \cr
+\emph{data.mg__0.16.Rd}, 
 \emph{data.pgdina__0.12.Rd}, 
-\emph{data.sda6__0.05.Rd}, 
-\emph{data.Students__0.09.Rd}, \cr
-\emph{data.timss03.G8.su__0.03.Rd}, 
-\emph{data.timss07.G4.lee__0.03.Rd}, \cr
-\emph{din.deterministic__0.09.Rd}, 
-\emph{din.equivalent.class__0.14.Rd}, \cr
-\emph{din.validate.qmatrix__1.12.Rd}, 
-\emph{din__2.15.Rd}, 
+\emph{data.sda6__0.06.Rd}, 
+\emph{data.Students__0.10.Rd}, \cr
+\emph{data.timss03.G8.su__0.04.Rd}, 
+\emph{data.timss07.G4.lee__0.04.Rd}, \cr
+\emph{din.deterministic__0.11.Rd}, 
+\emph{din.equivalent.class__0.15.Rd}, \cr
+\emph{din.validate.qmatrix__1.15.Rd}, 
+\emph{din__2.17.Rd}, 
 \emph{equivalent.dina__1.10.Rd}, \cr
 \emph{fraction.subtraction.data__2.01.Rd}, 
 \emph{fraction.subtraction.qmatrix__1.03.Rd}, \cr
 \emph{gdd__0.08.Rd}, 
-\emph{gdina.dif__0.09.Rd}, 
+\emph{gdina.dif__0.10.Rd}, 
 \emph{gdina.wald__0.07.Rd}, 
-\emph{gdina__2.38.Rd}, 
-\emph{gdm__4.10.Rd}, \cr
+\emph{gdina__2.40.Rd}, 
+\emph{gdm__4.13.Rd}, \cr
 \emph{ideal.response.pattern__0.04.Rd}, 
 \emph{itemfit.rmsea__1.06.Rd}, 
-\emph{itemfit.sx2__1.11.Rd}, \cr
+\emph{itemfit.sx2__1.17.Rd}, \cr
 \emph{logLik__0.05.Rd}, 
-\emph{mcdina__0.10.Rd}, 
-\emph{modelfit.cor__1.34.Rd}, 
+\emph{mcdina__0.11.Rd}, 
+\emph{modelfit.cor__1.39.Rd}, 
 \emph{plot.din__2.07.Rd}, \cr
 \emph{print.din__1.06.Rd}, 
 \emph{print.summary.din__1.04.Rd}, 
-\emph{sequential.items__0.05.Rd}, \cr
-\emph{sim.din__2.02.Rd}, 
+\emph{sequential.items__0.06.Rd}, \cr
+\emph{sim.din__2.04.Rd}, 
 \emph{sim.gdina__1.14.Rd}, 
 \emph{skill.cor__2.02.Rd}, \cr
-\emph{skillspace.approximation__0.05.Rd}, 
-\emph{skillspace.hierarchy__0.09.Rd}, 
-\emph{slca__1.27.Rd}, \cr
+\emph{skillspace.approximation__0.06.Rd}, 
+\emph{skillspace.hierarchy__0.10.Rd}, 
+\emph{slca__1.33.Rd}, \cr
 \emph{summary.din__2.02.Rd}, 
 }

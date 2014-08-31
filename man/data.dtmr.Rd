@@ -69,45 +69,45 @@ rule <- rep( "ACDM" , I )
 names(rule) <- colnames(data)
 rule[ c("M14","M17") ] <- "GDINA2"
 # estimate model
-mod1 <- gdina( data , q.matrix , linkfct="logit" , rule= rule)  
+mod1 <- CDM::gdina( data , q.matrix , linkfct="logit" , rule= rule)  
 summary(mod1)
 
 #*** Model 2: DINA model
-mod2 <- gdina( data , q.matrix , rule="DINA" )  
+mod2 <- CDM::gdina( data , q.matrix , rule="DINA" )  
 summary(mod2)
 
 #*** Model 3: RRUM model
-mod3 <- gdina( data , q.matrix , rule="RRUM" )  
+mod3 <- CDM::gdina( data , q.matrix , rule="RRUM" )  
 summary(mod3)
 
 #--- model comparisons
 
 # LCDM vs. DINA
 anova(mod1,mod2)
-##       Model   loglike Deviance Npars      AIC      BIC    Chisq df  p
-##   2 Model 2 -76570.89 153141.8    69 153279.8 153729.5 1726.645 10  0
-##   1 Model 1 -75707.57 151415.1    79 151573.1 152088.0       NA NA NA
+  ##       Model   loglike Deviance Npars      AIC      BIC    Chisq df  p
+  ##   2 Model 2 -76570.89 153141.8    69 153279.8 153729.5 1726.645 10  0
+  ##   1 Model 1 -75707.57 151415.1    79 151573.1 152088.0       NA NA NA
 
 # LCDM vs. RRUM
 anova(mod1,mod3)
-##       Model   loglike Deviance Npars      AIC      BIC    Chisq df  p
-##   2 Model 2 -75746.13 151492.3    77 151646.3 152148.1 77.10994  2  0
-##   1 Model 1 -75707.57 151415.1    79 151573.1 152088.0       NA NA NA
+  ##       Model   loglike Deviance Npars      AIC      BIC    Chisq df  p
+  ##   2 Model 2 -75746.13 151492.3    77 151646.3 152148.1 77.10994  2  0
+  ##   1 Model 1 -75707.57 151415.1    79 151573.1 152088.0       NA NA NA
 
 #--- model fit
 summary( modelfit.cor.din( mod1 ) )
-##   Test of Global Model Fit
-##          type   value       p
-##   1   max(X2) 7.74382 1.00000
-##   2 abs(fcor) 0.04056 0.72707
-##   
-##   Fit Statistics
-##                       est
-##   MADcor          0.00959
-##   SRMSR           0.01217
-##   MX2             0.75696
-##   100*MADRESIDCOV 0.20283
-##   MADQ3           0.02220
+  ##   Test of Global Model Fit
+  ##          type   value       p
+  ##   1   max(X2) 7.74382 1.00000
+  ##   2 abs(fcor) 0.04056 0.72707
+  ##   
+  ##   Fit Statistics
+  ##                       est
+  ##   MADcor          0.00959
+  ##   SRMSR           0.01217
+  ##   MX2             0.75696
+  ##   100*MADRESIDCOV 0.20283
+  ##   MADQ3           0.02220
 }
 }
 \keyword{datasets}

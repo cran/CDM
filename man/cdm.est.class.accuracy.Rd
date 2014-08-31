@@ -79,44 +79,43 @@ diagnostic assessment.
 mod1 <- din( sim.dino , q.matrix = sim.qmatrix , rule="DINO")
 # estimate classification reliability
 cdm.est.class.accuracy(  mod1 , n.sims=5000)
-##                P_a P_a_sim   P_c P_c_sim
-##   MLE        0.668   0.661 0.583   0.541
-##   MAP        0.807   0.785 0.717   0.670
-##   MAP_Skill1 0.924      NA 0.860      NA
-##   MAP_Skill2 0.786      NA 0.746      NA
-##   MAP_Skill3 0.937      NA 0.901      NA
+  ##                P_a P_a_sim   P_c P_c_sim
+  ##   MLE        0.668   0.661 0.583   0.541
+  ##   MAP        0.807   0.785 0.717   0.670
+  ##   MAP_Skill1 0.924      NA 0.860      NA
+  ##   MAP_Skill2 0.786      NA 0.746      NA
+  ##   MAP_Skill3 0.937      NA 0.901      NA
 
 #***
 # Model 2: estimate DINO model with gdina
 mod2 <- gdina( sim.dino , q.matrix = sim.qmatrix , rule="DINO")
 # estimate classification reliability
 cdm.est.class.accuracy(  mod2 )
-##                P_a   P_c
-##   MLE        0.675 0.598
-##   MAP        0.832 0.739
-##   MAP_Skill1 0.960 0.925
-##   MAP_Skill2 0.629 0.618
-##   MAP_Skill3 0.823 0.729
+  ##                P_a   P_c
+  ##   MLE        0.675 0.598
+  ##   MAP        0.832 0.739
+  ##   MAP_Skill1 0.960 0.925
+  ##   MAP_Skill2 0.629 0.618
+  ##   MAP_Skill3 0.823 0.729
 
 m1 <- mod1$coef[ , c("guess" , "slip" ) ]
 m2 <- mod2$coef
 m2 <- cbind( m1 , m2[ seq(1,18,2) , "est" ]  , 
           1 - m2[ seq(1,18,2) , "est" ]  - m2[ seq(2,18,2) , "est" ]  )
 colnames(m2) <- c("g.M1" , "s.M1" , "g.M2" , "s.M2" )
-##   > round( m2 , 3 )
-##          g.M1  s.M1  g.M2  s.M2
-##   Item1 0.109 0.192 0.109 0.191
-##   Item2 0.073 0.234 0.072 0.234
-##   Item3 0.139 0.238 0.146 0.238
-##   Item4 0.124 0.065 0.124 0.009
-##   Item5 0.125 0.035 0.125 0.037
-##   Item6 0.214 0.523 0.214 0.529
-##   Item7 0.193 0.514 0.192 0.514
-##   Item8 0.246 0.100 0.246 0.100
-##   Item9 0.201 0.032 0.195 0.032
-
-## Note that s (the slipping parameter) substantially differs for Item4 
-## for DINO estimation in 'din' and 'gdina'
+  ##   > round( m2 , 3 )
+  ##          g.M1  s.M1  g.M2  s.M2
+  ##   Item1 0.109 0.192 0.109 0.191
+  ##   Item2 0.073 0.234 0.072 0.234
+  ##   Item3 0.139 0.238 0.146 0.238
+  ##   Item4 0.124 0.065 0.124 0.009
+  ##   Item5 0.125 0.035 0.125 0.037
+  ##   Item6 0.214 0.523 0.214 0.529
+  ##   Item7 0.193 0.514 0.192 0.514
+  ##   Item8 0.246 0.100 0.246 0.100
+  ##   Item9 0.201 0.032 0.195 0.032
+# Note that s (the slipping parameter) substantially differs for Item4 
+# for DINO estimation in 'din' and 'gdina'
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

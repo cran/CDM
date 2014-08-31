@@ -633,7 +633,8 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 				 "seed" = seed , 
 				 "start.analysis" = s1 , "end.analysis" = s2 				 
 					) 
-	res$timediff <- print(s2 - s1)						
+	res$timediff <- s2 - s1
+	if (progress){ print(s2-s1) }
 	if (param.history){
 		param.history <- list( "likelihood.history" = likelihood.history , 
 				"slip.history" = slip.history , 

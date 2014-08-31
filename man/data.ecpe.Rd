@@ -75,31 +75,31 @@ Obtaining diagnostic classification model estimates using Mplus.
 data(data.ecpe)
 
 #*** Model 1: LCDM model 
-mod1 <- gdina( data.ecpe$data[,-1], q.matrix= data.ecpe$q.matrix , link="logit")
+mod1 <- CDM::gdina( data.ecpe$data[,-1], q.matrix= data.ecpe$q.matrix , link="logit")
 summary(mod1)
 
 #*** Model 2: DINA model 
-mod2 <- gdina( data.ecpe$data[,-1], q.matrix= data.ecpe$q.matrix , rule="DINA")
+mod2 <- CDM::gdina( data.ecpe$data[,-1], q.matrix= data.ecpe$q.matrix , rule="DINA")
 summary(mod2)
 
 # Model comparison using likelihood ratio test
 anova(mod1,mod2)
-##       Model   loglike Deviance Npars      AIC      BIC    Chisq df  p
-##   2 Model 2 -42841.61 85683.23    63 85809.23 86185.97 206.0359 18  0
-##   1 Model 1 -42738.60 85477.19    81 85639.19 86123.57       NA NA NA
+  ##       Model   loglike Deviance Npars      AIC      BIC    Chisq df  p
+  ##   2 Model 2 -42841.61 85683.23    63 85809.23 86185.97 206.0359 18  0
+  ##   1 Model 1 -42738.60 85477.19    81 85639.19 86123.57       NA NA NA
 
 #*** Model 3: Hierarchical LCDM (HLCDM) | Templin and Bradshaw (2014)
 #      Testing a linear hierarchy
 hier <- "skill3 > skill2 > skill1"
 skill.names <- colnames( data.ecpe$q.matrix )
 # define skill space with hierarchy
-skillspace <- skillspace.hierarchy( hier , skill.names= skill.names )
+skillspace <- CDM::skillspace.hierarchy( hier , skill.names= skill.names )
 skillspace$skillspace.reduced
-##        skill1 skill2 skill3
-##   A000      0      0      0
-##   A001      0      0      1
-##   A011      0      1      1
-##   A111      1      1      1
+  ##        skill1 skill2 skill3
+  ##   A000      0      0      0
+  ##   A001      0      0      1
+  ##   A011      0      1      1
+  ##   A111      1      1      1
 zeroprob.skillclasses <- skillspace$zeroprob.skillclasses
 
 # define user-defined parameters in LCDM: hierarchical LCDM (HLCDM)
@@ -115,7 +115,7 @@ for (ii in items){
 
 # estimate model
 #    note that avoid.zeroprobs is set to TRUE to avoid algorithmic instabilities
-mod3 <- gdina( data.ecpe$data[,-1] , q.matrix= data.ecpe$q.matrix ,  link="logit" ,
+mod3 <- CDM::gdina( data.ecpe$data[,-1] , q.matrix= data.ecpe$q.matrix ,  link="logit" ,
             zeroprob.skillclasses=zeroprob.skillclasses , Mj=Mj.user ,
             avoid.zeroprobs=TRUE )
 summary(mod3)

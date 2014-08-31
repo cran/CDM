@@ -5,13 +5,13 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 
 \title{
-S-X2 Item Fit Statistic For Dichotomous Data
+S-X2 Item Fit Statistic for Dichotomous Data
 }
 
 \description{
 Computes the S-X2 item fit statistic (Orlando & Thissen; 2000, 2003)
 for dichotomous data. Note that completely observed data is
-necessarry for applying this function.
+necessary for applying this function.
 }
 \usage{
 itemfit.sx2(object, Eik_min = 1, progress = TRUE)
@@ -103,7 +103,7 @@ a <- rep(1,I)
 a[4] <- .4
 N <- 1000
 library(sirt)
-dat <- sim.raschtype( theta= rnorm(N) , b=b , fixed.a=a)
+dat <- sirt::sim.raschtype( theta= rnorm(N) , b=b , fixed.a=a)
 
 #*** 1PL model estimated with gdm
 mod1 <- gdm( dat , theta.k=seq(-6,6,len=21) , irtmodel="1PL" )
@@ -111,23 +111,22 @@ summary(mod1)
 # estimate item fit statistic
 fitmod1 <- itemfit.sx2(mod1)
 summary(fitmod1)
-##       item itemindex   S-X2 df     p S-X2_df RMSEA Nscgr Npars p.holm
-##   1  I0001         1  4.173  9 0.900   0.464 0.000    10     1  1.000
-##   2  I0002         2 12.365  9 0.193   1.374 0.019    10     1  1.000
-##   3  I0003         3  6.158  9 0.724   0.684 0.000    10     1  1.000
-##   4  I0004         4 37.759  9 0.000   4.195 0.057    10     1  0.000
-##   5  I0005         5 12.307  9 0.197   1.367 0.019    10     1  1.000
-##   6  I0006         6 19.358  9 0.022   2.151 0.034    10     1  0.223
-##   7  I0007         7 14.610  9 0.102   1.623 0.025    10     1  0.818
-##   8  I0008         8 15.568  9 0.076   1.730 0.027    10     1  0.688
-##   9  I0009         9  8.471  9 0.487   0.941 0.000    10     1  1.000
-##   10 I0010        10  8.330  9 0.501   0.926 0.000    10     1  1.000
-##   11 I0011        11 12.351  9 0.194   1.372 0.019    10     1  1.000
-##   
-##   -- Average Item Fit Statistics --
-##   S-X2 = 13.768 | S-X2_df = 1.53 
-
-## -> 4th item does not fit to the 1PL model
+  ##       item itemindex   S-X2 df     p S-X2_df RMSEA Nscgr Npars p.holm
+  ##   1  I0001         1  4.173  9 0.900   0.464 0.000    10     1  1.000
+  ##   2  I0002         2 12.365  9 0.193   1.374 0.019    10     1  1.000
+  ##   3  I0003         3  6.158  9 0.724   0.684 0.000    10     1  1.000
+  ##   4  I0004         4 37.759  9 0.000   4.195 0.057    10     1  0.000
+  ##   5  I0005         5 12.307  9 0.197   1.367 0.019    10     1  1.000
+  ##   6  I0006         6 19.358  9 0.022   2.151 0.034    10     1  0.223
+  ##   7  I0007         7 14.610  9 0.102   1.623 0.025    10     1  0.818
+  ##   8  I0008         8 15.568  9 0.076   1.730 0.027    10     1  0.688
+  ##   9  I0009         9  8.471  9 0.487   0.941 0.000    10     1  1.000
+  ##   10 I0010        10  8.330  9 0.501   0.926 0.000    10     1  1.000
+  ##   11 I0011        11 12.351  9 0.194   1.372 0.019    10     1  1.000
+  ##   
+  ##   -- Average Item Fit Statistics --
+  ##   S-X2 = 13.768 | S-X2_df = 1.53 
+# -> 4th item does not fit to the 1PL model
 
 # plot item fit
 plot(fitmod1)
@@ -139,36 +138,36 @@ summary(mod2)
 # estimate item fit statistic
 fitmod2 <- itemfit.sx2(mod2)
 summary(fitmod2)
-##       item itemindex   S-X2 df     p S-X2_df RMSEA Nscgr Npars p.holm
-##   1  I0001         1  4.083  8 0.850   0.510 0.000    10     2  1.000
-##   2  I0002         2 13.580  8 0.093   1.697 0.026    10     2  0.747
-##   3  I0003         3  6.236  8 0.621   0.780 0.000    10     2  1.000
-##   4  I0004         4  6.049  8 0.642   0.756 0.000    10     2  1.000
-##   5  I0005         5 12.792  8 0.119   1.599 0.024    10     2  0.834
-##   6  I0006         6 14.397  8 0.072   1.800 0.028    10     2  0.648
-##   7  I0007         7 15.046  8 0.058   1.881 0.030    10     2  0.639
-##   [...]
-##   
-##   -- Average Item Fit Statistics --
-##   S-X2 = 10.22 | S-X2_df = 1.277 
+  ##       item itemindex   S-X2 df     p S-X2_df RMSEA Nscgr Npars p.holm
+  ##   1  I0001         1  4.083  8 0.850   0.510 0.000    10     2  1.000
+  ##   2  I0002         2 13.580  8 0.093   1.697 0.026    10     2  0.747
+  ##   3  I0003         3  6.236  8 0.621   0.780 0.000    10     2  1.000
+  ##   4  I0004         4  6.049  8 0.642   0.756 0.000    10     2  1.000
+  ##   5  I0005         5 12.792  8 0.119   1.599 0.024    10     2  0.834
+  ##   6  I0006         6 14.397  8 0.072   1.800 0.028    10     2  0.648
+  ##   7  I0007         7 15.046  8 0.058   1.881 0.030    10     2  0.639
+  ##   [...]
+  ##   
+  ##   -- Average Item Fit Statistics --
+  ##   S-X2 = 10.22 | S-X2_df = 1.277 
 
 #*** 1PL model estimation in smirt (sirt package)
 Qmatrix <- matrix(1 , I,1 )
-mod1a <- smirt( dat , Qmatrix=Qmatrix )
+mod1a <- sirt::smirt( dat , Qmatrix=Qmatrix )
 summary(mod1a)
 # item fit statistic
 fitmod1a <- itemfit.sx2(mod1a)
 summary(fitmod1a)
 
 #*** 2PL model estimation in smirt (sirt package)
-mod2a <- smirt( dat , Qmatrix=Qmatrix , est.a="2PL")
+mod2a <- sirt::smirt( dat , Qmatrix=Qmatrix , est.a="2PL")
 summary(mod2a)
 # item fit statistic
 fitmod2a <- itemfit.sx2(mod2a)
 summary(fitmod2a)
 
 #*** 1PL model estimated with rasch.mml2 (in sirt)
-mod1b <- rasch.mml2( dat )
+mod1b <- sirt::rasch.mml2( dat )
 summary(mod1b)
 # estimate item fit statistic
 fitmod1b <- itemfit.sx2(mod1b)
@@ -176,16 +175,24 @@ summary(fitmod1b)
 
 #*** 1PL estimated in TAM
 library(TAM)
-mod1c <- tam.mml( resp=dat )
+mod1c <- TAM::tam.mml( resp=dat )
 summary(mod1c)
 # item fit
 summary( itemfit.sx2( mod1c) )
+# conversion to mirt object
+library(sirt)
+cmod1c <- sirt::tam2mirt( mod1c )
+# item fit in mirt
+mirt::itemfit( cmod1c$mirt )
 
 #*** 2PL estimated in TAM
-mod2c <- tam.mml.2pl( resp=dat )
+mod2c <- TAM::tam.mml.2pl( resp=dat )
 summary(mod2c)
 # item fit
 summary( itemfit.sx2( mod2c) )
+# conversion to mirt object and item fit in mirt
+cmod2c <- sirt::tam2mirt( mod2c )
+mirt::itemfit( cmod2c$mirt )
 
 #############################################################################
 # EXAMPLE 2: Item fit statistics sim.dina dataset
@@ -199,8 +206,8 @@ mod1 <- din( data=sim.dina , q.matrix = sim.qmatrix )
 summary(mod1)
 # item fit statistic
 summary( itemfit.sx2( mod1 ) )
-##   -- Average Item Fit Statistics --
-##   S-X2 = 7.397 | S-X2_df = 1.233 
+  ##   -- Average Item Fit Statistics --
+  ##   S-X2 = 7.397 | S-X2_df = 1.233 
 
 #*** Model 2: Mixed DINA/DINO model
 #***  1th item is misspecified according to DINO rule
@@ -211,16 +218,16 @@ mod2 <- din( data=sim.dina , q.matrix = sim.qmatrix , rule=rule)
 summary(mod2)
 # item fit statistic
 summary( itemfit.sx2( mod2 ) )
-##   -- Average Item Fit Statistics --
-##   S-X2 = 9.925 | S-X2_df = 1.654 
+  ##   -- Average Item Fit Statistics --
+  ##   S-X2 = 9.925 | S-X2_df = 1.654 
 
 #*** Model 3: Additive GDINA model
 mod3 <- gdina( data=sim.dina , q.matrix = sim.qmatrix , rule="ACDM")
 summary(mod3)
 # item fit statistic
 summary( itemfit.sx2( mod3 ) )
-##   -- Average Item Fit Statistics --
-##   S-X2 = 8.416 | S-X2_df = 1.678 
+  ##   -- Average Item Fit Statistics --
+  ##   S-X2 = 8.416 | S-X2_df = 1.678 
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

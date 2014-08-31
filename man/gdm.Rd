@@ -330,7 +330,7 @@ theta.k <- seq( -6 , 6 , len=15 )   # discretized ability
 #***
 # Model 1: Rasch model (normal distribution)
 mod1 <- gdm( dat , irtmodel="1PL" , theta.k=theta.k , skillspace="normal" ,
-        centered.latent=TRUE)
+               centered.latent=TRUE)
 summary(mod1)
 
 #***
@@ -338,13 +338,13 @@ summary(mod1)
 # set the item difficulty of the 8th item to zero
 b.constraint <- matrix( c(8,1,0) , 1 , 3 )  
 mod2 <- gdm( dat , irtmodel="1PL" , theta.k=theta.k , 
-          skillspace="loglinear" , b.constraint=b.constraint  )
+               skillspace="loglinear" , b.constraint=b.constraint  )
 summary(mod2)
 
 #***
 # Model 3: 2PL model
 mod3 <- gdm( dat , irtmodel="2PL" , theta.k=theta.k , 
-          skillspace="normal" , standardized.latent=TRUE  )
+               skillspace="normal" , standardized.latent=TRUE  )
 summary(mod3)
 
 \dontrun{
@@ -434,9 +434,8 @@ summary(mod5)
 
 #***
 # Model 6: Item-category slope estimation
-mod6 <- gdm( dat , irtmodel="2PLcat" , theta.k=theta.k ,  
-          skillspace="normal" , standardized.latent=TRUE ,
-          decrease.increments=TRUE)        
+mod6 <- gdm( dat , irtmodel="2PLcat" , theta.k=theta.k ,  skillspace="normal" , 
+                 standardized.latent=TRUE , decrease.increments=TRUE)        
 summary(mod6)
 
 #***
@@ -446,13 +445,12 @@ dat0[ paste(dat0[,1]) == 2 , 1 ] <- 1 # 1st item has only two categories
 dat0[ paste(dat0[,3]) == 2 , 3 ] <- 1 # 3rd item has only two categories
 
 # Model 7a: PCM
-mod7a <- gdm( dat0 , irtmodel="1PL" , theta.k=theta.k ,  
-           centered.latent=TRUE )        
+mod7a <- gdm( dat0 , irtmodel="1PL" , theta.k=theta.k ,  centered.latent=TRUE )        
 summary(mod7a)
 
 # Model 7b: Item category slopes
 mod7b <- gdm( dat0 , irtmodel="2PLcat" , theta.k=theta.k ,  
-            standardized.latent=TRUE , decrease.increments=TRUE )        
+                 standardized.latent=TRUE , decrease.increments=TRUE )        
 summary(mod7b)
 
 #############################################################################
@@ -467,14 +465,12 @@ Qmatrix <- data.fraction2$q.matrix3
 #***
 # Model 1: One-dimensional Rasch model
 theta.k <- seq( -4 , 4 , len=11 )   # discretized ability
-mod1 <- gdm( dat , irtmodel = "1PL" , theta.k=theta.k ,
-           centered.latent=TRUE) 
+mod1 <- gdm( dat , irtmodel = "1PL" , theta.k=theta.k ,  centered.latent=TRUE) 
 summary(mod1)
 
 #***
 # Model 2: One-dimensional 2PL model
-mod2 <- gdm( dat , irtmodel = "2PL" , theta.k=theta.k ,
-           standardized.latent=TRUE) 
+mod2 <- gdm( dat , irtmodel = "2PL" , theta.k=theta.k , standardized.latent=TRUE) 
 summary(mod2)
 
 #***
@@ -488,9 +484,9 @@ summary(mod3)
 # Model 4: 3-dimensional Rasch model (loglinear smoothing)
 # set some item parameters of items 4,1 and 2 to zero
 b.constraint <- cbind( c(4,1,2) , 1 , 0 )
-mod4 <- gdm( dat , irtmodel="1PL" , theta.k=theta.k , 
-            Qmatrix=Qmatrix , b.constraint=b.constraint , 
-            skillspace="loglinear" , globconv= 5*10^(-2) , conv=10^(-3) )
+mod4 <- gdm( dat , irtmodel="1PL", theta.k=theta.k, Qmatrix=Qmatrix, 
+              b.constraint=b.constraint, skillspace="loglinear", 
+              globconv= 5*10^(-2), conv=10^(-3) )
 summary(mod4)            
 
 #***
@@ -499,8 +495,8 @@ theta.k <- list( "Dim1"= seq( -5 , 5 , len=11 ) ,
                  "Dim2"= seq(-5,5,len=8) , 
                  "Dim3"=seq( -3,3,len=6) )
 mod5 <- gdm( dat , irtmodel="1PL" , theta.k=theta.k , 
-            Qmatrix=Qmatrix , b.constraint=b.constraint , 
-            skillspace="loglinear" , globconv= 5*10^(-2) , conv=10^(-3) )
+               Qmatrix=Qmatrix , b.constraint=b.constraint , 
+               skillspace="loglinear" , globconv= 5*10^(-2) , conv=10^(-3) )
 summary(mod5)            
 
 #***
@@ -518,9 +514,9 @@ summary(mod6)
 a.constraint <- cbind( c(8,1,3) , 1:3 , 1 , 1 )
 b.constraint <- cbind( c(8,1,3) , 1 , 0 )
 mod7 <- gdm( dat , irtmodel="2PL" , theta.k=theta.k , 
-            Qmatrix=Qmatrix , b.constraint=b.constraint , 
-            a.constraint=a.constraint , decrease.increments=FALSE , 
-            skillspace="loglinear" , maxiter=400)
+               Qmatrix=Qmatrix , b.constraint=b.constraint , 
+               a.constraint=a.constraint , decrease.increments=FALSE , 
+               skillspace="loglinear" , maxiter=400)
 summary(mod7)
 
 #############################################################################
@@ -535,19 +531,19 @@ theta <- c( -2 , 0 , 1 , 2 )
 theta <- rep( theta , c(N/4,N/4 , 3*N/8 , N/8)  ) 
 b <- seq(-2,2,len=I)
 library(sirt)   # use function sim.raschtype from sirt package
-dat <- sim.raschtype( theta=theta , b=b )
+dat <- sirt::sim.raschtype( theta=theta , b=b )
 
 theta.k <- seq(-1 , 1 , len=4)      # initial vector of theta
 # estimate model
 mod1 <- gdm( dat , theta.k = theta.k , skillspace="est" , irtmodel="1PL",
-        centerintercepts=TRUE , maxiter=200)
+            centerintercepts=TRUE , maxiter=200)
 summary(mod1)
-##   Estimated Skill Distribution
-##         F1    pi.k
-##   1 -1.988 0.24813
-##   2 -0.055 0.23313
-##   3  0.940 0.40059
-##   4  2.000 0.11816
+  ##   Estimated Skill Distribution
+  ##         F1    pi.k
+  ##   1 -1.988 0.24813
+  ##   2 -0.055 0.23313
+  ##   3  0.940 0.40059
+  ##   4  2.000 0.11816
 
 #############################################################################
 # SIMULATED EXAMPLE 5: Multidimensional latent class IRT model
@@ -566,11 +562,11 @@ theta <- c( -2 , 0 , 1 , 2 )
 theta <- rep( theta , c(N/4,N/4 , 3*N/8 , N/8)  ) 
 b <- seq(-2,2,len=I)
 library(sirt)  # use simulation function from sirt package
-dat1 <- sim.raschtype( theta=theta , b=b )
+dat1 <- sirt::sim.raschtype( theta=theta , b=b )
 # simulate Dimension 2 at 4 discrete theta points
 theta <- c( -3 , 0 , 1.5 , 2 )
 theta <- rep( theta , c(N/4,N/4 , 3*N/8 , N/8)  )
-dat2 <- sim.raschtype( theta=theta , b=b )
+dat2 <- sirt::sim.raschtype( theta=theta , b=b )
 colnames(dat2) <- gsub( "I" , "U" , colnames(dat2))
 dat <- cbind( dat1 , dat2 )
 
@@ -584,14 +580,14 @@ colnames(theta.k) <- c("Dim1","Dim2")
 
 # estimate model
 mod2 <- gdm( dat , theta.k = theta.k , skillspace="est" , irtmodel="1PL",
-        Qmatrix=Qmatrix , centerintercepts=TRUE , maxiter=200)
+              Qmatrix=Qmatrix , centerintercepts=TRUE , maxiter=200)
 summary(mod2)
-##   Estimated Skill Distribution
-##     theta.k.Dim1 theta.k.Dim2    pi.k
-##   1       -2.022       -3.035 0.25010
-##   2        0.016        0.053 0.24794
-##   3        0.956        1.525 0.36401
-##   4        1.958        1.919 0.13795
+  ##   Estimated Skill Distribution
+  ##     theta.k.Dim1 theta.k.Dim2    pi.k
+  ##   1       -2.022       -3.035 0.25010
+  ##   2        0.016        0.053 0.24794
+  ##   3        0.956        1.525 0.36401
+  ##   4        1.958        1.919 0.13795
 
 #############################################################################
 # EXAMPLE 6: Large-scale dataset data.mg
@@ -604,7 +600,7 @@ theta.k <- seq(-6,6,len=21)
 #***
 # Model 1: Generalized partial credit model with multiple groups
 mod1 <- gdm( dat , irtmodel="2PL" , theta.k=theta.k ,   group=data.mg$group , 
-          skillspace="normal" , standardized.latent=TRUE , maxiter=50 )
+              skillspace="normal" , standardized.latent=TRUE , maxiter=50 )
 summary(mod1)
 }
 }

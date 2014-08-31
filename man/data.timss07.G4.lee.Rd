@@ -72,7 +72,7 @@ The format is:
 %}
 
 \source{
-TIMSS 2007 study 4th Grade, Austrian sample on booklets 4 and 5
+TIMSS 2007 study, 4th Grade, Austrian sample on booklets 4 and 5
 }
 
 \references{
@@ -92,7 +92,7 @@ q.matrix <- data.timss07.G4.lee$q.matrix
 items <- grep( "M0" , colnames(dat) , value=TRUE )
 
 #*** Model 1: estimate DINA model
-mod1 <- din( dat[,items] , q.matrix )
+mod1 <- CDM::din( dat[,items] , q.matrix )
 }
 }
 

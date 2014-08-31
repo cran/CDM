@@ -489,15 +489,15 @@ mj <- mj[,-3]
 mj.lab <- c("0" , "1=2" , "1-2" )
 Mj.user[[8]] <- list( mj , mj.lab )
 Mj.user[[8]]
-##   [[1]]
-##        [,1] [,2] [,3]
-##   [1,]    1    0    0
-##   [2,]    1    1    0
-##   [3,]    1    1    0
-##   [4,]    1    2    1
-##   
-##   [[2]]
-##   [1] "0"   "1=2" "1-2"
+  ##   [[1]]
+  ##        [,1] [,2] [,3]
+  ##   [1,]    1    0    0
+  ##   [2,]    1    1    0
+  ##   [3,]    1    1    0
+  ##   [4,]    1    2    1
+  ##   
+  ##   [[2]]
+  ##   [1] "0"   "1=2" "1-2"
 mod <- gdina( data = sim.dino ,  q.matrix = sim.qmatrix ,
                     Mj = Mj.user ,  maxit=200 )
 summary(mod)
@@ -650,10 +650,10 @@ mod1 <- gdina( data , q.matrix , rule="RRUM"  , conv.crit=.001 , maxit=500 )
 skillspace <- skillspace.approximation( L=300 , K=ncol(q.matrix) )
 mod2 <- gdina( data , q.matrix , rule="RRUM"  , conv.crit=.001 ,
             skillclasses=skillspace )
-##   > logLik(mod1)
-##   'log Lik.' -30318.08 (df=153)
-##   > logLik(mod2)
-##   'log Lik.' -30326.52 (df=153)
+  ##   > logLik(mod1)
+  ##   'log Lik.' -30318.08 (df=153)
+  ##   > logLik(mod2)
+  ##   'log Lik.' -30326.52 (df=153)
 
 #############################################################################
 # SIMULATED EXAMPLE 10: CDM with a linear hierarchy
@@ -701,7 +701,7 @@ summary(mod2)
 #    Proctor, C. H. (1970). A probabilistic formulation and statistical 
 #    analysis for Guttman scaling. Psychometrika, 35, 73-78. 
 library(sirt)
-mod3 <- prob.guttman( dat , itemlevel=Q2[,1] )
+mod3 <- sirt::prob.guttman( dat , itemlevel=Q2[,1] )
 summary(mod3)
 # -> The three models result in nearly equivalent fit.
 }

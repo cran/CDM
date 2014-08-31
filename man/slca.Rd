@@ -27,7 +27,7 @@ slca(data, group = NULL, weights = rep(1, nrow(data)), Xdes,
 
 \arguments{
   \item{data}{
-Matri for polytomous item responses
+Matrix of polytomous item responses
 }
   \item{group}{
 Optional vector of group identifiers
@@ -116,7 +116,7 @@ with linear constraints on the class specific probabilities
 
 Linear restrictions on the \eqn{\lambda_x} parameter can be specified by
 a matrix equation \eqn{V_x \lambda_x = c_x} (see \code{Xlambda.constr.V} and
-\code{Xlambda.constr.c}).
+\code{Xlambda.constr.c}; Neuhaus, 1996).
 
 The latent class distribution can be smoothed by a log-linear
 link function (Xu & von Davier, 2008) or a logistic link function
@@ -145,7 +145,7 @@ following entries:
 \item{se.Xlambda}{Standard error of \eqn{\lambda_x} parameters 
 }
 \item{pi.k}{Trait distribution}
-\item{pjk}{Item response probabilities evaluated at grid \code{theta.k}}
+\item{pjk}{Item response probabilities evaluated for all classes}
 \item{n.ik}{An array of expected counts \eqn{n_{cikg}} of ability class \eqn{c}
     at item \eqn{i} at category \eqn{k} in group \eqn{g}}
 \item{G}{Number of groups}
@@ -187,6 +187,9 @@ New York: Springer.
 Formann, A. K., & Kohlmann, T. (1998). Structural latent class models. 
 \emph{Sociological Methods & Research}, \bold{26}, 530-565.
 
+Neuhaus, W. (1996). Optimal estimation under
+linear constraints. \emph{Astin Bulletin}, \bold{26}, 233-245. 
+
 Xu, X., & von Davier, M. (2008). \emph{Fitting the structured general diagnostic
 model to NAEP data}. ETS Research Report ETS RR-08-27. Princeton, ETS.
 }
@@ -199,7 +202,7 @@ model to NAEP data}. ETS Research Report ETS RR-08-27. Princeton, ETS.
 If some items have differing number of categories, appropriate
 class probabilities in non-existing categories per items can be 
 practically set to zero by loading an item for all skill classes
-on a fixed \eqn{\lambda_x} parameter of a small number, e.g. -999.
+on a fixed \eqn{\lambda_x} parameter of a small number, e.g. 999.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
@@ -270,10 +273,8 @@ Xlambda.init <- c(rnorm( dim(Xdes)[[4]] - 1 ) , 1 )
 delta.fixed <- cbind( 1 , 1 ,1 )
 
 # estimate model
-mod1 <- slca( dat , Xdes=Xdes , 
-            delta.designmatrix=delta.designmatrix , 
-            Xlambda.init=Xlambda.init , delta.fixed = delta.fixed ,
-            maxiter = 70 )
+mod1 <- slca( dat , Xdes=Xdes , delta.designmatrix=delta.designmatrix , 
+            Xlambda.init=Xlambda.init , delta.fixed = delta.fixed, maxiter = 70 )
 summary(mod1)
 
 \dontrun{
@@ -282,23 +283,20 @@ summary(mod1)
 Xlambda.fixed <- cbind( c(1,19) , c(3.2,1.52 ) )
 # 1st parameter = 3.2
 # 19th parameter = 1.52 (joint item slope)
-mod2 <- slca( dat , Xdes=Xdes , 
-            delta.designmatrix=delta.designmatrix , delta.init=delta.init , 
-            Xlambda.init=Xlambda.init , delta.fixed = delta.fixed ,
+mod2 <- slca( dat , Xdes=Xdes , delta.designmatrix=delta.designmatrix , 
+            delta.init=delta.init, Xlambda.init=Xlambda.init, delta.fixed=delta.fixed,
             Xlambda.fixed=Xlambda.fixed , maxiter = 70 )
 
 #*** Model 3: Partial credit model with non-normal distribution
 Xlambda.fixed <- cbind(  c(1,19) , c(3.2,1) ) # fix item slope to one
 delta.designmatrix <- cbind( 1 , theta.k , theta.k^2 , theta.k^3 )
-mod3 <- slca( dat , Xdes=Xdes ,   delta.designmatrix=delta.designmatrix ,          
-            Xlambda.fixed=Xlambda.fixed ,
-            maxiter = 200 )
+mod3 <- slca( dat , Xdes=Xdes,  delta.designmatrix=delta.designmatrix ,          
+            Xlambda.fixed=Xlambda.fixed ,  maxiter = 200 )
 summary(mod3)  
 
 # non-normal distribution with convergence regularizing factor oldfac
-mod3a <- slca( dat , Xdes=Xdes ,   delta.designmatrix=delta.designmatrix ,          
-            Xlambda.fixed=Xlambda.fixed ,
-            maxiter = 500 , oldfac=.95 )
+mod3a <- slca( dat , Xdes=Xdes,  delta.designmatrix=delta.designmatrix ,          
+            Xlambda.fixed=Xlambda.fixed, maxiter = 500 , oldfac=.95 )
 summary(mod3a)  
 
 #*** Model 4: Generalized Partial Credit Model
@@ -425,10 +423,9 @@ delta.fixed <- NULL
 Xlambda.init <- c( runif( I  , -.8 , .8 ) , 1 )
 Xlambda.fixed <- cbind( I+1 , 1 )
 # estimate model
-mod1 <- slca( dat , Xdes=Xdes ,   
-            delta.designmatrix=delta.designmatrix ,   delta.fixed=delta.fixed ,        
-            Xlambda.fixed=Xlambda.fixed , decrease.increments=TRUE ,
-            Xlambda.init=Xlambda.init ,    maxiter = 200 )
+mod1 <- slca( dat , Xdes=Xdes , delta.designmatrix=delta.designmatrix , 
+            delta.fixed=delta.fixed , Xlambda.fixed=Xlambda.fixed , 
+            Xlambda.init=Xlambda.init, decrease.increments=TRUE , maxiter = 200 )
 summary(mod1)
 
 #*** Model 1b: Constraint the sum of item difficulties to zero
@@ -474,9 +471,9 @@ Xlambda.init <- c( b1 , b1 + runif(I, -2  , 2 ) , 1 , 1 )
 Xlambda.init <- c( runif( 2*I  , -1.8 , 1.8 ) , 1 ,1 )
 Xlambda.fixed <- cbind( c(2*I+1 , 2*I+2) , 1 )
 # estimate model
-mod2 <- slca( dat , Xdes=Xdes ,   delta.designmatrix=delta.designmatrix ,          
-            Xlambda.fixed=Xlambda.fixed , decrease.increments=TRUE ,
-            Xlambda.init=Xlambda.init ,    maxiter = 1000 )
+mod2 <- slca( dat, Xdes=Xdes,  delta.designmatrix=delta.designmatrix ,          
+            Xlambda.fixed=Xlambda.fixed, decrease.increments=TRUE ,
+            Xlambda.init=Xlambda.init, maxiter = 1000 )
 summary(mod2)
 summary(mod1)
 # latent class proportions
@@ -501,7 +498,7 @@ Xlambda.constr.V[1:I , 1 ] <- 1
 Xlambda.constr.V[I + 1:I , 2 ] <- 1
 Xlambda.constr.c <- c(0,0)
 # estimate model
-mod2b <- slca( dat , Xdes=Xdes ,   delta.designmatrix=delta.designmatrix ,          
+mod2b <- slca( dat, Xdes=Xdes, delta.designmatrix=delta.designmatrix ,          
             Xlambda.fixed=Xlambda.fixed ,  Xlambda.init=Xlambda.init ,  
             Xlambda.constr.V=Xlambda.constr.V , Xlambda.constr.c=Xlambda.constr.c , 
             decrease.increments=TRUE , maxiter = 1000 )
@@ -558,11 +555,10 @@ Xlambda.constr.V[1:I,1] <- 1
 Xlambda.constr.c <- c(0)
 delta.init <- matrix( c(1,1,1,1) , TP , 1 )
 # estimate model
-mod1 <- slca( dat , Xdes=Xdes ,   
-            delta.designmatrix=delta.designmatrix ,  delta.init=delta.init,
-            Xlambda.init=Xlambda.init , 
+mod1 <- slca( dat , Xdes=Xdes, delta.designmatrix=delta.designmatrix, 
+            delta.init=delta.init, Xlambda.init=Xlambda.init , 
             Xlambda.constr.V=Xlambda.constr.V , Xlambda.constr.c=Xlambda.constr.c , 
-            decrease.increments=TRUE ,  maxiter = 400 )
+            decrease.increments=TRUE,  maxiter = 400 )
 summary(mod1)
 # compare estimated and simulated theta class locations
 cbind( mod1$Xlambda[ - c(1:I) ] , theta0 )
@@ -617,11 +613,9 @@ Xdes[1,2,,] ; Xdes[7,2,,]
 delta.designmatrix <- diag(TP)
 Xlambda.init <- c( rep( qlogis( .2 ) , I ) , rep( qlogis( .8 ) , I ) )
 
-# estimate model
-mod1 <- slca( dat , Xdes=Xdes ,   
-            delta.designmatrix=delta.designmatrix , 
-            Xlambda.init=Xlambda.init , 
-            decrease.increments=TRUE ,  maxiter = 400 )
+# estimate DINA model with slca function
+mod1 <- slca( dat , Xdes=Xdes, delta.designmatrix=delta.designmatrix , 
+            Xlambda.init=Xlambda.init, decrease.increments=TRUE, maxiter=400 )
 summary(mod1)
 
 # compare estimated and simulated latent class proportions

@@ -41,9 +41,11 @@ skillspace.hierarchy <- function( B , skill.names  ){
 	# compute reachability
 	R <- B
 	V1 <- R
-	while( abs( sum(R) ) > 0 ){
+	vv <- 0
+	while( ( abs( sum(R) ) > 0 ) & ( vv < 200 ) ){
 		R <- R %*% B
 		V1 <- V1 + R
+		vv <- vv+1
 				}
 	# exclude skill classes
 	for (ii in 1:K){

@@ -183,8 +183,7 @@ summary(mod3)
 #*** Model 4: Multiple group model with some group-specific item parameters
 itempars <- rep("jo" , ncol(dat))
 itempars[ c( 2, 7, 9) ] <- "gr" # set items 2,7 and 9 group specific
-mod4 <- mcdina( dat=dat , q.matrix=q.matrix , group=group ,
-         itempars=itempars)
+mod4 <- mcdina( dat=dat , q.matrix=q.matrix , group=group , itempars=itempars)
 summary(mod4)
 
 #*** Model 5: Reduced skill space

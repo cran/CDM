@@ -8,6 +8,8 @@
 # pars_lr: see below
 #*******************************************************************
 
+# sirt package is needed for loading this function
+
 #################################################################
 simul.mcdina <- function( alpha ,  pars_lc , pars_lr , skillcl ){
     # skills ... alpha vectors
@@ -30,8 +32,10 @@ simul.mcdina <- function( alpha ,  pars_lc , pars_lr , skillcl ){
         probs <- lc.ii[ match( lr.ii , paste(lc.ii$lr) ) , grep( "Cat" , colnames(pars_lc ) ) ]
         Nc <- ncol(probs)
         rn <- runif(N)
-        probs1 <- rowCumsums.sirt(matr=as.matrix(probs)  )
-        dat[,ii] <- rowIntervalIndex.sirt(matr= probs1 ,rn) 
+        # probs1 <- rowCumsums.sirt(matr=as.matrix(probs)  )
+		eval( parse ( text = "probs1 <- sirt::rowCumsums.sirt(matr=as.matrix(probs)  )" ) )
+        # dat[,ii] <- rowIntervalIndex.sirt(matr= probs1 ,rn) 
+		eval( parse ( text = "dat[,ii] <- sirt::rowIntervalIndex.sirt(matr= probs1 ,rn) " ) )
         print(paste0( "Item " ,ii )) ; flush.console()
                 }
       return(dat)

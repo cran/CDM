@@ -113,13 +113,13 @@ res <- sim.din(N = 200, q.matrix, slip, guess, mean = c(0.5,0.2),
 dat2 <- res$dat
 # extract attribute patterns
 head( res$alpha )
-##        [,1] [,2]
-##   [1,]    1    1
-##   [2,]    1    1
-##   [3,]    1    1
-##   [4,]    1    1
-##   [5,]    1    1
-##   [6,]    1    0
+  ##        [,1] [,2]
+  ##   [1,]    1    1
+  ##   [2,]    1    1
+  ##   [3,]    1    1
+  ##   [4,]    1    1
+  ##   [5,]    1    1
+  ##   [6,]    1    0
 
 #  simulate data based on given attributes
 #          -> 5 persons with 2 attributes -> see the Q-matrix above
@@ -156,7 +156,7 @@ res <- din( dat , q.matrix=Qmatrix )
 est <- paste( res$pattern$mle.est )
 # calculate classification accuracy
 mean( est == apply( alpha , 1 , FUN = function(ll){ paste0(ll[1],ll[2] ) } ) )
-##   [1] 0.935
+  ##   [1] 0.935
 
 #############################################################################
 # EXAMPLE 3: Simulation based on already estimated DINA model for data.ecpe

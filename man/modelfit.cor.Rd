@@ -87,15 +87,18 @@ Maydeu-Olivaras, 2013) is also based on comparing these correlations
 \deqn{ SRMSR = \sqrt{ \frac{1}{ J(J-1)/2 } \sum_{i < j} 
 	( r_{ij} - \hat{r}_{ij} )^2 } }
 
-For calculating \code{MADQ3}, residuals \eqn{\varepsilon_{ni} = X_{ni} - e_{ni}} of
+For calculating \code{MADQ3} and \code{MADaQ3}, 
+residuals \eqn{\varepsilon_{ni} = X_{ni} - e_{ni}} of
 observed and expected responses for respondents \eqn{n} and items \eqn{i} are
-constructed. Then, the average of the absolute value of pairwise correlations
-of these residuals is computed. 
+constructed. Then, the average of the absolute values of pairwise correlations
+of these residuals is computed for \code{MADQ3}. For \code{MADaQ3}, the average 
+of the centered pairwise values (i.e. by sutracting the average Q3 statistic)
+is calculated.
 
 The difference of Fisher transformed correlations (Chen et al., 2013) is also
 computed and used for assessing statistical inference.
 
-For every of the fit statistics \code{MADcor}, \code{SRSMR}, \code{MX2},
+For every of the fit statistics \code{MADcor}, \code{MADacor}, \code{SRSMR}, \code{MX2},
 \code{100*MADRESIDCOV} and \code{MADQ3} it holds that smaller values 
 (values near to zero) indicate better fit.
 
@@ -112,7 +115,7 @@ A list with following entries
         (DiBello et al., 2007) 
 
    \code{SRSMR}: standardized mean square rooot of squared residuals 
-        (Maydeu-Olivares, 2013) 
+        (Maydeu-Olivares, 2013; Maydeu-Olivares & Joe, 2014) 
                 
     \code{MX2}: Mean of \eqn{\chi^2} statistics of all item pairs 
     (Chen & Thissen, 1997)
@@ -121,6 +124,8 @@ A list with following entries
     (McDonald & Mok, 1995) 
     
     \code{MADQ3}: Mean of absolute values of \eqn{Q_3} statistic (Yen, 1984)
+
+    \code{MADaQ3}: Mean of absolute values of centered \eqn{Q_3} statistic
     
             }
 \item{modelfit.test}{Test of global absolute model fit using test
@@ -159,6 +164,10 @@ theory models (with discussion).
 \emph{Measurement: Interdisciplinary Research and Perspectives},
 \bold{11}, 71-137.
 
+Maydeu-Olivares, A., & Joe, H. (2014). Assessing approximate fit in categorical 
+data analysis. \emph{Multivariate Behavioral Research}, \bold{49}, 305-328.
+
+
 McDonald, R. P., & Mok, M. M.-C. (1995). Goodness of fit in item response models.
 \emph{Multivariate Behavioral Research}, \bold{30}, 23-40.
 
@@ -192,69 +201,68 @@ data(sim.qmatrix)
 
 #*** Model 1: DINA model for DINA simulated data
 mod1 <- din(sim.dina, q.matr = sim.qmatrix, rule = "DINA" )
-fmod1 <- modelfit.cor.din(mod1)
+fmod1 <- modelfit.cor.din(mod1 , jkunits=10)
 summary(fmod1)
-##   Test of Global Model Fit
-##          type   value       p
-##   1   max(X2) 8.72825 0.11279
-##   2 abs(fcor) 0.14287 0.07954
-##
-##  -> not a significant misfit!
-##   
-##   Fit Statistics
-##                       est jkunits  jk_est   jk_se est_low est_upp
-##   MADcor          0.03025      20 0.02112 0.00626 0.00886 0.03338
-##   SRMSR           0.03980      20 0.02423 0.00647 0.01155 0.03691
-##   MX2             0.71949      20 0.86922 0.20546 0.46652 1.27192
-##   100*MADRESIDCOV 0.67140      20 0.47055 0.14292 0.19043 0.75067
-##   MADQ3           0.06184      20 0.03730 0.00895 0.01976 0.05485
+  ##   Test of Global Model Fit
+  ##          type value     p
+  ##   1   max(X2) 8.728 0.113
+  ##   2 abs(fcor) 0.143 0.080
+  ##   
+  ##   Fit Statistics
+  ##                     est jkunits jk_est jk_se est_low est_upp
+  ##   MADcor          0.030      10  0.020 0.005   0.010   0.030
+  ##   SRMSR           0.040      10  0.023 0.006   0.011   0.035
+  ##   MX2             0.719      10  0.819 0.178   0.470   1.168
+  ##   100*MADRESIDCOV 0.671      10  0.445 0.125   0.200   0.690
+  ##   MADQ3           0.062      10  0.037 0.008   0.021   0.052
+  ##   MADaQ3          0.059      10  0.034 0.008   0.019   0.050
 
 # look at first five item pairs with highest local dependence
 itempairs <- fmod1$itempairs
 itempairs <- itempairs[ order( itempairs$X2 , decreasing=TRUE ) , ]
 itempairs[ 1:5 , c("item1","item2" , "X2" , "X2_p" , "X2_p.holm" , "Q3") ]
-##      item1 item2       X2        X2_p X2_p.holm          Q3
-##   29 Item5 Item8 8.728248 0.003133174 0.1127943 -0.26616414
-##   32 Item6 Item8 2.644912 0.103881881 1.0000000  0.04873154
-##   21 Item3 Item9 2.195011 0.138458201 1.0000000  0.05948456
-##   10 Item2 Item4 1.449106 0.228671389 1.0000000 -0.08036216
-##   30 Item5 Item9 1.393583 0.237800911 1.0000000 -0.01934420
+  ##      item1 item2       X2        X2_p X2_p.holm          Q3
+  ##   29 Item5 Item8 8.728248 0.003133174 0.1127943 -0.26616414
+  ##   32 Item6 Item8 2.644912 0.103881881 1.0000000  0.04873154
+  ##   21 Item3 Item9 2.195011 0.138458201 1.0000000  0.05948456
+  ##   10 Item2 Item4 1.449106 0.228671389 1.0000000 -0.08036216
+  ##   30 Item5 Item9 1.393583 0.237800911 1.0000000 -0.01934420
 
 #*** Model 2: DINO model for DINA simulated data
 mod2 <- din(sim.dina, q.matr = sim.qmatrix, rule = "DINO" )
 fmod2 <- modelfit.cor.din(mod2 , jkunits=10 )   # 10 jackknife units
 summary(fmod2)
-##   Test of Global Model Fit
-##          type    value       p
-##   1   max(X2) 13.13913 0.01041
-##   2 abs(fcor)  0.19885 0.00134
-##   
-##  -> significant model misfit
-##
-##   Fit Statistics
-##                       est jkunits  jk_est   jk_se est_low est_upp
-##   MADcor          0.05552      10 0.04096 0.00931 0.02271 0.05922
-##   SRMSR           0.07203      10 0.04508 0.02066 0.00458 0.08559
-##   MX2             2.20449      10 2.62061 1.26135 0.14837 5.09285
-##   100*MADRESIDCOV 1.22491      10 0.87759 0.21814 0.45004 1.30514
-##   MADQ3           0.07294      10 0.05535 0.01257 0.03071 0.07999
+  ##   Test of Global Model Fit
+  ##          type  value     p
+  ##   1   max(X2) 13.139 0.010
+  ##   2 abs(fcor)  0.199 0.001
+  ##   
+  ##   Fit Statistics
+  ##                     est jkunits jk_est jk_se est_low est_upp
+  ##   MADcor          0.056      10  0.041 0.007   0.026   0.055
+  ##   SRMSR           0.072      10  0.045 0.019   0.007   0.083
+  ##   MX2             2.204      10  2.621 1.113   0.438   4.803
+  ##   100*MADRESIDCOV 1.225      10  0.878 0.183   0.519   1.236
+  ##   MADQ3           0.073      10  0.055 0.012   0.031   0.080
+  ##   MADaQ3          0.073      10  0.066 0.012   0.042   0.089
 
 #*** Model 3: estimate DINA model with gdina function
 mod3 <- gdina( sim.dina , q.matr = sim.qmatrix , rule="DINA" )
 fmod3 <- modelfit.cor.din( mod3 , jkunits=0 )  # no Jackknife estimation
 summary(fmod3)
-##   Test of Global Model Fit
-##          type   value       p
-##   1   max(X2) 8.75621 0.11108
-##   2 abs(fcor) 0.14325 0.07763
-##   
-##   Fit Statistics
-##                       est
-##   MADcor          0.03010
-##   SRMSR           0.03981
-##   MX2             0.71909
-##   100*MADRESIDCOV 0.66825
-##   MADQ3           0.06202
+  ##   Test of Global Model Fit
+  ##          type value     p
+  ##   1   max(X2) 8.756 0.111
+  ##   2 abs(fcor) 0.143 0.078
+  ##   
+  ##   Fit Statistics
+  ##                     est
+  ##   MADcor          0.030
+  ##   SRMSR           0.040
+  ##   MX2             0.719
+  ##   100*MADRESIDCOV 0.668
+  ##   MADQ3           0.062
+  ##   MADaQ3          0.059
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

@@ -12,7 +12,7 @@ discrimination parameters \eqn{IDI_j} are recalculated. Q-matrix rows
 are determined by maximizing the estimated item discrimination index
 \eqn{IDI_j = 1-s_j -g_j}.
 
-See Chiu (2014) for an alternative estimation approach based on 
+See Chiu (2013) for an alternative estimation approach based on 
 residual sum of squares which is implemented in the \pkg{NPCD}
 package.
 }
@@ -51,8 +51,8 @@ A list with following entries:
 
 
 \references{
-Chiu, C. Y. (2014). Statistical refinement of the Q-matrix in cognitive 
-diagnosis. \emph{Applied Psychological Measurement}, \bold{xx}, xxx-xxx.	
+Chiu, C. Y. (2013). Statistical refinement of the Q-matrix in cognitive 
+diagnosis. \emph{Applied Psychological Measurement}, \bold{37}, 598-618.	
 	
 de la Torre, J. (2008). An empirically based method of Q-matrix 
 validation for the DINA model: Development and applications. 
@@ -99,26 +99,26 @@ Q1[10,] <- c(1,0,0)
 mod <- din( dat , q.matr = Q1, rule = "DINA")
 # apply Q-matrix validation
 res <- din.validate.qmatrix( mod )  
-## item itemindex Skill1 Skill2 Skill3 guess  slip   IDI qmatrix.orig IDI.orig delta.IDI max.IDI
-## I001         1      1      0      0 0.309 0.251 0.440            0    0.431     0.009   0.440
-## I010        10      1      1      0 0.235 0.329 0.437            0    0.320     0.117   0.437
-## I010        10      1      1      1 0.296 0.301 0.403            0    0.320     0.083   0.437
-##   
-##   Proposed Q-matrix:
-##   
-##          Skill1 Skill2 Skill3
-##   Item1       1      0      0
-##   Item2       1      0      0
-##   Item3       1      0      0
-##   Item4       0      1      0
-##   Item5       0      1      0
-##   Item6       0      1      0
-##   Item7       0      0      1
-##   Item8       0      0      1
-##   Item9       0      0      1
-##   Item10      1      1      0
-##   Item11      1      0      1
-##   Item12      0      1      1
+  ## item itemindex Skill1 Skill2 Skill3 guess  slip   IDI qmatrix.orig IDI.orig delta.IDI max.IDI
+  ## I001         1      1      0      0 0.309 0.251 0.440            0    0.431     0.009   0.440
+  ## I010        10      1      1      0 0.235 0.329 0.437            0    0.320     0.117   0.437
+  ## I010        10      1      1      1 0.296 0.301 0.403            0    0.320     0.083   0.437
+  ##   
+  ##   Proposed Q-matrix:
+  ##   
+  ##          Skill1 Skill2 Skill3
+  ##   Item1       1      0      0
+  ##   Item2       1      0      0
+  ##   Item3       1      0      0
+  ##   Item4       0      1      0
+  ##   Item5       0      1      0
+  ##   Item6       0      1      0
+  ##   Item7       0      0      1
+  ##   Item8       0      0      1
+  ##   Item9       0      0      1
+  ##   Item10      1      1      0
+  ##   Item11      1      0      1
+  ##   Item12      0      1      1
 
 \dontrun{
 #*****************
@@ -127,27 +127,27 @@ res <- din.validate.qmatrix( mod )
 #*****************
 
 library(NPCD)
-Qrefine.out <- Qrefine( dat, Q1, gate="AND", max.ite=50)
+Qrefine.out <- NPCD::Qrefine( dat, Q1, gate="AND", max.ite=50)
 print(Qrefine.out)
-##   The modified Q-matrix
-##           Attribute 1 Attribute 2 Attribute 3
-##   Item 1            1           0           0
-##   Item 2            1           0           0
-##   Item 3            1           0           0
-##   Item 4            0           1           0
-##   Item 5            0           1           0
-##   Item 6            0           1           0
-##   Item 7            0           0           1
-##   Item 8            0           0           1
-##   Item 9            0           0           1
-##   Item 10           1           1           0
-##   Item 11           1           0           1
-##   Item 12           0           1           1
-##   
-##   The modified entries
-##        Item Attribute
-##   [1,]    1         2
-##   [2,]   10         2
+  ##   The modified Q-matrix
+  ##           Attribute 1 Attribute 2 Attribute 3
+  ##   Item 1            1           0           0
+  ##   Item 2            1           0           0
+  ##   Item 3            1           0           0
+  ##   Item 4            0           1           0
+  ##   Item 5            0           1           0
+  ##   Item 6            0           1           0
+  ##   Item 7            0           0           1
+  ##   Item 8            0           0           1
+  ##   Item 9            0           0           1
+  ##   Item 10           1           1           0
+  ##   Item 11           1           0           1
+  ##   Item 12           0           1           1
+  ##   
+  ##   The modified entries
+  ##        Item Attribute
+  ##   [1,]    1         2
+  ##   [2,]   10         2
 
 plot(Qrefine.out)
 }

@@ -70,10 +70,10 @@ d1 <- din(sim.dina, q.matr = sim.qmatrix )
 d2 <- din(sim.dina, q.matr = sim.qmatrix , guess.equal=TRUE , slip.equal =TRUE)
 # model comparison
 anova(d1,d2)
-##   > anova(d1,d2)
-##       Model   loglike Deviance Npars      AIC      BIC    Chisq df  p
-##   2 Model 2 -2176.482 4352.963     9 4370.963 4406.886 268.2071 16  0
-##   1 Model 1 -2042.378 4084.756    25 4134.756 4234.543       NA NA NA
+  ##   > anova(d1,d2)
+  ##       Model   loglike Deviance Npars      AIC      BIC    Chisq df  p
+  ##   2 Model 2 -2176.482 4352.963     9 4370.963 4406.886 268.2071 16  0
+  ##   1 Model 1 -2042.378 4084.756    25 4134.756 4234.543       NA NA NA
 
 \dontrun{
 #############################################################################
@@ -88,10 +88,11 @@ d4 <- gdina( sim.dina, q.matr = sim.qmatrix , rule="DINA")
 
 # model comparison
 anova(d3,d4)
-##   > anova(d3,d4)
-##       Model   loglike Deviance Npars      AIC      BIC    Chisq df       p
-##   2 Model 2 -2042.378 4084.756    25 4134.756 4234.543 31.45153 16 0.01178
-##   1 Model 1 -2026.652 4053.305    41 4135.305 4298.955       NA NA      NA }
+  ##   > anova(d3,d4)
+  ##       Model   loglike Deviance Npars      AIC      BIC    Chisq df       p
+  ##   2 Model 2 -2042.378 4084.756    25 4134.756 4234.543 31.45153 16 0.01178
+  ##   1 Model 1 -2026.652 4053.305    41 4135.305 4298.955       NA NA      NA 
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

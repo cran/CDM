@@ -23,7 +23,9 @@ modelfit.cor.din <- function( dinobj , jkunits = 0 ){
 ##   R>  print( str (posterior)) 
 ##    num [1:1000, 1:6] 0.986 0.9 0.986 0.986 0.88 ...
 ##  [ persons , skills ]
-#    res <- modelfit.cor( data , posterior , probs ) 
+#    res <- modelfit.cor( data , posterior , probs )
+
+ 
     res <- modelfit.cor2( data , posterior , probs ) 
 
 	#******************************************
@@ -54,7 +56,7 @@ modelfit.cor.din <- function( dinobj , jkunits = 0 ){
 	#		jj <- 1
 			data.jj <- data[ jkunits != jj , ]
 			weights.jj <- weights[ jkunits != jj ]  
-#print( paste0("Iteration" , jj ) )			
+		#print( paste0("Iteration" , jj ) )			
 			#****
 			# DINA/DINO model			
 			if (class(dinobj)=="din"){
@@ -69,7 +71,7 @@ modelfit.cor.din <- function( dinobj , jkunits = 0 ){
 							wgt.overrelax = c1$wgt.overrelax , 
 							wgtest.overrelax = c1$wgtest.overrelax , 
 							param.history = FALSE , 
-							progress = FALSE )  
+							progress = FALSE )
 													}
 			#****
 			# GDINA model
@@ -123,11 +125,11 @@ modelfit.cor.din <- function( dinobj , jkunits = 0 ){
 summary.modelfit.cor.din <- function( object , ... ){	
 	cat("Test of Global Model Fit\n")
 	obji <- object$modelfit.test
-	for (vv in seq(2,ncol(obji))){	obji[,vv] <- round( obji[,vv] , 5 ) }
+	for (vv in seq(2,ncol(obji))){	obji[,vv] <- round( obji[,vv] , 3 ) }
 	print(obji)
 	cat("\nFit Statistics\n")
 	obji <- object$modelfit.stat
-	for (vv in seq(1,ncol(obji))){	obji[,vv] <- round( obji[,vv] , 5 ) }
+	for (vv in seq(1,ncol(obji))){	obji[,vv] <- round( obji[,vv] , 3 ) }
 	print(obji)		
 		}
 #################################################################	

@@ -68,38 +68,38 @@ data <- data.sda6$data
 q.matrix <- data.sda6$q.matrix
 
 #*** Model 1a: LCDM with gdina
-mod1a <- gdina( data , q.matrix , rule="ACDM" , linkfct="logit" ,
+mod1a <- CDM::gdina( data , q.matrix , rule="ACDM" , linkfct="logit" ,
                   reduced.skillspace=FALSE )  
 summary(mod1a)
 
 #*** Model 1b: estimate LCDM with gdm
-mod1b <- gdm( data , q.matrix=q.matrix , theta.k=c(0,1) )  
+mod1b <- CDM::gdm( data , q.matrix=q.matrix , theta.k=c(0,1) )  
 summary(mod1b)
 
 #*** Model 2: LCDM with hierarchy II > CM
 B <- "II > CM"
-ss2 <- skillspace.hierarchy(B=B , skill.names= colnames(q.matrix ) )
-mod2 <- gdina( data , q.matrix , rule="ACDM" , linkfct="logit" ,
-            skillclasses = ss2$skillspace.reduced ,
-            reduced.skillspace=FALSE )                        
+ss2 <- CDM::skillspace.hierarchy(B=B , skill.names= colnames(q.matrix ) )
+mod2 <- CDM::gdina( data , q.matrix , rule="ACDM" , linkfct="logit" ,
+                skillclasses = ss2$skillspace.reduced ,
+                reduced.skillspace=FALSE )                        
 summary(mod2)
 
 #*** Model 3: LCDM with hierarchy II > CM and DG > CM
 B <- "II > CM
       DG > CM"
-ss2 <- skillspace.hierarchy(B=B , skill.names= colnames(q.matrix ) )
-mod3 <- gdina( data , q.matrix , rule="ACDM" , linkfct="logit" ,
-            skillclasses = ss2$skillspace.reduced ,
-            reduced.skillspace=FALSE )                        
+ss2 <- CDM::skillspace.hierarchy(B=B , skill.names= colnames(q.matrix ) )
+mod3 <- CDM::gdina( data , q.matrix , rule="ACDM" , linkfct="logit" ,
+               skillclasses = ss2$skillspace.reduced ,
+               reduced.skillspace=FALSE )                        
 summary(mod3)
 
 # model comparisons
 anova(mod1a,mod2)
 anova(mod1a,mod3)
 # model fit
-summary( modelfit.cor.din(mod1a))
-summary( modelfit.cor.din(mod2) )
-summary( modelfit.cor.din(mod3) )
+summary( CDM::modelfit.cor.din(mod1a))
+summary( CDM::modelfit.cor.din(mod2) )
+summary( CDM::modelfit.cor.din(mod3) )
 }
 }
 
