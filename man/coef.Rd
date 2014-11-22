@@ -1,9 +1,13 @@
-\name{coef}
+\name{coef.CDM}
 \alias{coef.din}
 \alias{coef.gdina}
 \alias{coef.mcdina}
 \alias{coef.gdm}
-\title{Extract Estimated Item Parameters}
+\alias{coef.slca}
+
+
+\title{Extract Estimated Item Parameters and Skill Class Distribution
+Parameters}
 \description{
   Extracts the estimated parameters from either 
   \code{din}, \code{gdina},  \code{gdina} or \code{gdm} objects.
@@ -16,11 +20,14 @@
 \method{coef}{mcdina}(object, \dots)
 
 \method{coef}{gdm}(object, \dots)
+
+\method{coef}{slca}(object, \dots)
 }
 
 \arguments{
   \item{object}{An object inheriting from either class \code{din}, 
-  class \code{gdina},  class \code{mcdina} or class \code{gdm}. 
+  class \code{gdina}, class \code{mcdina}, class \code{slca}
+  or class \code{gdm}. 
   			}
   \item{\dots}{Additional arguments to be passed.}
 }
@@ -30,7 +37,7 @@
 %%}
 
 \value{
-   A matrix or a data frame of the estimated parameters for the fitted model.
+   A vector, a matrix or a data frame of the estimated parameters for the fitted model.
 	}
 
 %%\references{
@@ -42,7 +49,8 @@
 %%}
 
 \seealso{
-	\code{\link{din}}, \code{\link{gdina}}, \code{\link{gdm}}
+	\code{\link{din}}, \code{\link{gdina}}, \code{\link{gdm}},
+	\code{\link{mcdina}}, \code{\link{slca}}
 }
 
 \examples{

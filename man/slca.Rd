@@ -1,6 +1,8 @@
 \name{slca}
 \alias{slca}
 \alias{summary.slca}
+\alias{print.slca}
+\alias{plot.slca}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
@@ -19,9 +21,13 @@ slca(data, group = NULL, weights = rep(1, nrow(data)), Xdes,
   Xlambda.constr.c=NULL ,  delta.designmatrix = NULL, 
   delta.init = NULL, delta.fixed = NULL, delta.linkfct = "log" ,
   maxiter = 1000, conv = 10^(-5), globconv = 10^(-5), msteps = 4, convM = 5e-04, 
-  decrease.increments = FALSE, oldfac=0, seed=NULL , ...)
+  decrease.increments = FALSE, oldfac=0, seed=NULL , progress=TRUE , ...)
   
-\method{summary}{slca}(object, \dots)    
+\method{summary}{slca}(object, \dots)
+
+\method{print}{slca}(x, \dots)    
+
+\method{plot}{slca}(x, group=1 , ... )
 }
 %- maybe also 'usage' for other objects documented here.
 
@@ -30,7 +36,8 @@ slca(data, group = NULL, weights = rep(1, nrow(data)), Xdes,
 Matrix of polytomous item responses
 }
   \item{group}{
-Optional vector of group identifiers
+Optional vector of group identifiers. For \code{plot.slca} it is
+a single integer group identified.
 }
   \item{weights}{
 Optional vector of sample weights
@@ -99,8 +106,11 @@ Global deviance convergence criterion
 	\code{oldfac} near to one only allow for small changes in estimated
 	parameters from in succeeding iterations.}	
 \item{seed}{Simulation seed for initial parameters. The default
-of \code{NULL} corresponds to a random seed.}	
+of \code{NULL} corresponds to a random seed.}
+\item{progress}{An optional logical indicating whether the function
+    should print the progress of iteration in the estimation process.  }
   \item{object}{A required object of class \code{slca}}
+  \item{x}{A required object of class \code{slca}}
   \item{\dots}{Optional parameters to be passed to or from other
     methods will be ignored.  }  
 }
@@ -154,6 +164,8 @@ following entries:
 \item{delta}{Parameter estimates for skillspace representation}
 \item{covdelta}{Covariance matrix of parameter estimates for
       skillspace representation}
+\item{MLE.class}{Classified skills for each student (MLE)}
+\item{MAP.class}{Classified skills for each student (MAP)}      
 \item{data}{Original data frame}
 \item{group.stat}{Group statistics (sample sizes, group labels)}
 \item{p.xi.aj}{Individual likelihood}
@@ -202,7 +214,7 @@ model to NAEP data}. ETS Research Report ETS RR-08-27. Princeton, ETS.
 If some items have differing number of categories, appropriate
 class probabilities in non-existing categories per items can be 
 practically set to zero by loading an item for all skill classes
-on a fixed \eqn{\lambda_x} parameter of a small number, e.g. 999.
+on a fixed \eqn{\lambda_x} parameter of a small number, e.g. \code{-999}.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
@@ -276,6 +288,7 @@ delta.fixed <- cbind( 1 , 1 ,1 )
 mod1 <- slca( dat , Xdes=Xdes , delta.designmatrix=delta.designmatrix , 
             Xlambda.init=Xlambda.init , delta.fixed = delta.fixed, maxiter = 70 )
 summary(mod1)
+plot(mod1, cex.names=.7 )
 
 \dontrun{
 #*** Model 2: Partial credit model with some parameter constraints
@@ -630,3 +643,4 @@ cbind( 1 - mod1$pjk[4,,2] , slip )
 % R documentation directory.
 \keyword{Structured latent class analysis (SLCA)}
 \keyword{summary}% __ONLY ONE__ keyword per line
+\keyword{plot}

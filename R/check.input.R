@@ -88,10 +88,11 @@ if(conv.crit<=0||maxit<1) return(warning("Check your routine criteria"))
 
 	# slip constraints see help files
 	if(!is.null(constraint.slip)){                                                  #NULL permitted
-	  if (any(is.na(constraint.slip))||any(!is.numeric(constraint.guess))||         #numeric values only
+		
+	  if (any(is.na(constraint.slip))||any(!is.numeric(constraint.slip))||         #numeric values only
 	    (!is.vector(constraint.slip) && (data.class(constraint.slip) != "matrix") && 
 	    (data.class(constraint.slip) != "data.frame"))||                            #object typ
-	    (length(constraint.slip%%2!=0) && ncol(constraint.slip)!=2)){				#two columns!
+	    (length(constraint.slip %% 2 != 0) && ncol(constraint.slip)!=2)){				#two columns!
 	       return(warning("check your error parameter constraints. See Help-files."))
 	    }
 	    if(is.vector(constraint.slip)) 

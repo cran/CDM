@@ -3,8 +3,6 @@
 # coef for din object
 coef.din <-
 function (object, ...) {
-    if (!inherits(object, "din"))
-        stop("Use only with 'din' objects.\n")
 	cof <- object$coef
     cof
 }
@@ -13,8 +11,6 @@ function (object, ...) {
 # coef for gdina object
 coef.gdina <-
 function (object, ...) {
-    if (!inherits(object, "gdina"))
-        stop("Use only with 'gdina' objects.\n")
 	cof <- object$coef
     cof
 }
@@ -23,19 +19,23 @@ function (object, ...) {
 # coef for gdm object
 coef.gdm <-
 function (object, ...) {
-    if (!inherits(object, "gdm"))
-        stop("Use only with 'gdm' objects.\n")
 	cof <- object$item
     cof
 }
 
 
 ########################
-# coef for gdm object
+# coef for mcdina object
 coef.mcdina <-
 function (object, ...) {
-    if (!inherits(object, "mcdina"))
-        stop("Use only with 'mcdina' objects.\n")
 	cof <- object$item
+    cof
+}
+
+########################
+# coef for slca object
+coef.slca <-
+function (object, ...) {
+	cof <- object$Xlambda
     cof
 }

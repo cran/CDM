@@ -67,6 +67,10 @@ is provided (\code{p.holm}, see \code{\link{p.adjust}}).
 }
 
 \references{
+Li, Y., & Rupp, A. A. (2011). Performance of the S-X2 statistic for 
+full-information bifactor models. 
+\emph{Educational and Psychological Measurement}, \bold{71}, 986-1005.	
+	
 Orlando, M., & Thissen, D. (2000). Likelihood-based item-fit indices for 
 dichotomous item response theory models. 
 \emph{Applied Psychological Measurement}, \bold{24}, 50-64.
@@ -74,6 +78,10 @@ dichotomous item response theory models.
 Orlando, M., & Thissen, D. (2003). Further investigation of the performance of 
 S-X2: An item fit index for use with dichotomous item response theory models. 
 \emph{Applied Psychological Measurement}, \bold{27}, 289-298.
+
+Zhang, B., & Stone, C. A. (2008). Evaluating item fit for multidimensional 
+item response models. \emph{Educational and Psychological Measurement}, 
+\bold{68}, 181-196.
 }
 
 \author{
@@ -181,6 +189,7 @@ summary(mod1c)
 summary( itemfit.sx2( mod1c) )
 # conversion to mirt object
 library(sirt)
+library(mirt)
 cmod1c <- sirt::tam2mirt( mod1c )
 # item fit in mirt
 mirt::itemfit( cmod1c$mirt )
@@ -193,6 +202,10 @@ summary( itemfit.sx2( mod2c) )
 # conversion to mirt object and item fit in mirt
 cmod2c <- sirt::tam2mirt( mod2c )
 mirt::itemfit( cmod2c$mirt )
+
+# estimation in mirt
+mod1d <- mirt::mirt( dat , 1 , itemtype="Rasch" )
+mirt::itemfit( mod1d )	# compute item fit
 
 #############################################################################
 # EXAMPLE 2: Item fit statistics sim.dina dataset

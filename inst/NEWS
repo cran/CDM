@@ -9,10 +9,47 @@ A. Robitzsch, T. Kiefer, A. C. George, & A. Uenlue
 mailto:
 a.robitzsch /-\ bifie.at
 
+For reporting a bug, please send EVERYTIME a reproducible script 
+and (if necessary) the corresponding dataset.
+
 URL:
 https://sites.google.com/site/alexanderrobitzsch/software
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+--------------------------------------------------------------
+CDM 4.0 (2014-11-21)   --  CRAN CDM 4.0
+--------------------------------------------------------------
+
+NOTE  * included argument for iteration progress in 'gdm'
+        and 'slca'
+NOTE  * included value call in 'din', 'gdina', 'gdm',
+        'mcdina' and 'slca'
+NOTE  * changed print method in 'din' and included print method
+        for 'gdina', 'gdm' and 'slca'
+NOTE  * added anova and coef method for 'slca' function
+ADDED * added asymptotic covariance matrix estimation S3 method
+        'vcov' for objects of class din
+ADDED * added computation of entropy of whole test and items in
+        function 'entropy.lca' (Asparouhov & Muthen, 2014)
+NOTE  * included a summary function for 'cdi.kli'
+NOTE  * included a function 'skillspace.full' for creating a 
+        skill space for dichotomous skills
+ADDED * included a plot S3 method for 'gdm' and 'slca'        
+NOTE  * corrected a bug in person value of 'gdm': missing standard
+        errors of EAPs of multiple dimensions are now included
+ADDED * included person fit appropriateness statistic (Liu et al., 2009)
+ADDED * included S3 methods 'IRT.likelihood', 'IRT.personfit',
+        'IRT.irfprob' for objects of classes din, gdina, gdm, slca
+        and mcdina
+NOTE  * included person parameter estimation (classification) for
+        'slca' and 'mcdina' functions
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: data.dcm (1), modelfit.cor (2),
+        vcov-CDM (1), entropy.lca (1,2,3), personfit.appropriateness (1,2),
+        slca (1), IRT.likelihood (1), IRT.irfprob (1), IRT.factor.scores (1)
 
 --------------------------------------------------------------
 CDM 3.4 (2014-08-31)   --  CRAN CDM 3.4-21

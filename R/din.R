@@ -76,6 +76,7 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 	if ( progress){
 		cat("---------------------------------------------------------------------------------\n")
 				}
+	cl <- match.call()
 	
 ################################################################################
 # check consistency of input (data, q.matrix, ...)                             #
@@ -515,12 +516,12 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
                 ( sum( item.patt.freq * l1^2  ) / guess[jj]^2 / (1-guess[jj])^2 )^(-.5)
                     } )
     # equal guessing parameter
-    if ( guess.equal == TRUE){ se.guess <- rep( sqrt( 1 / sum( 1/ se.guess^2  ) ) , J ) } 
+    if ( guess.equal ){ se.guess <- rep( sqrt( 1 / sum( 1/ se.guess^2  ) ) , J ) } 
     
     
     
     # constrained guessing parameter
-    if ( is.null( constraint.guess ) == F ){  se.guess[ constraint.guess[,1] ] <- NA }
+    if ( ! is.null( constraint.guess )  ){  se.guess[ constraint.guess[,1] ] <- NA }
     guess <- data.frame( est = guess, se = se.guess                 )      
     
     # slipping parameter (DINA and DINO)
@@ -533,7 +534,7 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
                     } )
 
     # equal slipping parameter
-    if ( slip.equal == TRUE){ se.slip <- rep( sqrt( 1 / sum( 1/ se.slip^2  ) ) , J ) }
+    if ( slip.equal ){ se.slip <- rep( sqrt( 1 / sum( 1/ se.slip^2  ) ) , J ) }
     
     # constrained slipping parameter
     if ( is.null( constraint.slip ) == F ){  se.slip[ constraint.slip[,1] ] <- NA }        
@@ -613,9 +614,27 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 	names(itemfit.rmsea) <- colnames(data)	
     s2 <- Sys.time()
 	
+	#******
+	# parameter table for din object
+	res.partable <- din.partable( guess , slip , attribute.patt = attr.prob , data=data ,
+					rule= paste0(datfr$type) ,
+					guess.equal , slip.equal , constraint.guess , constraint.slip ,
+					zeroprob.skillclasses ,
+					attribute.patt.splitted = attr.patt  )	
+					
+    partable <- res.partable$partable
+	vcov.derived <- res.partable$vcov.derived	
 	
     if (progress){ cat("---------------------------------------------------------------------------------\n") }
-    res <- list( coef = datfr, guess = guess, slip = slip  , 
+	# coefficients
+	p1 <- partable[ partable$free , ]
+	p1 <- p1[ ! duplicated(p1$parindex) , ]	
+	p11 <- p1$value
+	names(p11) <- p1$parnames
+
+	
+    res <- list( coef=p11 , 
+				item = datfr, guess = guess, slip = slip  , 
 				"IDI" = round(1 - guess[,1] - slip[,1] ,4)  ,
 				"itemfit.rmsea" = itemfit.rmsea , 
 				"mean.rmsea" = mean(itemfit.rmsea) , 
@@ -629,7 +648,8 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
                  "item.patt.freq" = item.patt.freq, "model.type" = r1 , 
 				 "rule" = rule , "zeroprob.skillclasses" = zeroprob.skillclasses , 
 				 "weights" = weights , "pjk" = pjM , "I" = I , 
-				 "I.lj"=I.lj , "R.lj" = R.lj ,
+				 "I.lj"=I.lj , "R.lj" = R.lj , "partable" = partable ,
+				 "vcov.derived" = vcov.derived , 				 
 				 "seed" = seed , 
 				 "start.analysis" = s1 , "end.analysis" = s2 				 
 					) 
@@ -649,8 +669,10 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
                     guess.equal = guess.equal , slip.equal = slip.equal , 
 					zeroprob.skillclasses = zeroprob.skillclasses , 
                     weights = weights ,  rule = rule , 
-					wgt.overrelax = wgt.overrelax , wgtest.overrelax = wgtest.overrelax )	
-    res$control <- control										
+					wgt.overrelax = wgt.overrelax , wgtest.overrelax = wgtest.overrelax ,
+					latresp=latresp , resp.ind.list=resp.ind.list )	
+    res$control <- control		
+    res$call <- cl	
     class(res) <- "din"					
     return(res)
 }

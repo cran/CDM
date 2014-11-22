@@ -66,6 +66,7 @@ Obtaining diagnostic classification model estimates using Mplus.
 }
 
 \section{Example Index}{
+\code{\link{personfit.appropriateness}} (Example 1),	
 \code{\link{sim.din}} (Example 3),
 \code{\link{sim.gdina}} (Examples 2, 3)
 }

@@ -21,7 +21,7 @@ equivalent.dina(q.matrix, reparametrization = "B")
 The Q-matrix (see \code{\link{din}})
 }
   \item{reparametrization}{
-The used reparametrization (see von Davier, 2013). \code{A} and \code{B}
+The used reparametrization (see von Davier, 2014). \code{A} and \code{B}
 are possible reparametrizations.
 }
 }

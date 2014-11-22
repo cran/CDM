@@ -73,7 +73,8 @@ if (progress){
 		cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n" )		
 		}
     time1 <- list( "s1" = Sys.time() )
-
+	cl <- match.call()
+	
 ########################################################
 # add item and attribute labels	if necessary
 ########################################################
@@ -1421,6 +1422,7 @@ if (HOGDINA >= 0){
 					resp.patt=resp.patt,freq.pattern=freq.pattern ,
 					item.patt.freq=item.patt.freq,invM.list=invM.list) 	
 	res$control <- control	
+	res$call <- cl
     class(res) <- "gdina"
     return(res)
 }

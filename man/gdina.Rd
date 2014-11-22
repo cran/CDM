@@ -2,6 +2,8 @@
 \alias{gdina}
 \alias{summary.gdina}
 \alias{plot.gdina}
+\alias{print.gdina}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Function for Estimating the Generalized DINA (GDINA) Model
@@ -28,7 +30,9 @@ gdina(data, q.matrix, skillclasses=NULL, conv.crit=0.0001, dev.crit=.1 ,  maxit=
 
 \method{summary}{gdina}(object, rdigits = 4 ,  \dots)
 
-\method{plot}{gdina}(x , ask=FALSE ,  \dots) 
+\method{plot}{gdina}(x , ask=FALSE ,  \dots)
+
+\method{print}{gdina}(x ,  \dots)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -389,7 +393,6 @@ plot(mod2)
 # Model 2b: compare results with din function
 mod2b <- din( data = sim.dina ,  q.matrix = sim.qmatrix , rule="DINA")
 summary(mod2b)
-cbind( mod2$coef , mod2b$coef )
 
 \dontrun{
 # Model 2: estimation of the DINO model with gdina function
@@ -715,4 +718,5 @@ summary(mod3)
 \keyword{Higher order GDINA model}
 \keyword{summary}
 \keyword{plot}
+\keyword{print}
 %%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

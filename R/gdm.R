@@ -75,13 +75,14 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
     maxiter=1000, conv=10^(-5), globconv=10^(-5), msteps=4 , 
 	convM=.0005 , 
 	decrease.increments = FALSE , use.freqpatt=FALSE ,
-	...){	
+	progress=TRUE  , ...){	
 # mean.constraint [ dimension , group , value ]
 # Sigma.constraint [ dimension1 , dimension2 , group , value ]		
 	#*************************
 	# data preparation
 	s1 <- Sys.time()
-	e1 <- environment()	
+	e1 <- environment()
+	cl <- match.call()	
 	## prevent from warnings in R CMD check "no visible binding"
 	## gdm: no visible binding for global variable 'TD'
 	TD <- TP <- EAP.rel <- mean.trait <- sd.trait <- skewness.trait <- NULL
@@ -416,20 +417,23 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 		conv1 <- max( c(pardiff,deltadiff))
 		globconv1 <- abs( dev - dev0) 
 		iter <- iter +1
-    	cat(disp)	
-	    cat("Iteration" , iter , "   " , paste( Sys.time() ) , "\n" )		
-		cat( paste( "   Deviance = "  , 
-                   round( dev , 4 ) , 
- 				  if (iter > 1 ){ " | Deviance change = " } else {""} ,
-						 if( iter>1){round( - dev + dev0 , 6 )} else { ""}	,sep=""))
-		if ( dev > dev0 & (iter>1 ) ){ cat( "  Deviance increases!") } ; cat("\n")
-		cat( paste( "    Maximum item intercept parameter change = " , 
-                             round( max( gg1) , 6 ) ,  " \n"   )  )  
-		cat( paste( "    Maximum item slope parameter change = " , 
-                             round( max( gg0 ) , 6 ) ,  " \n"   )  )  							 
-		cat( paste( "    Maximum distribution parameter change = " , 
-                             round( max( deltadiff ) , 6 ) ,  " \n"   )  )  
-        flush.console()							 
+		if (progress){
+			cat(disp)	
+			cat("Iteration" , iter , "   " , paste( Sys.time() ) , "\n" )		
+			cat( paste( "   Deviance = "  , 
+					   round( dev , 4 ) , 
+					  if (iter > 1 ){ " | Deviance change = " } else {""} ,
+							 if( iter>1){round( - dev + dev0 , 6 )} else { ""}	,sep=""))
+			if ( dev > dev0 & (iter>1 ) ){ cat( "  Deviance increases!") } ; cat("\n")
+			cat( paste( "    Maximum item intercept parameter change = " , 
+								 round( max( gg1) , 6 ) ,  " \n"   )  )  
+			cat( paste( "    Maximum item slope parameter change = " , 
+								 round( max( gg0 ) , 6 ) ,  " \n"   )  )  							 
+			cat( paste( "    Maximum distribution parameter change = " , 
+								 round( max( deltadiff ) , 6 ) ,  " \n"   )  )  
+			flush.console()							 
+					}
+				
 								}
 		############################################
 		# END MML Algorithm
@@ -484,6 +488,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 	res$theta.k <- theta.k
 	res$thetaDes <- thetaDes
 	res$se.theta.k <- NULL
+	res$group <- group
 	res$time <- list( "s1"=s1,"s2"=s2 , "timediff"=s2-s1)
 	res$skillspace <- skillspace
 	res$iter <- iter
@@ -494,13 +499,15 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 	res$Npars <- res$ic$np	
 	res$loglike <- - res$deviance / 2
 	res$irtmodel <- irtmodel
-	
+	if (progress){
                 cat("----------------------------------- \n")
                 cat("Start:" , paste( s1) , "\n")
                 cat("End:" , paste(s2) , "\n")
                 cat("Difference:" , print(s2 -s1), "\n")
                 cat("----------------------------------- \n")
+				  }
 	class(res) <- "gdm"
+	res$call <- cl
 	return(res)
 				
 		}		

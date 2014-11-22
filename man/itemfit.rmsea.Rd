@@ -22,7 +22,7 @@ An array of four dimensions: Classes x items x categories x groups
 An array of two dimensions: Classes x groups
 }
   \item{probs}{
-An array of four dimensions: Classes x items x categories x groups
+An array of three dimensions: Classes x items x categories
 }
   \item{itemnames}{
 An optional vector of item names. Default is \code{NULL}.

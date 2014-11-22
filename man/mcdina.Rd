@@ -1,6 +1,7 @@
 \name{mcdina}
 \alias{mcdina}
 \alias{summary.mcdina}
+\alias{print.mcdina}
 %- Also NEED an '\alias' for EACH other topic documented here.
 
 \title{
@@ -24,7 +25,9 @@ mcdina(dat, q.matrix, group = NULL, itempars = "gr", weights = NULL,
     reduced.skillspace=TRUE , conv.crit = 1e-04, 
     dev.crit = 0.1, maxit = 1000, progress = TRUE)
 
-\method{summary}{mcdina}(object, rdigits=4 ,  \dots)        
+\method{summary}{mcdina}(object, rdigits=4 ,  \dots)
+
+\method{print}{mcdina}(x, \dots)  
 }
 
 %- maybe also 'usage' for other objects documented here.
@@ -83,7 +86,7 @@ Object of class \code{mcdina}.
   \item{rdigits}{
 Number of digits to display in \code{summary.mcdina}
 }
-
+\item{x}{Object of class \code{mcdina}}
 \item{\dots}{Further arguments to be passed.}
 }
 
@@ -120,6 +123,9 @@ A list with following entries
 \item{attribute.patt}{Probabilities of latent classes}
 \item{attribute.patt.splitted}{Splitted attribute pattern}
 \item{skill.patt}{Marginal skill probabilities}
+\item{MLE.class}{Classified skills for each student (MLE)}
+\item{MAP.class}{Classified skills for each student (MAP)}
+\item{EAP.class}{Classified skills for each student (EAP)}
 \item{dat}{Used dataset}
 \item{skillclasses}{Used skill classes}
 \item{group}{Used group identifiers}
@@ -233,3 +239,4 @@ summary(mod1)
 \keyword{Multiple choice DINA model (MCDINA)}
 \keyword{DINA}
 \keyword{summary}
+\keyword{print}

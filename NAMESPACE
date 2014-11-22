@@ -24,7 +24,15 @@ export(din, sim.din , gdina ,
     gdina.dif ,
     skill.polychor ,
     mcdina ,
-    slca
+    slca ,
+    entropy.lca ,
+    skillspace.full ,
+    personfit.appropriateness ,
+    IRT.likelihood ,
+    IRT.posterior ,
+    IRT.irfprob ,
+    IRT.factor.scores ,
+    IRT.itemfit
     )
 
 # internal functions; not intended to be visible to users
@@ -34,31 +42,89 @@ export(din, sim.din , gdina ,
 
 
 S3method(plot, din)
+S3method(plot, gdina)
+S3method(plot, gdm)
+S3method(plot, personfit.appropriateness )
+S3method(plot, slca)
+
 S3method(print, din)
+S3method(print, summary.din)
+S3method(print, gdina)
+S3method(print, gdm)
+S3method(print, slca)
+S3method(print, mcdina)
+
+
 S3method(summary, din)
 S3method(summary, gdina)
 S3method(summary, gdm)
-S3method(print, summary.din)
+S3method(summary, mcdina)
+S3method(summary, slca)
+S3method(summary, entropy.lca)
+S3method(summary, cdi.kli)
+S3method( summary , personfit.appropriateness )
+
 S3method(anova, din)
 S3method(anova, gdina)
 S3method(anova, mcdina)
 S3method(anova, gdm)
+S3method(anova, slca)
+
 S3method(coef, din)
 S3method(coef, gdina)
 S3method(coef, mcdina)
 S3method(coef, gdm)
+S3method(coef, slca)
+
+
 S3method(logLik, din)
 S3method(logLik, gdina)
 S3method(logLik, gdm)
 S3method(logLik, mcdina)
-S3method(plot, gdina)
-S3method(summary,itemfit.sx2)
-S3method(plot,itemfit.sx2)
-S3method(summary,modelfit.cor.din)
+S3method(logLik, slca)
+
+
+S3method(summary, itemfit.sx2)
+
+S3method(plot, itemfit.sx2)
+
+S3method(summary, modelfit.cor.din)
 S3method(summary, gdina.wald)
 S3method(summary, gdina.dif)
-S3method(summary,mcdina)
-S3method(summary,slca)
+
+S3method(vcov,din)
+
+
+
+S3method(IRT.itemfit, din)
+S3method(IRT.itemfit, gdina)
+S3method(IRT.itemfit, gdm)
+S3method(IRT.itemfit, slca)
+
+S3method(IRT.likelihood, din)
+S3method(IRT.likelihood, gdina)
+S3method(IRT.likelihood, mcdina)
+S3method(IRT.likelihood, gdm)
+S3method(IRT.likelihood, slca)
+
+S3method(IRT.posterior, din)
+S3method(IRT.posterior, gdina)
+S3method(IRT.posterior, mcdina)
+S3method(IRT.posterior, gdm)
+S3method(IRT.posterior, slca)
+
+S3method(IRT.irfprob, din)
+S3method(IRT.irfprob, gdina)
+S3method(IRT.irfprob, mcdina)
+S3method(IRT.irfprob, gdm)
+S3method(IRT.irfprob, slca)
+
+
+S3method(IRT.factor.scores, din)
+S3method(IRT.factor.scores, gdina)
+S3method(IRT.factor.scores, mcdina)
+S3method(IRT.factor.scores, gdm)
+S3method(IRT.factor.scores, slca)
 
 import(MASS)
 importFrom(polycor,polychor)

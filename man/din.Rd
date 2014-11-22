@@ -1,6 +1,8 @@
 \name{din}
 
 \alias{din}
+\alias{print.din}
+
 \concept{diagnosis models}
 \concept{binary response data}
 
@@ -9,13 +11,13 @@
 }
 
 \description{
-	\code{din} provides parameter estimation for cognitive
-	diagnosis models of the types ``DINA'', ``DINO'' and ``mixed DINA 
-  and DINO''.
+\code{din} provides parameter estimation for cognitive
+diagnosis models of the types ``DINA'', ``DINO'' and ``mixed DINA 
+and DINO''.
 }
 
 \usage{
-  din(data, q.matrix, skillclasses = NULL , 
+din(data, q.matrix, skillclasses = NULL , 
       conv.crit = 0.001, dev.crit= 10^(-5) , maxit = 500, 
       constraint.guess = NULL, constraint.slip = NULL,
       guess.init = rep(0.2, ncol(data)), slip.init = guess.init,
@@ -23,6 +25,8 @@
       weights = rep(1, nrow(data)), rule = "DINA", 
       wgt.overrelax = 0 , wgtest.overrelax = FALSE , param.history=FALSE , 
       seed=0 , progress = TRUE)
+
+\method{print}{din}(x , \dots) 
 }
 
 
@@ -63,13 +67,13 @@
     
   \item{constraint.slip}{An optional matrix of fixed slipping
     parameters.  The first column of this matrix indicates the numbers of the 
-    items whose guessing parameters are fixed and the second column 
-    the values the guessing parameters are fixed to.  }
+    items whose slipping parameters are fixed and the second column 
+    the values the slipping parameters are fixed to.  }
     
   \item{guess.init}{An optional initial vector of guessing parameters.  
     Guessing parameters are bounded between 0 and 1.  }
     
-  \item{slip.init}{An optional initial vector of guessing parameters.  
+  \item{slip.init}{An optional initial vector of slipping parameters.  
     Slipping parameters are bounded between 0 and 1.  }
     
   \item{guess.equal}{An optional logical indicating if all guessing parameters 
@@ -107,7 +111,9 @@ to deterministic starting values, an integer value different from
 zero to random initial values with \code{set.seed(seed)}.}
 
 \item{progress}{An optional logical indicating whether the function
-    should print the progress of iteration in the estimation process.  } 
+    should print the progress of iteration in the estimation process.  }
+   \item{x}{Object of class \code{din}}
+   \item{\dots}{Further arguments to be passed}
 }
 
 \details{
@@ -139,7 +145,9 @@ zero to random initial values with \code{set.seed(seed)}.}
 }
 
 \value{
-  \item{coef}{A data frame giving for each item condensation rule, the 
+  \item{coef}{Estimated model parameters. Note that only freely
+    estimated parameters are included.}		
+  \item{item}{A data frame giving for each item condensation rule, the 
     estimated guessing and slipping parameters and their standard errors.  
     All entries are rounded to 3 digits.  }
   \item{guess}{A data frame giving the estimated guessing parameters
@@ -191,6 +199,9 @@ zero to random initial values with \code{set.seed(seed)}.}
   \item{item.patt.freq}{A numeric vector given the frequencies of the response
     pattern in \code{item.patt.split}.  }
    \item{seed}{Used simulation seed for initial parameters}
+   \item{partable}{Parameter table which is used for \code{coef} and \code{vcov}.}
+   \item{vcov.derived}{Design matrix for extended set of parameters in
+   \code{vcov}.}
   \item{control}{Optimization parameters used in estimation}
 }
 
@@ -624,3 +635,4 @@ mod2
 \keyword{Cognitive Diagnosis Models}
 \keyword{DINA}
 \keyword{DINO}
+\keyword{print}

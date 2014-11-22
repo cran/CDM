@@ -1,6 +1,9 @@
 \name{gdm}
 \alias{gdm}
 \alias{summary.gdm}
+\alias{print.gdm}
+\alias{plot.gdm}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 General Diagnostic Model
@@ -20,9 +23,14 @@ gdm( data, theta.k, irtmodel="2PL", group=NULL, weights=rep(1, nrow(data)),
     standardized.latent=FALSE , centered.latent=FALSE , 
     centerintercepts=FALSE , centerslopes=FALSE ,
     maxiter=1000,  conv=10^(-5), globconv=10^(-5), msteps=4 , convM=.0005 ,
-    decrease.increments = FALSE , use.freqpatt=FALSE , ...) 
+    decrease.increments = FALSE , use.freqpatt=FALSE , progress=TRUE , ...) 
 
-\method{summary}{gdm}(object, \dots)    
+\method{summary}{gdm}(object, \dots)
+
+\method{print}{gdm}(x, \dots)
+
+\method{plot}{gdm}(x , perstype="EAP" , group=1 , barwidth=.1 , histcol=1 ,
+       cexcor=3 , pchpers=16 , cexpers=.7 , \dots ) 
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -55,7 +63,9 @@ the Q-matrix (argument \code{Qmatrix}).
 }
   \item{group}{
 An optional vector of group identifiers for 
-multiple group estimation
+multiple group estimation.
+For \code{plot.gdm} it is an integer indicating which
+  group should be used for plotting.
 }
   \item{weights}{
 An optional vector of sample weights
@@ -157,7 +167,21 @@ Global deviance convergence criterion
 	Note that in this case, not all person parameters are calculated 
 	as usual in the output.
 		}
+  \item{progress}{
+ 	An optional logical indicating whether the function should print the 
+ 	progress of iteration in the estimation process. 
+}		
   \item{object}{A required object of class \code{gdm}}
+  \item{x}{A required object of class \code{gdm}}
+\item{perstype}{Person paramter estimate type. Can be either
+\code{"EAP"}, \code{"MAP"} or \code{"MLE"}.} 
+\item{barwidth}{Bar width in \code{plot.gdm}}
+\item{histcol}{Color of histogram bars in \code{plot.gdm}}
+\item{cexcor}{Font size for print of correlation in \code{plot.gdm}}
+\item{pchpers}{Point type for scatter plot of person
+parameters in \code{plot.gdm}}
+\item{cexpers}{Point size for scatter plot of person
+parameters in \code{plot.gdm}}  
   \item{\dots}{Optional parameters to be passed to or from other
     methods will be ignored.  }  		
 }
@@ -262,9 +286,24 @@ following entries:
 \item{skillspace}{Used skillspace parametrization}
 \item{iter}{Number of iterations}
 \item{object}{Object of class \code{gdm}}
+\item{x}{Object of class \code{gdm}}
+\item{perstype}{Person paramter estimate type. Can be either
+\code{"EAP"}, \code{"MAP"} or \code{"MLE"}.} 
+\item{group}{Group which should be used for \code{plot.gdm}}
+\item{barwidth}{Bar width in \code{plot.gdm}}
+\item{histcol}{Color of histogram bars in \code{plot.gdm}}
+\item{cexcor}{Font size for print of correlation in \code{plot.gdm}}
+\item{pchpers}{Point type for scatter plot of person
+parameters in \code{plot.gdm}}
+\item{cexpers}{Point size for scatter plot of person
+parameters in \code{plot.gdm}}
 \item{\dots}{Optional parameters to be passed to or from other
     methods will be ignored.  }  
 }
+
+% \method{plot}{gdm}(x , perstype="EAP" , group=1 , barwidth=.1 , histcol=1 ,
+%       cexcor=3 , pchpers=16 , cexpers=.7 , \dots ) 
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% REFERENCES
@@ -332,6 +371,7 @@ theta.k <- seq( -6 , 6 , len=15 )   # discretized ability
 mod1 <- gdm( dat , irtmodel="1PL" , theta.k=theta.k , skillspace="normal" ,
                centered.latent=TRUE)
 summary(mod1)
+plot(mod1)
 
 #***
 # Model 2: Rasch model (log-linear smoothing)
@@ -393,6 +433,7 @@ theta.k <- seq( -4 , 4 , len=11 )   # discretized ability
 mod1 <- gdm( dat , irtmodel="1PL" , theta.k=theta.k , skillspace="normal" ,
            centered.latent=TRUE)
 summary(mod1)
+plot(mod1)
 
 #***
 # Model 1b: PCM using frequency patterns
@@ -467,11 +508,13 @@ Qmatrix <- data.fraction2$q.matrix3
 theta.k <- seq( -4 , 4 , len=11 )   # discretized ability
 mod1 <- gdm( dat , irtmodel = "1PL" , theta.k=theta.k ,  centered.latent=TRUE) 
 summary(mod1)
+plot(mod1)
 
 #***
 # Model 2: One-dimensional 2PL model
 mod2 <- gdm( dat , irtmodel = "2PL" , theta.k=theta.k , standardized.latent=TRUE) 
 summary(mod2)
+plot(mod2)
 
 #***
 # Model 3: 3-dimensional Rasch Model (normal distribution)
@@ -608,4 +651,6 @@ summary(mod1)
 % R documentation directory.
 \keyword{General diagnostic model}
 \keyword{summary}
+\keyword{print}
+\keyword{plot}
 %% \keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

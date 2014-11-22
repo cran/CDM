@@ -8,6 +8,7 @@ mcdina <- function( dat , q.matrix , group =NULL ,
 		 conv.crit = 0.0001, dev.crit = .1 , maxit = 1000 , progress=TRUE ){
 	# prepare data
 	s1 <- Sys.time()
+	cl <- match.call()
 	dat <- as.matrix(dat)
 	# zero/one entries. q.matrix from ordinary DINA model!!	
 	res0 <- .mcdina.prepare.qmatrix( dat , q.matrix )
@@ -143,7 +144,9 @@ mcdina <- function( dat , q.matrix , group =NULL ,
     while ( ( iter < maxit ) & 
 				( ( max.par.change > conv.crit ) | ( devchange > dev.crit  ) )
 					){
-		
+
+# z0 <- Sys.time()
+					
 		#--- (0) collect old parameters
 		dev0 <- dev
 		delta0 <- delta
@@ -155,7 +158,9 @@ mcdina <- function( dat , q.matrix , group =NULL ,
 				probs[ii,,,gg] <- delta[ ii ,  , lr.ii$lr_index , gg]
 						}
 					}
-		
+
+# cat("calc probs ") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1	
+					
 		#--- (2) calculate likelihood
 		# probs_pcm_groups_Cpp <- 
 		# function( dat_ , dat_resp_,  group_ , probs_,  CC_ ,  TP_ ){
@@ -163,7 +168,9 @@ mcdina <- function( dat , q.matrix , group =NULL ,
 		probs_ <- as.matrix( array( probs , dim=c(I , CC*TP*G) ) )			
 		f.yi.qk <- probs_pcm_groups_Cpp( dat_=dat_ , dat_resp_=dat.resp ,  group_ = group  ,
 					 probs_ = probs_ ,  CC_ = CC,  TP_ =TP )$fyiqk
-		 
+
+# cat("calc like ") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1	
+					 
 		#--- (3) calculate posterior and expected counts
 		# calccounts_pcm_groups_Cpp <- 
 		# function( dat_,  dat_resp_,  group_, fyiqk_,  pik_,  CC_,  weights_ )
@@ -182,7 +189,7 @@ mcdina <- function( dat , q.matrix , group =NULL ,
 		LL <- res1$LL
 		dev <- -2*LL
 		f.qk.yi <- res1$fqkyi
-
+# cat("calc post ") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1	
 		
 		#--- (4) log-linear smoothing of skill class distribution
 		
@@ -194,11 +201,15 @@ mcdina <- function( dat , q.matrix , group =NULL ,
 				pi.k[,gg] <- res$pred.ntheta
 						}
 					}
+# cat("calc smoothing distribution") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1						
+					
 		#--- (5) calculate updated item parameters
 		res1 <- mcdina.est.item( n.ik , lr_list , lc_list , delta , I , G , eps ,
 				itemstat , itempars , lr_counts)
 		delta <- res1$delta
 		lr_counts <- res1$lr_counts
+
+# cat("calc item parameters") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1						
 		
 		#--- (11) convergence
 		max.par.change <- max( abs( delta - delta0 ) )
@@ -252,6 +263,20 @@ mcdina <- function( dat , q.matrix , group =NULL ,
 	# skill pattern
 	skill.patt <- mcdina.skill.patt( q.matrix , skillclasses , G , pi.k , group0_unique )
 
+	# person classification	
+	mle.class <- skillclasses[ max.col( f.yi.qk ) , ]	
+	map.class <- skillclasses[ max.col( f.qk.yi ) , ]
+	N11 <- nrow(mle.class)
+	K11 <-  ncol(mle.class)
+	K12 <- nrow(skillclasses)
+	
+	eap.class <- matrix( 0 , nrow= N11 , ncol= K11 )
+	colnames(eap.class) <- colnames(mle.class)
+	for (kk in 1:K11){
+		# kk <- 4
+		sckk <- matrix( skillclasses[,kk] , nrow=N11 , ncol=K12 , byrow=TRUE )
+		eap.class[,kk] <- rowSums( sckk * f.qk.yi )
+						}
 	# output	
 	res <- list( "item" = item , "posterior"=f.qk.yi , "like"=f.yi.qk , "ic"=ic , 
 				"q.matrix" = q.matrix , "pik"=probs , 
@@ -259,6 +284,7 @@ mcdina <- function( dat , q.matrix , group =NULL ,
 				"n.ik"=n.ik , "deviance" = dev, 
 				"attribute.patt" = pi.k , "attribute.patt.splitted" = skillclasses , 
 				"skill.patt" = skill.patt , 
+				"MLE.class" = mle.class , "MAP.class" = map.class , "EAP.class" = eap.class , 
 				"dat" = dat0 , "skillclasses"= skillclasses , "group"=group0 ,
 				"lc" = lc , "lr" =lr , "iter"=iter , "itempars" = itempars , 
 				"weights"=weights , "I" = nrow(dat) , "G"= G , "CC" = CC ,
@@ -272,6 +298,7 @@ mcdina <- function( dat , q.matrix , group =NULL ,
         cat("Difference:" , print(s2 -s1), "\n")
         cat("----------------------------------- \n")
 	class(res) <- "mcdina"	
+	res$call <- cl
 	return(res)
 		}
 ###########################################################

@@ -6,7 +6,12 @@ summary.slca <- function( object , ... ){
     # object      ... object from rasch.mml                #
     cat("-----------------------------------------------------------------------------\n")
     d1 <- packageDescription("CDM")
-	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n\n" )	
+	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n\n" )
+    
+	cat("Call:\n")
+	print(object$call)
+	cat("\n")
+	
 	cat( "Date of Analysis:" , paste( object$time$s2 ) , "\n" )
 	cat("Computation Time:" , print(object$time$s2 - object$time$s1), "\n\n")
     cat("Structured Latent Class Analysis - Function 'slca' \n")
@@ -14,7 +19,7 @@ summary.slca <- function( object , ... ){
 
 	cat( "   " , object$N , "Cases, " , object$I , "Items, " , object$G , "Group(s)", "," ,
 				object$TP , "Skill classes\n")  
-	cat("\n **** Check carefully the number of parameter and identifiability
+	cat("\n **** Check carefully the number of parameters and identifiability
 			of the model.  ***\n")
 
     if (object$G > 1 ){					

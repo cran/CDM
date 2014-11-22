@@ -1,17 +1,22 @@
 \name{skillspace.hierarchy}
 \alias{skillspace.hierarchy}
+\alias{skillspace.full}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Creation of a Hierarchical Skill Space 
 }
 
 \description{
-Defines a reduced skill space for hierarchies in skills (see e.g. 
-Leighton, Gierl, & Hunka, 2004).
+The function \code{skillspace.hierarchy} defines a reduced skill space 
+for hierarchies in skills (see e.g. Leighton, Gierl, & Hunka, 2004).
+The function \code{skillspace.full} defines a full skill space
+for dichotomous skills.
 }
 
 \usage{
 skillspace.hierarchy(B, skill.names)
+
+skillspace.full(skill.names)
 }
 
 %- maybe also 'usage' for other objects documented here.

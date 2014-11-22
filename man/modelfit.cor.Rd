@@ -98,7 +98,7 @@ is calculated.
 The difference of Fisher transformed correlations (Chen et al., 2013) is also
 computed and used for assessing statistical inference.
 
-For every of the fit statistics \code{MADcor}, \code{MADacor}, \code{SRSMR}, \code{MX2},
+For every of the fit statistics \code{MADcor}, \code{MADacor}, \code{SRMSR}, \code{MX2},
 \code{100*MADRESIDCOV} and \code{MADQ3} it holds that smaller values 
 (values near to zero) indicate better fit.
 
@@ -114,7 +114,7 @@ A list with following entries
    \code{MADcor}: mean of absolute deviations in observed and expected correlations 
         (DiBello et al., 2007) 
 
-   \code{SRSMR}: standardized mean square rooot of squared residuals 
+   \code{SRMSR}: standardized mean square rooot of squared residuals 
         (Maydeu-Olivares, 2013; Maydeu-Olivares & Joe, 2014) 
                 
     \code{MX2}: Mean of \eqn{\chi^2} statistics of all item pairs 
@@ -217,7 +217,7 @@ summary(fmod1)
   ##   MADQ3           0.062      10  0.037 0.008   0.021   0.052
   ##   MADaQ3          0.059      10  0.034 0.008   0.019   0.050
 
-# look at first five item pairs with highest local dependence
+# look at first five item pairs with highest degree of local dependence
 itempairs <- fmod1$itempairs
 itempairs <- itempairs[ order( itempairs$X2 , decreasing=TRUE ) , ]
 itempairs[ 1:5 , c("item1","item2" , "X2" , "X2_p" , "X2_p.holm" , "Q3") ]
@@ -263,6 +263,40 @@ summary(fmod3)
   ##   100*MADRESIDCOV 0.668
   ##   MADQ3           0.062
   ##   MADaQ3          0.059
+  
+#############################################################################
+# EXAMPLE 2: Simulated Example DINA model
+#############################################################################
+
+set.seed(9765)
+# specify Q-matrix
+Q <- matrix( c(1,0, 0,1 , 1,1 ) , nrow=3 , ncol=2 , byrow=TRUE )
+q.matrix <- Q[ rep(1:3,4) , ]
+I <- nrow(q.matrix)
+
+# simulate data
+guess <- runif(I, 0 , .3 )
+slip <- runif( I , 0 , .4 )
+N <- 150   # number of persons
+dat <- sim.din( N=N, q.matrix=q.matrix , slip=slip , guess=guess )$dat
+
+#*** estmate DINA model
+mod1 <- din( dat , q.matrix = q.matrix, rule = "DINA" )
+fmod1 <- modelfit.cor.din(mod1 , jkunits=10)
+summary(fmod1)
+  ##  Test of Global Model Fit
+  ##         type  value     p
+  ##  1   max(X2) 10.697 0.071
+  ##  2 abs(fcor)  0.277 0.026
+  ##  
+  ##  Fit Statistics
+  ##                    est jkunits jk_est jk_se est_low est_upp
+  ##  MADcor          0.052      10  0.026 0.010   0.006   0.045
+  ##  SRMSR           0.074      10  0.048 0.013   0.022   0.074
+  ##  MX2             0.869      10  1.070 0.281   0.519   1.622
+  ##  100*MADRESIDCOV 1.259      10  0.646 0.213   0.228   1.063
+  ##  MADQ3           0.080      10  0.047 0.010   0.027   0.068
+  ##  MADaQ3          0.079      10  0.046 0.010   0.027   0.065  
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

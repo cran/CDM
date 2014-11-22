@@ -21,7 +21,7 @@ cdi.kli <- function( object ){
 	pjk <- ( pjk + eps ) / ( 1 + 2*eps )
 
 	#*****
-	# apply core Cpp function for calculation
+	# apply Rcpp function for calculation
 #	res0 <-  cdm_kli_id( pjk , skillclasses )
 	res0 <- .Call( "cdm_kli_id_C", 
 					pjk , skillclasses , 
@@ -37,11 +37,33 @@ cdi.kli <- function( object ){
 				"glob_item_disc" = res0$glob_item , "attr_item_disc" = res0$attr_item ,
 				"KLI" = kli , 
 				"skillclasses" = res0$skillclasses , "hdist" = res0$hdist , "pjk" = pjk0 ,
-				"q.matrix" = q.matrix )	
+				"q.matrix" = q.matrix )					
+	# complete summary in a table
+    dfr <- cbind( res0$glob_item , res0$attr_item ) 	
+	l1 <- c( sum(res0$glob_item) , colSums( res0$attr_item ) )
+    dfr <- rbind( l1 , dfr )
+	rownames(dfr) <- NULL	
+	colnames(dfr) <- c( "cdi_test" , paste0( "cdi_skill" , 1:( ncol(dfr) -1 ) ) )
+	dfr <- data.frame( "item" = c("test" , items ) , dfr )
 	# names
 	names(res$attr_disc) <- colnames(res$attr_item_disc) <- colnames(q.matrix)
 	dimnames(res$KLI)[[1]] <- items
-	names(res$glob_item_disc) <- rownames(res$attr_item_disc) <- items	
+	names(res$glob_item_disc) <- rownames(res$attr_item_disc) <- items				
+	res$summary <- dfr
+	class(res) <- "cdi.kli"
 	return(res)
 	}
 ##############################################################
+
+#################################################################################		
+# summary S3 method
+summary.cdi.kli <- function( object , digits=2, ...){
+    obji <- object$summary
+    V <- ncol(obji)
+    for (vv in 2:V){
+        obji[,vv] <- round( obji[,vv] , digits)
+                    }
+    rownames(obji) <- NULL
+    print(obji)
+        }
+#####################################################################################

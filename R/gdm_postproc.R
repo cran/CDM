@@ -185,7 +185,7 @@
 		EAP.error <- weighted.mean( person$SE.EAP^2 , weights )
 		EAP.rel[dd] <- EAP.variance / ( EAP.variance + EAP.error )	
 		colnames(person)[ which( colnames(person) == "EAP" ) ] <- paste("EAP." , dd1 , sep="")
-		colnames(person)[ which( colnames(person) == "SD.EAP" ) ] <- paste("SE.EAP." , dd1 , sep="")				
+		colnames(person)[ which( colnames(person) == "SE.EAP" ) ] <- paste("SE.EAP." , dd1 , sep="")				
 		}
 
 	# MLE	

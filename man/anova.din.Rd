@@ -1,8 +1,9 @@
-\name{anova.din}
+\name{anova-CDM}
 \alias{anova.din}
 \alias{anova.gdina}
 \alias{anova.mcdina}
 \alias{anova.gdm}
+\alias{anova.slca}
 
 
 %- Also NEED an '\alias' for EACH other topic documented here.
@@ -14,21 +15,21 @@ This function compares two models estimated with \code{din}, \code{gdina}
 or \code{gdm} using a likelihood ratio test.
 }
 \usage{
-\method{anova}{din}(object,object1,\dots)
+\method{anova}{din}(object,\dots)
 
-\method{anova}{gdina}(object,object1,\dots)
+\method{anova}{gdina}(object,\dots)
 
-\method{anova}{mcdina}(object,object1,\dots)
+\method{anova}{mcdina}(object,\dots)
 
-\method{anova}{gdm}(object,object1,\dots)
+\method{anova}{gdm}(object,\dots)
+
+\method{anova}{slca}(object,\dots)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{
-Object of class \code{din}, \code{gdina}, \code{mcdina} or \code{gdm}
-}
-  \item{object1}{
-Object of class \code{din}, \code{gdina}, \code{mcdina} or \code{gdm}
+Two objects of class \code{din}, \code{gdina}, \code{mcdina},
+\code{slca} or \code{gdm}
 }
   \item{\dots}{
 Further arguments to be passed
@@ -56,9 +57,10 @@ Further arguments to be passed
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-%\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-%}
+\seealso{
+	\code{\link{din}}, \code{\link{gdina}}, \code{\link{gdm}},
+	\code{\link{mcdina}}, \code{\link{slca}}
+}
 \examples{
 #############################################################################
 # EXAMPLE 1: anova with din objects

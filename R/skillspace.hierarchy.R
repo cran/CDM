@@ -68,3 +68,10 @@ skillspace.hierarchy <- function( B , skill.names  ){
 	return(res)
 		}
 ############################################################################		
+
+# full skill space
+skillspace.full <- function( skill.names ){
+    B <- paste0( skill.names[1] , " > " , skill.names[2] )
+    M1 <- skillspace.hierarchy( B = B , skill.names=skill.names )
+    return(M1$skillspace.complete)
+                }

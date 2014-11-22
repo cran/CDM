@@ -1,5 +1,6 @@
 \name{cdi.kli}
 \alias{cdi.kli}
+\alias{summary.cdi.kli}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Cognitive Diagnostic Indices based on Kullback-Leibler Information
@@ -13,13 +14,18 @@ See Henson and Douglas (2005) and Henson et al. (2008) for more details.
 
 \usage{
 cdi.kli(object)
+
+\method{summary}{cdi.kli}(object, digits = 2 ,  \dots)
 }
 
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{
-Object of class \code{din} or \code{gdina}
+Object of class \code{\link{din}} or \code{\link{gdina}}.
+For the \code{summary} method, it is the result of \code{cdi.kli}.
 }
+\item{digits}{Number of digits for rounding}
+\item{\dots}{Further arguments to be passed}
 }
 
 %\details{
@@ -41,6 +47,8 @@ and skill classes (in the second and third dimension)}
 \item{hdist}{Matrix containing Hamming distance between skill classes}
 \item{pjk}{Used probabilities}
 \item{q.matrix}{Used Q-matrix}
+\item{summary}{Data frame with test- and item-specific
+discrimination statistics}
 }
 
 \references{
@@ -72,7 +80,7 @@ Press.
 
 \examples{
 #############################################################################
-# EXAMPLE 1: Examples based on dataset fractions.subtraction.data
+# EXAMPLE 1: Examples based on sim.dina
 #############################################################################	
 
 data(sim.dina)
@@ -129,3 +137,4 @@ round( cmod$attr_item_disc , 3 )
 % R documentation directory.
 \keyword{Item discrimination}
 \keyword{Cognitive diagnostic discrimination}
+\keyword{summary}

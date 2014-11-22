@@ -8,9 +8,9 @@ logLik.din <- function (object, ...) {
     # number of parameters
     attr(out, "df") <- sum( object$Npars )
 	# extract number of observations
-    attr(out, "nobs") <- nrow(object$I)
+    attr(out, "nobs") <- object$I
     class(out) <- "logLik"
-    out
+    return(out)
 }
 #########################################
 # gdina class
@@ -20,9 +20,9 @@ logLik.gdina <- function (object, ...) {
     # number of parameters
     attr(out, "df") <- sum( object$Npars )
 	# extract number of observations
-    attr(out, "nobs") <- nrow(object$I)
+    attr(out, "nobs") <- object$I
     class(out) <- "logLik"
-    out
+    return(out)
 }
 ###########################################
 # gdm class 
@@ -32,9 +32,9 @@ logLik.gdm <- function (object, ...) {
     # number of parameters
     attr(out, "df") <- sum( object$Npars )
 	# extract number of observations
-    attr(out, "nobs") <- nrow(object$N)
+    attr(out, "nobs") <- object$N
     class(out) <- "logLik"
-    out
+    return(out)
 }
 #############################################
 #########################################
@@ -45,7 +45,21 @@ logLik.mcdina <- function (object, ...) {
     # number of parameters
     attr(out, "df") <- sum( object$Npars )
 	# extract number of observations
-    attr(out, "nobs") <- nrow(object$I)
+    attr(out, "nobs") <- object$I
     class(out) <- "logLik"
-    out
+    return(out)
 }
+#############################################
+#########################################
+# slca class
+logLik.slca <- function (object, ...) {
+	# extract log-likelihood
+	out <- object$loglike
+    # number of parameters
+    attr(out, "df") <- sum( object$Npars )
+	# extract number of observations
+    attr(out, "nobs") <- object$N
+    class(out) <- "logLik"
+    return(out)
+}
+#############################################

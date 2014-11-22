@@ -1,8 +1,15 @@
 ##############################################################
 # Likelihood ratio test for din objects
-anova.din <- function( object , object1 , ...){ 
-	model1 <- object
-	model2 <- object1	
+anova.din <- function( object , ...){ 
+    if (length(list(object, ...)) != 2){ 
+        stop("anova method can only be applied for comparison of two models.\n")		
+		}
+	objects <- list(object, ...)
+	model1 <- objects[[1]]
+	model2 <- objects[[2]]
+#	model2 <- object1
+
+	
     dfr1 <- data.frame( "Model" = "Model 1" , 
 		"loglike" = model1$loglike , 
 		"Deviance" = -2*model1$loglike )
@@ -32,3 +39,4 @@ anova.din <- function( object , object1 , ...){
 anova.gdina <- anova.din
 anova.gdm <- anova.din
 anova.mcdina <- anova.din
+anova.slca <- anova.din

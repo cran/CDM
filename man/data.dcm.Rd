@@ -143,6 +143,32 @@ round(t(dfr),3)
   ##   din  0.113 0.083 0.094 0.092 0.064 0.059 0.065 0.429
   ##   mirt 0.116 0.074 0.095 0.064 0.095 0.058 0.066 0.433
 
+#** extract estimated classifications
+fsc1m <- sirt::mirt.wrapper.fscores( mod1m )
+#- estimated reliabilities
+fsc1m$EAP.rel      
+  ##      skill1    skill2    skill3 
+  ##   0.5479942 0.5362595 0.5357961 
+#- estimated classfications: EAPs, MLEs and MAPs  
+head( round(fsc1m$person,3) )
+  ##     case     M EAP.skill1 SE.EAP.skill1 EAP.skill2 SE.EAP.skill2 EAP.skill3 SE.EAP.skill3
+  ##   1    1 0.286      0.508         0.500      0.067         0.251      0.820         0.384
+  ##   2    2 0.000      0.162         0.369      0.191         0.393      0.190         0.392
+  ##   3    3 0.286      0.200         0.400      0.211         0.408      0.607         0.489
+  ##   4    4 0.000      0.162         0.369      0.191         0.393      0.190         0.392
+  ##   5    5 0.571      0.802         0.398      0.267         0.443      0.928         0.258
+  ##   6    6 0.857      0.998         0.045      1.000         0.019      1.000         0.020
+  ##     MLE.skill1 MLE.skill2 MLE.skill3 MAP.skill1 MAP.skill2 MAP.skill3
+  ##   1          1          0          1          1          0          1
+  ##   2          0          0          0          0          0          0
+  ##   3          0          0          1          0          0          1
+  ##   4          0          0          0          0          0          0
+  ##   5          1          0          1          1          0          1
+  ##   6          1          1          1          1          1          1
+
+#** estimate model fit in mirt
+( fit1m <- mirt::M2( mod1m ) )
+  
 #*****************************************************
 # Model 2: DINO model
 #*****************************************************
@@ -222,6 +248,7 @@ summary(mod7)
 #-- Model 8a: randomLCA package
 library(randomLCA)
 mod8a <- randomLCA::randomLCA( data.dcm$data[,-1], nclass= 3 , verbose=TRUE , notrials=4)
+
 #-- Model8b: rasch.mirtlc function in sirt package
 library(sirt)
 mod8b <- sirt::rasch.mirtlc( data.dcm$data[,-1] , Nclasses=3 , nstarts=4 )

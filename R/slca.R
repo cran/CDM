@@ -12,9 +12,11 @@ slca <- function( data , group=NULL,
 	delta.fixed = NULL , delta.linkfct = "log" ,  
     maxiter=1000, conv=10^(-5), globconv=10^(-5), msteps=4 , 
 	convM=.0005 , decrease.increments = FALSE , oldfac = 0 , 
-	seed=NULL , ...){	
-# mean.constraint [ dimension , group , value ]
-# Sigma.constraint [ dimension1 , dimension2 , group , value ]	
+	seed=NULL , progress = TRUE ,  ...){	
+	#************************************************************
+	# mean.constraint [ dimension , group , value ]
+	# Sigma.constraint [ dimension1 , dimension2 , group , value ]	
+	cl <- match.call()
     theta.k <- NULL	
 	#*************************
 	# data preparation
@@ -71,18 +73,14 @@ slca <- function( data , group=NULL,
 	    Ngroup <- a1[,2]		
 			}	
     if (G==1){ Ngroup <- length(group) }
-
 # cat("a400\n")
-
-
 	KK <- K	# if KK == 1 then a slope parameter for all items is estimated
     deltaNULL <- 0
 	if ( is.null(delta.designmatrix) ){
 	    deltaNULL <- 1
 		delta.designmatrix <- diag( dim(Xdes)[3] )
 							}
-# print(delta.designmatrix)
-	
+# print(delta.designmatrix)	
 	# lambda basis parameters for X
 	if ( is.null(seed) ){
 		seed.used <- round( runif(1,2,10000 ) )
@@ -249,7 +247,6 @@ slca <- function( data , group=NULL,
 # cat("calc.counts") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1		
 
 
-
 		#*****
 		#5 M step: Xdelta parameter estimation
 		# n.ik  [1:TP,1:I,1:K,1:G]
@@ -348,21 +345,20 @@ slca <- function( data , group=NULL,
 		conv1 <- max( c(pardiff,deltadiff))
 		globconv1 <- abs( dev - dev0) 
 		iter <- iter +1
-    	cat(disp)	
-	    cat("Iteration" , iter , "   " , paste( Sys.time() ) , "\n" )		
-		cat( paste( "   Deviance = "  , 
-                   round( dev , 4 ) , 
- 				  if (iter > 1 ){ " | Deviance change = " } else {""} ,
-						 if( iter>1){round( - dev + dev0 , 6 )} else { ""}	,sep=""))
-		if ( dev > dev0 & (iter>1 ) ){ cat( "  Deviance increases!") } ; cat("\n")
-		cat( paste( "    Maximum Xlambda parameter change = " , 
-                             round( max( gg1) , 6 ) ,  " \n"   )  )  
-#		cat( paste( "    Maximum item slope parameter change = " , 
-#                             round( max( gg0 ) , 6 ) ,  " \n"   )  )  							 
-		cat( paste( "    Maximum distribution parameter change = " , 
-                             round( max( deltadiff ) , 6 ) ,  " \n"   )  )  
-        flush.console()
-
+		if (progress){
+			cat(disp)	
+			cat("Iteration" , iter , "   " , paste( Sys.time() ) , "\n" )		
+			cat( paste( "   Deviance = "  , 
+					   round( dev , 4 ) , 
+					  if (iter > 1 ){ " | Deviance change = " } else {""} ,
+							 if( iter>1){round( - dev + dev0 , 6 )} else { ""}	,sep=""))
+			if ( dev > dev0 & (iter>1 ) ){ cat( "  Deviance increases!") } ; cat("\n")
+			cat( paste( "    Maximum Xlambda parameter change = " , 
+								 round( max( gg1) , 6 ) ,  " \n"   )  )  
+			cat( paste( "    Maximum distribution parameter change = " , 
+								 round( max( deltadiff ) , 6 ) ,  " \n"   )  )  
+			flush.console()
+				}
 
 		# save values corresponding to minimal deviance
 		if ( ( dev < mindev ) | ( iter == 1 ) ){
@@ -437,6 +433,11 @@ slca <- function( data , group=NULL,
 #	res <- .gdm.person.parameters( data , D , theta.k , p.xi.aj , p.aj.xi , weights )	
 #	.attach.environment( res , envir=e1 )
 	
+	# person parameters
+	mle.class <- max.col( p.xi.aj ) 
+	map.class <- max.col( p.aj.xi ) 
+	
+	
 	
 	#*************************
 	# collect output	
@@ -448,7 +449,10 @@ slca <- function( data , group=NULL,
 				"pjk" = probs , "n.ik" = n.ik ,  
 				"G"=G , "I" = ncol(data) , "N" = nrow(data) , 
 				"TP"=TP , 
-				"delta" = delta , "covdelta"=covdelta , "data" = data ,
+				"delta" = delta , "covdelta"=covdelta , 
+				"delta.designmatrix" = delta.designmatrix , 
+				"MLE.class"=mle.class , "MAP.class" = map.class , 
+				"data" = data ,
 				"group.stat"=group.stat )
 	res$p.xi.aj <- p.xi.aj ; res$posterior <- p.aj.xi 
 	res$K.item <- K.item
@@ -464,12 +468,14 @@ slca <- function( data , group=NULL,
 	res$seed.used <- seed.used
 	res$Xlambda.init <- Xlambda.init
 	res$delta.init <- delta.init
-	
+	if (progress){
                 cat("----------------------------------- \n")
                 cat("Start:" , paste( s1) , "\n")
                 cat("End:" , paste(s2) , "\n")
                 cat("Difference:" , print(s2 -s1), "\n")
                 cat("----------------------------------- \n")
+				}
+	res$call <- cl			
 	class(res) <- "slca"
 	return(res)
 				

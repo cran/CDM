@@ -1,20 +1,21 @@
 ################################################################################
-# print method for objects of class "din"                                      #
+# print method class gdm
 ################################################################################
-print.din <-
+print.slca <-
 function(x, ... ){
-	cat("Estimation of Mixed DINA/DINO Model\n")
+	cat("Estimation of structured latent class analysis\n")
 	cat("\nCall:\n", paste(deparse(x$call), sep = "\n", collapse = "\n"), 
 				"\n\n", sep = "")
 	#*** parameters
-	cat(paste0("Number of cases = " , x$I , "\n") )
+	cat(paste0("Number of cases = " , x$N , "\n") )
+	cat(paste0("Number of groups = " , x$G , "\n") )
 	cat(paste0("Number of items = " , ncol(x$data) , "\n") )
-	cat(paste0("Number of skill dimensions = " , ncol(x$q.matrix) , "\n") )	
-	cat(paste0("Number of skill classes = " , nrow(x$attribute.patt) , "\n") )		
-	cat(paste0("Number of parameters = " , sum(x$Npars) , "\n") )
-	cat(paste0("  Number of item parameters = " , x$Npars$itempars , "\n") )
+#	cat(paste0("Number of skill dimensions = " , dim(x$Qmatrix)[3] , "\n") )	
+	cat(paste0("Number of skill classes = " , nrow(x$pi.k) , "\n") )		
+	cat(paste0("Number of parameters = " , x$Npars , "\n") )
+	cat(paste0("  Number of item parameters = " , x$ic$itempars , "\n") )
 	cat(paste0("  Number of skill distribution parameters = " , 
-				x$Npars$skillpars , "\n") )
+				x$ic$traitpars , "\n") )
 	#*** likelihood
 	cat( paste0( "\nLog-Likelihood = " , round( x$loglike ,2 ) , "\n") )
 	#*** information criteria
