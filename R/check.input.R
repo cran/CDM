@@ -24,14 +24,19 @@ check.input <- function( data , q.matrix , conv.crit = 0.001 , maxit = 100 ,
 
 	# check for data entries being dichotomous or missing
 	gt <- data[ is.na( data ) == F ]
-	if(any(gt == 9||gt == 99||gt == .99)){
+	# gt <- data[ ! is.na( data) ]
+
+#	if(any(gt == 9||gt == 99||gt == .99)){
+	if( sum(gt == 9 ) + sum(gt == 99 ) + sum(gt == .99) > 0 ){
   	return(warning("Recode your data! Only responses with values 0 or 1 (or NA) are valid.",
   	"\nMaybe missing values coded as 9, 99, .99.\n"))
   	}
 	
   # return all response pattern not containing NA
 	gt <- unique( gt[ gt %in% c(0,1) == F ] )
-	if(length(gt) > 0){ return(warning("Recode your data! Only responses with values 0 or 1 (or NA) are valid.\n")) }
+	if(length(gt) > 0){ 
+		return(warning("Recode your data! Only responses with values 0 or 1 (or NA) are valid.\n")) 
+					}
 	
 	# check for provision of row- and colnames
 	if(is.null(rownames(data))) rownames(data) <- 1:nrow(data)
@@ -47,11 +52,15 @@ check.input <- function( data , q.matrix , conv.crit = 0.001 , maxit = 100 ,
 	att.lbl <- attributes(q.matrix)$skill.labels
   q.matrix <- as.matrix(q.matrix)
 
+  
 	# return all response pattern not containing NA
-	gt_q <- data[ is.na( q.matrix ) == F ]
-	gt_q <- unique( gt_q[ gt_q %in% c(0,1) == F ] )
+	# gt_q <- data[ is.na( q.matrix ) == F ]
+	gt_q <- q.matrix[ ! is.na( q.matrix ) ]
+	
+	# gt_q <- unique( gt_q[ gt_q %in% c(0,1) == F ] )
+	gt_q <- setdiff( unique( gt_q ) , c(0,1) )
 	if(length(gt) > 0){ return(warning("Check your Q-matrix! Only values 0 or 1 are valid.\n")) }
-
+	
  	# check if q.matrix obtains same number of items as the data set
 	if(nrow(q.matrix)!=ncol(data)){ return(warning("Check your Q-matrix! Number of assigned items (rows)
   		must fit the number of items in the data (columns).\n")) }
@@ -65,7 +74,7 @@ check.input <- function( data , q.matrix , conv.crit = 0.001 , maxit = 100 ,
 	# check for provision of row- and colnames
 	if(is.null(rownames(q.matrix))) rownames(q.matrix) <- paste("Item",1:nrow(q.matrix),sep="")
 	if(is.null(colnames(q.matrix))) colnames(q.matrix) <- paste("Skill",1:ncol(q.matrix),sep="")
-
+	
   # check for provision of skill labels
   if(is.null(att.lbl)) attr(q.matrix, "skill.labels") <- colnames(q.matrix)
   if(length(att.lbl) != ncol(q.matrix) & length(att.lbl) != 0){
@@ -81,6 +90,8 @@ check.input <- function( data , q.matrix , conv.crit = 0.001 , maxit = 100 ,
 
 if(!is.numeric(conv.crit)||!is.numeric(maxit)) return(warning("Check your routine criteria"))
 if(conv.crit<=0||maxit<1) return(warning("Check your routine criteria"))
+
+
 
 ################################################################################
 # check consistency of constraint arguments for parameter boundaries           #
@@ -151,7 +162,8 @@ if(conv.crit<=0||maxit<1) return(warning("Check your routine criteria"))
 	  (length(guess.init)!=ncol(data)))
 	 return(warning("Check your initial error parameter values. See Help-files."))
 	}
-
+	
+	
 ################################################################################
 # check consistency of weight argument                                         #
 ################################################################################

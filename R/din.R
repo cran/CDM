@@ -97,6 +97,7 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
     clean <- check.input(data, q.matrix, conv.crit, maxit, constraint.guess,
         constraint.slip, guess.init, slip.init, weights, rule, progress)   
 
+		
     if (is.character(clean)) return(clean)
     
     dat.items <- clean$data; q.matrix <- clean$q.matrix; conv.crit <- clean$conv.crit;

@@ -5,7 +5,6 @@ IRT.itemfit <- function (object, ...) {
        }
 ###########################################################
 
-
 ###########################################################
 # object of class din
 IRT.itemfit.din <- function( object , method="RMSEA" , ... ){
@@ -16,8 +15,6 @@ IRT.itemfit.din <- function( object , method="RMSEA" , ... ){
     return(ll)
         }
 ###########################################################
-
-
 
 ###########################################################
 # object of class gdina
@@ -30,7 +27,6 @@ IRT.itemfit.gdina <- function( object , method="RMSEA" , ... ){
         }
 ###########################################################
 
-
 ###########################################################
 # object of class gdm
 IRT.itemfit.gdm <- function( object , method="RMSEA" , ... ){
@@ -42,8 +38,6 @@ IRT.itemfit.gdm <- function( object , method="RMSEA" , ... ){
     return(ll)
         }
 ###########################################################
-
-
 
 ###########################################################
 # object of class slca

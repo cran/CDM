@@ -1,19 +1,33 @@
-\name{vcov-CDM}
+\name{vcov}
 \alias{vcov.din}
+\alias{confint.din}
+\alias{IRT.se}
+\alias{IRT.se.din}
 
-
-\title{Asymptotic Covariance Matrix}
+\title{Asymptotic Covariance Matrix, Standard Errors and Confidence Intervals}
 
 \description{
   Computes the asymptotic covariance matrix for 
   \code{din} objects. The covariance matrix is computed using the
   empirical cross-product approach (see Paek & Cai, 2014).
+  
+  In addition, an S3 method \code{IRT.se} is defined which produces 
+  a comprised output of \code{vcov} and \code{confint}.
 }
 
 
 \usage{
 \method{vcov}{din}(object, extended=FALSE, infomat=FALSE ,ind.item.skillprobs=TRUE, 
        ind.item= FALSE, diagcov = FALSE , h=.001 ,\dots)
+       
+\method{confint}{din}(object, parm , level=.95 , extended=FALSE, 
+      ind.item.skillprobs=TRUE, ind.item= FALSE, diagcov = FALSE , h=.001 , \dots ) 
+
+IRT.se(object, \dots)
+
+\method{IRT.se}{din}( object , extended = FALSE , parm=NULL , level = .95 , 
+      infomat=FALSE , ind.item.skillprobs = TRUE , ind.item= FALSE , 
+      diagcov = FALSE , h=.001 , ... )
 }
 
 \arguments{
@@ -35,6 +49,9 @@ item parameters between different items are zero.}
 between estimated parameters are set to zero.}
 \item{h}{Parameter used for numerical differiation for computing
 the derivative of the log-likelihood function.}
+\item{parm}{Vector of parameters. If it is missing, then for all estimated
+parameters a confidence interval is calculated.}
+\item{level}{Confidence level}	
   \item{\dots}{Additional arguments to be passed.}
 }
 
@@ -43,8 +60,13 @@ the derivative of the log-likelihood function.}
 %%}
 
 \value{
-   A covariance matrix. The corresponding coefficients can be extracted
+   \code{vcov}: A covariance matrix. The corresponding coefficients can be extracted
    as the attribute \code{coef} from this object.
+   
+   \code{coef}: A vector of coefficients.
+   
+   \code{IRT.se}: A data frame containing coefficients, standard errors
+     and confidence intervals for all parameters.
 	}
 
 \references{
@@ -54,11 +76,11 @@ theory modeling. \emph{Educational and Psychological Measurement}, \bold{74(1)},
 58-76.
 }
 
-\note{
-Because \code{coef} and \code{vcov} are defined for objects of class
-\code{din}, asymptotic confidence intervals can be computed using 
-\code{\link[stats:confint]{confint}}.
-}	
+%\note{
+%Because \code{coef} and \code{vcov} are defined for objects of class
+%\code{din}, asymptotic confidence intervals can be computed using 
+%\code{\link[stats:confint]{confint}}.
+%}	
 
 %%\author{
 %% CDM authors
@@ -79,6 +101,7 @@ Because \code{coef} and \code{vcov} are defined for objects of class
 
 data(sim.dina)
 data(sim.qmatrix)
+dat <- sim.dina
 
 #****** Model 1: (Ordinary) DINA Model
 mod1 <- din( dat , q.matr = sim.qmatrix, rule = "DINA")
@@ -92,6 +115,8 @@ coef(mod1)
 sqrt( diag( covmat1))
 # compute confidence intervals
 confint( mod1 , level=.90 )
+# output table with standard errors
+IRT.se( mod1 , extended=TRUE )
 
 #****** Model 2: Constrained DINA Model
 
@@ -122,6 +147,12 @@ partable2 <- partable2[ ! duplicated( partable2$parnames ) , ]
 partable2 <- data.frame( partable2 , "se" = sqrt( diag( vmod2b)) )
 partable2
 
+# confidence interval for parameter "skill1" which is not in the model
+#   cannot be calculated!
+confint(mod2 , parm= c( "skill1" , "all_guess" ) )
+# confidence interval for only some parameters
+confint(mod2 , parm=paste0("prob_skill" , 1:3 ) )
+
 # compute only information matrix
 infomod2 <- vcov(mod2 , infomat=TRUE)
 }	
@@ -129,3 +160,5 @@ infomod2 <- vcov(mod2 , infomat=TRUE)
 
 \keyword{methods}
 \keyword{vcov}
+\keyword{confint}
+% \keyword{IRT.se}

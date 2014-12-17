@@ -20,7 +20,7 @@ logLik.gdina <- function (object, ...) {
     # number of parameters
     attr(out, "df") <- sum( object$Npars )
 	# extract number of observations
-    attr(out, "nobs") <- object$I
+    attr(out, "nobs") <- object$N
     class(out) <- "logLik"
     return(out)
 }

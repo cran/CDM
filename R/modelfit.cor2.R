@@ -37,7 +37,7 @@ function( data , posterior , probs ){
    
     #********************************
     # covariances 
-    
+    # library combinat is needed here
     ip <- itempairs <- t( combn(I,2 ) )
     colnames(itempairs) <- c("item1" , "item2" )
     itempairs <- as.data.frame( itempairs )            
@@ -133,16 +133,24 @@ function( data , posterior , probs ){
 	rownames(modelfit) <- c("MADcor" , "SRMSR" , "MX2" , # "MG2",
 				"100*MADRESIDCOV" , "MADQ3" , "MADaQ3" )
     
+	modelfit <- modelfit[ ! ( rownames(modelfit) %in% "MX2" ) , , drop=FALSE ]
+	
 	#*****
 	# summary statistics
 	modelfit.test <- data.frame("type" = c("max(X2)","abs(fcor)") , 
 			"value" = c( max( itempairs$X2) , max( abs(itempairs$fcor) )  ) ,
 			"p" = c( min( itempairs$X2_p.holm) , min( itempairs$fcor_p.holm)  ) 
-				)					
+				)
+	#**** statistics for use in IRT.compareModels
+	statlist <- data.frame( "maxX2"= modelfit.test[1,"value"] ,
+					"p_maxX2"= modelfit.test[1,"p"] )	
+	h1 <- modelfit$est	
+	statlist <- cbind( statlist , t(h1 ) )
+	names(statlist)[-c(1:2) ] <- rownames(modelfit)
 	#****
 	# print results
     res <- list( "modelfit.stat" = modelfit , "itempairs" = itempairs , 
-		"modelfit.test" = modelfit.test  )
+		"modelfit.test" = modelfit.test  , "statlist" = statlist )
     return(res)
     }
 

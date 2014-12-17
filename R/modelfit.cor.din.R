@@ -17,9 +17,11 @@ modelfit.cor.din <- function( dinobj , jkunits = 0 ){
 		posterior <- mod$posterior
 		data <- as.matrix(mod$data)
 			}
+##			
 ##   R>  print( str (probs)) 
 ##    num [1:12, 1:2, 1:6] 0.816 0.722 0.749 0.788 0.847 ...
 ##   [ items , categ , skills ]
+##
 ##   R>  print( str (posterior)) 
 ##    num [1:1000, 1:6] 0.986 0.9 0.986 0.986 0.88 ...
 ##  [ persons , skills ]
@@ -48,10 +50,10 @@ modelfit.cor.din <- function( dinobj , jkunits = 0 ){
 		ms <- res$modelfit.stat
 		ms.jack <- matrix( NA , nrow= nrow(ms) , ncol=JJ )
 		rownames(ms.jack) <- rownames(ms)
-		cat( paste0("|" , paste( rep("*",10) , collapse="" ) , "|\n|") )
+		cat( paste0("|" , paste( rep("*",20) , collapse="" ) , "|\n|") )
 		progressbar_init <- 1:JJ
-		progressbar_init <- diff( floor( 10 * ( 1:JJ ) / (JJ+1) ) + 1  )
-		progressbar_init <- c(10-sum(progressbar_init), progressbar_init )
+		progressbar_init <- diff( floor( 20 * ( 1:JJ ) / (JJ+1) ) + 1  )
+		progressbar_init <- c(20-sum(progressbar_init), progressbar_init )
 		for (jj in 1:JJ){
 	#		jj <- 1
 			data.jj <- data[ jkunits != jj , ]

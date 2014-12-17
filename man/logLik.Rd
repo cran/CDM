@@ -48,6 +48,10 @@ lld1 <- logLik(d1)
   ##   > attr(lld1,"nobs")
   ##   [1] 400	
 nobs(lld1)  
+
+# AIC and BIC
+AIC(lld1)
+BIC(lld1)
 }	
 
 \keyword{methods}

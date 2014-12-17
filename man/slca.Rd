@@ -215,6 +215,9 @@ If some items have differing number of categories, appropriate
 class probabilities in non-existing categories per items can be 
 practically set to zero by loading an item for all skill classes
 on a fixed \eqn{\lambda_x} parameter of a small number, e.g. \code{-999}.
+
+The implementation of the model builds on pieces work of Anton Formann.
+See \url{http://www.antonformann.at/} for more information.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~

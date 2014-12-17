@@ -1,4 +1,4 @@
-\name{anova-CDM}
+\name{anova}
 \alias{anova.din}
 \alias{anova.gdina}
 \alias{anova.mcdina}
@@ -51,9 +51,9 @@ Further arguments to be passed
 %\author{
 %Alexander Robitzsch
 %}
-%\note{
-%%  ~~further notes~~
-%}
+\note{
+This function is based on \code{\link{IRT.anova}}.
+}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
@@ -72,10 +72,9 @@ d1 <- din(sim.dina, q.matr = sim.qmatrix )
 d2 <- din(sim.dina, q.matr = sim.qmatrix , guess.equal=TRUE , slip.equal =TRUE)
 # model comparison
 anova(d1,d2)
-  ##   > anova(d1,d2)
-  ##       Model   loglike Deviance Npars      AIC      BIC    Chisq df  p
-  ##   2 Model 2 -2176.482 4352.963     9 4370.963 4406.886 268.2071 16  0
-  ##   1 Model 1 -2042.378 4084.756    25 4134.756 4234.543       NA NA NA
+  ##     Model   loglike Deviance Npars      AIC      BIC    Chisq df  p
+  ##   2    d2 -2176.482 4352.963     9 4370.963 4406.886 268.2071 16  0
+  ##   1    d1 -2042.378 4084.756    25 4134.756 4234.543       NA NA NA
 
 \dontrun{
 #############################################################################
@@ -90,10 +89,9 @@ d4 <- gdina( sim.dina, q.matr = sim.qmatrix , rule="DINA")
 
 # model comparison
 anova(d3,d4)
-  ##   > anova(d3,d4)
-  ##       Model   loglike Deviance Npars      AIC      BIC    Chisq df       p
-  ##   2 Model 2 -2042.378 4084.756    25 4134.756 4234.543 31.45153 16 0.01178
-  ##   1 Model 1 -2026.652 4053.305    41 4135.305 4298.955       NA NA      NA 
+  ##     Model   loglike Deviance Npars      AIC      BIC    Chisq df       p
+  ##   2    d4 -2042.293 4084.586    25 4134.586 4234.373 31.31995 16 0.01224
+  ##   1    d3 -2026.633 4053.267    41 4135.266 4298.917       NA NA      NA
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

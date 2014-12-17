@@ -9,12 +9,14 @@
 Assessing Model Fit and Local Dependence by Comparing Observed and Expected 
 Item Pair Correlations
 }
+
 \description{
 This function computes several measures of absolute model fit and local
 dependence indices for dichotomous item responses which are 
 based on comparing observed and expected frequencies of item pairs
 (Chen, de la Torre & Zhang, 2013; see Details).
 }
+
 \usage{
 modelfit.cor(data, posterior, probs)
 modelfit.cor2(data, posterior, probs)
@@ -23,6 +25,8 @@ modelfit.cor.din( dinobj , jkunits=0 )
 
 \method{summary}{modelfit.cor.din}(object, \dots)
 }
+
+
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{data}{
@@ -67,8 +71,8 @@ degree of freedom and can be used for testing whether items \eqn{i} and
 p-value adjustments according to the Holm and FDR method are conducted
 (see \code{\link{p.adjust}}).
 	
-The mean \eqn{\chi^2} statistic \code{MX2} is just the average
-of all \eqn{ \chi^2_{ij}} statistics across all item pairs.
+% The mean \eqn{\chi^2} statistic \code{MX2} is just the average
+% of all \eqn{ \chi^2_{ij}} statistics across all item pairs.
 
 The residual covariance \code{RESIDCOV} of item pairs \eqn{(i,j)} is calculated
 as \deqn{ RESIDCOV_{ij} = 
@@ -92,7 +96,7 @@ residuals \eqn{\varepsilon_{ni} = X_{ni} - e_{ni}} of
 observed and expected responses for respondents \eqn{n} and items \eqn{i} are
 constructed. Then, the average of the absolute values of pairwise correlations
 of these residuals is computed for \code{MADQ3}. For \code{MADaQ3}, the average 
-of the centered pairwise values (i.e. by sutracting the average Q3 statistic)
+of the centered pairwise values (i.e. by subtracting the average Q3 statistic)
 is calculated.
 
 The difference of Fisher transformed correlations (Chen et al., 2013) is also
@@ -117,8 +121,8 @@ A list with following entries
    \code{SRMSR}: standardized mean square rooot of squared residuals 
         (Maydeu-Olivares, 2013; Maydeu-Olivares & Joe, 2014) 
                 
-    \code{MX2}: Mean of \eqn{\chi^2} statistics of all item pairs 
-    (Chen & Thissen, 1997)
+%    \code{MX2}: Mean of \eqn{\chi^2} statistics of all item pairs 
+%    (Chen & Thissen, 1997)
     
     \code{MADRESIDCOV}: Mean of absolute deviations of residual covariances
     (McDonald & Mok, 1995) 
@@ -212,7 +216,6 @@ summary(fmod1)
   ##                     est jkunits jk_est jk_se est_low est_upp
   ##   MADcor          0.030      10  0.020 0.005   0.010   0.030
   ##   SRMSR           0.040      10  0.023 0.006   0.011   0.035
-  ##   MX2             0.719      10  0.819 0.178   0.470   1.168
   ##   100*MADRESIDCOV 0.671      10  0.445 0.125   0.200   0.690
   ##   MADQ3           0.062      10  0.037 0.008   0.021   0.052
   ##   MADaQ3          0.059      10  0.034 0.008   0.019   0.050
@@ -241,7 +244,6 @@ summary(fmod2)
   ##                     est jkunits jk_est jk_se est_low est_upp
   ##   MADcor          0.056      10  0.041 0.007   0.026   0.055
   ##   SRMSR           0.072      10  0.045 0.019   0.007   0.083
-  ##   MX2             2.204      10  2.621 1.113   0.438   4.803
   ##   100*MADRESIDCOV 1.225      10  0.878 0.183   0.519   1.236
   ##   MADQ3           0.073      10  0.055 0.012   0.031   0.080
   ##   MADaQ3          0.073      10  0.066 0.012   0.042   0.089
@@ -293,7 +295,6 @@ summary(fmod1)
   ##                    est jkunits jk_est jk_se est_low est_upp
   ##  MADcor          0.052      10  0.026 0.010   0.006   0.045
   ##  SRMSR           0.074      10  0.048 0.013   0.022   0.074
-  ##  MX2             0.869      10  1.070 0.281   0.519   1.622
   ##  100*MADRESIDCOV 1.259      10  0.646 0.213   0.228   1.063
   ##  MADQ3           0.080      10  0.047 0.010   0.027   0.068
   ##  MADaQ3          0.079      10  0.046 0.010   0.027   0.065  

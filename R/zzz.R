@@ -18,8 +18,12 @@ version <- function(pkg="CDM"){
 # on attach CDM
 .onAttach <- function(libname,pkgname){
   d <- packageDescription("CDM")
-  packageStartupMessage("**********************************\n",
-		paste("** ", d$Package," " , d$Version," (",d$Date,")      **\n",sep="") ,
+  # d$Version <- "4.1"  
+  dc <- nchar(d$Version)
+  m1 <- paste(rep( " " , 12-dc ), collapse="")
+  packageStartupMessage("**********************************\n",  
+		paste("** ", d$Package," " , d$Version," (",d$Date,")" ,
+     		m1 , "**\n",sep="") ,
 		paste("** Cognitive Diagnostic Models  **",sep="") ,		
 		"\n**********************************\n" )
 }

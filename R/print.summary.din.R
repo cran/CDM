@@ -14,8 +14,8 @@ function(x, ...){
 if(is.null(x$log.file)){
   d <- packageDescription("CDM")
   packageStartupMessage(paste(d$Package," " , d$Version," (Built ",d$Date,")",sep=""))
-  cat("Call:\n",
-      x$CALL, "\n")
+#   cat("Call:\n",  x$CALL, "\n")
+  cat("Call:\n",  x$call, "\n")
 	  
 	cat( "Date of Analysis:" , paste( x$end.analysis ) , "\n" )
 	cat("Computation Time:" , print( 

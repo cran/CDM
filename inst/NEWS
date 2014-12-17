@@ -1,22 +1,48 @@
--------------------- CDM NEWS --------------------------------
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+----------------------- CDM NEWS -----------------------------
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 CDM package
+                        +-+-+-+
+                        |C|D|M|
+                        +-+-+-+
 
-A. Robitzsch, T. Kiefer, A. C. George, & A. Uenlue
+        A. Robitzsch [aut, cre], T. Kiefer[aut], 
+         A. C. George [aut], & A. Uenlue [aut]
 
 mailto:
 a.robitzsch /-\ bifie.at
 
-For reporting a bug, please send EVERYTIME a reproducible script 
-and (if necessary) the corresponding dataset.
+For reporting a bug, please always provide a reproducible R script 
+and (if necessary) a corresponding dataset.
 
 URL:
 https://sites.google.com/site/alexanderrobitzsch/software
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+--------------------------------------------------------------
+CDM 4.1 (2014-12-17)   --  CRAN CDM 4.1
+--------------------------------------------------------------
+
+NOTE  * included confidence intervals S3 method for din objects
+FIXED * fixed a bug in printing BIC for 'gdina' objects
+NOTE  * included S3 method 'IRT.modelfit' for assessment of
+        absolute model fit
+NOTE  * included S3 method 'IRT.se' for computation of standard
+        errors
+NOTE  * included S3 method 'IRT.IC' for extracting information
+        criteria and 'IRT.compareModels' for model comparisons
+NOTE  * included object names in 'anova' methods for CDM objects
+NOTE  * included S3 method 'IRT.anova'
+NOTE  * removed MX2 statistic from 'modelfit.cor' function
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: vcov.din (1), IRT.modelfit (1),
+        IRT.IC (1), IRT.compareModels (1), anova (1,2)
 
 --------------------------------------------------------------
 CDM 4.0 (2014-11-21)   --  CRAN CDM 4.0
@@ -41,8 +67,8 @@ NOTE  * corrected a bug in person value of 'gdm': missing standard
         errors of EAPs of multiple dimensions are now included
 ADDED * included person fit appropriateness statistic (Liu et al., 2009)
 ADDED * included S3 methods 'IRT.likelihood', 'IRT.personfit',
-        'IRT.irfprob' for objects of classes din, gdina, gdm, slca
-        and mcdina
+        'IRT.irfprob' and 'IRT.factor.scores' for objects of classes 
+        din, gdina, gdm, slca and mcdina
 NOTE  * included person parameter estimation (classification) for
         'slca' and 'mcdina' functions
 

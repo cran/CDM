@@ -1,4 +1,4 @@
-\name{coef.CDM}
+\name{coef}
 \alias{coef.din}
 \alias{coef.gdina}
 \alias{coef.mcdina}
