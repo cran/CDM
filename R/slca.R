@@ -468,6 +468,10 @@ slca <- function( data , group=NULL,
 	res$seed.used <- seed.used
 	res$Xlambda.init <- Xlambda.init
 	res$delta.init <- delta.init
+	
+	res$control$weights <- weights
+	res$control$group <- group
+	
 	if (progress){
                 cat("----------------------------------- \n")
                 cat("Start:" , paste( s1) , "\n")

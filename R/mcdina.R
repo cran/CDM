@@ -290,7 +290,13 @@ mcdina <- function( dat , q.matrix , group =NULL ,
 				"weights"=weights , "I" = nrow(dat) , "G"= G , "CC" = CC ,
 				"loglike" = - dev / 2 , "AIC" = ic$AIC , "BIC" = ic$BIC , 
 				"Npars" = ic$np )
-	s2 <- Sys.time()
+				
+				
+	res$control$weights <- weights
+	res$control$group <- group				
+				
+	s2 <- Sys.time()		
+	
 	res$time <- list( "s1"=s1,"s2"=s2 , "timediff"=s2-s1)				
         cat("----------------------------------- \n")
         cat("Start:" , paste( s1) , "\n")

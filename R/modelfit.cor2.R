@@ -34,7 +34,6 @@ function( data , posterior , probs ){
     n01 <- t(  ( data==0) * data.resp ) %*% ( ( data==1) * data.resp )
     n00 <- t(  ( data==0) * data.resp ) %*% ( ( data==0) * data.resp )
     
-   
     #********************************
     # covariances 
     # library combinat is needed here
@@ -59,6 +58,8 @@ function( data , posterior , probs ){
 			dataresp_ = data.resp , probs1_ =probs1 , probs0_ = probs0 , 
 			ip_ = ip-1 , expiijj_ = exp.ii.jj  )
 	r1 <- res$itempair_stat
+	
+
 	itempairs$Exp11 <- r1[,1]
 	itempairs$Exp10 <- r1[,2]	
 	itempairs$Exp01 <- r1[,3]
@@ -103,6 +104,8 @@ function( data , posterior , probs ){
 	# residual of correlation
 	itempairs$fcor <- psych::fisherz( itempairs$corObs ) - psych::fisherz( itempairs$corExp )
 	
+	itempairs <- itempairs[ itempairs$n > 0 , ]
+	
 	#----
 	# p values and p value adjustments adjustments
 	
@@ -123,17 +126,21 @@ function( data , posterior , probs ){
 	#**********************
 	# model fit
 	modelfit <- data.frame( "est" = c( 
-			mean( abs( itempairs$corObs - itempairs$corExp ) ) ,
-			sqrt( mean( ( itempairs$corObs - itempairs$corExp )^2 ) ) ,			
+			mean( abs( itempairs$corObs - itempairs$corExp ) , na.rm=TRUE) ,
+			sqrt( mean( ( itempairs$corObs - itempairs$corExp )^2 , na.rm=TRUE ) ) ,			
 			mean( itempairs$X2 ) , # mean( itempairs$G2) ,
-			mean( 100*abs(itempairs$RESIDCOV ) ) ,
-			mean( abs( itempairs$Q3 ) ) ,
-			mean( abs( itempairs$Q3 - mean(itempairs$Q3) ) )
+			mean( 100*abs(itempairs$RESIDCOV ) , na.rm=TRUE ) ,
+			mean( abs( itempairs$Q3 ) , na.rm=TRUE) ,
+			mean( abs( itempairs$Q3 - mean(itempairs$Q3,na.rm=TRUE) ) , na.rm=TRUE )
 						) )
 	rownames(modelfit) <- c("MADcor" , "SRMSR" , "MX2" , # "MG2",
 				"100*MADRESIDCOV" , "MADQ3" , "MADaQ3" )
     
-	modelfit <- modelfit[ ! ( rownames(modelfit) %in% "MX2" ) , , drop=FALSE ]
+#	modelfit <- modelfit[ ! ( rownames(modelfit) %in% 
+#				c("MX2" , "MADQ3" , "MADaQ3" ) ) , , drop=FALSE ]
+	modelfit <- modelfit[ ! ( rownames(modelfit) %in% 
+				c("MX2"  ) ) , , drop=FALSE ]
+
 	
 	#*****
 	# summary statistics

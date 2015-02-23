@@ -88,7 +88,8 @@ function(object, top.n.skill.classes = 6, overwrite = FALSE, ...){
 
 # print(object)
 	
-  out <- list("CALL"=CALL,"IDI"=IDI,
+  out <- list("CALL"=CALL,"IDI"=IDI, 
+			"call" = deparse(object$call) , 
 			"deviance" = -2*object$loglike,
 #			"SKILL.CLASSES"=SKILL.CLASSES, 
 			"AIC"=AIC, "BIC"=BIC, "item" = item , 

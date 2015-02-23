@@ -299,7 +299,7 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 # probability of each item response pattern given an attribute pattern         #
 ################################################################################
 
-# z0 <- Sys.time()                    
+ z0 <- Sys.time()                    
 				
 	slipM <- matrix( slip , nrow= nrow(latresp) , ncol=ncol(latresp))
 	guessM <- matrix( guess , nrow= nrow(latresp) , ncol=ncol(latresp))
@@ -309,6 +309,8 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 	pjM[,2,] <- pj
 	h1 <- matrix( 1 , nrow=IP , ncol=L )
 
+# cat("probs") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1		
+	
     res.hwt <- calc_posterior.v2(rprobs= pjM , gwt=h1 , resp=item.patt.split , 
 								 nitems= J , 
                                  resp.ind.list=resp.ind.list , normalization=FALSE , 
@@ -375,7 +377,10 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 			I.lj <- matrix( t( item.patt.freq ) %*% p.aj.xi , nrow=J , 
 							ncol=L , byrow=TRUE )
 					}
-#		R.lj <- t(ipr) %*% p.aj.xi		
+
+					
+#		R.lj <- t(ipr) %*% p.aj.xi	
+		# ipr <- item.patt.split * item.patt.freq*resp.patt	
 		R.lj <- crossprod(ipr , p.aj.xi	)
 		colnames(I.lj) <- colnames(R.lj) <- attr.patt.c
 		rownames(I.lj) <- rownames(R.lj) <- colnames(data)
@@ -398,7 +403,7 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
     R.j0 <- rowSums( ( attrpatt.qmatr  <  compL ) * R.lj )
     R.j1 <- rowSums( ( attrpatt.qmatr  >= compL )  * R.lj )
 
-# cat("calc suff stats m step") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1												
+# cat("calc suff stats m step") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1									
 	
 ################################################################################
 # STEP V:                                                                      #
@@ -449,7 +454,7 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
     max.par.change <- max( abs( guess.new - guess ), abs( slip.new - slip ) ,
 				abs( attr.prob - attr.prob0 ) )
 
-# cat("calc pars and like") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1												
+# cat("calc pars and like") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1											
 				
     # define estimates which are updated in this iteration
     guess <- guess.new
@@ -481,9 +486,9 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 # END OF THE ITERATION LOOP                                                    #
 ################################################################################
 
-    if(any(guess > 1 - slip)) 
-        warning(paste("Negative item discrimination index in item",ifelse(length(which(guess > 1 - slip))>1,"s "," "),
-    paste(which(guess > 1 - slip), collapse=", "),". See Help-files to fix this problem.", sep=""))
+#    if(any(guess > 1 - slip)) 
+#        warning(paste("Negative item discrimination index in item",ifelse(length(which(guess > 1 - slip))>1,"s "," "),
+#    paste(which(guess > 1 - slip), collapse=", "),". See Help-files to fix this problem.", sep=""))
 
 	# set likelihood for skill classes with zero probability to zero
 	if ( ! is.null(zeroprob.skillclasses) ){
@@ -587,6 +592,7 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 	pattern <- pattern[ item.patt.subj$pattern.index , ]	
 	pattern[,1] <- paste( item.patt.subj$pattern )
 	colnames(pattern)[1] <- "pattern"
+	p.aj.xi__ <- p.aj.xi
 	p.aj.xi <- p.aj.xi[ item.patt.subj$pattern.index , ]
 	rownames(p.aj.xi) <- pattern$pattern
 	colnames(p.aj.xi) <- rownames(attr.prob)
@@ -671,7 +677,8 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 					zeroprob.skillclasses = zeroprob.skillclasses , 
                     weights = weights ,  rule = rule , 
 					wgt.overrelax = wgt.overrelax , wgtest.overrelax = wgtest.overrelax ,
-					latresp=latresp , resp.ind.list=resp.ind.list )	
+					latresp=latresp , resp.ind.list=resp.ind.list 
+						)	
     res$control <- control		
     res$call <- cl	
     class(res) <- "din"					

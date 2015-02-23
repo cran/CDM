@@ -1,7 +1,7 @@
 
 
 ################################################################################
-# Main function for parameter estimation in cognitive diagnosis models         #
+# GDINA Model
 ################################################################################
 
 gdina <-
@@ -10,12 +10,14 @@ function( data, q.matrix, skillclasses=NULL , conv.crit = 0.0001,
 					linkfct = "identity" , Mj = NULL , 
 					group = NULL , 
 					method = "WLS" , 
-#					weight.matrix = TRUE , 
+					delta.init = NULL , 
+					delta.fixed = NULL ,
 					delta.designmatrix = NULL , 
 					delta.basispar.lower = NULL , 
 					delta.basispar.upper = NULL , 					
 					delta.basispar.init = NULL , 
 					zeroprob.skillclasses = NULL , 
+					attr.prob.init = NULL , 
 					reduced.skillspace=TRUE , 
 					reduced.skillspace.method=2 , 
 					HOGDINA = -1 , 
@@ -27,7 +29,7 @@ function( data, q.matrix, skillclasses=NULL , conv.crit = 0.0001,
 					fac.oldxsi = 0 ,
 					avoid.zeroprobs = FALSE , 
 					seed = 0 , 		
-					save.devmin=TRUE , 
+					save.devmin=TRUE , calc.se = TRUE ,
 					...
 						){
                     
@@ -63,6 +65,7 @@ function( data, q.matrix, skillclasses=NULL , conv.crit = 0.0001,
 # progress: an optional logical indicating whether the function should print the progress of iteration.
 
 #	skillclasses <- NULL
+
 
 max.increment <- .5
 # increment.factor <- 1.05
@@ -124,6 +127,7 @@ if (progress){
 # model specification: DINA, DINO or itemwise specification of DINA or DINO    #
 ################################################################################
 
+
 #****
 # include specifications here
 #****
@@ -161,6 +165,9 @@ if (progress){
 		colnames(group.stat) <- c(  "group.orig" , "group" , "N"  )	
 					}
 							
+				
+
+							
 ###############################################################
 # HOGDINA model
 	if (HOGDINA >= 0){						
@@ -192,7 +199,7 @@ if (progress){
 		flush.console()
 			}
 
-		
+			
 ################################################################################
 # definition of model parameters                                               # 
 ################################################################################
@@ -213,7 +220,7 @@ if (progress){
 		b.attr <- a.attr <- matrix( 0 , nrow=K , ncol=G )
 				}						
 						
-# a0 <- Sys.time()
+ a0 <- Sys.time()
 						
 ################################################################################
 # Initialization and missing data handling                                     #
@@ -231,8 +238,7 @@ if (progress){
     weights <- nrow(dat.items)*weights / sum(weights )
 	
 
-# vv <- "init" ; a1 <- Sys.time() ; cat( vv , a1-a0 , "\n") ; a0 <- Sys.time()
-# print("a200")
+#vv <- "init" ; a1 <- Sys.time() ; cat( vv , a1-a0 , "\n") ; a0 <- Sys.time()
 	
 ################################################################################
 # calculate item response patterns                                             #
@@ -248,20 +254,19 @@ if (progress){
     item.patt <- table( item.patt.subj )
 	
     # sort item response pattern according to their absolute frequencies
-    six <- sort( item.patt, index.return=F, decreasing=T)
+    six <- sort( item.patt, index.return=FALSE, decreasing=TRUE)
     # define data frame 'item.patt' with item response pattern and its frequency (weight)
     item.patt <- cbind( "pattern" = rownames(six), "freq" = as.numeric(as.vector( six ) ) )
-
+	
     # calculate weighted frequency for each item response pattern
 	if (G== 1){ 
-#		item.patt[,2] <- sapply( 1:( nrow(item.patt) ), FUN = function(kk){
-#							sum( weights * ( item.patt[ kk, 1] == item.patt.subj  ) )
-#							} )  
+ 
 		h1 <- rowsum( weights , item.patt.subj )	
 		item.patt[,2] <- h1[ match( item.patt[,1] , rownames(h1) ) , 1]
 							
 		item.patt.freq <- as.numeric(item.patt[,2])
-				}
+				}			
+				
 	if (G > 1){
 		item.patt.freq <- matrix( 0 , nrow(item.patt) , G )
 		for (gg in 1:G){ 
@@ -278,7 +283,7 @@ if (progress){
 
 # stop()			 
 # vv <- "item response patterns" ; a1 <- Sys.time() ; cat( vv , a1-a0 , "\n") ; a0 <- Sys.time()
-# print("a300")
+
 		 
 ################################################################################ 
 # generate all attribute patterns                                              #
@@ -316,9 +321,7 @@ if (progress){
 			}
 	Z <- NULL ; covbeta <- NULL ; beta <- NULL
 	ncolZ <- nrow(attr.patt)-1
-# print(attr.patt)
-# print(ncolZ)
-# Reval("print(reduced.skillspace)")
+
 
 	
 	if ( reduced.skillspace ){
@@ -348,11 +351,7 @@ if (progress){
 						}
 		 ncolZ <- ncol(Z)						
 			}
-# print(ncolZ)
-# print("a400")		
-#print(attr.patt)
-#print(Z)
-#stop()	
+			
 # vv <- "attribute patterns" ; a1 <- Sys.time() ; cat( vv , a1-a0 , "\n") ; a0 <- Sys.time()			
 
 
@@ -378,7 +377,16 @@ if (progress){
 							}
 						}			
 					}
+			
+					
+	if ( ! is.null(attr.prob.init) ){
+          attr.prob <- attr.prob.init
+		  if (G==1){ 
+				attr.prob <- as.vector( attr.prob) 
+						}
+					}
 
+					
 ################################################################################
 # create design matrices 
 ################################################################################	
@@ -448,59 +456,62 @@ if (progress){
 # initial item parameters
 ###############################################################################
 
-	delta <- NULL
-	#****
-	# identity link
-	if (linkfct == "identity" ){ 	
-		for ( jj in 1:J){
-			N1jj <- ncol(Mj[[jj]][[1]])
-			l1 <- rep(0,N1jj)
-			if ( seed == 0 ){
-				dd1 <- .2 ; dd2 <- .6 
-					} else {
-				dd1 <- runif( 1 , 0 , .4 )
-                dd2 <- runif( 1 , 0 , 1 - dd1 - .1 )				
-					}
-			l1[1] <- dd1
-			l1[2:N1jj] <- rep( dd2 / (N1jj - 1) , N1jj - 1 )
-			delta[[jj]] <- l1
+	delta <- delta.init
+	if ( is.null( delta.init ) ){
+		
+		#****
+		# identity link
+		if (linkfct == "identity" ){ 	
+			for ( jj in 1:J){
+				N1jj <- ncol(Mj[[jj]][[1]])
+				l1 <- rep(0,N1jj)
+				if ( seed == 0 ){
+					dd1 <- .2 ; dd2 <- .6 
+						} else {
+					dd1 <- runif( 1 , 0 , .4 )
+					dd2 <- runif( 1 , 0 , 1 - dd1 - .1 )				
 						}
-					}
-	#*****
-	# logit link
-	if (linkfct == "logit" ){ 	
-		for ( jj in 1:J){
-			N1jj <- ncol(Mj[[jj]][[1]])
-			l1 <- rep(0,N1jj)
-			if ( seed == 0 ){
-				dd1 <- -1 ; dd2 <- 1
-					} else {			
-                dd1 <- runif( 1 , -2 , 0 )					
-                dd2 <- runif( 1 , 0 , 2 )					
-					}
-			l1[1] <- dd1
-			l1[N1jj] <- dd2
-			delta[[jj]] <- l1
-			
+				l1[1] <- dd1
+				l1[2:N1jj] <- rep( dd2 / (N1jj - 1) , N1jj - 1 )
+				delta[[jj]] <- l1
+							}
 						}
-					}
-	#*****
-	# log link
-	if (linkfct == "log" ){ 	
-		for ( jj in 1:J){
-			N1jj <- ncol(Mj[[jj]][[1]])
-			l1 <- rep(0,N1jj)
-			if ( seed == 0 ){
-				dd1 <- -1.5 ; dd2 <- .75
-					} else {
-				dd1 <- runif( 1 , -3 , -1 )					
-				dd2 <- runif( 1 , .25 , 1 )
-					}
-			l1[1] <- dd1
-			l1[N1jj] <- dd2
-			delta[[jj]] <- l1
+		#*****
+		# logit link
+		if (linkfct == "logit" ){ 	
+			for ( jj in 1:J){
+				N1jj <- ncol(Mj[[jj]][[1]])
+				l1 <- rep(0,N1jj)
+				if ( seed == 0 ){
+					dd1 <- -1 ; dd2 <- 1
+						} else {			
+					dd1 <- runif( 1 , -2 , 0 )					
+					dd2 <- runif( 1 , 0 , 2 )					
 						}
-					}	
+				l1[1] <- dd1
+				l1[N1jj] <- dd2
+				delta[[jj]] <- l1
+				
+							}
+						}
+		#*****
+		# log link
+		if (linkfct == "log" ){ 	
+			for ( jj in 1:J){
+				N1jj <- ncol(Mj[[jj]][[1]])
+				l1 <- rep(0,N1jj)
+				if ( seed == 0 ){
+					dd1 <- -1.5 ; dd2 <- .75
+						} else {
+					dd1 <- runif( 1 , -3 , -1 )					
+					dd2 <- runif( 1 , .25 , 1 )
+						}
+				l1[1] <- dd1
+				l1[N1jj] <- dd2
+				delta[[jj]] <- l1
+							}
+						}	
+				}
 	###########################
 	# import inits delta basis parameter
 	if ( ! is.null( delta.basispar.init ) ){
@@ -517,6 +528,10 @@ if (progress){
 #		invM.list[[jj]] <- solve( t(Mjjj) %*% Mjjj	)
 		invM.list[[jj]] <- solve( crossprod(Mjjj))
 				}
+	
+		
+	
+				
 
 # print("a700")
 
@@ -687,13 +702,13 @@ djj_old <- as.list( 1:J )
 
 if (HOGDINA >= 0){
     for (gg in 1:G){ # gg <- 1
-	if (G==1){ ap.gg <- attr.prob } else {
-		ap.gg <- attr.prob[,gg] }
-	res <- .attr.rpf( attr.patt , attr.prob=ap.gg , theta.k , wgt.theta[,gg] , HOGDINA )
-	if (G==1){ attr.prob <- res$attr.prob } else {
-		attr.prob[,gg] <- res$attr.prob }
-	a.attr[,gg] <- res$a.attr
-	b.attr[,gg] <- res$b.attr 
+		if (G==1){ ap.gg <- attr.prob } else {
+			ap.gg <- attr.prob[,gg] }
+		res <- .attr.rpf( attr.patt , attr.prob=ap.gg , theta.k , wgt.theta[,gg] , HOGDINA )
+		if (G==1){ attr.prob <- res$attr.prob } else {
+			attr.prob[,gg] <- res$attr.prob }
+		a.attr[,gg] <- res$a.attr
+		b.attr[,gg] <- res$b.attr 
 					}
 				}
 
@@ -791,11 +806,6 @@ if (HOGDINA >= 0){
 		Rlj.ast <- R.ljM[ jj, Mj.index[jj,5]:Mj.index[jj,6] ]
 		Ilj.ast <- I.ljM[ jj, Mj.index[jj,5]:Mj.index[jj,6] ]
 		pjjj <- Rlj.ast / ( Ilj.ast + eps2 )
-
-# if (jj==1 ){
-# print(pjjj)
-# }
-# Problem: some entries in pjjj can be zero
 		
 		if (linkfct == "logit" ){ 
 
@@ -882,7 +892,15 @@ if (HOGDINA >= 0){
 		delta.new[[jj]] <- djj
 		if ( (fac.oldxsi > 0 ) & (iter>3)){
 			delta.new[[jj]] <- fac.oldxsi*delta[[jj]] + ( 1 - fac.oldxsi ) * delta.new[[jj]]
-						}		
+						}
+
+		# fix delta parameter here!!
+		if ( ! is.null( delta.fixed ) ){
+			delta.fixed.jj <- delta.fixed[[jj]]
+			if ( ! is.na( delta.fixed.jj)[1] ){
+					delta.new[[jj]] <- delta.fixed.jj
+									}
+							}
 
 					}		# end item
 	#.............................................................					
@@ -912,7 +930,7 @@ if (HOGDINA >= 0){
 									}
 
 									
-# cat( "\n Step 4 (m step item parameters) \n" ) ; a1 <- Sys.time() ; print(a1-a0) ; a0 <- a1									
+# cat( "\n Step 4 (m step item parameters) \n" ) ; a1 <- Sys.time() ; print(a1-a0) ; a0 <- a1
 # stop("here")									
 	#################################################
 	
@@ -1046,7 +1064,7 @@ if (HOGDINA >= 0){
 			pattern$map.post[ind.gg] <- l1[ind2.gg]		
 					}
 			}
-#print(pattern)
+
 
 
     # calculate posterior probabilities for all skills separately
@@ -1080,8 +1098,10 @@ if (HOGDINA >= 0){
 	if (G==1){ item.patt.freq <- matrix( item.patt.freq , ncol=1 ) }
 	freq.pattern <- rowSums( item.patt.freq )
 	
-
+    # if ( calc.se ){
 	for (jj in 1:J){	
+		se.jj <- NA
+		if ( calc.se ){
 	# cat("........",jj,".,,,\n")
 			#	jj <- 1		# Item jj
 				Ajjj <- Aj[[jj]]
@@ -1173,7 +1193,8 @@ if (HOGDINA >= 0){
 						}
 				varmat.delta[[jj]] <- Wjjj %*% Ijj %*% t(Wjjj)		
 				se.jj <- sqrt( diag(varmat.delta[[jj]] )  ) 
-								
+								}
+						
 				delta.summary.jj <-
 					data.frame( "link" = linkfct , "item" = colnames(data)[jj] , 
 								"itemno" = jj , 
@@ -1182,14 +1203,25 @@ if (HOGDINA >= 0){
 								"est" = delta[[jj]] , 
 								"se" = se.jj
 								)
+								
+		# fix delta parameter here!!
+		if ( ! is.null( delta.fixed ) ){
+			delta.fixed.jj <- delta.fixed[[jj]]
+			if ( ! is.na( delta.fixed.jj)[1] ){
+					delta.summary.jj$se <- 0
+									}
+							}								
+								
 				colnames(delta.summary.jj)[4] <- "partype"					
 				delta.summary <- rbind( delta.summary , delta.summary.jj )
+				
+				
 				}
-		
+				
 
-			
-			
+	
 	delta.summary$partype.attr <- paste(delta.summary$partype)
+	if (calc.se){		
 	for (jj in 1:J){
 		ind.jj <- which( delta.summary$itemno == jj )
 		qjj <- which( q.matrix[ jj , ]	> 0 )
@@ -1206,6 +1238,8 @@ if (HOGDINA >= 0){
 						}
 		delta.summary$partype.attr[ind.jj] <- pgjj
 					}
+			}
+							
 	
 	# compute RRUM parametrization if model is specified
 	if (rrum.model){
@@ -1278,7 +1312,12 @@ if (HOGDINA >= 0){
 	
 		Nipar <- length( unlist( delta) )
 		if ( ! is.null( delta.designmatrix ) ){ 
-			Nipar <- ncol(delta.designmatrix ) }
+			Nipar <- ncol(delta.designmatrix ) 
+			}
+		if ( ! is.null( delta.fixed) ){
+				Nipar <- Nipar - sum(1 - is.na( unlist( delta.fixed )) )										
+							}
+		
 		
 		Nskillpar <- G*ncolZ - length( zeroprob.skillclasses )	
 		
@@ -1304,6 +1343,7 @@ if (HOGDINA >= 0){
 												)
 											
 		# attribute pattern (expected frequencies)
+		attr.prob0 <- attr.prob
 		attr.prob <- data.frame( attr.prob )
 		attr.prob$class.expfreq <-  attr.prob[,1] * nrow(data) 
 		
@@ -1316,7 +1356,28 @@ if (HOGDINA >= 0){
 		rownames(p.aj.xi) <- pattern$pattern
 		p.xi.aj <- p.xi.aj[ item.patt.subj$pattern.index , ]
 		rownames(p.xi.aj) <- pattern$pattern
+	
 		#*****				
+				}
+		if (G==1){
+			posterior <- p.aj.xi
+					}
+		if (G>1){
+			ind <- match( item.patt.subj , item.patt[,1] )			
+			# colnames(pattern)[1] <- "pattern"		
+			p.xi.aj <- p.xi.aj[ ind , ]
+			rownames(p.xi.aj) <- pattern$pattern
+			p.aj.xi <- p.aj.xi[ ind , , ]
+			rownames(p.aj.xi) <- pattern$pattern		
+		
+			ND <- dim(p.aj.xi)
+			posterior <- matrix( 0 , nrow=ND[1] , ncol=ND[2] )
+		    for (gg in 1:G){
+				ind.gg <- which( group == gg )
+				posterior[ ind.gg , ] <- p.aj.xi[ ind.gg , , gg ]
+							}
+			attr.prob0 <- attr.prob							
+				
 				}
 
 
@@ -1344,18 +1405,24 @@ if (HOGDINA >= 0){
 		itemfit.rmsea <- itemfit.rmsea( n.ik , pi.k , probs )$rmsea	
 		names(itemfit.rmsea) <- colnames(data)
 	#********************************************************	
-	# calculate model implied probabilities
-	probitem <- gdina.probitem( Mj, Aj , delta , rule , linkfct , delta.summary )
+	# calculate model implied probabilities	
+
+	if ( calc.se ){ 
+		probitem <- gdina.probitem( Mj, Aj , delta , rule , linkfct , delta.summary )
+					} else {
+		probitem <- NULL
+					}
 	
 	# labels likelihood
 	colnames(p.xi.aj) <- paste(rownames(attr.prob))
 	
-	
+
 	#************** OUTPUT **********************************
 	if (progress){
 		cat("---------------------------------------------------------------------------------\n")
 			}
-    res <- list( coef = delta.summary , delta = delta , se.delta = se.delta , 
+    res <- list( coef = delta.summary , "item" = delta.summary , 
+				delta = delta , se.delta = se.delta , 
 			    "probitem"=probitem , 
 				"itemfit.rmsea" = itemfit.rmsea , 
 				"mean.rmsea" = mean(itemfit.rmsea) ,	
@@ -1364,7 +1431,7 @@ if (HOGDINA >= 0){
 				Nipar=Nipar  , Nskillpar = Nskillpar ,
 				Nskillclasses = L , 	
 				varmat.delta = varmat.delta ,  varmat.palj = varmat.palj ,
-                 posterior = p.aj.xi, "like" = p.xi.aj, "data" = data, "q.matrix" = q.matrix,
+                 posterior = posterior , "like" = p.xi.aj, "data" = data, "q.matrix" = q.matrix,
                  pattern = pattern , attribute.patt = attr.prob, skill.patt = skill.patt,
                  "subj.pattern" = item.patt.subj, "attribute.patt.splitted" = attr.patt, 
 				 "pjk" = pjM , 
@@ -1385,7 +1452,8 @@ if (HOGDINA >= 0){
 #				 "q.matrix" = q.matrix ,
 				 "HOGDINA" = HOGDINA ,
 				 "seed"= seed 
-				 ) 				 
+				 )
+		 
 	if (HOGDINA>=0) { 
 	    colnames(a.attr) <- paste0( "a.Gr" , 1:G )
 		colnames(b.attr) <- paste0( "b.Gr" , 1:G )
@@ -1397,7 +1465,11 @@ if (HOGDINA >= 0){
 	# computation time
     time1$s2 <- Sys.time()
 	res$time <- time1
-	res$time$timediff <- print(res$time$s2 - res$time$s1)	
+	# res$time$timediff <- print(res$time$s2 - res$time$s1)	
+	res$time$timediff <- res$time$s2 - res$time$s1	
+	if ( progress ){
+		print(res$time$s2 - res$time$s1)	
+						}
 	
 	# control parameter
 	control <- list( skillclasses=skillclasses , q.matrix=q.matrix, conv.crit = conv.crit , 
@@ -1420,8 +1492,21 @@ if (HOGDINA >= 0){
 					aggr.attr.patt=aggr.attr.patt,IP=IP,
 					p.aj.xi=p.aj.xi,item.patt.split=item.patt.split,
 					resp.patt=resp.patt,freq.pattern=freq.pattern ,
-					item.patt.freq=item.patt.freq,invM.list=invM.list) 	
+					item.patt.freq=item.patt.freq,invM.list=invM.list ,
+					increment.factor = increment.factor ,
+					fac.oldxsi = fac.oldxsi ,
+					avoid.zeroprobs = avoid.zeroprobs ,
+					attr.prob = attr.prob0	,
+					delta.fixed = delta.fixed
+						) 	
 	res$control <- control	
+	
+	
+    # create parameter table						
+	res$partable <- gdina.partable(res)
+	
+	# polychoric correlations
+	res$polychor <- CDM.calc.polychor( res )	
 	res$call <- cl
     class(res) <- "gdina"
     return(res)

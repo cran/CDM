@@ -15,7 +15,7 @@ if(is.null(x$log.file)){
   d <- packageDescription("CDM")
   packageStartupMessage(paste(d$Package," " , d$Version," (Built ",d$Date,")",sep=""))
 #   cat("Call:\n",  x$CALL, "\n")
-  cat("Call:\n",  x$call, "\n")
+  cat("Call:\n",  x$call, "\n\n")
 	  
 	cat( "Date of Analysis:" , paste( x$end.analysis ) , "\n" )
 	cat("Computation Time:" , print( 
@@ -36,7 +36,9 @@ if(is.null(x$log.file)){
   cat("\nMean of RMSEA item fit:" , 
 	round( x$din.object$mean.rmsea ,3 ) , "\n")
   cat("\nItem parameters\n")
-	print( x$item , digits=3 )
+  obji <- x$item
+  rownames(obji) <- NULL
+	print( obji , digits=3 )
     cat("\nMarginal skill probabilities:\n")
     print(x$din.object$skill.patt , digits= 4)	  
 	# tetrachoric skill correlations

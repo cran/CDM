@@ -30,7 +30,7 @@ Q-matrix with binary entries (see \code{\link{din}}).
 \item{rule}{The condensation rule (see \code{\link{din}}).
 }
 \item{method}{
-Estimation method. The deault is joint maximum likelihood estimation
+Estimation method. The default is joint maximum likelihood estimation
 (\code{JML}). Other options include an adaptive estimation of guessing and 
 slipping parameters (\code{adaptive}) while using these estimated parameters 
 as weights in the individual deviation function and classification based on

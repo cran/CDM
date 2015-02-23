@@ -14,7 +14,8 @@ S3 Methods for Extracting Item Response Functions
 
 \description{
 This S3 method extracts item response functions evaluated
-at a grid of abilities (skills).
+at a grid of abilities (skills). Item response functions can
+be plotted using the \code{\link{IRT.irfprobPlot}} function.
 }
 
 \usage{
@@ -76,6 +77,8 @@ categories \eqn{\times} skill classes [\eqn{\times} group]) and attributes
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
+Plot functions for item response curves: \code{\link{IRT.irfprobPlot}}.
+	
 For extracting the individual likelihood or posterior see
 \code{\link{IRT.likelihood}} or \code{\link{IRT.posterior}}.
 }

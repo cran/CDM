@@ -27,7 +27,7 @@ skill.cor <- function( object){
     for (vv in 3:8){ res[,vv] <- as.numeric( paste( res[,vv] ) ) }
     # calculate tetrachoric correlation
     res$tetracor <- apply( res[ , 5:8 ] , 1 , FUN = function(ll){
-              polychor( matrix(as.numeric(ll),nrow=2) ) } )
+              polycor::polychor( matrix(as.numeric(ll),nrow=2) ) } )
     r2 <- res[ , c(2,1,4,3,5,7,6,8,9) ] 
     colnames(r2) <- colnames(res)
     res <- rbind( res , r2 )
@@ -45,25 +45,82 @@ skill.cor <- function( object){
     }
 ######################################################################################
 # polychoric correlations
-skill.polychor <- function( object){
+skill.polychor <- function( object , colindex=1 ){
     ap <- object$attribute.patt
-    aps <- object$attribute.patt.splitted
+    aps <- object$attribute.patt.splitted	
     # collect all skill combinations
     skill.combis <- t( combn( nrow(object$skill.patt ) , 2) )
-    skill.cors <- matrix(1 , ncol(aps) , ncol(aps) )
+    skill.cors <- matrix(1 , ncol(aps) , ncol(aps) )	
     ZZ <- nrow(skill.combis)
+	warn_temp <- options()$warn
+	options(warn=-1) 
     for (zz in 1:ZZ){
         # zz <- 8
         ll <- skill.combis[zz,]
         ss1 <- ll[1]
         ss2 <- ll[2]
-        v1 <- aggregate( ap[ , "class.prob" ] , list( aps[,ss1] , aps[,ss2] ) , sum )
+        v1 <- aggregate( ap[ , colindex ] , list( aps[,ss1] , aps[,ss2] ) , sum )
         NR <- length( unique( aps[,ss1] ) )
         NC <- length( unique( aps[,ss2] ) )
-        v1 <- matrix(  v1[,3] , NR , NC )
-        skill.cors[ss1,ss2] <- skill.cors[ss2,ss1] <- polychor( v1 )    
+        v1 <- matrix(  v1[,3] , nrow=NR , ncol=NC )		
+        skill.cors[ss1,ss2] <- skill.cors[ss2,ss1] <- polycor::polychor( v1 )    
                 }
+	options(warn=warn_temp)					
 	rownames(skill.cors) <- colnames(skill.cors) <- rownames(object$skill.patt)
     res <- list(  "cor.skills" = skill.cors )
+	return(res)
 		}
 #####################################################
+
+######################################################
+# calculate polychoric correlation
+CDM.calc.polychor <- function( res ){
+	G <- res$G
+	res0 <- as.list(1:G)
+	for (gg in 1:G){
+	    res0[[gg]] <- skill.polychor( res , colindex = gg )$cor.skills
+					}
+	return(res0)	
+		}
+########################################################		
+
+#########################################################
+# extract vector of polychoric correlations from a matrix
+CDM.polychor2vec <- function(pcmat){
+	D <- dim(pcmat)[1]
+	pcvec <- NULL
+	zz <- 1
+	if (D>1){
+		for (dd in 1:(D-1) ){
+			for (ee in (dd+1):D){
+				pcvec <- c( pcvec , pcmat[ee,dd] )
+				names(pcvec)[zz] <- paste0( rownames(pcmat)[ee] , "_" , rownames(pcmat)[dd] )               
+				zz <- zz+1
+							}
+					}
+				}
+	if (D==1){
+		pcvec <- c(1)
+		names(pcvec) <- "polycor1"
+				}
+	return(pcvec)
+			}
+##############################################################			
+
+
+##########################################################
+# read list of polychoric correlation matrices
+CDM.polychorList2vec <- function(polychorList){
+	G <- length(polychorList)	
+	pcvec <- NULL
+	for (gg in 1:G){
+		pcvec0 <- CDM.polychor2vec(polychorList[[gg]])
+		if (G>1){
+			names(pcvec0) <- paste0( names(pcvec0) , "_group" , gg)
+					}
+		pcvec <- c( pcvec , pcvec0 )
+				}
+    return(pcvec)
+		}
+#######################################################		
+

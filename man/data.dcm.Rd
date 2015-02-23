@@ -202,7 +202,7 @@ summary(mod6)
 
 #--------
 # Model 6m: GDINA additive model in mirt package
-# use data specifications form Model 1m)
+# use data specifications from Model 1m)
   #** create mirt model
 mirtmodel <- mirt::mirt.model("
       skill1 = 1,4,5,7

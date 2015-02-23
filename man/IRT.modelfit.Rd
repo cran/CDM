@@ -66,6 +66,9 @@ See output of \code{\link{modelfit.cor.din}}.
 \seealso{
 For extracting the individual likelihood or posterior see
 \code{\link{IRT.likelihood}} or \code{\link{IRT.posterior}}.
+
+The model fit of objects of class \code{\link{gdm}} can be obtained
+by using the \code{tam.modelfit.IRT} function in the \pkg{TAM} package.
 }
 %%% TAM, sirt and mirt links
 

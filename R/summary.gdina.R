@@ -80,19 +80,18 @@ summary.gdina <- function( object , rdigits = 4 , ... ){
 	cat("----------------------------------------------------------------------------\n")
 	cat("\nSkill Probabilities \n\n")
 	print(round(object$skill.patt ,rdigits) )
-	if ( ( object$G == 1 ) & (ncol(object$q.matrix ) > 1 ) & 
-			max(object$NAttr ==1 ) ){ 
+	
+	#**** output tetrachoric or polychoric correlations
 		cat("----------------------------------------------------------------------------\n")
-		QM <- max(object$q.matrix)
-		if (QM == 1){ 
-			cat("\nTetrachoric Correlations \n\n")
-			gt1 <- skill.cor( object )
-				} else {
-			cat("\nPolychoric Correlations \n\n")
-			gt1 <- skill.polychor( object )				
-				}
-		print(round(gt1$cor.skills,3))
-			}
+
+		cat("\nPolychoric Correlations \n")
+		G <- object$G
+		for (gg in 1:G){
+			cat( paste0( "\nGroup ", gg , "\n") )
+			obji <- object$polychor[[gg]]	
+			print( round( obji , 3 ))
+						}
+
 	cat("\n----------------------------------------------------------------------------\n")	
 	cat("\nSkill Pattern Probabilities \n\n")
 	if ( object$G == 1 ){

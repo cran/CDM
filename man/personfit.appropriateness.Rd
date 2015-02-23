@@ -37,7 +37,7 @@ Probabilities evaluated at skill space (abilities \eqn{\theta})
 Probabilities of skill classes
 }
   \item{h}{
-Numerical differiation parameter
+Numerical differentiation parameter
 }
   \item{eps}{
 Constant which is added to probabilities avoiding zero probability

@@ -25,6 +25,43 @@ https://sites.google.com/site/alexanderrobitzsch/software
 
 
 --------------------------------------------------------------
+CDM 4.2 (2015-02-23)   --  CRAN CDM 4.2-12
+--------------------------------------------------------------
+
+FIXED * fixed the ignorance of the 'centered.latent' argument 
+        in the 'gdm' function
+ADDED * included S3 methods 'IRT.expectedCounts' for extracting
+        expected counts and 'IRT.data' for extracting the used
+        item response dataset
+ADDED * included general plotting function for item response
+        functions 'IRT.irfprobPlot'. This function can be used 
+        with both lattice and graphics packages.        
+ADDED * included S3 method 'predict' (and function 'IRT.predict')
+        for computing expected values and residuals for
+        fitted models in CDM        
+NOTE  * added attributes group and weights to 'IRT.data' value 
+NOTE  * added a summary method for 'IRT.compareModels'
+NOTE  * changed output of posterior in 'gdina'
+ADDED * included function 'IRT.repDesign' for constructing 
+        replicate designs
+ADDED * added arguments for fixing and initial parameters in
+        'gdina' function 
+NOTE  * added parameter table and matrix of polychoric correlations
+        among skills in 'gdina' output 
+ADDED * added S3 method 'IRT.jackknife' and an initial version
+        for models of class 'gdina'
+ADDED * added function 'IRT.derivedParameter' for replication methods
+        for derived parameters based on objects of class 'IRT.jackknife'
+
+DATA  * included/modified datasets: data.timss11.G4.AUT,
+        data.timss11.G4.AUT.part
+EXAMP * included/modified examples: IRT.expectedCounts (1,2),
+        IRT.irfprobPlot (1,2), predict (1,2),
+        IRT.data (1), IRT.repDesign (1,2), gdina (1), 
+        IRT.jackknife (1,2)
+
+
+--------------------------------------------------------------
 CDM 4.1 (2014-12-17)   --  CRAN CDM 4.1
 --------------------------------------------------------------
 

@@ -1,5 +1,7 @@
 \name{IRT.compareModels}
 \alias{IRT.compareModels}
+\alias{summary.IRT.compareModels}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Comparisons of Several Models
@@ -15,6 +17,8 @@ input for this function.
 
 \usage{
 IRT.compareModels(object, ...)
+
+\method{summary}{IRT.compareModels}(object, extended=TRUE, \dots)
 }
 
 %- maybe also 'usage' for other objects documented here.
@@ -22,6 +26,8 @@ IRT.compareModels(object, ...)
   \item{object}{
 Object
 }
+\item{extended}{Optional logical indicating whether all or or only
+a subset of fit statistics should be printed.}
   \item{\dots}{
 Further objects to be passed.
 }
@@ -117,6 +123,10 @@ res
   ##   
 # -> The GDINA model (mod4) was superior to the other models in terms
 #    of the likelihood ratio test.
+
+# get an overview with summary
+summary(res)
+summary(res,extended=FALSE)
 
 #*******************
 # applying model comparison for objects of class IRT.modelfit

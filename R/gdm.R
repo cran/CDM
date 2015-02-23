@@ -63,7 +63,7 @@
 #   appropriately .
 #
 #################################################################
-# begin GDM function here
+# GDM function
 # 
 gdm <- function( data , theta.k, irtmodel="2PL", group=NULL, 
     weights=rep(1, nrow(data)), 
@@ -222,7 +222,6 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 		mean.constraint <- rbind( mean.constraint , cbind( 1:D , 1 , 0 )  )
 		skillspace <- "normal"
 		}
-
 	
 	#***
 	# set constraints for a and b parameters if the maximal 
@@ -361,14 +360,15 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 			delta <- res$delta
 			covdelta <- res$covdelta
 					}
-		if ( skillspace == "normal" ){
+		if ( skillspace == "normal" ){	
 			res <- .gdm.est.normalskills( pi.k , theta.k , irtmodel,
 						G,D , mean.constraint , Sigma.constraint ,
 						standardized.latent	, p.aj.xi , group , ind.group  ,
 						weights , b , a)
 			pi.k <- res$pi.k
 			b <- res$b 
-			a <- res$a		
+			a <- res$a
+			
 					}
 		
 		# estimate skillspace		
@@ -461,7 +461,8 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 	itemfit.rmsea <- itemfit.rmsea( n.ik , pi.k , probs ,
 			itemnames = colnames(data) )		
     item$itemfit.rmsea <- itemfit.rmsea$rmsea
-
+	rownames(item) <- NULL
+	
 	# person parameters
 	res <- .gdm.person.parameters( data , D , theta.k , p.xi.aj , p.aj.xi , weights )	
 	.attach.environment( res , envir=e1 )
@@ -492,13 +493,17 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 	res$time <- list( "s1"=s1,"s2"=s2 , "timediff"=s2-s1)
 	res$skillspace <- skillspace
 	res$iter <- iter
-	
+		
 	# some further values for modelfit.gdm
 	res$AIC <- res$ic$AIC
 	res$BIC <- res$ic$BIC	
 	res$Npars <- res$ic$np	
 	res$loglike <- - res$deviance / 2
 	res$irtmodel <- irtmodel
+	# control arguments
+	res$control$weights <- weights
+	res$control$group <- group
+	
 	if (progress){
                 cat("----------------------------------- \n")
                 cat("Start:" , paste( s1) , "\n")
@@ -512,39 +517,3 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 				
 		}		
 ###################################################
-# computation time example:
-# ---
-# data.read (see Examples in sirt package)
-# 3-dimensional 2PL model 
-#   (15 quadrature points per dimension)
-# ---
-# calc.probTime difference of 0.03120017 secs
-# calc.likeTime difference of 0.375402 secs
-# calc.postTime difference of 0.109201 secs
-# calc.countsTime difference of 0.09360099 secs
-# est bTime difference of 0.1092 secs
-# est aTime difference of 0.3276019 secs
-# skillspaceTime difference of 0 secs
-# calc LLTime difference of 0.1092012 secs
-##################################################
-# 3 dimensions fraction subtraction
-# 2PL; 536 subjects, 11 items
-# *** 21 quadrature points
-# calc.probTime difference of 0.03800392 secs
-# calc.likeTime difference of 0.90009 secs
-# calc.postTime difference of 0.3970401 secs
-# calc.countsTime difference of 0.1750169 secs
-# est bTime difference of 0.07800794 secs
-# est aTime difference of 0.3670371 secs
-# skillspaceTime difference of 0.006999969 secs
-# calc LLTime difference of 0.2280231 secs
-#**** 11 quadrature points
-# calc.probTime difference of 0.003999949 secs
-# calc.likeTime difference of 0.114012 secs
-# calc.postTime difference of 0.02400184 secs
-# calc.countsTime difference of 0.02200222 secs
-# est bTime difference of 0.01200199 secs
-# est aTime difference of 0.062006 secs
-# skillspaceTime difference of 0.001999855 secs
-# calc LLTime difference of 0.02800298 secs
-##################################################

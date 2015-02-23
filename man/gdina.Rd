@@ -20,13 +20,14 @@ Function for Estimating the Generalized DINA (GDINA) Model
 }
 \usage{
 gdina(data, q.matrix, skillclasses=NULL, conv.crit=0.0001, dev.crit=.1 ,  maxit=1000, 
-    linkfct="identity", Mj=NULL, group=NULL , method="WLS" , 
-    delta.designmatrix=NULL, delta.basispar.lower=NULL, 
+    linkfct="identity", Mj=NULL, group=NULL , method="WLS" , delta.init = NULL , 
+    delta.fixed = NULL , delta.designmatrix=NULL, delta.basispar.lower=NULL, 
     delta.basispar.upper=NULL, delta.basispar.init=NULL, zeroprob.skillclasses=NULL, 
-    reduced.skillspace=TRUE , reduced.skillspace.method=2 , HOGDINA=-1,
-    Z.skillspace=NULL, weights=rep(1, nrow(data)), rule="GDINA", 
+    attr.prob.init = NULL , reduced.skillspace=TRUE , reduced.skillspace.method=2 , 
+    HOGDINA=-1, Z.skillspace=NULL, weights=rep(1, nrow(data)), rule="GDINA", 
     progress=TRUE, progress.item=FALSE , increment.factor=1.01,
-    fac.oldxsi=0 , avoid.zeroprobs = FALSE , seed=0, save.devmin=TRUE , ...)
+    fac.oldxsi=0 , avoid.zeroprobs = FALSE , seed=0, save.devmin=TRUE ,
+    calc.se=TRUE , ...)
 
 \method{summary}{gdina}(object, rdigits = 4 ,  \dots)
 
@@ -88,6 +89,9 @@ default analysis. See Example 3.
     whereas the method \code{"ULS"} perform unweighted least squares
     estimation on expected frequencies.
     }
+\item{delta.init}{List with initial \eqn{\delta} parameters}
+\item{delta.fixed}{List with fixed \eqn{\delta} parameters.
+For free estimated parameters \code{NA} must be declared.}
 \item{delta.designmatrix}{
     A design matrix for restrictions on delta. See Example 4.
     }
@@ -106,7 +110,7 @@ default analysis. See Example 3.
 \item{zeroprob.skillclasses}{An optional vector of integers which indicates which skill
   classes should have zero probability. Default is NULL 
     (no skill classes with zero probability).}
-    
+\item{attr.prob.init}{Initial probabilities of skill distribution.}    
 
 \item{reduced.skillspace}{A logical which indicates if the latent class skill space should be
         dimensionally reduced (see Xu & von Davier, 2008). Default is \code{TRUE}.
@@ -184,13 +188,15 @@ zero to random initial values with \code{set.seed(seed)}.}
 estimates should be saved corresponding to minimal deviance. 
 Setting the argument to \code{FALSE} could help for preventing
 working memory overflow.}
+\item{calc.se}{Optional logical indicating whether standard
+errors should be calculated.}
 
   \item{object}{A required object of class \code{gdina}, obtained
     from a call to the function \code{\link{gdina}}.  }
   \item{rdigits}{Number of digits after decimal separator to display.  }
   \item{x}{A required object of class \code{gdina} }
   \item{ask}{A logical indicating whether every separate item should
-  be displayed in \code{plot.gdina}}
+  be displayed in \code{plot.gdina}} 
   \item{\dots}{Optional parameters to be passed to or from other
     methods will be ignored.  }
 }
@@ -243,6 +249,14 @@ independent of each other:
 \deqn{ P[ ( \alpha_{n1} , \alpha_{n2} , \ldots , \alpha_{nK} ) ]
 	= \prod_k P( \alpha_{nk} ) }
 
+
+Note that the noncompensatory reduced RUM (NC-RRUM) according 
+to Rupp and Templin (2008) is the GDINA model with the arguments
+\code{rule="ACDM"} and \code{linkfct="log"}. NC-RRUM can also be
+obtained by choosing \code{rule="RRUM"}.
+
+The compensatory RUM (C-RRUM) can be obtained by using the arguments
+\code{rule="ACDM"} and \code{linkfct="logit"}.
     }
     
 
@@ -307,7 +321,9 @@ An object of class \code{gdina} with following entries
 \item{b.attr}{Attribute parameters \eqn{b_k} in case of \code{HOGDINA>=0}}
 \item{attr.rf}{Attribute response functions. This matrix contains all 
 	\eqn{a_k} and \eqn{b_k} parameters}
-  \item{control}{Optimization parameters used in estimation}	
+\item{control}{Optimization parameters used in estimation}  
+\item{partable}{Parameter table for \code{gdina} function}
+\item{polychor}{Group-wise matrices with polychoric correlations}
 \item{\dots}{Further values}
     }
     
@@ -326,6 +342,11 @@ An object of class \code{gdina} with following entries
   
   de la Torre, J. (2011). The generalized {DINA} model framework. 
   \emph{Psychometrika}, \bold{76}, 179-199.
+
+  Rupp, A. A., & Templin, J. (2008). Unique characteristics of
+  diagnostic classification models: A comprehensive review of the current
+  state-of-the-art. \emph{Measurement: Interdisciplinary Research and
+  Perspectives}, \bold{6}, 219-262.
   
   Xu, X., & von Davier, M. (2008). \emph{Fitting the structured general diagnostic
   model to NAEP data}. ETS Research Report ETS RR-08-27. Princeton, ETS.
@@ -379,9 +400,21 @@ mod1 <- gdina( data = sim.dina ,  q.matrix = sim.qmatrix , maxit=700)
 summary(mod1)
 plot(mod1) # apply plot function
 
+\dontrun{
 # Model 1a: estimate model with different simulation seed
 mod1a <- gdina( data = sim.dina ,  q.matrix = sim.qmatrix , seed=9089)
 summary(mod1a)
+
+# Model 1b: estimate model with some fixed delta parameters
+delta.fixed <- as.list( rep(NA,9) )		# List for parameters of 9 items
+delta.fixed[[2]] <- c( 0 , .15 , .15 , .45 )
+delta.fixed[[6]] <- c( .25 , .25 )
+mod1b <- gdina( data = sim.dina ,  q.matrix = sim.qmatrix , delta.fixed=delta.fixed)
+summary(mod1b)
+
+# Model 1c: fix all delta parameters to previously fitted model
+mod1c <- gdina( data = sim.dina ,  q.matrix = sim.qmatrix , delta.fixed=mod1$delta)
+summary(mod1c)
 
 #***
 # Model 2: estimation of the DINA model with gdina function
@@ -394,7 +427,6 @@ plot(mod2)
 mod2b <- din( data = sim.dina ,  q.matrix = sim.qmatrix , rule="DINA")
 summary(mod2b)
 
-\dontrun{
 # Model 2: estimation of the DINO model with gdina function
 mod3 <- gdina( data = sim.dina ,  q.matrix = sim.qmatrix , rule="DINO")
 summary(mod3)
@@ -451,8 +483,7 @@ summary(mod3)
 I <- 9      # number of items
 rule <- rep( "GDINA" , I )
 rule[1] <- "DINO"   # 1st item: DINO model
-rule[7] <- "GDINA2" # 7th item: GDINA model with first- 
-                    #           and second-order interactions
+rule[7] <- "GDINA2" # 7th item: GDINA model with first- and second-order interactions
 rule[8] <- "ACDM"   # 8ht item: additive CDM
 rule[9] <- "DINA"   # 9th item: DINA model
 mod4 <- gdina( data=sim.dino, q.matrix=sim.qmatrix, rule=rule )

@@ -3,7 +3,7 @@
 # compare models based on likelihood and information criteria
 IRT.compareModels <- function( object , ... ){
 		cl <- match.call()
-		cl1 <- paste(cl)[-1]
+		cl1 <- paste(cl)[-c(1)]
 		object_list <- list(...)		
 		
 		#****************************
@@ -52,14 +52,17 @@ IRT.compareModels <- function( object , ... ){
 				dfr1 <- IRT.IC( object_list[[vv]] )
 								}
    		   if ( ! irtmodfit ){  dfr <- rbind( dfr , dfr1 ) }
-		   if (irtmodfit ){ dfr <- plyr::rbind.fill( as.data.frame(dfr) , as.data.frame(dfr1 ) ) }
+		   if (irtmodfit ){ 
+					dfr <- plyr::rbind.fill( as.data.frame(dfr) , as.data.frame(dfr1 ) ) 
+							}
 					}
 		rownames(dfr) <- NULL
 
 		
 		dfr <- data.frame( "Model" = cm1 , dfr )
 		IC <- dfr
-		rownames(IC) <- paste(dfr$Model)
+		# rownames(IC) <- paste(dfr$Model)
+		rownames(IC) <- NULL
 		
 		res <- list("IC" = IC )
 		#*************************************
@@ -87,7 +90,34 @@ IRT.compareModels <- function( object , ... ){
 							}
 				}
 	    res$LRtest <- dfr				
-		# class(res) <- "IRT.compareModels"
+		class(res) <- "IRT.compareModels"
 		return(res)
 				}
 ##########################################################################
+
+################################################
+# summary method for IRT.compareModels
+summary.IRT.compareModels <- function( object , extended = TRUE , ... ){
+    dfr1 <- object$IC
+	if ( ! extended ){
+		vars <- c( "AICc" , "CAIC" , "maxX2" , "MADQ3" , "MADaQ3" ,
+						"SRMR" ) 		
+		dfr1 <- dfr1[ , ! (colnames(dfr1) %in% vars ) ]		
+					}
+	cat("Absolute and relative model fit\n\n")
+	for ( vv in 2:(ncol(dfr1) ) ){
+			dfr1[,vv] <- round( dfr1[,vv] , 3 )
+							}
+	print(dfr1, ...)			
+	dfr2 <- object$LRtest
+	if ( ! is.null(dfr2) ){
+		cat("\nLikelihood ratio tests - model comparison \n\n")
+		obji <- object$LRtest
+		for (vv in seq(3,ncol(obji) ) ){
+				obji[,vv] <- round( obji[,vv] , 4 )
+							}
+		print( obji)
+	
+						}
+
+					}

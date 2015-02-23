@@ -149,11 +149,11 @@ function( data , posterior , probs ){
 	#**********************
 	# model fit
 	modelfit <- data.frame( "est" = c( 
-			mean( abs( itempairs$corObs - itempairs$corExp ) ) ,
-			sqrt( mean( ( itempairs$corObs - itempairs$corExp )^2 ) ) ,			
-			mean( itempairs$X2 ) , # mean( itempairs$G2) ,
-			mean( 100*abs(itempairs$RESIDCOV ) ) ,
-			mean( abs( itempairs$Q3 ) )
+			mean( abs( itempairs$corObs - itempairs$corExp ) , na.rm=TRUE) ,
+			sqrt( mean( ( itempairs$corObs - itempairs$corExp )^2 , na.rm=TRUE ) ) ,			
+			mean( itempairs$X2 , na.rm=TRUE ) , # mean( itempairs$G2) ,
+			mean( 100*abs(itempairs$RESIDCOV ) , na.rm=TRUE ) ,
+			mean( abs( itempairs$Q3 ) , na.rm=TRUE)
 						) )
 	rownames(modelfit) <- c("MADcor" , "SRMSR" , "MX2" , # "MG2",
 				"100*MADRESIDCOV" , "MADQ3" )

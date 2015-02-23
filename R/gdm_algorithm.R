@@ -387,7 +387,10 @@
 						}
 				mg <- i1[3] 
 						}
-					}
+		  if ( nrow(i1) > 0 ){				
+				mg <- i1[,3]				
+							}						
+					}				
 	if ( ( ! is.null ( Sigma.constraint ) )  ){
 		i1 <- Sigma.constraint[ Sigma.constraint[,3] == gg , , drop=FALSE]
 #		  if ( ( nrow(i1) == 1 ) & (G>=1) ){ 	
@@ -400,9 +403,10 @@
 					}
 # cat( mg , sdg , "\n" )						
 #	if (standardized.latent){ mg <- 0 ; sdg <- 0 }					
-#		if (gg==1){ mg <- 0 }				
-		pi.k[,gg] <- dnorm( theta.k[,1] ,mean=mg , sd=sdg)
+#		if (gg==1){ mg <- 0 }			
+		pi.k[,gg] <- dnorm( theta.k[,1] ,mean=mg , sd=sdg)		
 		pi.k[,gg] <- pi.k[,gg] / sum( pi.k[,gg] )
+		
 			}			
 		}
 	#####################################

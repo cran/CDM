@@ -18,7 +18,6 @@ IRT.likelihood.din <- function( object , ... ){
     ll <- object$like
     attr(ll,"theta") <- object$attribute.patt.splitted
 	attr(ll,"prob.theta") <- object$attribute.patt$class.prob
-#	attr(ll,"probs") <- object$pjk
 	attr(ll,"G") <- 1
     return(ll)
         }
@@ -30,7 +29,6 @@ IRT.likelihood.gdina <- function( object , ... ){
     ll <- object$like
     attr(ll,"theta") <- object$attribute.patt.splitted
 	attr(ll,"prob.theta") <- object$attribute.patt[ , 1:object$G ]
-#	attr(ll,"probs") <- object$pjk	
 	attr(ll,"G") <- object$G	
     return(ll)
         }
@@ -42,7 +40,6 @@ IRT.likelihood.mcdina <- function( object , ... ){
     ll <- object$like
     attr(ll,"theta") <- object$attribute.patt.splitted
 	attr(ll,"prob.theta") <- object$attribute.patt
-#	attr(ll,"probs") <- object$pik
 	attr(ll,"G") <- object$G
     return(ll)
         }
@@ -54,7 +51,6 @@ IRT.likelihood.gdm <- function( object , ... ){
     ll <- object$p.xi.aj
     attr(ll,"theta") <- object$theta.k
 	attr(ll,"prob.theta") <- object$pi.k
-#	attr(ll,"probs") <- aperm( object$pjk , c(2 , 3 , 1 ) )
 	attr(ll,"G") <- object$G
     return(ll)
         }
@@ -69,7 +65,6 @@ IRT.likelihood.slca <- function( object , ... ){
 	             "delta.designmatrix" = object$delta.designmatrix )
 	attr(ll,"skillspace") <- res
 	attr(ll,"prob.theta") <- object$pi.k
-#	attr(ll,"probs") <- aperm( object$pjk , c(2 , 3 , 1 ) )	
 	attr(ll,"G") <- object$G
     return(ll)
         }

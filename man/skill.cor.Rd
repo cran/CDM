@@ -15,21 +15,23 @@ Templin & Henson, 2006).
 skill.cor(object)     
 
 # polychoric correlations
-skill.polychor(object) 
+skill.polychor(object, colindex=1) 
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{
 Object of class \code{din} or \code{gdina}
 }
+\item{colindex}{Index which can used for group-wise calculation
+of polychoric correlations}
 }
 %\details{
 %%  ~~ If necessary, more details than the description above ~~
 %}
 \value{
 A list with following entries:
- \item{conttable.skills}{Bivariate contingency table of all skill pairs}
-  \item{cor.skills}{Tetrachoric correlation matrix for skill
+\item{conttable.skills}{Bivariate contingency table of all skill pairs}
+\item{cor.skills}{Tetrachoric correlation matrix for skill
     distribution}
 }
 \references{
@@ -54,15 +56,15 @@ using cognitive diagnosis models. \emph{Psychological Methods},
 d4 <- din(sim.dino, q.matr = sim.qmatrix)
 # compute tetrachoric correlations
 skill.cor(d4)
-## estimated tetrachoric correlations
-##   $cor.skills
-##             V1        V2        V3
-##   V1 1.0000000 0.2567718 0.2552958
-##   V2 0.2567718 1.0000000 0.9842188
-##   V3 0.2552958 0.9842188 1.0000000
-  }
+  ## estimated tetrachoric correlations
+  ##   $cor.skills
+  ##             V1        V2        V3
+  ##   V1 1.0000000 0.2567718 0.2552958
+  ##   V2 0.2567718 1.0000000 0.9842188
+  ##   V3 0.2552958 0.9842188 1.0000000
+}
 
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{Skill correlations}
+\keyword{Skill correlation}
 %\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

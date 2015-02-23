@@ -12,10 +12,8 @@ cdi.kli <- function( object ){
 	skillclasses <- as.matrix( object$attribute.patt.splitted )
 	# rearrange probabilities
 	pjk <- aperm( pjk , c(1,3,2 ) )
-	round( pjk[,,1] , 2 )
 	dpjk <- dim(pjk)
 	pjk <- matrix( pjk , nrow=dpjk[1] , ncol=dpjk[2]*dpjk[3] )
-	round( pjk , 2 )
 
 	eps <- 10^(-7) 	# prevent division by zero
 	pjk <- ( pjk + eps ) / ( 1 + 2*eps )
@@ -24,8 +22,8 @@ cdi.kli <- function( object ){
 	# apply Rcpp function for calculation
 #	res0 <-  cdm_kli_id( pjk , skillclasses )
 	res0 <- .Call( "cdm_kli_id_C", 
-					pjk , skillclasses , 
-					PACKAGE = "CDM")	
+					   pjk , skillclasses , 
+					   PACKAGE = "CDM")	
 	
 	#****
 	# arrange Kullback Leibler information

@@ -39,7 +39,15 @@ export(din, sim.din , gdina ,
     IRT.modelfit ,
     IRT.IC ,
     IRT.compareModels ,
-    IRT.anova
+    IRT.anova ,
+    IRT.expectedCounts ,
+    IRT.irfprobPlot ,
+    IRT.predict ,
+    IRT.data ,
+    IRT.se ,
+    IRT.repDesign,
+    IRT.jackknife,
+    IRT.derivedParameters
     )
 
 # internal functions; not intended to be visible to users
@@ -67,7 +75,7 @@ S3method(coef, gdina)
 S3method(coef, mcdina)
 S3method(coef, gdm)
 S3method(coef, slca)
-
+S3method(coef, IRT.jackknife)
 
 
 #*** confint
@@ -92,6 +100,16 @@ S3method(plot, slca)
 S3method(plot, itemfit.sx2)
 
 
+
+#*** predict
+S3method(predict,din)
+S3method(predict,gdina)
+S3method(predict,mcdina)
+S3method(predict,gdm)
+S3method(predict,slca)
+
+
+
 #*** print
 S3method(print, din)
 S3method(print, summary.din)
@@ -99,6 +117,7 @@ S3method(print, gdina)
 S3method(print, gdm)
 S3method(print, slca)
 S3method(print, mcdina)
+
 
 
 #*** summary
@@ -114,15 +133,34 @@ S3method(summary, slca)
 S3method(summary, entropy.lca)
 S3method(summary, cdi.kli)
 S3method(summary, personfit.appropriateness )
+S3method(summary, IRT.compareModels )
+S3method(summary, IRT.jackknife)
 
 
 #*** vcov
 S3method(vcov,din)
-
+S3method(vcov, IRT.jackknife)
 
 
 #############################################
 ######### IRT.xxx methods ###################
+
+
+#*** IRT.data
+S3method(IRT.data, din)
+S3method(IRT.data, gdina)
+S3method(IRT.data, mcdina)
+S3method(IRT.data, gdm)
+S3method(IRT.data, slca)
+
+
+#*** IRT.expectedCounts
+S3method(IRT.expectedCounts, din)
+S3method(IRT.expectedCounts, gdina)
+S3method(IRT.expectedCounts, mcdina)
+S3method(IRT.expectedCounts, gdm)
+S3method(IRT.expectedCounts, slca)
+
 
 #*** IRT.factor.scores
 S3method(IRT.factor.scores, din)
@@ -145,6 +183,11 @@ S3method(IRT.itemfit, din)
 S3method(IRT.itemfit, gdina)
 S3method(IRT.itemfit, gdm)
 S3method(IRT.itemfit, slca)
+
+
+#*** IRT.jackknife
+S3method(IRT.jackknife, gdina)
+
 
 
 #*** IRT.likelihood
@@ -174,6 +217,12 @@ S3method(IRT.posterior, slca)
 S3method(IRT.se, din)
 
 
+
+
+
+
+
+
 ####################################################
 ############# IMPORTS ##############################
 
@@ -186,3 +235,5 @@ importFrom(utils,packageDescription)
 importFrom(sfsmisc,QUnif)
 importFrom(Rcpp,evalCpp)
 importFrom(plyr,rbind.fill)
+importFrom(WrightMap,wrightMap)
+importFrom(lattice,xyplot)
