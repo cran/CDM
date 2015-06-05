@@ -25,6 +25,17 @@ https://sites.google.com/site/alexanderrobitzsch/software
 
 
 --------------------------------------------------------------
+CDM 4.3 (2015-06-05)   --  CRAN CDM 4.3-0
+--------------------------------------------------------------
+
+NOTE  * included t and p values in 'IRT.jackknife.gdina'
+FIXED * fixed bugs in 'summary.gdina' and 'gdina' due to
+        computational problems in standard error calculation
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: ---
+
+--------------------------------------------------------------
 CDM 4.2 (2015-02-23)   --  CRAN CDM 4.2-12
 --------------------------------------------------------------
 
@@ -59,7 +70,6 @@ EXAMP * included/modified examples: IRT.expectedCounts (1,2),
         IRT.irfprobPlot (1,2), predict (1,2),
         IRT.data (1), IRT.repDesign (1,2), gdina (1), 
         IRT.jackknife (1,2)
-
 
 --------------------------------------------------------------
 CDM 4.1 (2014-12-17)   --  CRAN CDM 4.1

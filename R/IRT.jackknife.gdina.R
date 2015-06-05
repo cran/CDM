@@ -91,6 +91,8 @@ IRT.jackknife.gdina <- function( object , repDesign , ... ){
 		res0 <- jkestimates( est=jpartable$value , parsM , fayfac  )			
 		jpartable$jkest <- res0$dfr$jkest		
 		jpartable$jkse <- res0$dfr$jkse		
+		jpartable$t <- jpartable$jkest / jpartable$jkse
+		jpartable$p <- 2*pnorm( - abs( jpartable$t ) )
 		
 		res <- list( "parsM" = parsM , "vcov" = res0$vcov_pars , 
 				      "jpartable" = jpartable , "fayfac" = fayfac )

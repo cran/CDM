@@ -48,7 +48,7 @@ about data source.
 
 \section{Example Index}{
 \code{\link{gdm}} (Example 1),
-\code{\link[sirt:lsdm]{lsdm}} (Example 4, \pkg{sirt})
+\code{\link[sirt:lsdm]{sirt::lsdm}} (Example 4)
 }
 
 \references{

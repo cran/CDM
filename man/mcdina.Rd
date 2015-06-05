@@ -14,8 +14,8 @@ The function \code{mcdina} implements the multiple choice DINA model
 (de la Torre, 2009) for multiple groups. Note that the dataset must contain 
 integer values \eqn{1,\ldots , K_j} for each item. The multiple choice
 DINA model assumes that each item category possesses some diagnostic capacity.
-Using this modeling approach, different distractors multiple choice of a 
-multiple choice can be of different diagnostic value. The Q-matrix can also
+Using this modeling approach, different distractors of a 
+multiple choice item can be of different diagnostic value. The Q-matrix can also
 contain integer values which allows the definition of polytomous attributes.
 
 }

@@ -46,9 +46,12 @@ summary.gdina <- function( object , rdigits = 4 , ... ){
 #	g1 <- gdina.fit( object , print.output = TRUE )				
 	###########################################################
 	ds <- object$coef
-	ind <- which( colnames(ds) %in% c("est", "se" ) ) 
+	selvars <- intersect( c("est", "se" ) , colnames(ds) )
+	ind <- which( colnames(ds) %in% selvars ) 
 #	if (G>0){ ind <- which( colnames(ds) %in% c("est" ) ) }
-	ds[,ind] <- round( ds[,ind] , rdigits )
+    for (ii in ind){
+		ds[,ii] <- round( ds[,ii] , rdigits )
+					}
 	cat("----------------------------------------------------------------------------\n")
 	cat("\nItem Parameter Estimates \n\n")
 	r1 <- options()
@@ -74,7 +77,7 @@ summary.gdina <- function( object , rdigits = 4 , ... ){
 
 	cat("----------------------------------------------------------------------------\n")
 	cat("Model Implied Conditional Item Probabilities \n\n")
-	obji <- object$probitem
+	obji <- object$probitem	
 	obji[,"prob"] <- round( obji$prob, 4 )	
 	print(obji)					
 	cat("----------------------------------------------------------------------------\n")

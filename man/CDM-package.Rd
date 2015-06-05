@@ -22,7 +22,7 @@ Functions for cognitive diagnosis modeling
   \tabular{ll}{
     Package: \tab \pkg{CDM}\cr
     Type: \tab Package\cr
-    Version: \tab 4.2\cr
+    Version: \tab 4.3\cr
     Publication Year: \tab 2015\cr
     License: \tab \acronym{GPL} (>= 2) \cr
     URL: \tab \url{https://sites.google.com/site/alexanderrobitzsch/software} \cr            
@@ -182,7 +182,7 @@ Formann, A. K. (1992). Linear logistic latent class analysis for polytomous data
 \emph{gdina.partable__0.02.R}, \cr
 \emph{gdina.postproc__0.02.R}, 
 \emph{gdina.wald__0.02.R}, 
-\emph{gdina__8.912.R}, 
+\emph{gdina__8.916.R}, 
 \emph{gdina_aux__0.01.R}, \cr
 \emph{gdina_designmatrices__0.01.R}, 
 \emph{gdina_hogdina_alg__1.06.R}, \cr
@@ -191,33 +191,32 @@ Formann, A. K. (1992). Linear logistic latent class analysis for polytomous data
 \emph{gdm_algorithm__8.06.R}, \cr
 \emph{gdm_postproc__3.02.R}, 
 \emph{gdm_preproc__2.10.R}, 
-\emph{gdm_temp__0.02.R}, \cr
-\emph{ideal.response.pattern__0.03.R}, 
+\emph{ideal.response.pattern__0.03.R}, \cr
 \emph{IRT.anova__0.01.R}, 
-\emph{IRT.compareModels__0.12.R}, \cr
-\emph{IRT.data__0.04.R}, 
+\emph{IRT.compareModels__0.12.R}, 
+\emph{IRT.data__0.04.R}, \cr
 \emph{IRT.derivedParameters__0.01.R}, 
-\emph{IRT.expectedCounts__0.05.R}, \cr
-\emph{IRT.factor.scores__0.04.R}, 
+\emph{IRT.expectedCounts__0.05.R}, 
+\emph{IRT.factor.scores__0.04.R}, \cr
 \emph{IRT.IC__0.03.R}, 
-\emph{IRT.irfprob__0.04.R}, \cr
+\emph{IRT.irfprob__0.04.R}, 
 \emph{IRT.irfprobPlot__1.02.R}, 
-\emph{IRT.itemfit__0.02.R}, 
-\emph{IRT.jackknife.gdina__0.08.R}, \cr
+\emph{IRT.itemfit__0.02.R}, \cr
+\emph{IRT.jackknife.gdina__0.09.R}, 
 \emph{IRT.jackknife__0.01.R}, 
-\emph{IRT.likelihood__0.07.R}, 
-\emph{IRT.modelfit__0.08.R}, \cr
+\emph{IRT.likelihood__0.07.R}, \cr
+\emph{IRT.modelfit__0.08.R}, 
 \emph{IRT.posterior__0.01.R}, 
-\emph{IRT.predict__1.14.R}, 
+\emph{IRT.predict__1.14.R}, \cr
 \emph{IRT.repDesign__0.06.R}, 
-\emph{IRT.se.din__0.03.R}, \cr
+\emph{IRT.se.din__0.03.R}, 
 \emph{IRT.se__0.01.R}, 
-\emph{itemfit.rmsea__0.12.R}, 
+\emph{itemfit.rmsea__0.12.R}, \cr
 \emph{itemfit.sx2__3.01.R}, 
-\emph{itemfit.sx2_aux__3.05.R}, \cr
+\emph{itemfit.sx2_aux__3.05.R}, 
 \emph{jkestimates__0.04.R}, 
-\emph{logLik_CDM__0.07.R}, 
-\emph{mcdina.est.item__0.07.R}, \cr
+\emph{logLik_CDM__0.07.R}, \cr
+\emph{mcdina.est.item__0.07.R}, 
 \emph{mcdina.postproc__0.08.R}, 
 \emph{mcdina.simul__0.07.R}, 
 \emph{mcdina__0.56.R}, \cr
@@ -250,7 +249,7 @@ Formann, A. K. (1992). Linear logistic latent class analysis for polytomous data
 \emph{slca.postprocess__0.04.R}, 
 \emph{slca__1.34.R}, 
 \emph{summary.din__1.08.R}, \cr
-\emph{summary.gdina__1.15.R}, 
+\emph{summary.gdina__1.17.R}, 
 \emph{summary.gdm__1.09.R}, 
 \emph{summary.mcdina__0.04.R}, \cr
 \emph{summary.slca__1.09.R}, 
@@ -272,7 +271,7 @@ Formann, A. K. (1992). Linear logistic latent class analysis for polytomous data
 \section{\emph{Rd} Documentation Versions }{
 \emph{anova.din__1.21.Rd}, 
 \emph{cdi.kli__0.09.Rd}, 
-\emph{CDM-package__2.40.Rd}, \cr
+\emph{CDM-package__2.41.Rd}, \cr
 \emph{cdm.est.class.accuracy__1.12.Rd}, 
 \emph{coef__0.15.Rd}, 
 \emph{Data-sim__1.12.Rd}, 
@@ -280,15 +279,15 @@ Formann, A. K. (1992). Linear logistic latent class analysis for polytomous data
 \emph{data.dcm__0.15.Rd}, 
 \emph{data.dtmr__0.10.Rd}, 
 \emph{data.ecpe__0.11.Rd}, 
-\emph{data.fraction1__0.09.Rd}, \cr
+\emph{data.fraction1__0.10.Rd}, \cr
 \emph{data.fraction2__0.13.Rd}, 
 \emph{data.hr__0.08.Rd}, 
 \emph{data.jang__0.08.Rd}, 
 \emph{data.melab__0.08.Rd}, \cr
-\emph{data.mg__0.16.Rd}, 
+\emph{data.mg__0.17.Rd}, 
 \emph{data.pgdina__0.12.Rd}, 
 \emph{data.sda6__0.06.Rd}, 
-\emph{data.Students__0.10.Rd}, \cr
+\emph{data.Students__0.11.Rd}, \cr
 \emph{data.timss03.G8.su__0.04.Rd}, 
 \emph{data.timss07.G4.lee__0.04.Rd}, \cr
 \emph{data.timss11.G4.AUT__0.06.Rd}, 
@@ -296,7 +295,7 @@ Formann, A. K. (1992). Linear logistic latent class analysis for polytomous data
 \emph{din.equivalent.class__0.16.Rd}, 
 \emph{din.validate.qmatrix__1.16.Rd}, 
 \emph{din__2.24.Rd}, \cr
-\emph{entropy.lca__0.15.Rd}, 
+\emph{entropy.lca__0.16.Rd}, 
 \emph{equivalent.dina__1.11.Rd}, 
 \emph{fraction.subtraction.data__2.01.Rd}, \cr
 \emph{fraction.subtraction.qmatrix__1.03.Rd}, 
@@ -322,7 +321,7 @@ Formann, A. K. (1992). Linear logistic latent class analysis for polytomous data
 \emph{itemfit.rmsea__1.07.Rd}, 
 \emph{itemfit.sx2__1.20.Rd}, 
 \emph{logLik__0.12.Rd}, \cr
-\emph{mcdina__0.14.Rd}, 
+\emph{mcdina__0.15.Rd}, 
 \emph{modelfit.cor__1.46.Rd}, 
 \emph{personfit.appropriateness__0.13.Rd}, \cr
 \emph{plot.din__2.07.Rd}, 

@@ -1,5 +1,5 @@
-0a190945551681813cd67363931f4db3 *DESCRIPTION
-ac6a32d5619c91aa6805d298824e9a98 *NAMESPACE
+93b30ae833627729d72862f178ff46c9 *DESCRIPTION
+479de030e87de0f47dcd14b0aa69c72d *NAMESPACE
 316eca8e8b497cca1765bc443e030529 *R/IRT.IC.R
 e9d4ca853001a0f64c35fa9990c83447 *R/IRT.anova.R
 ecf2f65242ed6b68cb9198d53f7706be *R/IRT.compareModels.R
@@ -11,7 +11,7 @@ c7564acde51e9c4d85246f7ca5d34070 *R/IRT.expectedCounts.R
 ccd8b64be9dc88afa401dae60425a7ca *R/IRT.irfprobPlot.R
 ed0625d05ba5e12e5291f8503c0960c1 *R/IRT.itemfit.R
 78d127e8ef298fd568e954f603303a88 *R/IRT.jackknife.R
-a775941aeed610c9ea6589fcd4818f11 *R/IRT.jackknife.gdina.R
+6c0fe3bcd1bf1c3901b8d069c9f00b59 *R/IRT.jackknife.gdina.R
 2d297fb3d7a14257f3ada3a9e5aa850c *R/IRT.likelihood.R
 bf03da4b17e164a686d806dab0187768 *R/IRT.modelfit.R
 932ef7066d327059f588abd056261d95 *R/IRT.posterior.R
@@ -35,7 +35,7 @@ ad0593bb2a4577beb2d51e73427e3b2a *R/din.partable.R
 58de9bbe5aa2915db91891174b3d3be1 *R/equivalent.dina.R
 6b7e8d6229c5fe8f1499b758cf3621dd *R/equivalent.skillclasses.R
 ccee1183156503948fece10febc56320 *R/gdd.R
-4ca34e60b50fb06e08b2ae4cd682f8bd *R/gdina.R
+396b1bd1b948452a552f809cf35c9158 *R/gdina.R
 ab93854afcd2504e394d1bf794453351 *R/gdina.dif.R
 b74c74aaeb4652a41f3218d06c9c3fed *R/gdina.dif_aux.R
 fb06eec4d34beb55b585c452881244b7 *R/gdina.partable.R
@@ -49,7 +49,6 @@ cce6288c9d7c051d02ef70c9e5308b8a *R/gdm.R
 c815469c6f2757abe46b7034b28f52c9 *R/gdm_algorithm.R
 8d137bc2bd14c6ce4f96c49bf7c9e5d0 *R/gdm_postproc.R
 464fb794d211f27b5db342560804092e *R/gdm_preproc.R
-355eb0a309954bc1c7f94ca2558384d5 *R/gdm_temp.R
 e97ed6103613e33d3bd8cd82e854860c *R/ideal.response.pattern.R
 0c350f27ce10ca92e341905db02c70bb *R/itemfit.rmsea.R
 b123daec295ab69661ac166f2316ec51 *R/itemfit.sx2.R
@@ -89,7 +88,7 @@ d5ff07a47ec41d92b709b87d445cf1e5 *R/skillspace.approximation.R
 23f908311952113d4c9c6e5fab169bd2 *R/slca.algorithm.R
 e703afb69e8488ba943844f6b47f43ed *R/slca.postprocess.R
 60186283b08845e96e7327579d571e84 *R/summary.din.R
-264a7843c8daeeac64ea07d53057f935 *R/summary.gdina.R
+964e9d555f22cdb592eeee48fc0f6bac *R/summary.gdina.R
 72025448de6da246b8ffc1956bde682f *R/summary.gdm.R
 73ad7ceb28f2e07679f80ccaf0fb284d *R/summary.mcdina.R
 dc569a149b1f1f2e9fbea031eddc1c99 *R/summary.slca.R
@@ -118,8 +117,8 @@ fa6cfbff6340d5031a53ed38198322d4 *data/fraction.subtraction.data.rda
 b425982d9f83591b0ce4391a56058ea5 *data/sim.dina.rda
 7711c1e53bf6b0278fb7e1912cb11885 *data/sim.dino.rda
 4bf2a85b846dcad222c6039acf4f0b20 *data/sim.qmatrix.rda
-60b862bdd7bb8e816acee520040b416b *inst/NEWS
-eb873b66a5abf72b5fa336984e55baf7 *man/CDM-package.Rd
+913589191665857ddb0d9052cfda96c7 *inst/NEWS
+c9187ea6c9c1feadc441feb68d18bb99 *man/CDM-package.Rd
 b5f7134425fec8f417115287dc1fdffc *man/Data-sim.Rd
 fb462fcd21787db3f2e793d606fb46d5 *man/IRT.IC.Rd
 c1bdbe46a853a96889e7a1e46d5a0f6b *man/IRT.anova.Rd
@@ -138,17 +137,17 @@ bfe8d77eb7ceaff4a4c46a11fff67d86 *man/anova.din.Rd
 47568d59e60c547094b1fc2553f2733f *man/cdi.kli.Rd
 4760b3c6d98fa7390acd473b23348d3d *man/cdm.est.class.accuracy.Rd
 5aaeffdcef281fa9d5f6025cbcf5ea61 *man/coef.Rd
-abccfab0a66d3998b515ff1dcd3c1d0a *man/data.Students.Rd
+4e551ab47a6a1733d0785d986cc92131 *man/data.Students.Rd
 f9459399a4eafee4d110ccd66a9e75a4 *man/data.cdm.Rd
 e31e984f34d983c70694367c485b5bfd *man/data.dcm.Rd
 04a693b7f49bca819af341e412f5dfc5 *man/data.dtmr.Rd
 f5c13f68a9bdf762c065d1b0e4c7c393 *man/data.ecpe.Rd
-d6aebd56156e4a6e6f6ecc54250558c6 *man/data.fraction1.Rd
+b3a81324939127f508d2c934169717b7 *man/data.fraction1.Rd
 ac5456042e676b5479748a5db9ed63c5 *man/data.fraction2.Rd
 6f8b83aac4f34eb0f177b82d01620f2f *man/data.hr.Rd
 6909db8aef2706e4e6414e0a0996d3b8 *man/data.jang.Rd
 9974ae6ebd02d370283d9b01ca89de10 *man/data.melab.Rd
-820961bfbfa855e0754d00573c75ef37 *man/data.mg.Rd
+1055af522e0808cd64d0f711983dcd41 *man/data.mg.Rd
 69302a352f6d9000296e1e5a81cfd5c5 *man/data.pgdina.Rd
 f26289b4996f93b1bd57fb803f6c5238 *man/data.sda6.Rd
 90f2845a5d63c3fbbf49a3172b1a2f55 *man/data.timss03.G8.su.Rd
@@ -158,7 +157,7 @@ e2239aed26b49baab9c23b6e1f86f851 *man/data.timss11.G4.AUT.Rd
 db29c92fe62a51031450e9ab70efd987 *man/din.deterministic.Rd
 e6443cf29c924576b1ff71ca4eefdcd9 *man/din.equivalent.class.Rd
 d36e95abd681f544d959aa85e95517b1 *man/din.validate.qmatrix.Rd
-f1879b14ef62db7565bd35d86be9a23f *man/entropy.lca.Rd
+b902eb7b1b186e591994d17a5bd016a0 *man/entropy.lca.Rd
 217fb482b58c8abffbca66b25702f1bc *man/equivalent.dina.Rd
 116de997b3a9fce7ac8af21f08be4022 *man/fraction.subtraction.data.Rd
 077e575eb4d3889eb69d758b47d4d9fc *man/fraction.subtraction.qmatrix.Rd
@@ -171,7 +170,7 @@ b88a414f3a4820de4fd9596a153473fc *man/ideal.response.pattern.Rd
 dd83e180998c4f075b8f5ba5a1476c14 *man/itemfit.rmsea.Rd
 cd5f48832586bede75842f6aed86357d *man/itemfit.sx2.Rd
 093c501268cbb796d4775b6874969fa6 *man/logLik.Rd
-94e8ae1584952ff552efe72edc8df11b *man/mcdina.Rd
+a5d9852d7f5254f36f8cea1257993734 *man/mcdina.Rd
 048b8d40260fd6a3701109f60a56119f *man/modelfit.cor.Rd
 1c481bbd83ba77ea1c016d294f9d8e6d *man/personfit.appropriateness.Rd
 68936d52f38b976f9d75a3a2e60b875d *man/plot.din.Rd

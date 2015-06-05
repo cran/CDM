@@ -1099,10 +1099,11 @@ if (HOGDINA >= 0){
 	freq.pattern <- rowSums( item.patt.freq )
 	
     # if ( calc.se ){
+	
 	for (jj in 1:J){	
 		se.jj <- NA
 		if ( calc.se ){
-	# cat("........",jj,".,,,\n")
+#	 cat("........",jj,".,,,\n")
 			#	jj <- 1		# Item jj
 				Ajjj <- Aj[[jj]]
 				Mjjj <- Mj[[jj]][[1]]
@@ -1110,8 +1111,11 @@ if (HOGDINA >= 0){
 				Ilj.ast <- aggregate( I.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
 				pjjj <- Rlj.ast[,2] / Ilj.ast[,2]
 				Mjj2 <- Mj[[jj]][[2]]
-				apjj <- aggr.attr.patt[[jj]] 
-				M1 <- max( apjj )
+				apjj <- aggr.attr.patt[[jj]] 			
+				Mjjj <- Mjjj[ sort(unique(apjj)) , ]
+
+				# M1 <- max( apjj )
+				M1 <- length( unique(apjj) )
 				p.ajast.xi <- matrix( 0 , nrow=IP , ncol = M1 )
 				for (kk in 1:M1){
 					pg1 <-  PAJXI[ , apjj == kk  ]					
@@ -1124,8 +1128,7 @@ if (HOGDINA >= 0){
 				Rlj.ast <- aggregate( R.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
 				Ilj.ast <- aggregate( I.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
 				pjjj <- Rlj.ast[,2] / Ilj.ast[,2]		
-				pjjjM <- outer( rep(1,IP) , pjjj ) + 10^(-20)
-				
+				pjjjM <- outer( rep(1,IP) , pjjj ) + 10^(-20)		
 				nM <- ncol(pjjjM) 
 				x1 <- outer( item.patt.split[,jj] , rep(1,nM) )
 				r1 <- outer( resp.patt[,jj] * item.patt.freq , rep(1,ncol(pjjjM) ) )
@@ -1171,11 +1174,12 @@ if (HOGDINA >= 0){
 				 pjjj <- pjjj[ - ind  ]
 						}
 					}
-				
+
 				if ( ( method == "ULS" ) ){ 			
 				    x1 <- t(Mjjj) %*% Mjjj	
 				    diag(x1) <- diag(x1) + 10^(-8)						
 					Wjjj <- solve( x1 ) %*% t(Mjjj)
+					
 									} else {
 					x1 <- t(Mjjj) %*% Wj %*% Mjjj									
 					diag(x1) <- diag(x1) + 10^(-8)					
@@ -1407,11 +1411,12 @@ if (HOGDINA >= 0){
 	#********************************************************	
 	# calculate model implied probabilities	
 
-	if ( calc.se ){ 
+#	if ( calc.se ){ 
 		probitem <- gdina.probitem( Mj, Aj , delta , rule , linkfct , delta.summary )
-					} else {
-		probitem <- NULL
-					}
+#					} else {
+#		probitem <- NULL
+#					}
+	
 	
 	# labels likelihood
 	colnames(p.xi.aj) <- paste(rownames(attr.prob))

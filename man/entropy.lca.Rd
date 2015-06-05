@@ -42,9 +42,9 @@ Asparouhov, T. & Muthen, B. (2014). \emph{Variable-specific entropy
 contribution}. Technical Appendix. \url{http://www.statmodel.com/7_3_papers.shtml}
 }
 
-\author{
-Alexander Robitzsch
-}
+%\author{
+%Alexander Robitzsch
+%}
 
 %\note{
 %%  ~~further notes~~
