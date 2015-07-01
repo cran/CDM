@@ -11,7 +11,7 @@ gdina.dif <- function( object ){
 	names(varmat.group) <- names(prob.exp.group) <- paste0("Group" , 1:G )
 	ocoef <- object$coef
 	for (gg in 1:G){  # gg <- 1
-		res.gg <- gdina.dif.aux( ocontrol , gg=gg )    
+		res.gg <- gdina.dif.aux( ocontrol , gg=gg , data = object$data)     
 		prob.exp.group[[gg]] <- res.gg$prob_exp
 		names(prob.exp.group[[gg]]) <- colnames(object$data)
 		delta.group[[gg]] <- res.gg$delta
@@ -21,7 +21,7 @@ gdina.dif <- function( object ){
 			
 	# expanded delta vectors and design matrix
 	Rdesign <- varmat_all <- delta_all <- as.list(1:J)
-	difstats <- data.frame( "item" = colnames(object$dat) , "X2" = NA , "df" = NA)  
+	difstats <- data.frame( "item" = colnames(object$data) , "X2" = NA , "df" = NA)  
 	dif_es <- rep(NA,J)
 	  
 	for (jj in 1:J){          

@@ -1,5 +1,51 @@
 useDynLib(CDM)
 
+
+
+
+####################################################
+############# IMPORTS ##############################
+
+
+#***************************************************
+#*************** R Basics / Linking To *************
+
+import(graphics)
+importFrom(grDevices, dev.off)
+importFrom(grDevices, pdf)
+importFrom(methods, is)
+importFrom(Rcpp, evalCpp)
+import(stats)
+importFrom(utils, combn)
+importFrom(utils, flush.console)
+importFrom(utils, packageDescription)
+importFrom(utils, sessionInfo)
+
+
+
+#***************************************************
+#************** Depends ****************************
+
+import(mvtnorm)
+
+
+
+
+#***************************************************
+#************** Imports ****************************
+
+importFrom(MASS, mvrnorm)
+importFrom(lattice, xyplot)
+importFrom(plyr, rbind.fill)
+importFrom(polycor, polychor)
+importFrom(psych, fa)
+importFrom(psych, fisherz)
+importFrom(sfsmisc, QUnif)
+
+
+
+
+
 ########################################################
 ################ EXPORTS ###############################
 
@@ -221,19 +267,3 @@ S3method(IRT.se, din)
 
 
 
-
-
-####################################################
-############# IMPORTS ##############################
-
-import(MASS)
-importFrom(polycor,polychor)
-import(psych)
-import(mvtnorm)
-import(graphics, stats)
-importFrom(utils,packageDescription)
-importFrom(sfsmisc,QUnif)
-importFrom(Rcpp,evalCpp)
-importFrom(plyr,rbind.fill)
-# importFrom(WrightMap,wrightMap)
-importFrom(lattice,xyplot)

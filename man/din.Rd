@@ -571,7 +571,7 @@ summary( modelfit.cor.din( mod4 ) )
 # EXAMPLE 7: Fitting the basic local independence model (BLIM) with din
 #############################################################################
 
-library(pks)
+miceadds::library_install("pks")
 data(DoignonFalmagne7 , package="pks")
   ##  str(DoignonFalmagne7)
   ##    $ K  : int [1:9, 1:5] 0 1 0 1 1 1 1 1 1 0 ...

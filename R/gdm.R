@@ -464,6 +464,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 	rownames(item) <- NULL
 	
 	# person parameters
+	person <- NULL
 	res <- .gdm.person.parameters( data , D , theta.k , p.xi.aj , p.aj.xi , weights )	
 	.attach.environment( res , envir=e1 )
 	

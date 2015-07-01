@@ -33,7 +33,7 @@ sequential.items <- function( data ){
 	# item information table
 	iteminfo <- data.frame("item" = rep( colnames(data) , maxK ) )
 	iteminfo$itemindex <- match( iteminfo$item , colnames(data) )
-	iteminfo$category <- unlist( sapply( 1:I , FUN = function(ii){ 1:maxK[ii]  } )   )
+	iteminfo$category <- unlist( sapply( 1:I , FUN = function(ii){ 1:(maxK[ii])  } , simplify=FALSE)   )
 	iteminfo$pseudoitem <- colnames(dat.exp)
 	res <- list( "dat.expand" = dat.exp , "iteminfo" = iteminfo ,
 			"maxK"= maxK)

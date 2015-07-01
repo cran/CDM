@@ -126,7 +126,7 @@ res <- din.deterministic( dat , q.matrix , method="weighted.hamming" )
 
 \dontrun{
 #********* load NPCD library for JML estimation
-library(NPCD)
+miceadds::library_install("NPCD")
 # choose a smaller dataset for reasons of computation time
 
 # DINA model

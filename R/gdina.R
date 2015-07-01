@@ -592,7 +592,8 @@ djj_old <- as.list( 1:J )
 
     dev.min <- 10^99
 	R.lj.gg <- I.lj.gg <- NULL
-	
+
+	devchange <- 0	
 	#*********************************
 
 ################################################################################
@@ -808,17 +809,15 @@ if (HOGDINA >= 0){
 		pjjj <- Rlj.ast / ( Ilj.ast + eps2 )
 		
 		if (linkfct == "logit" ){ 
-
 				pjjj[ pjjj > 1-eps ] <- 1 - eps
 				pjjj[ pjjj < eps ] <- eps
 				pjjj <- qlogis( pjjj ) 
-#				maxval <- 5
-#				pjjj <- squeeze.cdm( pjjj , c(-maxval , maxval ) )
+				# maxval <- 5 ;  pjjj <- squeeze.cdm( pjjj , c(-maxval , maxval ) )
 								}
 		#*****
 	if (linkfct == "log" ){ 
 				pjjj[ pjjj < eps ] <- eps
-				pjjj <- log( pjjj ) 						
+				pjjj <- log( pjjj ) 				
 								}
 
 								
@@ -862,13 +861,16 @@ if (HOGDINA >= 0){
 									}
 
 		#######################################################################
-#		if (linkfct == "log" & iter > 10 ){ 
+		iter_min <- 10
+#		if (linkfct == "log" & iter > iter_min ){ 
 #			if ( rule[jj] == "ACDM" ){
 #				if ( sum( djj ) > 0 ){
 #					djj <- djj - sum(djj )
 #									}
 #								}
 #								}				
+								
+								
 		djj <- ifelse ( is.na(djj) , delta[[jj]] , djj )
 		
 #		if ( fac.oldxsi > 0 & (iter > 1 ) ){ 
@@ -884,14 +886,47 @@ if (HOGDINA >= 0){
 						}
 		djj <- delta[[jj]] + djj.change						
 
-#		if ( rrum.model & (iter > 1) ){
-#			d1 <- djj[-1]
+		if ( rrum.model & (iter > 10) ){
+
+	#---
+	#  RRUM parametrization
+	#  log( P(X=1) ) = b0 + b1*alpha1 + b2 * alpha2 
+	#  RRUM:
+	#  P(X=1) = pi * r1^( 1- alpha1) * r2^(1-alpha2)
+	#  => log( P(X=1) ) = log[ pi * r1 * r2 * r1^(-alpha1) * r2^(-alpha2) ]
+	#                   = log( pi ) + log(r1) + log(r2) + -log(r1)*alpha1 + -log(r2) * alpha2
+	#  => b1 = -log(r1) and r1 = exp( -b1 )
+	#  => log(pi) = b0 + b1 + b2 and pi = exp( b0 + b1 + b2 )		
+			
+			d1 <- djj
+# d01 <- d1			
+#			d1 <- ifelse( d1 < 0 , .1 , d1 )						
+	        sum_d1 <- sum(d1)
+			if ( sum_d1 > 0 ){
+                d1 <- d1 - sum(d1)
+							}
+
+			d1_samp <- runif( length(d1) , 0 , .01 )
+			d1[-1] <- ifelse( d1[-1] < 0 , d1_samp[-1] , d1[-1] )						
+							
+	        sum_d1 <- sum(d1)
+			if ( sum_d1 > 0 ){
+                d1 <- d1 - sum(d1)
+							}														
+			djj <- d1										
+#			d1 <- djj[-1] 
 #			d1 <- ifelse( d1 < 0 , 0.01 , d1 )
-#			djj[-1] <- d1
-#						}
+#			djj[-1] <- d1			
+#			if ( djj[1] > 0 ){
+#				djj[1] <- 0
+#								}						
+						}
+
+
 		delta.new[[jj]] <- djj
 		if ( (fac.oldxsi > 0 ) & (iter>3)){
-			delta.new[[jj]] <- fac.oldxsi*delta[[jj]] + ( 1 - fac.oldxsi ) * delta.new[[jj]]
+		    fac.oldxsi1 <- fac.oldxsi * ( devchange >= 0 )
+			delta.new[[jj]] <- fac.oldxsi1*delta[[jj]] + ( 1 - fac.oldxsi1 ) * delta.new[[jj]]
 						}
 
 		# fix delta parameter here!!
@@ -969,7 +1004,7 @@ if (HOGDINA >= 0){
 			print(g1)
 			}
 		cat( "Deviance = "  , round( -2*like.new , 5 ) )
-        g11 <- 2*(like.new-loglikeold)		
+        devchange <- g11 <- 2*(like.new-loglikeold)		
 			if (iter >1){ cat(" | Deviance change = " , round( 2*(like.new-loglikeold), 7) ) }
 			cat("\n" )
 			if (g11 < 0 ){ cat( "**** Deviances decreases! Check for nonconvergence.   ****\n") }

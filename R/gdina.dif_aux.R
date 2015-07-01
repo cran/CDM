@@ -1,7 +1,7 @@
 ###############################################
 # auxiliary calculations in gdina model for
 # detection of differential item functioning
-gdina.dif.aux <- function( ocontrol , gg ){
+gdina.dif.aux <- function( ocontrol , gg , data ){
 	aggr.patt.designmatrix <- ocontrol$aggr.patt.designmatrix
 	Aj <- ocontrol$Aj
 	Mj <- ocontrol$Mj

@@ -14,7 +14,7 @@
 #	fm1 <- fa(r=wc$rho, nfactors=1 , fm="gls")
     if (HOGDINA>0){
 #		fm1 <- fa(r=wc$rho, nfactors=1 , fm="pa" , max.iter=5 , warnings=FALSE)
-		fm1 <- fa(r=wc$rho, nfactors=1 , fm="minres" , max.iter=15 , warnings=FALSE)
+		fm1 <- psych::fa(r=wc$rho, nfactors=1 , fm="minres" , max.iter=15 , warnings=FALSE)
 		# fm1 <- factor.pa(r=wc$rho, nfactors=1 , fm="pa" , max.iter=5)		
 		L <- as.vector( fm1$loadings )
 		L <- L / ( max(1,max(L)) + .0025 )
