@@ -658,7 +658,9 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 				 "I.lj"=I.lj , "R.lj" = R.lj , "partable" = partable ,
 				 "vcov.derived" = vcov.derived , 				 
 				 "seed" = seed , 
-				 "start.analysis" = s1 , "end.analysis" = s2 				 
+				 "start.analysis" = s1 , "end.analysis" = s2 ,
+				 "iter" = iter 	,
+				 "converged" = iter < maxit 
 					) 
 	res$timediff <- s2 - s1
 	if (progress){ print(s2-s1) }

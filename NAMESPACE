@@ -51,7 +51,7 @@ importFrom(sfsmisc, QUnif)
 
 export(din, sim.din , gdina ,
     sim.gdina, sim.gdina.prepare ,
-    skill.cor  , # , gdina.fit
+    skill.cor  , 
     equivalent.dina ,
     cdm.est.class.accuracy,
     modelfit.cor.din,

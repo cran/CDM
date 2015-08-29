@@ -24,9 +24,13 @@ summary.gdina <- function( object , rdigits = 4 , ... ){
 			print( object$group.stat )				
 			cat("\n")
 						}
-	cat( "\nNumber of iterations =" , object$iterused )
+						
+	cat( "\nNumber of iterations =" , object$iter  )
+	if ( ! object$converged ){ cat("\nMaximum number of iterations was reached.\n") }		
 	cat( "\nIteration with minimal deviance =" , object$iter , "\n" )	
-    cat( "Deviance =" , round( object$deviance , 2 ) ) 
+	
+	
+    cat( "\nDeviance =" , round( object$deviance , 2 ) ) 
 	cat( "  | Loglikelihood =" , round( - object$deviance / 2 , 2 ) ,	"\n" )
     cat( "Number of persons =" , object$N , "\n" )    
 	    cat( "Number of items =" , ncol(object$data) , "\n" )    

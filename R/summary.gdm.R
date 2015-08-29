@@ -33,8 +33,10 @@ summary.gdm <- function( object , ... ){
 		print( object$group.stat )	
 					}
     cat("\n-----------------------------------------------------------------------------\n")
-	cat( "Number of iterations =" , object$iter , "\n" )
-    cat( "Deviance = " , round( object$deviance , 2 ) , " | " )
+	cat( "Number of iterations =" , object$iter   )
+	if ( ! object$converged ){ cat("\nMaximum number of iterations was reached.") }
+	
+    cat( "\n\nDeviance = " , round( object$deviance , 2 ) , " | " )
     cat( "Log Likelihood = " , round( -object$deviance/2 , 2 ) , "\n" )	
     cat( "Number of persons = " , object$ic$n , "\n" )    
 

@@ -16,7 +16,9 @@ summary.mcdina <- function( object , rdigits = 4 , ... ){
 	cat("Computation Time:" , print(object$time$s2 - object$time$s1), "\n\n")	
  	cat("Multiple Choice DINA Model (MC-DINA)\n") 
 	cat( "\nNumber of iterations =" , object$iter )
-	cat( "\nDeviance =" , round( object$ic$dev , 2 ) ) 
+	if ( ! object$converged ){ cat("\nMaximum number of iterations was reached.") }
+	
+	cat( "\n\nDeviance =" , round( object$ic$dev , 2 ) ) 
 	cat( "  | Loglikelihood =" , round( - object$ic$dev / 2 , 2 ) ,	"\n" )
     cat( "Number of persons =" , object$ic$n , "\n" )    
     cat( "Number of groups =" , object$G , "\n" )    	

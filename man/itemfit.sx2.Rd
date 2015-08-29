@@ -24,15 +24,15 @@ itemfit.sx2(object, Eik_min = 1, progress = TRUE)
 \arguments{
 \item{object}{
 Object of class \code{\link{din}}, \code{\link{gdina}}, \code{\link{gdm}},  
-\code{\link[sirt:rasch.mml]{rasch.mml}} (\pkg{sirt}),
-\code{\link[sirt:smirt]{smirt}} (\pkg{sirt}) or
-\code{\link[TAM:tam.mml]{tam.mml}} (\pkg{TAM})
+\code{\link[sirt:rasch.mml]{sirt::rasch.mml}},
+\code{\link[sirt:smirt]{sirt::smirt}} or
+\code{\link[TAM:tam.mml]{TAM::tam.mml}}
 }
 \item{x}{
 Object of class \code{\link{din}}, \code{\link{gdina}}, \code{\link{gdm}},  
-\code{\link[sirt:rasch.mml]{rasch.mml}} (\pkg{sirt}),
-\code{\link[sirt:smirt]{smirt}} (\pkg{sirt}) or
-\code{\link[TAM:tam.mml]{tam.mml}} (\pkg{TAM})
+\code{\link[sirt:rasch.mml]{sirt::rasch.mml}},
+\code{\link[sirt:smirt]{sirt::smirt}} or
+\code{\link[TAM:tam.mml]{TAM::tam.mml}}
 }
   \item{Eik_min}{
 The minimum expected cell size for merging score groups.
@@ -62,7 +62,8 @@ A list with following entries
 \item{itemtable}{Data frame with expected and observed proportions
 for each score group and each item. Beside the ordinary p value,
 an adjusted p value obtained by correction due to multiple testing
-is provided (\code{p.holm}, see \code{\link{p.adjust}}).
+is provided (\code{p.holm}, see
+\code{\link[stats:p.adjust]{stats::p.adjust}}.
 }
 }
 

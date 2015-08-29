@@ -48,9 +48,9 @@ function(object, top.n.skill.classes = 6, overwrite = FALSE, ...){
 #	1:min(top.n.skill.classes, 2^length(object$skill.patt)),]
 #	SKILL.CLASSES <- round(t(SKILL.CLASSES)[1, ], 4)
 	
-  	if(top.n.skill.classes > nrow(object$attribute.patt))
-  		warning("There are at most ", 2^length(object$skill.patt), 
-  		" different skill classes. Returning all skill classes.\n")
+#  	if(top.n.skill.classes > nrow(object$attribute.patt))
+#  		warning("There are at most ", 2^length(object$skill.patt), 
+#  		" different skill classes. Returning all skill classes.\n")
   	
 ################################################################################
 # catch log file writing errors                                                #

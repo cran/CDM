@@ -285,6 +285,7 @@ following entries:
 \item{time}{Info about computation time}
 \item{skillspace}{Used skillspace parametrization}
 \item{iter}{Number of iterations}
+\item{converged}{Logical indicating whether convergence was achieved.}
 \item{object}{Object of class \code{gdm}}
 \item{x}{Object of class \code{gdm}}
 \item{perstype}{Person paramter estimate type. Can be either

@@ -459,6 +459,7 @@ slca <- function( data , group=NULL,
 	res$time <- list( "s1"=s1,"s2"=s2 , "timediff"=s2-s1)
 	res$iter <- iter
 	res$iter.min <- iter.min
+	res$converged <- iter < maxiter
 	
 	# some further values for modelfit.gdm
 	res$AIC <- res$ic$AIC

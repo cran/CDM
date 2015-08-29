@@ -177,6 +177,7 @@ following entries:
 \item{seed.used}{Used simulation seed}
 \item{Xlambda.init}{Used initial lambda parameters}
 \item{delta.init}{Used initial delta parameters}
+\item{converged}{Logical indicating whether convergence was achieved.}
 }
 
 % \item{object}{Object of class \code{slca}}

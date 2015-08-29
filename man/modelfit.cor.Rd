@@ -69,7 +69,7 @@ are evaluated.  The \eqn{\chi^2_{ij} } statistic is chi-square distributed with 
 degree of freedom and can be used for testing whether items \eqn{i} and
 \eqn{j} are locally dependent. To control for multiple comparisons,
 p-value adjustments according to the Holm and FDR method are conducted
-(see \code{\link{p.adjust}}).
+(see \code{\link[stats:p.adjust]{stats::p.adjust}}).
 	
 % The mean \eqn{\chi^2} statistic \code{MX2} is just the average
 % of all \eqn{ \chi^2_{ij}} statistics across all item pairs.

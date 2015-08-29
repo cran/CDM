@@ -133,6 +133,7 @@ A list with following entries
 \item{lr}{Data frame containing the relation of each latent class and each item category}
 \item{iter}{Number of iterations}
 \item{itempars}{Used specification of item parameter estimation type}
+\item{converged}{Logical indicating whether convergence was achieved.}
 }
 
 \references{

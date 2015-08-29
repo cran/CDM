@@ -1461,6 +1461,7 @@ if (HOGDINA >= 0){
 	if (progress){
 		cat("---------------------------------------------------------------------------------\n")
 			}
+	iter <- iterused
     res <- list( coef = delta.summary , "item" = delta.summary , 
 				delta = delta , se.delta = se.delta , 
 			    "probitem"=probitem , 
@@ -1491,7 +1492,9 @@ if (HOGDINA >= 0){
 				 "NAttr" = maxAttr , 
 #				 "q.matrix" = q.matrix ,
 				 "HOGDINA" = HOGDINA ,
-				 "seed"= seed 
+				 "seed"= seed  ,
+				 iter = iter , 
+				 "converged" = iter < maxit 
 				 )
 		 
 	if (HOGDINA>=0) { 

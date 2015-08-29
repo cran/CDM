@@ -29,8 +29,11 @@ summary.slca <- function( object , ... ){
 					}
     cat("\n-----------------------------------------------------------------------------\n")
 	cat( "Number of iterations =" , object$iter , "\n" )
+	if ( ! object$converged ){ cat("Maximum number of iterations was reached.\n") }
 	cat( "Iteration with minimal deviance =" , object$iter.min , "\n" )
-    cat( "Deviance = " , round( object$deviance , 2 ) , " | " )
+	
+	
+    cat( "\nDeviance = " , round( object$deviance , 2 ) , " | " )
     cat( "Log Likelihood = " , round( -object$deviance/2 , 2 ) , "\n" )	
     cat( "Number of persons = " , object$ic$n , "\n" )    
 

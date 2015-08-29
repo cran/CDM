@@ -290,7 +290,7 @@ mcdina <- function( dat , q.matrix , group =NULL ,
 				"weights"=weights , "I" = nrow(dat) , "G"= G , "CC" = CC ,
 				"loglike" = - dev / 2 , "AIC" = ic$AIC , "BIC" = ic$BIC , 
 				"Npars" = ic$np )
-				
+	res$converged <- iter < maxit			
 				
 	res$control$weights <- weights
 	res$control$group <- group				

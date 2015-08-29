@@ -24,6 +24,21 @@ https://sites.google.com/site/alexanderrobitzsch/software
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
+
+--------------------------------------------------------------
+CDM 4.5 (2015-08-28)   --  CRAN CDM 4.5-0
+--------------------------------------------------------------
+
+NOTE  * extended 'din' and 'gdina' functions for items with more
+        than five measured attributes per item
+        (requested by Alvaro Artavia Medrano)
+NOTE  * included 'converged' value for all models indicating
+        whether maximum number of iterations was reached
+        (suggested by an anonymous reviewer) 
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: ---
+
 --------------------------------------------------------------
 CDM 4.4 (2015-07-01)   --  CRAN CDM 4.4-1
 --------------------------------------------------------------
@@ -32,8 +47,6 @@ FIXED * fixed a bug in function 'sequential.items'
 
 DATA  * included/modified datasets: ---
 EXAMP * included/modified examples: ---
-
-
 
 --------------------------------------------------------------
 CDM 4.3 (2015-06-05)   --  CRAN CDM 4.3-0

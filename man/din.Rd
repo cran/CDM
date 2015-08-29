@@ -202,6 +202,7 @@ zero to random initial values with \code{set.seed(seed)}.}
    \item{partable}{Parameter table which is used for \code{coef} and \code{vcov}.}
    \item{vcov.derived}{Design matrix for extended set of parameters in
    \code{vcov}.}
+   \item{converged}{Logical indicating whether convergence was achieved.}
   \item{control}{Optimization parameters used in estimation}
 }
 

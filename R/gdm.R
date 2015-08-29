@@ -353,6 +353,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 						
 		#*****
 		#7 M step: estimate reduced skillspace
+	
 		if ( skillspace == "loglinear" ){
 			res <- .gdm.est.skillspace(Ngroup, pi.k , Z=delta.designmatrix ,
 					G , delta  )
@@ -370,7 +371,8 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 			a <- res$a
 			
 					}
-		
+
+					
 		# estimate skillspace		
         if ( skillspace == "est" ){
 			res <- .gdm.est.skillspace.traits( n.ik , a , b , theta.k , Qmatrix , I , K , TP,
@@ -494,6 +496,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 	res$time <- list( "s1"=s1,"s2"=s2 , "timediff"=s2-s1)
 	res$skillspace <- skillspace
 	res$iter <- iter
+	res$converged <- iter < maxiter 
 		
 	# some further values for modelfit.gdm
 	res$AIC <- res$ic$AIC

@@ -15,6 +15,7 @@ IRT.jackknife.gdina <- function( object , repDesign , ... ){
 		fitvars <- c("MADcor","SRMSR" , "100*MADRESIDCOV")	
 		# read parameter table
 		partable <- object$partable
+		
 		#**** create parameter table	
 		jpartable <- partable
 		jpartable$skillclass <- jpartable$varyindex <- jpartable$fixed <-

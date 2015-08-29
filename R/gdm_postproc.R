@@ -36,7 +36,7 @@
 #######################################################################
 # moments of distribution
 .gdm.calc.distributionmoments <- function( D , G , pi.k , theta.k ){
-	mean.trait <- sd.trait <- skewness.trait <- matrix( 0 , nrow=D , ncol=G )		
+	mean.trait <- sd.trait <- skewness.trait <- matrix( 0 , nrow=D , ncol=G )			
 	for (dd in 1:D){
 		for (gg in 1:G){
 		mean.trait[dd,gg] <- sum( theta.k[,dd] * pi.k[ , gg ] )
@@ -62,14 +62,16 @@
 				}
 		for (dd1 in 1:D){
 			for (dd2 in dd1:D){
+#			for (dd2 in 1:D){
 		#		dd1 <- 1 ; 	dd2 <- 1
 				Sigma.gg[dd1,dd2] <- sum( pi.k[,gg] * (theta.k[,dd1] - mean.gg[dd1] )*(theta.k[,dd2] - mean.gg[dd2] ) ) 
 #				Sigma.gg[dd1,dd2] <- Sigma.gg[dd1,dd2] - mean.gg[dd1] * mean.gg[dd2]
 				Sigma.gg[dd2,dd1] <- Sigma.gg[dd1,dd2]
 									}
 						}
-		rownames(Sigma.gg) <- colnames(Sigma.gg) <- rownames(mean.trait)
+		rownames(Sigma.gg) <- colnames(Sigma.gg) <- rownames(mean.trait)	
 		correlation.trait[[gg]] <- cov2cor(Sigma.gg + diag(10^(-5),D) )
+		
 					}	
 	res <- list( "mean.trait"=mean.trait , "sd.trait" = sd.trait , 
 				"skewness.trait" = skewness.trait , "correlation.trait"=correlation.trait)

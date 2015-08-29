@@ -430,7 +430,6 @@
 							}
 						}
 		Sigma.gg <- Sigma.gg + diag(10^(-10) , D )
-		
 		m.gg <- mean.constraint[ mean.constraint[,2] == 1 , ]
 		if ( ! is.null(mean.constraint)){
 		if( dim(m.gg)[1] > 0 ){
@@ -459,8 +458,8 @@
 						}
 			Sigma.gg <- d1
 						}
-								}						
-		pi.k[,gg] <- dmvnorm( theta.k , mean=mean.gg , sigma = Sigma.gg )	
+								}
+		pi.k[,gg] <- mvtnorm::dmvnorm( theta.k , mean=mean.gg , sigma = Sigma.gg )			
 		pi.k[,gg] <- pi.k[,gg] / sum( pi.k[,gg] )					
 					}
 				}

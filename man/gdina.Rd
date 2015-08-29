@@ -321,7 +321,8 @@ An object of class \code{gdina} with following entries
 \item{b.attr}{Attribute parameters \eqn{b_k} in case of \code{HOGDINA>=0}}
 \item{attr.rf}{Attribute response functions. This matrix contains all 
 	\eqn{a_k} and \eqn{b_k} parameters}
-\item{control}{Optimization parameters used in estimation}  
+\item{converged}{Logical indicating whether convergence was achieved.}
+\item{control}{Optimization parameters used in estimation}
 \item{partable}{Parameter table for \code{gdina} function}
 \item{polychor}{Group-wise matrices with polychoric correlations}
 \item{\dots}{Further values}

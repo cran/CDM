@@ -12,7 +12,7 @@ S3 Methods for Computing Item Fit
 }
 
 \description{
-This S3 method computes some item fit statistic.
+This S3 method computes some selected item fit statistic.
 }
 
 \usage{

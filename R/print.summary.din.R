@@ -28,7 +28,13 @@ if(is.null(x$log.file)){
  #     print(x$SKILL.CLASS.PROB)
      cat("\nDeviance = ", x$deviance, " |   Log-Likelihood =" , 
 			round( x$din.object$loglike,3)  , "\n") 	 
-	 cat( "Number of item parameters:" , x$Npars[,1] , "\n")
+	
+	#*** iterations
+	cat( "\nNumber of iterations:" , x$din.object$iter , "\n")			
+	if ( ! x$din.object$converged ){ cat("Maximum number of iterations was reached.\n") }
+	#***		
+			
+	 cat( "\nNumber of item parameters:" , x$Npars[,1] , "\n")
 	 cat( "Number of skill class parameters:" , x$Npars[,2] , "\n")	 
   cat("\nInformation criteria:",
       "\n  AIC = " , x$AIC,
