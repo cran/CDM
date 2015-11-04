@@ -1,13 +1,13 @@
 Package: CDM
 Type: Package
 Title: Cognitive Diagnosis Modeling
-Version: 4.5-0
-Date: 2015-08-28
+Version: 4.6-0
+Date: 2015-11-04
 Author: Alexander Robitzsch [aut, cre], Thomas Kiefer [aut], 
      Ann Cathrice George [aut], Ali Uenlue [aut]
-Maintainer: Alexander Robitzsch <a.robitzsch@bifie.at>
+Maintainer: Alexander Robitzsch <robitzsch@ipn.uni-kiel.de>
 Authors@R: c( person("Alexander", "Robitzsch", role = c("aut", "cre"), 
-  email = "a.robitzsch@bifie.at"), 
+  email = "robitzsch@ipn.uni-kiel.de"), 
   person("Thomas", "Kiefer", role = "aut"), 
   person("Ann Cathrice", "George", role = "aut"),
   person("Ali", "Uenlue", role = "aut") )
@@ -26,8 +26,7 @@ LinkingTo: Rcpp, RcppArmadillo
 LazyLoad: yes
 LazyData: yes
 License: GPL (>= 2)
-URL: https://sites.google.com/site/alexanderrobitzsch/software
-Packaged: 2015-08-28 14:50:01 UTC; robitzsch
+Packaged: 2015-11-04 15:48:53 UTC; robitzsch
 NeedsCompilation: yes
 Repository: CRAN
-Date/Publication: 2015-08-29 13:14:49
+Date/Publication: 2015-11-04 18:41:42

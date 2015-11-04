@@ -26,7 +26,7 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 					wgtest.overrelax = FALSE , 
 					param.history = FALSE , 
 					seed = 0 , 
-                    progress = TRUE ){
+                    progress = TRUE , guess.min=0 , slip.min=0, guess.max=1 , slip.max=1){
                     
 # data: a required matrix of binary response data, whereas the items are in the columns 
 #       and the response pattern in the rows. NA values are allowed.
@@ -443,6 +443,22 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
     # constrained slipping and guessing parameter
     if ( is.null( constraint.slip ) == F ){  slip.new[ constraint.slip[,1] ] <- constraint.slip[,2] }
     if ( is.null( constraint.guess ) == F ){  guess.new[ constraint.guess[,1] ] <- constraint.guess[,2] }
+
+	
+	#*** adjustment parameters
+	if ( guess.min > 0 ){
+		guess.new <- ifelse( guess.new < guess.min , guess.min , guess.new )
+				}
+	if ( guess.max < 1 ){
+		guess.new <- ifelse( guess.new < guess.max , guess.max , guess.new )
+				}
+	if ( slip.min > 0 ){
+		slip.new <- ifelse( slip.new < slip.min , slip.min , slip.new )
+				}
+	if ( slip.max < 1 ){
+		slip.new <- ifelse( slip.new < slip.max , slip.max , slip.new )
+				}				
+				
 
     # calculate the updated likelihood                                               
     like.new <- sum( log( rowSums( p.xi.aj * outer( rep(1,IP), attr.prob )  ) + 10^(-300) ) * item.patt.freq )

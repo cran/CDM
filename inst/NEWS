@@ -23,6 +23,18 @@ https://sites.google.com/site/alexanderrobitzsch/software
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+--------------------------------------------------------------
+CDM 4.6 (2015-11-04)   --  CRAN CDM 4.6-0
+--------------------------------------------------------------
+
+NOTE  * included optional lower and upper bounds for estimation
+        of guessing and slipping parameters in 'din' (arguments
+        'guess.min', 'guess.max', 'slip.min', 'slip.max') 
+        (requested by Kevin Carl Santos)
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: ---
+
 
 
 --------------------------------------------------------------

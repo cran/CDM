@@ -1,4 +1,4 @@
-7bf2bfd75adc69065bbc9611d05ccab0 *DESCRIPTION
+7c27a1161f70f042738321767ff89703 *DESCRIPTION
 560d7d4abeb210d5f39e8569ff0a4ca4 *NAMESPACE
 316eca8e8b497cca1765bc443e030529 *R/IRT.IC.R
 e9d4ca853001a0f64c35fa9990c83447 *R/IRT.anova.R
@@ -26,7 +26,7 @@ caacb49fad809a337290ff8420a56f37 *R/IRT.repDesign.R
 71078212769a48760aaa09654ef5254d *R/check.input.R
 d9109674d1d1348ed7e826ceb202c840 *R/coef.R
 73db8af89f213ccf5dbab467a676a776 *R/confint.din.R
-d430ce99e39765c4059b814cc8fe7ac4 *R/din.R
+58f4e6f4598b7938cb6385319ee1a16d *R/din.R
 9bae0d0c0579f57bfe750d8cebff169c *R/din.deterministic.R
 4c4f913d8bd533fc6f067fd0a7dfc74a *R/din.deterministic_alg.R
 ad0593bb2a4577beb2d51e73427e3b2a *R/din.partable.R
@@ -119,8 +119,8 @@ fa6cfbff6340d5031a53ed38198322d4 *data/fraction.subtraction.data.rda
 b425982d9f83591b0ce4391a56058ea5 *data/sim.dina.rda
 7711c1e53bf6b0278fb7e1912cb11885 *data/sim.dino.rda
 4bf2a85b846dcad222c6039acf4f0b20 *data/sim.qmatrix.rda
-7481f8f7f472043709fb8bc00ce09215 *inst/NEWS
-12a9689d30af190ac68b56cdac64c968 *man/CDM-package.Rd
+5a83f8490915352545d996e26750ec6e *inst/NEWS
+aed14e10b7b23c02c31dbdd93f049fc6 *man/CDM-package.Rd
 b5f7134425fec8f417115287dc1fdffc *man/Data-sim.Rd
 fb462fcd21787db3f2e793d606fb46d5 *man/IRT.IC.Rd
 c1bdbe46a853a96889e7a1e46d5a0f6b *man/IRT.anova.Rd
@@ -155,7 +155,7 @@ f26289b4996f93b1bd57fb803f6c5238 *man/data.sda6.Rd
 90f2845a5d63c3fbbf49a3172b1a2f55 *man/data.timss03.G8.su.Rd
 cf82f54934d17902d8b6d4be11aad690 *man/data.timss07.G4.lee.Rd
 e2239aed26b49baab9c23b6e1f86f851 *man/data.timss11.G4.AUT.Rd
-241139bcc7ef8e92c4fcf7a3a1d1c995 *man/din.Rd
+d4e1a45ab950e4ba65b6c03f080b7ab4 *man/din.Rd
 0b96e8efe9b8e61212b649a5a19084b7 *man/din.deterministic.Rd
 e6443cf29c924576b1ff71ca4eefdcd9 *man/din.equivalent.class.Rd
 d36e95abd681f544d959aa85e95517b1 *man/din.validate.qmatrix.Rd

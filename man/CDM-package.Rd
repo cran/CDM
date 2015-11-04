@@ -22,10 +22,9 @@ Functions for cognitive diagnosis modeling
   \tabular{ll}{
     Package: \tab \pkg{CDM}\cr
     Type: \tab Package\cr
-    Version: \tab 4.5\cr
+    Version: \tab 4.6\cr
     Publication Year: \tab 2015\cr
-    License: \tab \acronym{GPL} (>= 2) \cr
-    URL: \tab \url{https://sites.google.com/site/alexanderrobitzsch/software} \cr            
+    License: \tab \acronym{GPL} (>= 2) \cr           
   }
   Cognitive diagnosis models (CDMs) are restricted latent class models.  
   They represent model-based classification approaches, which aim at
@@ -92,7 +91,7 @@ Functions for cognitive diagnosis modeling
 \author{
   Alexander Robitzsch, Thomas Kiefer, Ann Cathrice George, Ali Uenlue 
 
-  Maintainer: Alexander Robitzsch <a.robitzsch@bifie.at>
+  Maintainer: Alexander Robitzsch <robitzsch@ipn.uni-kiel.de>
 }
 
 \seealso{
@@ -172,7 +171,7 @@ Formann, A. K. (1992). Linear logistic latent class analysis for polytomous data
 \emph{din.deterministic_alg__0.06.R}, 
 \emph{din.partable__0.14.R}, \cr
 \emph{din.validate.qmatrix__1.03.R}, 
-\emph{din__2.26.R}, 
+\emph{din__2.27.R}, 
 \emph{entropy.lca__0.08.R}, \cr
 \emph{equivalent.dina__1.01.R}, 
 \emph{equivalent.skillclasses__0.05.R}, 
@@ -273,7 +272,7 @@ Formann, A. K. (1992). Linear logistic latent class analysis for polytomous data
 \section{\emph{Rd} Documentation Versions }{
 \emph{anova.din__1.21.Rd}, 
 \emph{cdi.kli__0.09.Rd}, 
-\emph{CDM-package__2.43.Rd}, \cr
+\emph{CDM-package__2.46.Rd}, \cr
 \emph{cdm.est.class.accuracy__1.12.Rd}, 
 \emph{coef__0.15.Rd}, 
 \emph{Data-sim__1.12.Rd}, 
@@ -296,7 +295,7 @@ Formann, A. K. (1992). Linear logistic latent class analysis for polytomous data
 \emph{din.deterministic__0.13.Rd}, \cr
 \emph{din.equivalent.class__0.16.Rd}, 
 \emph{din.validate.qmatrix__1.16.Rd}, 
-\emph{din__2.26.Rd}, \cr
+\emph{din__2.28.Rd}, \cr
 \emph{entropy.lca__0.16.Rd}, 
 \emph{equivalent.dina__1.11.Rd}, 
 \emph{fraction.subtraction.data__2.01.Rd}, \cr

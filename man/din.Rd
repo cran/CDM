@@ -24,7 +24,7 @@ din(data, q.matrix, skillclasses = NULL ,
       guess.equal = FALSE, slip.equal = FALSE, zeroprob.skillclasses = NULL,  
       weights = rep(1, nrow(data)), rule = "DINA", 
       wgt.overrelax = 0 , wgtest.overrelax = FALSE , param.history=FALSE , 
-      seed=0 , progress = TRUE)
+      seed=0 , progress = TRUE, guess.min=0, slip.min=0, guess.max=1, slip.max=1)
 
 \method{print}{din}(x , \dots) 
 }
@@ -109,9 +109,12 @@ iterations should be saved. The default is \code{FALSE}.}
 \item{seed}{Simulation seed for initial parameters. A value of zero corresponds
 to deterministic starting values, an integer value different from
 zero to random initial values with \code{set.seed(seed)}.}
-
 \item{progress}{An optional logical indicating whether the function
     should print the progress of iteration in the estimation process.  }
+\item{guess.min}{Minimum value of guessing parameters to be estimated.}    
+\item{slip.min}{Minimum value of slipping parameters to be estimated.}
+\item{guess.max}{Maximum value of guessing parameters to be estimated.}    
+\item{slip.max}{Maximum value of slipping parameters to be estimated.}   
    \item{x}{Object of class \code{din}}
    \item{\dots}{Further arguments to be passed}
 }
