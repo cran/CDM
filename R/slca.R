@@ -62,8 +62,7 @@ slca <- function( data , group=NULL,
 							}
 	group.stat <- NULL
 	if (G>1){
-		a1 <- aggregate( 1+0*group , list(group) , sum )
-	#    a2 <- aggregate( group0 , list(group) , mean )
+		a1 <- stats::aggregate( 1+0*group , list(group) , sum )
 		a2 <- rep("",G)
 		for (gg in 1:G){
 			a2[gg] <- group0[ which( group == gg )[1]  ]
@@ -83,13 +82,13 @@ slca <- function( data , group=NULL,
 # print(delta.designmatrix)	
 	# lambda basis parameters for X
 	if ( is.null(seed) ){
-		seed.used <- round( runif(1,2,10000 ) )
+		seed.used <- round( stats::runif(1,2,10000 ) )
 					} else { seed.used <- seed }
 	set.seed( seed.used )
 	
 	Nlam <- dim(Xdes)[[4]]
 	if ( is.null( Xlambda.init ) ){
-		Xlambda.init <- runif( Nlam , -1 , 1 )
+		Xlambda.init <- stats::runif( Nlam , -1 , 1 )
 						}
 	Xlambda <- Xlambda.init
 	
@@ -103,7 +102,7 @@ slca <- function( data , group=NULL,
 		if ( delta.linkfct == "log"){
 			pik <- exp( delta.designmatrix %*% delta.init[,1] )
 						} else {
-			pik <- plogis( delta.designmatrix %*% delta.init[,1] )
+			pik <- stats::plogis( delta.designmatrix %*% delta.init[,1] )
 							}
 									} else {
 		# delta.init <- runif( Nlam , -.5 , .5 )
@@ -357,7 +356,7 @@ slca <- function( data , group=NULL,
 								 round( max( gg1) , 6 ) ,  " \n"   )  )  
 			cat( paste( "    Maximum distribution parameter change = " , 
 								 round( max( deltadiff ) , 6 ) ,  " \n"   )  )  
-			flush.console()
+			utils::flush.console()
 				}
 
 		# save values corresponding to minimal deviance

@@ -84,7 +84,7 @@ IRT.compareModels <- function( object , ... ){
 					dfr1 <- data.frame( "Model1" = IC[ii0,"Model"] , "Model2" = IC[jj0,"Model"]   )
 					dfr1$Chi2 <- IC[ii0,"Deviance"] - IC[jj0,"Deviance"]
 					dfr1$df <- - ( IC[ii0,"Npars"] - IC[jj0,"Npars"] )
-					dfr1$p <- 1 - pchisq( dfr1$Chi2 , df=dfr1$df )
+					dfr1$p <- 1 - stats::pchisq( dfr1$Chi2 , df=dfr1$df )
 					dfr <- rbind( dfr , dfr1 )
 									}
 							}

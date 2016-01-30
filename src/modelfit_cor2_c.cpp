@@ -124,8 +124,8 @@ BEGIN_RCPP
      /////////////////////////////////////////////  
      // OUTPUT:  
      return Rcpp::List::create(  
-         _["itempair_stat"] =itempair_stat ,  
-         _["Q3"] = Q3   
+         Rcpp::_["itempair_stat"] =itempair_stat ,  
+         Rcpp::_["Q3"] = Q3   
                  ) ;  
        
 END_RCPP

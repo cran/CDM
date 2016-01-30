@@ -5,7 +5,7 @@
 summary.slca <- function( object , ... ){
     # object      ... object from rasch.mml                #
     cat("-----------------------------------------------------------------------------\n")
-    d1 <- packageDescription("CDM")
+    d1 <- utils::packageDescription("CDM")
 	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n\n" )
     
 	cat("Call:\n")

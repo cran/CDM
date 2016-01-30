@@ -12,8 +12,8 @@ function(x, ...){
 # console output                                                               #
 ################################################################################
 if(is.null(x$log.file)){
-  d <- packageDescription("CDM")
-  packageStartupMessage(paste(d$Package," " , d$Version," (Built ",d$Date,")",sep=""))
+  d <- utils::packageDescription("CDM")
+  base::packageStartupMessage(paste(d$Package," " , d$Version," (Built ",d$Date,")",sep=""))
 #   cat("Call:\n",  x$CALL, "\n")
   cat("Call:\n",  x$call, "\n\n")
 	  
@@ -67,7 +67,7 @@ if(is.null(x$log.file)){
       gowidth <- getOption("width")
       options(width = 10000)
 	  cat("#.......................................................\n")
-	  d <-  packageDescription("CDM")
+	  d <-  utils::packageDescription("CDM")
 #	  c1 <- citation("CDM")
 	  cat(paste( "This is CDM package version " , d$Version , " (" , d$Date , ")\n",sep=""))
 #	  print(c1)

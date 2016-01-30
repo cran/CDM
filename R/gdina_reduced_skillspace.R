@@ -17,7 +17,7 @@ gdina.reduced.skillspace <- function( ntheta , Z ,
 		#------------------------------
 		#*** skill space method 2 (CDM >= 2.6)
 		if ( reduced.skillspace.method == 2){		
-			mod <- lm( lntheta ~ 0 + Z , weights = ntheta )
+			mod <- stats::lm( lntheta ~ 0 + Z , weights = ntheta )
 			beta <- matrix( mod$coef , nrow=ncol(Z) , ncol=1 )
 			beta[ is.na(beta ) ] <- 0
 						}

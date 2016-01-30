@@ -13,15 +13,30 @@ CDM package
          A. C. George [aut], & A. Uenlue [aut]
 
 mailto:
-a.robitzsch /-\ bifie.at
+robitzsch@ipn.uni-kiel.de
 
 For reporting a bug, please always provide a reproducible R script 
 and (if necessary) a corresponding dataset.
 
-URL:
-https://sites.google.com/site/alexanderrobitzsch/software
-
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+--------------------------------------------------------------
+CDM 4.7 (2016-01-30)   --  CRAN CDM 4.7-0
+--------------------------------------------------------------
+
+NOTE  * extended Wald test for item fit 'gdina.wald' for DINO
+        models. In addition, an effect size of approximation
+        ('uwgtdist' and 'wgtdist') is included
+NOTE  * cleaned namespace file and defined imported functions
+        in a more explicit way
+ADDED * added a S3 method 'IRT.parameterTable'
+ADDED * added a utility function 'WaldTest' for performing
+        Wald tests
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: gdina.wald (1), data.ecpe (1),
 
 --------------------------------------------------------------
 CDM 4.6 (2015-11-04)   --  CRAN CDM 4.6-0
@@ -34,8 +49,6 @@ NOTE  * included optional lower and upper bounds for estimation
 
 DATA  * included/modified datasets: ---
 EXAMP * included/modified examples: ---
-
-
 
 --------------------------------------------------------------
 CDM 4.5 (2015-08-28)   --  CRAN CDM 4.5-0

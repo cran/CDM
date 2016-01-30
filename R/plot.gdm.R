@@ -23,7 +23,7 @@ plot.gdm <- function( x , perstype="EAP" , group=1 , barwidth=.1 , histcol=1 ,
     plotgrid[ plotgrid[,1] > plotgrid[,2] , "type" ] <- "scatterEAP"
     PG <- nrow(plotgrid)
 
-    par( mfrow=c(Ndim,Ndim) )
+    graphics::par( mfrow=c(Ndim,Ndim) )
     
     for (pp in 1:PG){
         if ( paste(plotgrid$type)[pp] == "cornumber"){
@@ -38,7 +38,7 @@ plot.gdm <- function( x , perstype="EAP" , group=1 , barwidth=.1 , histcol=1 ,
 						mean.trait , sd.trait )
                     }
             }
-    par( mfrow=c(1,1))
+    graphics::par( mfrow=c(1,1))
             }
 ########################################################################
 
@@ -47,7 +47,7 @@ plot.gdm <- function( x , perstype="EAP" , group=1 , barwidth=.1 , histcol=1 ,
 plot.pers.gdm <- function( person , dim1 , dim2 , pchpers , cexpers , perstype ){
     dd1 <- dim1
     dd2 <- dim2
-    plot( person[,dd1] , person[,dd2] , xlab=paste0(perstype , " Dim",dd1) ,
+    graphics::plot( person[,dd1] , person[,dd2] , xlab=paste0(perstype , " Dim",dd1) ,
                 ylab=paste0(perstype , " Dim",dd2) ,pch = pchpers , cex= cexpers)
                 }
 #################################################################
@@ -58,9 +58,9 @@ plot.pers.gdm <- function( person , dim1 , dim2 , pchpers , cexpers , perstype )
 plot.cornumber.gdm <- function( cor.trait , dim1 , dim2 , cexcor){
     dd1 <- dim1 
     dd2 <- dim2 
-    plot( c(0,1) , c(0,1) , type="n" , axes=FALSE , xlab="" , ylab="")
+    graphics::plot( c(0,1) , c(0,1) , type="n" , axes=FALSE , xlab="" , ylab="")
     #text( .5 , .60 , paste0( "Cor(Dim" , dd1 , ",Dim" , dd2 ,")="   ) , cex= cexcor)
-    text( .5 , .50 , paste0( round( cor.trait[dd1,dd2] ,3)  ) , cex= cexcor)
+    graphics::text( .5 , .50 , paste0( round( cor.trait[dd1,dd2] ,3)  ) , cex= cexcor)
                             }
 #########################################################################
 
@@ -70,15 +70,15 @@ plot.cornumber.gdm <- function( cor.trait , dim1 , dim2 , cexcor){
 plot.hist.gdm <- function( theta.k , pi.k , object , dim , group , barwidth , histcol ,
 				mean.trait , sd.trait  ){
     dd <- dim
-    a1 <- aggregate( pi.k , list( theta.k[ , dd] ) , sum )
+    a1 <- stats::aggregate( pi.k , list( theta.k[ , dd] ) , sum )
     mainpl <- paste0("Dim" , dd , " | M=" , round( mean.trait[dd] , 3 ) ,
                 " | SD=" ,round( sd.trait[dd] , 3 ) )
-    plot( a1[,1] , a1[,2] , type="n" , xlab= paste0("theta (Dim" , dd , ")" ),
+    graphics::plot( a1[,1] , a1[,2] , type="n" , xlab= paste0("theta (Dim" , dd , ")" ),
                 ylab="Probability" , main=mainpl)
     AA <- nrow(a1)            
     for ( aa in 1:AA){
         #aa <- 1
-        rect(xleft = a1[aa,1] - barwidth/2, ybottom = 0 , 
+        graphics::rect(xleft = a1[aa,1] - barwidth/2, ybottom = 0 , 
                     xright=a1[aa,1] + barwidth/2, ytop = a1[aa,2] , col= histcol)
                 }
         }

@@ -86,7 +86,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 	## prevent from warnings in R CMD check "no visible binding"
 	## gdm: no visible binding for global variable 'TD'
 	TD <- TP <- EAP.rel <- mean.trait <- sd.trait <- skewness.trait <- NULL
-	K.item <- correlation.trait <- NULL 
+	K.item <- correlation.trait <- D <- NULL 
     se.theta.k <- NULL	
 	data0 <- data <- as.matrix(data)
 	dat.resp0 <- dat.resp <- 1 - is.na(data)
@@ -128,9 +128,8 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 							}
 	group.stat <- NULL
 	if (G>1){
-		a1 <- aggregate( 1+0*group , list(group) , sum )
-	#    a2 <- aggregate( group0 , list(group) , mean )
-		a2 <- rep("",G)
+		a1 <- stats::aggregate( 1+0*group , list(group) , sum )
+			a2 <- rep("",G)
 		for (gg in 1:G){
 			a2[gg] <- group0[ which( group == gg )[1]  ]
 						}
@@ -148,7 +147,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 	b <- matrix( 0 , nrow=I , ncol=K )	
 	for (ii in 1:K){	# ii <- 1
 		cm1 <- colMeans( ( dat0 >= ii )*dat.resp0 )
-		b[,ii] <-  qlogis( ( cm1 + .01 ) / 1.02 )
+		b[,ii] <-  stats::qlogis( ( cm1 + .01 ) / 1.02 )
 				}	
 	# define some item parameter constraints here
 #	if ( is.null( b.constraint ) & (skillspace=="loglinear") &
@@ -433,7 +432,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 								 round( max( gg0 ) , 6 ) ,  " \n"   )  )  							 
 			cat( paste( "    Maximum distribution parameter change = " , 
 								 round( max( deltadiff ) , 6 ) ,  " \n"   )  )  
-			flush.console()							 
+			utils::flush.console()							 
 					}
 				
 								}

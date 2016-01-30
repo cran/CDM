@@ -94,8 +94,8 @@ fsc1b <- IRT.factor.scores(mod1 , type="MAP")
 # EAP
 fsc1c <- IRT.factor.scores(mod1 , type="EAP")
 # compare classification for skill 1
-xtabs( ~ fsc1a[,1] + fsc1b[,1] )
-boxplot( fsc1c[,1] ~ fsc1a[,1] )
+stats::xtabs( ~ fsc1a[,1] + fsc1b[,1] )
+graphics::boxplot( fsc1c[,1] ~ fsc1a[,1] )
 }
 
 

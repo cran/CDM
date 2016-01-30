@@ -12,7 +12,7 @@ skill.cor <- function( object){
 #    object$skill.patt
     # collect all skill combinations
 #    skill.combis <- t( combn( length(object$skill.patt ) , 2) )
-    skill.combis <- t( combn( nrow(object$skill.patt ) , 2) )
+    skill.combis <- t( utils::combn( nrow(object$skill.patt ) , 2) )
     # create contingency tables
     skills.bivariate <- t( apply( skill.combis , 1 , FUN = function(ll){
                 ss1 <- ll[1] ; ss2 <- ll[2]
@@ -49,7 +49,7 @@ skill.polychor <- function( object , colindex=1 ){
     ap <- object$attribute.patt
     aps <- object$attribute.patt.splitted	
     # collect all skill combinations
-    skill.combis <- t( combn( nrow(object$skill.patt ) , 2) )
+    skill.combis <- t( utils::combn( nrow(object$skill.patt ) , 2) )
     skill.cors <- matrix(1 , ncol(aps) , ncol(aps) )	
     ZZ <- nrow(skill.combis)
 	warn_temp <- options()$warn
@@ -59,7 +59,7 @@ skill.polychor <- function( object , colindex=1 ){
         ll <- skill.combis[zz,]
         ss1 <- ll[1]
         ss2 <- ll[2]
-        v1 <- aggregate( ap[ , colindex ] , list( aps[,ss1] , aps[,ss2] ) , sum )
+        v1 <- stats::aggregate( ap[ , colindex ] , list( aps[,ss1] , aps[,ss2] ) , sum )
         NR <- length( unique( aps[,ss1] ) )
         NC <- length( unique( aps[,ss2] ) )
         v1 <- matrix(  v1[,3] , nrow=NR , ncol=NC )		

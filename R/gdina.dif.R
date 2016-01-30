@@ -62,8 +62,8 @@ gdina.dif <- function( object ){
 				}
 			}    
 	rownames(ocoef) <- paste0(ocoef$item,"_", ocoef$partype)
-	difstats$p <- 1 - pchisq( difstats$X2 , df=difstats$df )
-	difstats$p.holm <- p.adjust( difstats$p )               
+	difstats$p <- 1 - stats::pchisq( difstats$X2 , df=difstats$df )
+	difstats$p.holm <- stats::p.adjust( difstats$p )               
 	if (G==2){ difstats$UA <- dif_es }
 	res <- list("difstats"=difstats , "coef" = ocoef , 
 			"delta_all" = delta_all ,

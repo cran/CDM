@@ -114,7 +114,7 @@ colnames(dat.expand)
 # compare original items and pseudoitems
 
 #**** Item I1
-xtabs( ~ paste(data$I1) + paste(dat.expand$I1) )
+stats::xtabs( ~ paste(data$I1) + paste(dat.expand$I1) )
   ##                 paste(dat.expand$I1)
   ##   paste(data$I1)     0     1    NA
   ##               0   4339     0     0
@@ -123,7 +123,7 @@ xtabs( ~ paste(data$I1) + paste(dat.expand$I1) )
 
 #**** Item I7
 
-xtabs( ~ paste(data$I7) + paste(dat.expand$I7_Cat1) )
+stats::xtabs( ~ paste(data$I7) + paste(dat.expand$I7_Cat1) )
   ##                 paste(dat.expand$I7_Cat1)
   ##   paste(data$I7)     0     1    NA
   ##               0   3825     0     0
@@ -132,7 +132,7 @@ xtabs( ~ paste(data$I7) + paste(dat.expand$I7_Cat1) )
   ##               3      0  5169     0
   ##               NA     0     0   667
 
-xtabs( ~ paste(data$I7) + paste(dat.expand$I7_Cat2) )
+stats::xtabs( ~ paste(data$I7) + paste(dat.expand$I7_Cat2) )
   ##                 paste(dat.expand$I7_Cat2)
   ##   paste(data$I7)     0     1    NA
   ##               0      0     0  3825
@@ -141,7 +141,7 @@ xtabs( ~ paste(data$I7) + paste(dat.expand$I7_Cat2) )
   ##               3      0  5169     0
   ##               NA     0     0   667
 
-xtabs( ~ paste(data$I7) + paste(dat.expand$I7_Cat3) )
+stats::xtabs( ~ paste(data$I7) + paste(dat.expand$I7_Cat3) )
   ##                 paste(dat.expand$I7_Cat3)
   ##   paste(data$I7)     0     1    NA
   ##               0      0     0  3825

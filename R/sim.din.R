@@ -29,7 +29,7 @@ sim.din <- function( N=0, q.matrix, guess = rep(.2, nrow(q.matrix) ), slip = gue
 
 	# simulated normal variates
 	if (N>0){
-		normsim <- rmvnorm( N, mean, Sigma)
+		normsim <- mvtnorm::rmvnorm( N, mean, Sigma)
 		# dichotomous variates
 		dichsim <- 1 * ( normsim > 0 )
 				}
@@ -49,8 +49,8 @@ sim.din <- function( N=0, q.matrix, guess = rep(.2, nrow(q.matrix) ), slip = gue
     # latent response
 	eta.pp <- poss.attr >= outer( rep(1,N), ness.attr )
 	# simulating responses according DINA rule
-    R <- matrix( eta.pp * rbinom( N*nrow(q.matrix), size= 1, prob = 1 - outer( rep(1,N), slip ) ) + 
-                                ( 1 - eta.pp) * rbinom( N*nrow(q.matrix), size= 1, prob = outer( rep(1,N), guess ) ), ncol = nrow(q.matrix) )
+    R <- matrix( eta.pp * stats::rbinom( N*nrow(q.matrix), size= 1, prob = 1 - outer( rep(1,N), slip ) ) + 
+                                ( 1 - eta.pp) * stats::rbinom( N*nrow(q.matrix), size= 1, prob = outer( rep(1,N), guess ) ), ncol = nrow(q.matrix) )
 	colnames(R) <- paste( "I" , substring( 1000 + 1:( nrow(q.matrix) ) , 2) , sep="")								
    
 	res <- list( "dat" = R , "alpha" = dichsim ) 

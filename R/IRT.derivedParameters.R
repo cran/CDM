@@ -10,17 +10,17 @@ IRT.derivedParameters <- function( jkobject , derived.parameters ){
 		FF <- length(derived.parameters)
 		if (FF>1){
 		for (ff in 2:FF){
-			t1 <- terms( allformulas)    
+			t1 <- stats::terms( allformulas)    
 			t2 <- paste( c( attr( t1 , "term.labels" ) , 
-				attr(  terms( derived.parameters[[ff]] ) , "term.labels" )  ),
+				attr(  stats::terms( derived.parameters[[ff]] ) , "term.labels" )  ),
 				collapse= " + " )
-			allformulas  <- as.formula( paste( " ~ 0 + " , t2 ) )
+			allformulas  <- stats::as.formula( paste( " ~ 0 + " , t2 ) )
 					}
 					}
 		# create matrices of derived parameters
-		der.pars <- model.matrix( allformulas , as.data.frame( t(est) ) )
+		der.pars <- stats::model.matrix( allformulas , as.data.frame( t(est) ) )
 		colnames(der.pars) <- names(derived.parameters)
-		der.pars.rep <- model.matrix( allformulas , as.data.frame( parsM) )
+		der.pars.rep <- stats::model.matrix( allformulas , as.data.frame( parsM) )
 		colnames(der.pars.rep) <- names(derived.parameters)
 		parsM <- t(der.pars.rep)
 		res0 <- jkestimates( est = as.vector(der.pars) , parsM = parsM , fayfac = object$fayfac )

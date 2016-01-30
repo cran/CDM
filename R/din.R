@@ -90,8 +90,8 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 	# different inits if seed larger than zero
     if ( seed > 0 ){
 		set.seed(seed) 
-		slip.init <- runif( I , 0 , .4 )
-		guess.init <- runif( I , 0 , .4 )
+		slip.init <- stats::runif( I , 0 , .4 )
+		guess.init <- stats::runif( I , 0 , .4 )
 					}
 					
     clean <- check.input(data, q.matrix, conv.crit, maxit, constraint.guess,
@@ -125,7 +125,7 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 	    cat(disp,"\n")
 		cat( "**", paste(s1), "\n"   )
 		cat("---------------------------------------------------------------------------------\n")
-		flush.console()
+		utils::flush.console()
 			}
 ################################################################################
 # definition of model parameters                                               # 
@@ -217,7 +217,7 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 
     attr.prob <- rep( 1/L, L )
 	if ( seed > 0 ){
-		attr.prob <- runif( L , 0 , 10/ L )
+		attr.prob <- stats::runif( L , 0 , 10/ L )
 		attr.prob <- attr.prob / sum( attr.prob )
 				}
             

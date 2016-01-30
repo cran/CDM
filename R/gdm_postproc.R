@@ -70,7 +70,7 @@
 									}
 						}
 		rownames(Sigma.gg) <- colnames(Sigma.gg) <- rownames(mean.trait)	
-		correlation.trait[[gg]] <- cov2cor(Sigma.gg + diag(10^(-5),D) )
+		correlation.trait[[gg]] <- stats::cov2cor(Sigma.gg + diag(10^(-5),D) )
 		
 					}	
 	res <- list( "mean.trait"=mean.trait , "sd.trait" = sd.trait , 
@@ -183,8 +183,8 @@
 		dd1 <- colnames(theta.k)[dd]
 		person$EAP <- rowSums( p.aj.xi * outer( nstudl , theta.k[,dd] ) )
 		person$SE.EAP <- sqrt(rowSums( p.aj.xi * outer( nstudl , theta.k[,dd]^2 ) ) - person$EAP^2)	
-		EAP.variance <- weighted.mean( person$EAP^2 , weights ) - ( weighted.mean( person$EAP , weights ) )^2
-		EAP.error <- weighted.mean( person$SE.EAP^2 , weights )
+		EAP.variance <- stats::weighted.mean( person$EAP^2 , weights ) - ( stats::weighted.mean( person$EAP , weights ) )^2
+		EAP.error <- stats::weighted.mean( person$SE.EAP^2 , weights )
 		EAP.rel[dd] <- EAP.variance / ( EAP.variance + EAP.error )	
 		colnames(person)[ which( colnames(person) == "EAP" ) ] <- paste("EAP." , dd1 , sep="")
 		colnames(person)[ which( colnames(person) == "SE.EAP" ) ] <- paste("SE.EAP." , dd1 , sep="")				

@@ -37,8 +37,8 @@ IRT.irfprobPlot <- function( object , items=NULL ,
 		vv <- 0
 		for (dd in 1:D){
 			# dd <- 1
-			a1 <- aggregate( irf.ii[2,] , list(theta[,dd]) , mean )		
-			if ( sd(a1[,2])> 1E-7 ){
+			a1 <- stats::aggregate( irf.ii[2,] , list(theta[,dd]) , mean )		
+			if ( stats::sd(a1[,2])> 1E-7 ){
 				vv <- dd
 						}		
 						}
@@ -47,7 +47,7 @@ IRT.irfprobPlot <- function( object , items=NULL ,
 		# compute functions
 		irf1 <- t( irf.ii )
 		theta1 <- theta[,dd]
-		a1 <- aggregate( irf1 , list( theta1 ) , mean )
+		a1 <- stats::aggregate( irf1 , list( theta1 ) , mean )
 		theta1 <- a1[,1]	
 		dfr <- NULL
 		dfr1 <- data.frame( "theta" = theta.grid )
@@ -65,10 +65,10 @@ IRT.irfprobPlot <- function( object , items=NULL ,
 			if ( smooth ){			
 				eps <- 1E-5
 				v1 <- ( v1 + eps ) / ( 1 + 2*eps )				
-				v1 <- qlogis(v1)
+				v1 <- stats::qlogis(v1)
 				dat <- data.frame( "theta" = theta1 , "y" = v1 )		
-				mod <- loess( y ~ theta  , data=dat)
-				ypred <- plogis( predict( mod , dfr1 ) )
+				mod <- stats::loess( y ~ theta  , data=dat)
+				ypred <- stats::plogis( stats::predict( mod , dfr1 ) )
 						} else {
 				ypred <- v1
 				theta.grid <- theta1
@@ -100,21 +100,21 @@ IRT.irfprobPlot <- function( object , items=NULL ,
 		if ( package == "graphics" ){
 		       kk <- 0
 		       dfr1a <- dfr[ dfr$cat == kk , ] 
-				plot( dfr1a$theta , dfr1a$prob , ylim=c(-.1,1.1) , 	
+				graphics::plot( dfr1a$theta , dfr1a$prob , ylim=c(-.1,1.1) , 	
 						ylab = expression(P(theta)), xlab = expression(theta) ,
 						col=kk+2 , pch = kk+1 , type="o" , main=main , ...
 									)
 		      for (kk in seq(1,K-1) ){
 				dfr1a <- dfr[ dfr$cat == kk , ]		
-				lines( dfr1a$theta , dfr1a$prob , pch=kk+1 , col=kk+2 )					
-				points( dfr1a$theta , dfr1a$prob , pch=kk+1 , col=kk+2 )	
+				graphics::lines( dfr1a$theta , dfr1a$prob , pch=kk+1 , col=kk+2 )					
+				graphics::points( dfr1a$theta , dfr1a$prob , pch=kk+1 , col=kk+2 )	
 									
 									}
-			legend( min( dfr1a$theta) , 1.1 , vkey , pch = 1:K , col= 1 + 1:K ,
+			graphics::legend( min( dfr1a$theta) , 1.1 , vkey , pch = 1:K , col= 1 + 1:K ,
 						horiz =TRUE , lty= 1)
 									}
 					
-		par( ask=ask )	
+		graphics::par( ask=ask )	
 
 			}
 

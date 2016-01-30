@@ -1,32 +1,32 @@
 Package: CDM
 Type: Package
 Title: Cognitive Diagnosis Modeling
-Version: 4.6-0
-Date: 2015-11-04
-Author: Alexander Robitzsch [aut, cre], Thomas Kiefer [aut], 
-     Ann Cathrice George [aut], Ali Uenlue [aut]
-Maintainer: Alexander Robitzsch <robitzsch@ipn.uni-kiel.de>
-Authors@R: c( person("Alexander", "Robitzsch", role = c("aut", "cre"), 
-  email = "robitzsch@ipn.uni-kiel.de"), 
-  person("Thomas", "Kiefer", role = "aut"), 
-  person("Ann Cathrice", "George", role = "aut"),
-  person("Ali", "Uenlue", role = "aut") )
-Description: Functions for cognitive diagnosis modeling
-    and multidimensional item response modeling for dichotomous
-    and polytomous data. This package enables the estimation of the
-    DINA and DINO model, the multiple group (polytomous) GDINA model, 
-    the multiple choice DINA model, the general diagnostic model (GDM), 
-    the multidimensional linear compensatory item response model and 
-    the structured latent class model (SLCA).
+Version: 4.7-0
+Date: 2016-01-30
+Author: 
+    Alexander Robitzsch [aut, cre], Thomas Kiefer [aut],
+    Ann Cathrice George [aut], Ali Uenlue [aut]
+Maintainer: 
+ Alexander Robitzsch <robitzsch@ipn.uni-kiel.de>
+Description: 
+    Functions for cognitive diagnosis modeling
+    and multidimensional item response modeling for
+    dichotomous and polytomous data. This package
+    enables the estimation of the DINA and DINO model,
+    the multiple group (polytomous) GDINA model,
+    the multiple choice DINA model, the general diagnostic
+    model (GDM), the multidimensional linear compensatory
+    item response model and the structured latent class
+    model (SLCA).
 Depends: R (>= 2.15.0), mvtnorm
-Imports: stats, graphics, utils, grDevices, methods, Rcpp, psych, MASS,
-        polycor, sfsmisc, plyr, lattice
-Suggests: TAM, mirt, sirt, BIFIEsurvey, miceadds
+Imports: graphics, grDevices, lattice, MASS, methods, plyr, polycor,
+        psych, Rcpp, sfsmisc, stats, utils
+Suggests: BIFIEsurvey, miceadds, mirt, sirt, TAM
 LinkingTo: Rcpp, RcppArmadillo
 LazyLoad: yes
 LazyData: yes
 License: GPL (>= 2)
-Packaged: 2015-11-04 15:48:53 UTC; robitzsch
 NeedsCompilation: yes
+Packaged: 2016-01-30 13:58:27 UTC; sunpn563
 Repository: CRAN
-Date/Publication: 2015-11-04 18:41:42
+Date/Publication: 2016-01-30 19:01:45

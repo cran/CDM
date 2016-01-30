@@ -91,8 +91,11 @@ BEGIN_RCPP
      /// OUTPUT                  
        
        
-     return List::create(_["devcrit"]=devcrit , _["mincrit"]= mincrit ,  
-     		_["indexcrit"]=indexcrit  ) ;  
+     return Rcpp::List::create(
+       Rcpp::_["devcrit"]=devcrit , 
+       Rcpp::_["mincrit"]= mincrit ,  
+       Rcpp::_["indexcrit"]=indexcrit  
+       ) ;  
      //	   _["matrk"]=MATRK  , _["indexmatr"]=INDEXMATR ) ;     
      // return List::create(_["yM"]=YM , _["wM"]=WM ) ;     
      

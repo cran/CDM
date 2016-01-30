@@ -215,10 +215,9 @@ BEGIN_RCPP
      // OUTPUT              
                    
       return Rcpp::List::create(    
-         _["d1b" ] = d1b ,  
-         _["d2b" ] = d2b //   ,  
-     //    _["tmp1"] = tmp1  
-         ) ;  
+         Rcpp::_["d1b" ] = d1b ,  
+         Rcpp::_["d2b" ] = d2b 
+                       ) ;  
 END_RCPP
 }
 
@@ -280,8 +279,8 @@ BEGIN_RCPP
      // OUTPUT              
                    
      return Rcpp::List::create(    
-         _["NXdesM"] = ind  ,  
-         _["XdesM" ] = XdesM  
+         Rcpp::_["NXdesM"] = ind  ,  
+         Rcpp::_["XdesM" ] = XdesM  
          ) ;  
 END_RCPP
 }

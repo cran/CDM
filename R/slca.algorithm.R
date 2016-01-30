@@ -165,18 +165,18 @@
 		# ARb 2014-01-14 inclusion
 		ntheta <- ntheta / sum(ntheta )		
 		lntheta <- log(ntheta+eps)
-		mod <- lm( lntheta ~ 0 + Z , weights = ntheta )
+		mod <- stats::lm( lntheta ~ 0 + Z , weights = ntheta )
 		covbeta <- vcov(mod)		
 		beta <- coef(mod)
 							}
 	   if ( delta.linkfct == "logit"){
 			nj <- Ngroup[gg] * pi.k[,gg]
-			pij <- qlogis( pi.k[,gg] + eps )
-			wj <- plogis( delta.designmatrix %*% delta[,gg,drop=FALSE] )
+			pij <- stats::qlogis( pi.k[,gg] + eps )
+			wj <- stats::plogis( delta.designmatrix %*% delta[,gg,drop=FALSE] )
 			wj <- wj / sum(wj )
 			wj <- wj[,1]
 			n <- Ngroup[gg]	
-			mod1 <- lm( pij ~ 0 + delta.designmatrix ) 
+			mod1 <- stats::lm( pij ~ 0 + delta.designmatrix ) 
 			beta <- coef(mod1)		
 			covbeta <- vcov(mod1)
 				}						

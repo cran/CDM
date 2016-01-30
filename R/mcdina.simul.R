@@ -14,6 +14,7 @@
 simul.mcdina <- function( alpha ,  pars_lc , pars_lr , skillcl ){
     # skills ... alpha vectors
     #   skillcl <- scan.vec( "P000 P100 P010 P110 P001 P101 P011 P111" )		
+	base::requireNamespace("sirt")
     skills <- alpha 
     N <- length(alpha)
     I <- max( pars_lc$item )
@@ -31,12 +32,14 @@ simul.mcdina <- function( alpha ,  pars_lc , pars_lr , skillcl ){
         lr.ii <- paste(lr.ii[ match( skillcl[ skills ] , lr.ii$skillclass ) , "lr" ])
         probs <- lc.ii[ match( lr.ii , paste(lc.ii$lr) ) , grep( "Cat" , colnames(pars_lc ) ) ]
         Nc <- ncol(probs)
-        rn <- runif(N)
+        rn <- stats::runif(N)	
         # probs1 <- rowCumsums.sirt(matr=as.matrix(probs)  )
-		eval( parse ( text = "probs1 <- sirt::rowCumsums.sirt(matr=as.matrix(probs)  )" ) )
+		# eval( parse ( text = "probs1 <- sirt::rowCumsums.sirt(matr=as.matrix(probs)  )" ) )
+		probs1 <- sirt::rowCumsums.sirt(matr=as.matrix(probs)  )
         # dat[,ii] <- rowIntervalIndex.sirt(matr= probs1 ,rn) 
-		eval( parse ( text = "dat[,ii] <- sirt::rowIntervalIndex.sirt(matr= probs1 ,rn) " ) )
-        print(paste0( "Item " ,ii )) ; flush.console()
+		# eval( parse ( text = "dat[,ii] <- sirt::rowIntervalIndex.sirt(matr= probs1 ,rn) " ) )
+		dat[,ii] <- sirt::rowIntervalIndex.sirt(matr= probs1 ,rn)
+        print(paste0( "Item " ,ii )) ; utils::flush.console()
                 }
       return(dat)
       }

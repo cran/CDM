@@ -68,7 +68,9 @@ For extracting the individual likelihood or posterior see
 \code{\link{IRT.likelihood}} or \code{\link{IRT.posterior}}.
 
 The model fit of objects of class \code{\link{gdm}} can be obtained
-by using the \code{tam.modelfit.IRT} function in the \pkg{TAM} package.
+by using the 
+\code{\link[TAM:tam.modelfit.IRT]{TAM::tam.modelfit.IRT}}
+function in the \pkg{TAM} package.
 }
 %%% TAM, sirt and mirt links
 
@@ -84,11 +86,35 @@ data(sim.qmatrix)
 mod1 <- din(sim.dina, q.matr = sim.qmatrix, rule = "DINA" )
 fmod1 <- IRT.modelfit( mod1 )
 summary(fmod1)
+  ##  Test of Global Model Fit
+  ##         type value     p
+  ##  1   max(X2) 8.728 0.113
+  ##  2 abs(fcor) 0.143 0.080
+  ##  
+  ##  Fit Statistics
+  ##                    est
+  ##  MADcor          0.030
+  ##  SRMSR           0.040
+  ##  100*MADRESIDCOV 0.671
+  ##  MADQ3           0.062
+  ##  MADaQ3          0.059
 
 #*** Model 2: GDINA model
 mod2 <- gdina( sim.dina , q.matr = sim.qmatrix , rule="GDINA" )
 fmod2 <- IRT.modelfit( mod2 )
-summary(fmod2)	
+summary(fmod2)
+  ##  Test of Global Model Fit
+  ##         type value p
+  ##  1   max(X2) 2.397 1
+  ##  2 abs(fcor) 0.078 1
+  ##  
+  ##  Fit Statistics
+  ##                    est
+  ##  MADcor          0.023
+  ##  SRMSR           0.030
+  ##  100*MADRESIDCOV 0.515
+  ##  MADQ3           0.075
+  ##  MADaQ3          0.071
 }
 }
 

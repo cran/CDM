@@ -14,7 +14,9 @@ cdm.est.class.accuracy <- function( cdmobj , n.sims=0 , seed=987){
     # MLE (orginal data)
     c1 <- .est.class.accuracy( p.xi.aj = p.xi.aj , 
                 est.class = cdmobj$pattern$mle.est ,
-                class.prob= class.prob)
+                class.prob= class.prob)			
+# stop()							
+				
     # MAP (original data)
     c2 <- .est.class.accuracy( p.xi.aj = p.xi.aj , 
                 est.class = cdmobj$pattern$map.est ,
@@ -142,10 +144,22 @@ cdm.est.class.accuracy <- function( cdmobj , n.sims=0 , seed=987){
     class.prob.matrix1[cc,aa] <- sum( p.xi.aj[ est.class.index == cc , aa ] )^2
     class.prob.matrix2[cc,aa] <- sum( p.xi.aj[ est.class.index == cc , aa ] )
         }}
+#Revalpr("round(class.prob.matrix2,4)")		
     # classification consistency
     P_c <- sum( colSums( class.prob.matrix1 ) * class.prob )
     # marginal classification accuracy
     P_a <- sum( diag( class.prob.matrix2 ) * class.prob )
+	#**** calculate kappa
+	M1 <- class.prob.matrix1
+
+#Revalpr("round(M1,4)")	
+	p1 <- rowSums(M1)
+	p2 <- colSums(M1)
+#Revalpr("round(p2,4)")		
+	h1 <- outer( p1 , p2 )
+#Revalpr("round(h1,4)")		
+	
+	
     res <- data.frame( "P_c" = P_c , "P_a" = P_a )
     return(res)
     }

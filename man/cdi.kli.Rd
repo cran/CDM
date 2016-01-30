@@ -114,7 +114,7 @@ round( cmod$glob_item_disc , 3 )
   ##  0.594 0.486 0.533 0.465 5.913 0.093 0.040 0.397 0.656 
 
 # correlation of IDI and global item discrimination
-cor( cmod$glob_item_disc , mod$IDI )
+stats::cor( cmod$glob_item_disc , mod$IDI )
   ##  [1] 0.6927274
 
 # attribute-specific item indices

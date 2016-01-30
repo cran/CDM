@@ -5,7 +5,7 @@ IRT.repDesign <- function( data , wgt = NULL, jktype = "JK_TIMSS",
      wgtrep = "W_FSTR" , ngr=100 , Nboot=200 , seed = .Random.seed ){
 		#---------------------------------
 		# BIFIEsurvey must be loaded
-		requireNamespace("BIFIEsurvey")
+		base::requireNamespace("BIFIEsurvey")
 		
 		data <- as.data.frame(data)	
 		

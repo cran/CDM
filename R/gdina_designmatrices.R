@@ -69,7 +69,7 @@ create_Aj_helper <- function(nq){
 	Aj <- matrix( rep(0,nq) , nrow=1 , ncol=nq )
 	for (kk in 1:nq){
 		# kk <- 1    
-		av <- t( combn( nq , kk ) )
+		av <- t( utils::combn( nq , kk ) )
 		Aj1 <- matrix( 0 , nrow= nrow(av) , ncol=nq )
 		for (hh in 1:kk){
 			Aj1[ cbind( seq( 1 , nrow(av) ) , av[,hh]  ) ] <- 1
@@ -122,10 +122,10 @@ create_Aj_helper <- function(nq){
         if (K==3){ 
             Mj <- cbind( 1 , sapply( 1:3 , FUN = function(jj){ 1*(Aj[,jj]==1) } ) )            
                Mj.lab <- c( "0" , 1:3 )
-            g2 <- combn( 3 , 2 )
+            g2 <- utils::combn( 3 , 2 )
                 Mj <- cbind( Mj , sapply( seq( 1 , ncol(g2)) , FUN = function(jj){ rowProds2(Aj[, g2[,jj] ]) } ) )
                 Mj.lab <- c( Mj.lab , apply( g2 , 2 , FUN = function(ll){ paste( ll , collapse="-" ) } ) )
-            g2 <- combn( 3 , 3 )
+            g2 <- utils::combn( 3 , 3 )
 			g2 <- matrix( g2 , nrow=length(g2) , ncol=1 )
                 Mj <- cbind( Mj , sapply( seq( 1 , ncol(g2)) , FUN = function(jj){ rowProds2(Aj[, g2[,jj] ]) } ) )
                 Mj.lab <- c( Mj.lab , apply( g2 , 2 , FUN = function(ll){ paste( ll , collapse="-" ) } ) )       
@@ -160,7 +160,7 @@ create_Aj_helper <- function(nq){
             Mj <- cbind( 1 , sapply( 1:4 , FUN = function(jj){ 1*(Aj[,jj]==1) } ) )            
                Mj.lab <- c( "0" , 1:4 )
             for (kk in 2:4){ 
-                g2 <- combn( 4 , kk )
+                g2 <- utils::combn( 4 , kk )
 				if (kk==4){
 						g2 <- matrix( g2 , nrow=length(g2) , ncol=1 )
 							}
@@ -198,7 +198,7 @@ create_Aj_helper <- function(nq){
             Mj <- cbind( 1 , sapply( 1:5 , FUN = function(jj){ 1*(Aj[,jj]==1) } ) )            
                Mj.lab <- c( "0" , 1:5 )
             for (kk in 2:5){ 
-                g2 <- combn( 5 , kk )
+                g2 <- utils::combn( 5 , kk )
 				if (kk==5){
 						g2 <- matrix( g2 , nrow=length(g2) , ncol=1 )
 							}				
@@ -248,7 +248,7 @@ create_Mj_helper <- function( K , Aj , rule ){
             Mj <- cbind( 1 , sapply( 1:K , FUN = function(jj){ 1*(Aj[,jj]==1) } ) )            
                Mj.lab <- c( "0" , 1:K )
             for (kk in 2:K){ 
-                g2 <- combn( K , kk )
+                g2 <- utils::combn( K , kk )
                 if (kk==K){
                         g2 <- matrix( g2 , nrow=length(g2) , ncol=1 )
                             }               

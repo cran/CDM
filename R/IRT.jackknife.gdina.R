@@ -70,7 +70,7 @@ IRT.jackknife.gdina <- function( object , repDesign , ... ){
 		#	rr <- 1
 			if ( rr %% 10 == 1 ){
 				cat( paste0( "\n",rr-1 , " |" )) 
-				flush.console()
+				utils::flush.console()
 						}
 			inputlist$weights <- rdes$wgtrep[,rr]
 			mod1a <- do.call( gdina , inputlist )
@@ -81,10 +81,10 @@ IRT.jackknife.gdina <- function( object , repDesign , ... ){
 			parsM[ 1:NP1 , rr ] <- mod1a$partable$value			
 			parsM[ jpartable$partype == "polychor"  , rr ] <- pcvec
 			parsM[ jpartable$partype == "modelfit"  , rr ] <- fmod[ fitvars , "est" ] 		
-			cat("-") ; flush.console()
+			cat("-") ; utils::flush.console()
 			if ( rr %% 10 == 0 ){
 				cat( paste0( "|" )) 
-				flush.console()
+				utils::flush.console()
 						}			
 						}
 			cat("\n")
@@ -93,7 +93,7 @@ IRT.jackknife.gdina <- function( object , repDesign , ... ){
 		jpartable$jkest <- res0$dfr$jkest		
 		jpartable$jkse <- res0$dfr$jkse		
 		jpartable$t <- jpartable$jkest / jpartable$jkse
-		jpartable$p <- 2*pnorm( - abs( jpartable$t ) )
+		jpartable$p <- 2*stats::pnorm( - abs( jpartable$t ) )
 		
 		res <- list( "parsM" = parsM , "vcov" = res0$vcov_pars , 
 				      "jpartable" = jpartable , "fayfac" = fayfac )

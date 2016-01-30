@@ -155,7 +155,7 @@ if (progress){
     group.stat <- NULL							
     if (G>1){							
 		# group statistics
-		a1 <- aggregate( 1+0*group , list(group) , sum )
+		a1 <- stats::aggregate( 1+0*group , list(group) , sum )
 	#    a2 <- aggregate( group0 , list(group) , mean )
 		a2 <- rep("",G)
 		for (gg in 1:G){
@@ -173,7 +173,7 @@ if (progress){
 	if (HOGDINA >= 0){						
 		reduced.skillspace <- FALSE
 		theta.k <- seq( -6,6 , len=21 )
-		wgt.theta <- dnorm( theta.k )
+		wgt.theta <- stats::dnorm( theta.k )
 		w1 <- wgt.theta / sum( wgt.theta )
 		wgt.theta <- matrix( w1 , nrow=length(w1) , ncol=G)
 				}
@@ -196,7 +196,7 @@ if (progress){
 	if (progress){		
 		cat( "**", paste(s1), "\n"   )
 		cat("---------------------------------------------------------------------------------\n")
-		flush.console()
+		utils::flush.console()
 			}
 
 			
@@ -364,7 +364,7 @@ if (progress){
 		attr.prob <- rep( 1/L, L )
 		if ( seed > 0 ){
 		   set.seed(seed)
-		   attr.prob <- runif( L , 0 , 10/L )
+		   attr.prob <- stats::runif( L , 0 , 10/L )
 		   attr.prob <- attr.prob / sum( attr.prob )
 						}		   
 			} else {
@@ -468,8 +468,8 @@ if (progress){
 				if ( seed == 0 ){
 					dd1 <- .2 ; dd2 <- .6 
 						} else {
-					dd1 <- runif( 1 , 0 , .4 )
-					dd2 <- runif( 1 , 0 , 1 - dd1 - .1 )				
+					dd1 <- stats::runif( 1 , 0 , .4 )
+					dd2 <- stats::runif( 1 , 0 , 1 - dd1 - .1 )				
 						}
 				l1[1] <- dd1
 				l1[2:N1jj] <- rep( dd2 / (N1jj - 1) , N1jj - 1 )
@@ -485,8 +485,8 @@ if (progress){
 				if ( seed == 0 ){
 					dd1 <- -1 ; dd2 <- 1
 						} else {			
-					dd1 <- runif( 1 , -2 , 0 )					
-					dd2 <- runif( 1 , 0 , 2 )					
+					dd1 <- stats::runif( 1 , -2 , 0 )					
+					dd2 <- stats::runif( 1 , 0 , 2 )					
 						}
 				l1[1] <- dd1
 				l1[N1jj] <- dd2
@@ -503,8 +503,8 @@ if (progress){
 				if ( seed == 0 ){
 					dd1 <- -1.5 ; dd2 <- .75
 						} else {
-					dd1 <- runif( 1 , -3 , -1 )					
-					dd2 <- runif( 1 , .25 , 1 )
+					dd1 <- stats::runif( 1 , -3 , -1 )					
+					dd2 <- stats::runif( 1 , .25 , 1 )
 						}
 				l1[1] <- dd1
 				l1[N1jj] <- dd2
@@ -592,7 +592,9 @@ djj_old <- as.list( 1:J )
 
     dev.min <- 10^99
 	R.lj.gg <- I.lj.gg <- NULL
-
+	suffstat_probs <- as.list(1:J)
+	
+	
 	devchange <- 0	
 	#*********************************
 
@@ -624,12 +626,18 @@ djj_old <- as.list( 1:J )
 			djj <- matrix( delta[[jj]] , L , length(delta[[jj]]) , byrow=TRUE )
 			pj1[jj,] <- rowSums( mjjj * djj )
 			if (linkfct == "logit"){
-				pj1[jj,] <- plogis( pj1[jj,] )
+				pj1[jj,] <- stats::plogis( pj1[jj,] )
 									}
 			if (linkfct == "log"){
 				pj1[jj,] <- exp( pj1[jj,] )
+#				if (max(pj1[jj,]>1){
+#					pj1[jj,] <- pj1[jj,] / max( pj1[jj,] )
+#								}
+									}									
 									}
-									}
+# Revalpr("round(pj1,4)")
+									
+									
     # restrict probabilities in calculations									
 	eps <- 10^(-10)
 	pj1[ pj1 < 0 ] <- eps
@@ -807,11 +815,13 @@ if (HOGDINA >= 0){
 		Rlj.ast <- R.ljM[ jj, Mj.index[jj,5]:Mj.index[jj,6] ]
 		Ilj.ast <- I.ljM[ jj, Mj.index[jj,5]:Mj.index[jj,6] ]
 		pjjj <- Rlj.ast / ( Ilj.ast + eps2 )
+		suffstat_probs[[jj]] <- pjjj
+		
 		
 		if (linkfct == "logit" ){ 
 				pjjj[ pjjj > 1-eps ] <- 1 - eps
 				pjjj[ pjjj < eps ] <- eps
-				pjjj <- qlogis( pjjj ) 
+				pjjj <- stats::qlogis( pjjj ) 
 				# maxval <- 5 ;  pjjj <- squeeze.cdm( pjjj , c(-maxval , maxval ) )
 								}
 		#*****
@@ -899,14 +909,14 @@ if (HOGDINA >= 0){
 	#  => log(pi) = b0 + b1 + b2 and pi = exp( b0 + b1 + b2 )		
 			
 			d1 <- djj
-# d01 <- d1			
+# d01 <- d1	
 #			d1 <- ifelse( d1 < 0 , .1 , d1 )						
 	        sum_d1 <- sum(d1)
 			if ( sum_d1 > 0 ){
                 d1 <- d1 - sum(d1)
 							}
 
-			d1_samp <- runif( length(d1) , 0 , .01 )
+			d1_samp <- stats::runif( length(d1) , 0 , .01 )
 			d1[-1] <- ifelse( d1[-1] < 0 , d1_samp[-1] , d1[-1] )						
 							
 	        sum_d1 <- sum(d1)
@@ -920,6 +930,8 @@ if (HOGDINA >= 0){
 #			if ( djj[1] > 0 ){
 #				djj[1] <- 0
 #								}						
+
+
 						}
 
 
@@ -1142,8 +1154,8 @@ if (HOGDINA >= 0){
 			#	jj <- 1		# Item jj
 				Ajjj <- Aj[[jj]]
 				Mjjj <- Mj[[jj]][[1]]
-				Rlj.ast <- aggregate( R.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
-				Ilj.ast <- aggregate( I.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
+				Rlj.ast <- stats::aggregate( R.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
+				Ilj.ast <- stats::aggregate( I.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
 				pjjj <- Rlj.ast[,2] / Ilj.ast[,2]
 				Mjj2 <- Mj[[jj]][[2]]
 				apjj <- aggr.attr.patt[[jj]] 			
@@ -1160,8 +1172,8 @@ if (HOGDINA >= 0){
 								p.ajast.xi[,kk] <- rowSums( pg1 ) 
 										}
 								}	
-				Rlj.ast <- aggregate( R.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
-				Ilj.ast <- aggregate( I.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
+				Rlj.ast <- stats::aggregate( R.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
+				Ilj.ast <- stats::aggregate( I.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
 				pjjj <- Rlj.ast[,2] / Ilj.ast[,2]		
 				pjjjM <- outer( rep(1,IP) , pjjj ) + 10^(-20)		
 				nM <- ncol(pjjjM) 
@@ -1536,6 +1548,7 @@ if (HOGDINA >= 0){
 					p.aj.xi=p.aj.xi,item.patt.split=item.patt.split,
 					resp.patt=resp.patt,freq.pattern=freq.pattern ,
 					item.patt.freq=item.patt.freq,invM.list=invM.list ,
+					suffstat_probs = suffstat_probs , 					
 					increment.factor = increment.factor ,
 					fac.oldxsi = fac.oldxsi ,
 					avoid.zeroprobs = avoid.zeroprobs ,

@@ -65,11 +65,7 @@ Obtaining diagnostic classification model estimates using Mplus.
 \emph{Educational Measurement: Issues and Practice}, \bold{32}, 37-50.
 }
 
-\section{Example Index}{
-\code{\link{personfit.appropriateness}} (Example 1),	
-\code{\link{sim.din}} (Example 3),
-\code{\link{sim.gdina}} (Examples 2, 3)
-}
+
 
 \examples{
 \dontrun{
@@ -120,6 +116,27 @@ mod3 <- CDM::gdina( data.ecpe$data[,-1] , q.matrix= data.ecpe$q.matrix ,  link="
             zeroprob.skillclasses=zeroprob.skillclasses , Mj=Mj.user ,
             avoid.zeroprobs=TRUE )
 summary(mod3)
+
+#*****************************************
+#** estimate further models
+
+#*** Model 4: RRUM model
+mod4 <- CDM::gdina( data.ecpe$data[,-1], q.matrix= data.ecpe$q.matrix , rule="RRUM")
+summary(mod4)
+# compare some models
+IRT.compareModels(mod1 , mod2, mod3, mod4 )
+
+#*** Model 5a: GDINA model with identity link
+mod5a <- CDM::gdina( data.ecpe$data[,-1], q.matrix= data.ecpe$q.matrix , link="identity")
+summary(mod5a)
+#*** Model 5b: GDINA model with logit link
+mod5b <- CDM::gdina( data.ecpe$data[,-1], q.matrix= data.ecpe$q.matrix , link="logit")
+summary(mod5b)
+#*** Model 5c: GDINA model with log link
+mod5c <- CDM::gdina( data.ecpe$data[,-1], q.matrix= data.ecpe$q.matrix , link="log")
+summary(mod5c)
+# compare models
+IRT.compareModels(mod5a, mod5b, mod5c)
 }
 }
 \keyword{datasets}

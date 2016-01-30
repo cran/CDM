@@ -82,8 +82,8 @@ BEGIN_RCPP
      /////////////////////////////////////////////  
      // OUTPUT:  
       return Rcpp::List::create(  
-         _["dist"] = dist ,  
-         _["est_skill"] = est_skill  
+         Rcpp::_["dist"] = dist ,  
+         Rcpp::_["est_skill"] = est_skill  
                  ) ;  
                    
 END_RCPP

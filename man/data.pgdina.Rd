@@ -77,9 +77,6 @@ The dataset was simulated by the following \R code:
 %See Example 7 in \code{\link{gdina}}. 
 %}
 
-\section{Example Index}{
-\code{\link{gdina}} (Example 7)
-}
 
 \references{
 Chen, J., & de la Torre, J. (2013). 

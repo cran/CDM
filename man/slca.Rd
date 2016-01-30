@@ -278,13 +278,13 @@ for (hh in 1:(maxK-1) ){
 #****
 # skill space designmatrix
 TP <- length(theta.k)
-w1 <- dnorm(theta.k)
+w1 <- stats::dnorm(theta.k)
 w1 <- w1 / sum(w1)  
 delta.designmatrix <- matrix( 1 , nrow=TP , ncol=1 )
 delta.designmatrix[,1] <- log(w1)
 
 # initial lambda parameters
-Xlambda.init <- c(rnorm( dim(Xdes)[[4]] - 1 ) , 1 )
+Xlambda.init <- c( stats::rnorm( dim(Xdes)[[4]] - 1 ) , 1 )
 # fixed delta parameter
 delta.fixed <- cbind( 1 , 1 ,1 )
 
@@ -371,14 +371,14 @@ mod4 <- slca( dat , Xdes=Xdes , Xlambda.init=Xlambda.init ,
 set.seed(9876)
 I <- 7	# number of items
 # simulate response probabilities
-a1 <- runif(I,0 , .4 )
-a2 <- runif(I , .6 , 1 )
+a1 <- stats::runif(I, 0 , .4 )
+a2 <- stats::runif(I, .6 , 1 )
 N <- 1000	# sample size
 # simulate data in two classes of proportions .3 and .7
 N1 <- round(.3*N)
-dat1 <- 1 * ( matrix(a1,N1,I,byrow=TRUE) > matrix( runif( N1 * I) , N1 , I ) )
+dat1 <- 1 * ( matrix(a1,N1,I,byrow=TRUE) > matrix( stats::runif( N1 * I) , N1 , I ) )
 N2 <- round(.7*N)
-dat2 <- 1 * ( matrix(a2,N2,I,byrow=TRUE) > matrix( runif( N2 * I) , N2 , I ) )
+dat2 <- 1 * ( matrix(a2,N2,I,byrow=TRUE) > matrix( stats::runif( N2 * I) , N2 , I ) )
 dat <- rbind( dat1 , dat2 )
 colnames(dat) <- paste0("I" , 1:I)
 
@@ -414,9 +414,9 @@ b2[ c(4,7, 9 , 11 , 12, 13) ] <- c(1 , -.5 , -.5 , .33 , .33 , -.66 )
 N <- 3000    # number of persons
 wgt <- .25       # class probability for class 1
 # class 1
-dat1 <- sirt::sim.raschtype( rnorm( wgt*N ) , b1 )
+dat1 <- sirt::sim.raschtype( stats::rnorm( wgt*N ) , b1 )
 # class 2
-dat2 <- sirt::sim.raschtype( rnorm( (1-wgt)*N , mean= 1 , sd=1.7) , b2 )
+dat2 <- sirt::sim.raschtype( stats::rnorm( (1-wgt)*N , mean= 1 , sd=1.7) , b2 )
 dat <- rbind( dat1 , dat2 )
 # theta grid
 theta.k <- seq( -5 , 5 , len=9 )
@@ -437,7 +437,7 @@ for (tt in 1:TP){  Xdes[1:I , 2 , tt , I + 1] <- theta.k[tt]       }
 # skill space definition
 delta.designmatrix <- cbind( 1 , theta.k^2 )
 delta.fixed <- NULL
-Xlambda.init <- c( runif( I  , -.8 , .8 ) , 1 )
+Xlambda.init <- c( stats::runif( I  , -.8 , .8 ) , 1 )
 Xlambda.fixed <- cbind( I+1 , 1 )
 # estimate model
 mod1 <- slca( dat , Xdes=Xdes , delta.designmatrix=delta.designmatrix , 
@@ -483,9 +483,9 @@ delta.designmatrix[1:TP,1] <- 1
 delta.designmatrix[1:TP,2] <- theta.k^2
 delta.designmatrix[TP + 1:TP,3] <- 1
 delta.designmatrix[TP+ 1:TP,4] <- theta.k^2
-b1 <- qnorm( colMeans( dat ) )
-Xlambda.init <- c( b1 , b1 + runif(I, -2  , 2 ) , 1 , 1 )
-Xlambda.init <- c( runif( 2*I  , -1.8 , 1.8 ) , 1 ,1 )
+b1 <- stats::qnorm( colMeans( dat ) )
+Xlambda.init <- c( b1 , b1 + stats::runif(I, -2  , 2 ) , 1 , 1 )
+Xlambda.init <- c( stats::runif( 2*I  , -1.8 , 1.8 ) , 1 ,1 )
 Xlambda.fixed <- cbind( c(2*I+1 , 2*I+2) , 1 )
 # estimate model
 mod2 <- slca( dat, Xdes=Xdes,  delta.designmatrix=delta.designmatrix ,          
@@ -494,7 +494,7 @@ mod2 <- slca( dat, Xdes=Xdes,  delta.designmatrix=delta.designmatrix ,
 summary(mod2)
 summary(mod1)
 # latent class proportions
-aggregate( mod2$pi.k , list( rep(1:2, each=TP)) , sum )
+stats::aggregate( mod2$pi.k , list( rep(1:2, each=TP)) , sum )
 
 #*** Model 2b: Different parametrization with sum constraint on item difficulties
 
@@ -507,8 +507,8 @@ delta.designmatrix[TP+ 1:TP,4] <- 1
 delta.designmatrix[TP+ 1:TP,5] <- theta.k
 delta.designmatrix[TP+ 1:TP,6] <- theta.k^2
 Xlambda.fixed <- cbind( c(2*I+1,2*I+2) , c(1,1) )
-b1 <- qnorm( colMeans( dat ) )
-Xlambda.init <- c( b1 , b1 + runif(I, -1  , 1 ) , 1 , 1 )
+b1 <- stats::qnorm( colMeans( dat ) )
+Xlambda.init <- c( b1 , b1 + stats::runif(I, -1  , 1 ) , 1 , 1 )
 # constraints on item difficulties
 Xlambda.constr.V <- matrix( 0 , nrow=NXlam , ncol=2)
 Xlambda.constr.V[1:I , 1 ] <- 1
@@ -520,7 +520,7 @@ mod2b <- slca( dat, Xdes=Xdes, delta.designmatrix=delta.designmatrix ,
             Xlambda.constr.V=Xlambda.constr.V , Xlambda.constr.c=Xlambda.constr.c , 
             decrease.increments=TRUE , maxiter = 1000 )
 summary(mod2b)
-aggregate( mod2b$pi.k , list( rep(1:2, each=TP)) , sum )
+stats::aggregate( mod2b$pi.k , list( rep(1:2, each=TP)) , sum )
 
 #*** Model 2c: Estimation with mRm package
 library(mRm)
@@ -565,7 +565,7 @@ for (tt in 1:TP){  Xdes[1:I , 2 , tt , I + tt] <- 1       }
 
 # skill space definition
 delta.designmatrix <- diag(TP)
-Xlambda.init <- c( - qnorm( colMeans(dat) ) , seq(-2,1,len=TP)  )
+Xlambda.init <- c( - stats::qnorm( colMeans(dat) ) , seq(-2,1,len=TP)  )
 # constraint on item difficulties
 Xlambda.constr.V <- matrix( 0 , nrow=NXlam , ncol=1)
 Xlambda.constr.V[1:I,1] <- 1
@@ -602,8 +602,8 @@ alpha0 <- matrix( c(0,0,1,0,0,1,1,1) , nrow=4,ncol=2,byrow=TRUE)
 prob0 <- c( .2 , .4 , .1 , .3 )
 alpha <- alpha0[ rep( 1:TP , prob0*N) ,]
 # define guessing and slipping parameters
-guess <- round( runif(I, 0 , .4 ) , 2 )
-slip <- round( runif(I , 0 , .3 ) , 2 )
+guess <- round( stats::runif(I, 0 , .4 ) , 2 )
+slip <- round( stats::runif(I , 0 , .3 ) , 2 )
 # simulate data according to the DINA model
 dat <- CDM::sim.din( q.matrix=Q , alpha=alpha , slip=slip , guess=guess )$dat
 
@@ -628,7 +628,7 @@ for (ii in 1:I){
 Xdes[1,2,,] ; Xdes[7,2,,]
 # skill space definition
 delta.designmatrix <- diag(TP)
-Xlambda.init <- c( rep( qlogis( .2 ) , I ) , rep( qlogis( .8 ) , I ) )
+Xlambda.init <- c( rep( stats::qlogis( .2 ) , I ) , rep( stats::qlogis( .8 ) , I ) )
 
 # estimate DINA model with slca function
 mod1 <- slca( dat , Xdes=Xdes, delta.designmatrix=delta.designmatrix , 

@@ -104,7 +104,7 @@ mcdina <- function( dat , q.matrix , group =NULL ,
 		attr.patt <- skillclasses
 		maxAttr <- 1
 		# combinations
-		kombis <- combn( K , 2 )	
+		kombis <- utils::combn( K , 2 )	
 		KK <- ncol(kombis)
 		B <- NULL
 		for (kk in 1:KK){
@@ -229,7 +229,7 @@ mcdina <- function( dat , q.matrix , group =NULL ,
 					}
 			cat("\n" )				
 			cat("Maximum parameter change:" , round( max.par.change, 6), "\n")
-			flush.console() 			
+			utils::flush.console() 			
 				}
  	
 		}

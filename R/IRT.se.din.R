@@ -20,7 +20,7 @@ IRT.se.din <- function( object , extended = FALSE , parm=NULL ,
 	res$se <- sqrt( diag(v1)  )
 	
 	level1 <-  round( 100*( 1  - level ) / 2 , 1 )
-	quant1 <- abs( qnorm( ( 1-level) / 2) )
+	quant1 <- abs( stats::qnorm( ( 1-level) / 2) )
 	res[ , paste0( level1 , " %" ) ] <- res$est - quant1*res$se
 	res[ , paste0( 100-level1 , " %" ) ] <- res$est + quant1*res$se	
 	

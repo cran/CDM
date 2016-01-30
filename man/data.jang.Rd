@@ -50,10 +50,6 @@ ability: Validity arguments for Fusion Model application to LanguEdge assessment
 \emph{Language Testing}, \bold{26}, 31-73.
 }
 
-\section{Example Index}{
-\code{\link{gdina}} (Example 9)
-}
-
 
 \examples{
 \dontrun{	

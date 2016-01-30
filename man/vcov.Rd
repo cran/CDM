@@ -12,7 +12,7 @@
   empirical cross-product approach (see Paek & Cai, 2014).
   
   In addition, an S3 method \code{IRT.se} is defined which produces 
-  a comprised output of \code{vcov} and \code{confint}.
+  an extended output including \code{vcov} and \code{confint}.
 }
 
 
@@ -60,11 +60,11 @@ parameters a confidence interval is calculated.}
 %%}
 
 \value{
+   \code{coef}: A vector of paramters.
+   
    \code{vcov}: A covariance matrix. The corresponding coefficients can be extracted
    as the attribute \code{coef} from this object.
-   
-   \code{coef}: A vector of coefficients.
-   
+     
    \code{IRT.se}: A data frame containing coefficients, standard errors
      and confidence intervals for all parameters.
 	}

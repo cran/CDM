@@ -21,7 +21,7 @@ confint.din <- function(object, parm , level=.95 , extended=FALSE, ind.item.skil
    c1 <- attr( v1 , "coef" )                
    c1 <- c1[ ! duplicated(names(c1) ) ]
    se1 <- sqrt( diag( v1 ) )
-   q1 <- qnorm( 1 - (1-level)/2 )
+   q1 <- stats::qnorm( 1 - (1-level)/2 )
    res <- data.frame( c1 - q1*se1 , c1+q1*se1)
    rownames(res) <- names(c1)
    colnames(res) <- c("2.5 %" , "97.5 %")

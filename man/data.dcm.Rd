@@ -93,10 +93,10 @@ mirtmodel <- mirt::mirt.model("
 mod.pars <- mirt::mirt( dat , mirtmodel , pars="values")
   # use starting values of .20 for guessing parameter
 ind <- which( mod.pars$name == "d" )
-mod.pars[ind,"value"] <- qlogis(.20) # guessing parameter on the logit metric
+mod.pars[ind,"value"] <- stats::qlogis(.20) # guessing parameter on the logit metric
   # use starting values of .80 for anti-slipping parameter
 ind <- which( ( mod.pars$name \%in\% paste0("a",1:20 ) ) & (mod.pars$est) )
-mod.pars[ind,"value"] <- qlogis(.80) - qlogis(.20) 
+mod.pars[ind,"value"] <- stats::qlogis(.80) - stats::qlogis(.20) 
 mod.pars
   #** prior for the skill space distribution
 I <- ncol(dat)  

@@ -27,7 +27,7 @@
 	# b1 <- b / sqrt( ifelse( 1 - L^2 < 0 , .001 , 1-L^2 ))
 	b1 <- b / sqrt( 1-L^2 )
 	# calculate probabilities using the factor model
-	probs <- pnorm( L1 * matrix( theta.k , nrow= NB , ncol=TP , byrow=TRUE) - b1 )
+	probs <- stats::pnorm( L1 * matrix( theta.k , nrow= NB , ncol=TP , byrow=TRUE) - b1 )
 	probsL <- array( 0 , dim= c( NB  , 2 , TP ) )
 	probsL[,2,] <- probs
 	probsL[,1,] <- 1-probs
@@ -52,7 +52,7 @@
 	# process data
 	dat <- as.matrix(dat)
 	# calculate tau
-	tau <- - qnorm( colSums( dat * weights ) / sum( weights ) )
+	tau <- - stats::qnorm( colSums( dat * weights ) / sum( weights ) )
 	w2 <- sqrt(weights)
 	dat.resp <- 1 - is.na(dat)
 	dat[ dat.resp==0] <- 9
@@ -80,8 +80,8 @@
 	# subdata of dfr
 	dfr <- dfr[ dfr$item1 > dfr$item2 , ]
 	dfr <- dfr[ dfr$ftot > 0 , ]
-	dfr$qi1 <- qnorm( dfr$pi1)
-	dfr$qi2 <- qnorm( dfr$pi2)
+	dfr$qi1 <- stats::qnorm( dfr$pi1)
+	dfr$qi2 <- stats::qnorm( dfr$pi2)
 	# functions defined by Cengiz Zopluoglu   
 	L <- function(r,h,k) {(1/(2*pi*sqrt(1-r^2)))*exp(-((h^2-2*h*k*r+k^2)/(2*(1-r^2))))}
 	S <- function(x,r,h,k) { x-(L(r,h,k)*delta) }

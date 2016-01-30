@@ -20,8 +20,8 @@ din.deterministic <- function( dat , q.matrix , rule="DINA" , method="JML" ,
 	# compute latent responses
 	latresp <- compute.latent.response( attr.patt , q.matrix , rule)
 	# initial guessing and slipping parameters
-	guess <- runif(  I  , .1 , .15)
-	slip <- runif(  I  , .1 , .15)
+	guess <- stats::runif(  I  , .1 , .15)
+	slip <- stats::runif(  I  , .1 , .15)
 	max.increment <- 1
 	# initial latent response vector
 	latresp.est <- latresp[ rep(1,N) , ]
@@ -89,7 +89,7 @@ din.deterministic <- function( dat , q.matrix , rule="DINA" , method="JML" ,
 			if (method %in% c("JML","adaptive") ){	
 					cat(" | Max. param. change = " , round( max.increment,6) , "\n")
 												} else { cat("\n") }
-			flush.console()			
+			utils::flush.console()			
 					}				
 			}
 		##################################################################

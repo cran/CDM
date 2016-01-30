@@ -17,7 +17,7 @@
 	data1[ is.na(data1) ] <- 9
 	cat("************************************************************\n")
 	cat("Data preparation\n")
-	cat("Number of rows in data =" , nrow(data1) , "\n") ; flush.console()
+	cat("Number of rows in data =" , nrow(data1) , "\n") ; utils::flush.console()
 	item.patt.subj <- data1[,1]
 	for ( ii in 2:I){
 		item.patt.subj <- paste( item.patt.subj  , data1[,ii] , sep="")
@@ -77,7 +77,7 @@
 	data <- dat
 	dat[ dat.resp==0] <- 0
 	cat("Number of response patterns =" , nrow(dat) , "\n")
-	flush.console()
+	utils::flush.console()
 	res <- list( "weights"=weights , "dat" = dat , "dat.resp"=dat.resp ,
 		"data"=data , "item.patt" = item.patt )
 	return(res)

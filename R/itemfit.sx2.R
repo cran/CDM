@@ -122,17 +122,17 @@ itemfit.sx2 <- function( object , Eik_min=1 , progress=TRUE ){
 		r1 <- res$table2.ii
 		itemfit.stat[ ii , "S-X2" ] <- sum( r1$Nik * ( r1$oik - r1$eik )^2 / ( r1$eik * ( 1 - r1$eik)  + eps ) )
 		itemfit.stat[ ii , "df" ] <- nrow(r1) - npars[ii]
-		itemfit.stat[ii,"p"] <- 1 - pchisq( itemfit.stat[ ii , "S-X2" ] , df= itemfit.stat[ ii , "df" ] )		
+		itemfit.stat[ii,"p"] <- 1 - stats::pchisq( itemfit.stat[ ii , "S-X2" ] , df= itemfit.stat[ ii , "df" ] )		
 		itemfit.stat[ ii , "S-X2_df" ] <- itemfit.stat[ ii , "S-X2" ] /     itemfit.stat[ ii , "df" ]    
 		xg <-  itemfit.stat[ ii , "S-X2" ] - itemfit.stat[ ii , "df" ]    
 		itemfit.stat[ ii , "RMSEA" ] <- sqrt( (  ifelse( xg > 0 , xg , 0 )    ) / ( N - 1) / itemfit.stat[ ii , "df" ]  )
 		itemfit.stat[ii,"Nscgr"] <- nrow(r1)
 		itemfit.stat[ii,"Npars"] <- npars[ii]
 			
-		if (progress){ if (i3[ii] == 1 ){ cat("-") ; flush.console() } }
+		if (progress){ if (i3[ii] == 1 ){ cat("-") ; utils::flush.console() } }
 				}
 	if (progress){ cat("|\n") }
-    itemfit.stat[,"p.holm"] <- p.adjust( itemfit.stat[,"p"] , method="holm")			
+    itemfit.stat[,"p.holm"] <- stats::p.adjust( itemfit.stat[,"p"] , method="holm")			
 	res <- list( "itemfit.stat" = itemfit.stat , "itemtable" = itemtable , "I" = I )
 	class(res) <- "itemfit.sx2"
 	return(res)
@@ -169,13 +169,13 @@ plot.itemfit.sx2 <- function(x,ask=TRUE,...){
                         ", p = " , round( descii$p,3) ,  "\n S-X2/df = " , round( descii[,"S-X2_df"] , 3 )  ,
                         " | RMSEA = " , round( descii[,"RMSEA"] , 3 ) )
         itemtable.ii <- itemtable[ itemtable$itemindex == ii , ]
-        plot( itemtable.ii$score , itemtable.ii$oik , xlim = c(1,I-1) , ylim=c(0,1) , 
+        graphics::plot( itemtable.ii$score , itemtable.ii$oik , xlim = c(1,I-1) , ylim=c(0,1) , 
                 type="o" , pch=16 , xlab = "Score group" , ylab="Observed and expected frequency" ,
                 main = title.ii)
-        lines( itemtable.ii$score , itemtable.ii$eik , lty=2 , lwd=2)
-        legend( 1 , 1 , c("Observed frequency" , "Expected frequency" ) , pch=c(16,NA) ,
+        graphics::lines( itemtable.ii$score , itemtable.ii$eik , lty=2 , lwd=2)
+        graphics::legend( 1 , 1 , c("Observed frequency" , "Expected frequency" ) , pch=c(16,NA) ,
                 lty=1:2 , lwd=c(1,2) )
-        par( ask=ask)
+        graphics::par( ask=ask)
         }
     }
 ###################################################################################

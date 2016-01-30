@@ -44,14 +44,6 @@ of 8th grade students.
 %}
 
 
-\section{Example Index}{
-\code{\link{gdm}} (Example 2), 
-\code{\link[sirt:isop]{sirt::isop}} (Example 3),
-\code{\link[sirt:isop.scoring]{sirt::isop.scoring}} (Example 2),
-\code{\link[sirt:isop.test]{sirt::isop.test}} (Example 1)
-\code{\link[sirt:polychoric2]{sirt::polychoric2}} (Example 1)
-}
-
 
 \examples{
 \dontrun{

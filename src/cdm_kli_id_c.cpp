@@ -108,14 +108,17 @@ BEGIN_RCPP
      /// OUTPUT                  
        
        
-     return List::create(_["pjk"]=pjk ,   
-     		_["skillclasses"]= sc ,  
-     		_["kli"] = kli , _["hdist"] = hdist ,   
+     return Rcpp::List::create(_["pjk"]=pjk ,   
+     		Rcpp::_["skillclasses"]= sc ,  
+     		Rcpp::_["kli"] = kli , 
+                Rcpp::_["hdist"] = hdist ,   
      //		_["sum_hdist"] = sum_hdist ,   
-     		_["I"]=I , _["TP"] = TP , _["K"] = K,  
-     		_["glob_item"] = glob_item ,  
-     		_["attr_item"] = attr_item ,  
-     		_["attr_item_count"] = attr_item_count   
+     		Rcpp::_["I"]=I , 
+                Rcpp::_["TP"] = TP , 
+                Rcpp::_["K"] = K,  
+     		Rcpp::_["glob_item"] = glob_item ,  
+     		Rcpp::_["attr_item"] = attr_item ,  
+     		Rcpp::_["attr_item_count"] = attr_item_count   
      			) ;  
      //	   _["matrk"]=MATRK  , _["indexmatr"]=INDEXMATR ) ;     
      // return List::create(_["yM"]=YM , _["wM"]=WM ) ;     

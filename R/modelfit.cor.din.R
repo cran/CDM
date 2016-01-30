@@ -101,7 +101,7 @@ modelfit.cor.din <- function( dinobj , jkunits = 0 ){
 			f1jj <- modelfit.cor2( data=mod.jj$data , posterior=mod.jj$posterior , 
 							probs=mod.jj$pjk )									
 			ms.jack[,jj] <- f1jj$modelfit.stat[,1]
-			if ( progressbar_init[jj] == 1 ){ cat("-") ; flush.console() }
+			if ( progressbar_init[jj] == 1 ){ cat("-") ; utils::flush.console() }
 					}
 		cat("|\n")
 		res$modelfit.stat.jack <- ms.jack

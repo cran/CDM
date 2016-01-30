@@ -9,7 +9,7 @@ gdina.probitem <- function( Mj, Aj , delta , rule , linkfct , delta.summary ){
         # ii <- 1
         pjjt <- ( Mj[[ii]][[1]] %*% delta[[ii]] )[,1]
         names(pjjt) <- paste0("A",apply( Aj[[ii]]   , 1 , FUN = function(ll){ paste(ll , collapse="") } ) )
-        if (linkfct == "logit"){ pjjt <- plogis( pjjt ) }
+        if (linkfct == "logit"){ pjjt <- stats::plogis( pjjt ) }
         if (linkfct == "log"){ pjjt <- exp( pjjt ) }    
         pjj[[ii]] <- pjjt
         ljjj[ii] <- length(pjjt)

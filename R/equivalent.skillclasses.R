@@ -1,7 +1,6 @@
 
 #**********************************************************
 # calculates a latent response under the din function
-
 din.latent.response <- function( q.matrix , S , rule="DINA"){
   Q <- as.matrix(q.matrix)
   S <- as.matrix(S)
@@ -9,7 +8,7 @@ din.latent.response <- function( q.matrix , S , rule="DINA"){
   SQ <- S %*% t(Q)
   nums <- rowSums(Q)
   nums <- ifelse( rule=="DINO" , 1 , nums )
-  nums <- matrix( nums , nrow=nrow(SQ) , ncol=ncol(SQ) , byrow=T )
+  nums <- matrix( nums , nrow=nrow(SQ) , ncol=ncol(SQ) , byrow=TRUE )
   SQ <- 1 * ( SQ >= nums  )
   L <- t(SQ)
   colnames(L) <- rownames(S)
@@ -18,7 +17,6 @@ din.latent.response <- function( q.matrix , S , rule="DINA"){
 
 ###################################
 # calculation of equivalent skill classes
-
 din.equivalent.class <-function( q.matrix , rule="DINA"){
   Q <- q.matrix
   # Matrix with all skill classes

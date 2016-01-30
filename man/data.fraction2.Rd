@@ -53,10 +53,6 @@ See \code{\link{fraction.subtraction.data}} for more information
 about data source.
 }
 
-\section{Example Index}{
-\code{\link{gdm}} (Example 3)
-}
-
 
 \references{
   de la Torre, J. (2009). DINA model parameter estimation:

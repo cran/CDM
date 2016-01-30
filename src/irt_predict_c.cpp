@@ -92,8 +92,11 @@ BEGIN_RCPP
      // OUTPUT              
                
      return Rcpp::List::create(   
-         _["pred"] = pred , _["probs_categ"] = probs_categ ,    
-         _["var1"] = var1 , _["resid1"] = resid1 , _["sresid1"] = sresid1  
+         Rcpp::_["pred"] = pred , 
+         Rcpp::_["probs_categ"] = probs_categ ,    
+         Rcpp::_["var1"] = var1 , 
+         Rcpp::_["resid1"] = resid1 , 
+         Rcpp::_["sresid1"] = sresid1  
          ) ;    
        
      // maximal list length is 20!  

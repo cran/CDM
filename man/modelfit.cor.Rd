@@ -277,8 +277,8 @@ q.matrix <- Q[ rep(1:3,4) , ]
 I <- nrow(q.matrix)
 
 # simulate data
-guess <- runif(I, 0 , .3 )
-slip <- runif( I , 0 , .4 )
+guess <- stats::runif(I, 0 , .3 )
+slip <- stats::runif( I , 0 , .4 )
 N <- 150   # number of persons
 dat <- sim.din( N=N, q.matrix=q.matrix , slip=slip , guess=guess )$dat
 

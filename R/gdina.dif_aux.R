@@ -34,7 +34,7 @@ gdina.dif.aux <- function( ocontrol , gg , data ){
         if (linkfct == "logit" ){ 
                 pjjj[ pjjj > 1-eps ] <- 1 - eps
                 pjjj[ pjjj < eps ] <- eps
-                pjjj <- qlogis( pjjj ) 
+                pjjj <- stats::qlogis( pjjj ) 
                                 }
         #*****
     if (linkfct == "log" ){ 
@@ -53,7 +53,7 @@ gdina.dif.aux <- function( ocontrol , gg , data ){
                                 }
 								
 				pjj_exp <- ( Mjjj %*% delta.jj )[,1]
-				if ( linkfct == "logit" ){ pjj_exp <- plogis( pjj_exp) }
+				if ( linkfct == "logit" ){ pjj_exp <- stats::plogis( pjj_exp) }
 				if ( linkfct == "log" ){ pjj_exp <- exp( pjj_exp) }	
 		# data frame with counts and expected probabilities
 		prob_exp[[jj]] <- data.frame( "freq" = Ilj.ast / sum( Ilj.ast) , "prob" = pjj_exp )
@@ -79,8 +79,8 @@ gdina.dif.aux <- function( ocontrol , gg , data ){
                                 p.ajast.xi[,kk] <- rowSums( pg1 ) 
                                         }
                                 }   
-                Rlj.ast <- aggregate( R.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
-                Ilj.ast <- aggregate( I.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
+                Rlj.ast <- stats::aggregate( R.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
+                Ilj.ast <- stats::aggregate( I.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
                 pjjj <- Rlj.ast[,2] / Ilj.ast[,2]       
                 pjjjM <- outer( rep(1,IP) , pjjj ) + 10^(-20)
                 

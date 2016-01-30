@@ -112,7 +112,7 @@ a <- rep(1,I)
 a[4] <- .4
 N <- 1000
 library(sirt)
-dat <- sirt::sim.raschtype( theta= rnorm(N) , b=b , fixed.a=a)
+dat <- sirt::sim.raschtype( theta= stats::rnorm(N) , b=b , fixed.a=a)
 
 #*** 1PL model estimated with gdm
 mod1 <- gdm( dat , theta.k=seq(-6,6,len=21) , irtmodel="1PL" )

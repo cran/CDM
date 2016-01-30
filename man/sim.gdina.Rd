@@ -15,6 +15,8 @@ classes \eqn{\alpha} is represented by an underlying multivariate normal distrib
 covariance matrix \code{cov.alpha} must be specified.
 Alternatively, a matrix of skill classes \code{alpha}
 can be given as an input.
+
+Note that this version of \code{sim.gdina} only works for dichotomous attributes.
 }
 \usage{
 sim.gdina(n, q.matrix, delta, link = "identity",  thresh.alpha=NULL, 

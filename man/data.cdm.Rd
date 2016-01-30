@@ -95,21 +95,6 @@ attributes.
 %}
 
 
-\section{Example Index}{
-
-%%% data.si01
-\emph{Dataset} \code{data.cdm01} 
-
-\code{\link{mcdina}} (Example 1)
-
-
-%%% data.si02
-\emph{Dataset} \code{data.cdm02} 
-
-\code{\link{mcdina}} (Example 3)
-
-
-}
 
 %\examples{
 %data(data.cdm01)

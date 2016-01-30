@@ -15,7 +15,7 @@ function( q.matrix , reparametrization="B" ){
     h1 <- 2
 	if (K>=2 ){
 		for(ll in 1:(K-1) ){
-			lk <- combn( 1:K, ll ) 
+			lk <- utils::combn( 1:K, ll ) 
 			lk
 			for ( jj in 1:( ncol(lk) ) ){ 
 				attr.patt[ h1, lk[,jj] ] <- 1

@@ -37,9 +37,9 @@ personfit.appropriateness <- function( data , probs , skillclassprobs , h = .001
             max.increment=max.increment , h=h , progress=progress )
     # summaries
 	dfr <- data.frame( "appr.type" = c(1,0) , "M.rho" = c( mean(res1$rho) , mean(res0$rho)) ,
-					"SD.rho" = c( sd( res1$rho) , sd(res0$rho) )
+					"SD.rho" = c( stats::sd( res1$rho) , stats::sd(res0$rho) )
 						)
-	dfr$median.SE.rho <- c( median( res1$se.rho) , median(res0$se.rho) )					
+	dfr$median.SE.rho <- c( stats::median( res1$se.rho) , stats::median(res0$se.rho) )					
 	dfr$prop.sign.T2 <- c( mean(res1$p<.05) , mean(res0$p <.05) )
 	rownames(dfr) <- c("Spuriously High Scorers" ,
 					    "Spuriously Low Scorers" )
@@ -57,33 +57,33 @@ summary.personfit.appropriateness <- function( object , digits=3 , ... ){
 #***********************************
 # plot method
 plot.personfit.appropriateness <- function( x , cexpch=.65 , ... ){
-	par(mfrow=c(2,2)) 
+	graphics::par(mfrow=c(2,2)) 
 	# type=1	
 	x1 <- x$personfit.appr.type1     
 	N1 <- nrow(x1)	
-	hist( x1$rho , main = "Appropriateness Type 1",
+	graphics::hist( x1$rho , main = "Appropriateness Type 1",
 		freq=TRUE, breaks=seq(0,1 , length=20) , xlab=expression(rho) ,
 		ylim=c(0,N1) )
-	plot( c(0,1) , c(0,.5) , type="n" , xlab=expression(rho) , ylab= expression( p( T[2] ) ) ,
+	graphics::plot( c(0,1) , c(0,.5) , type="n" , xlab=expression(rho) , ylab= expression( p( T[2] ) ) ,
 				main="Spuriously High Scorer"  )
 	x1a <- x1[ x1$p >= .05 , ]
-	points( x1a$rho , x1a$p , pch=1 , cex = cexpch )
+	graphics::points( x1a$rho , x1a$p , pch=1 , cex = cexpch )
 	x1a <- x1[ x1$p < .05 , ]
-	points( x1a$rho , x1a$p , pch=17 , cex = cexpch , col=2)
+	graphics::points( x1a$rho , x1a$p , pch=17 , cex = cexpch , col=2)
 	# type=0
 	x1 <- x$personfit.appr.type0     
-	hist( x1$rho , main = "Appropriateness Type 0",
+	graphics::hist( x1$rho , main = "Appropriateness Type 0",
 		freq=TRUE, breaks=seq(0,1 , length=20) , xlab=expression(rho) ,
 		ylim=c(0,N1) )
 
-	plot( c(0,1) , c(0,.5) , type="n" , xlab=expression(rho) , ylab= expression( p( T[2] ) ) ,
+	graphics::plot( c(0,1) , c(0,.5) , type="n" , xlab=expression(rho) , ylab= expression( p( T[2] ) ) ,
 				main="Spuriously Low Scorer")
 	x1a <- x1[ x1$p >= .05 , ]
-	points( x1a$rho , x1a$p , pch=1 , cex = cexpch )
+	graphics::points( x1a$rho , x1a$p , pch=1 , cex = cexpch )
 	x1a <- x1[ x1$p < .05 , ]
-	points( x1a$rho , x1a$p , pch=17 , cex = cexpch , col=2)
+	graphics::points( x1a$rho , x1a$p , pch=17 , cex = cexpch , col=2)
 
-	par( mfrow=c(1,1))
+	graphics::par( mfrow=c(1,1))
 		}
 ####################################################################################
 		
@@ -121,7 +121,7 @@ plot.personfit.appropriateness <- function( x , cexpch=.65 , ... ){
         iter <- iter+1
         if (progress){
           cat("\nIteration" , iter , "| Max. rho parameter change =" , round( abs.incr , 8 ) ) ;
-          flush.console()
+          utils::flush.console()
                     }
                    }
 		cat("\n")
@@ -137,7 +137,7 @@ plot.personfit.appropriateness <- function( x , cexpch=.65 , ... ){
 		res <- data.frame( "rho" = rho , "se.rho"=sqrt( 1 / abs( deriv2 ) ) , 
 				"ll.rho" = ll0 , "ll.0" = ll.rho0 , "T2" = 2*(ll0-ll.rho0)  )  
 		res[ res$T2 < 0 , "T2" ] <- 0				
-		res$p <- ( 1 - pchisq( abs( res$T2 ) , df=1) ) / 2				 
+		res$p <- ( 1 - stats::pchisq( abs( res$T2 ) , df=1) ) / 2				 
 		return(res)
         }
 #########################################################################################

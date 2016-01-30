@@ -67,8 +67,8 @@ BEGIN_RCPP
      /// OUTPUT                  
        
        
-     return List::create(  
-     		_["fyiqk"] = fyiqk  
+     return Rcpp::List::create(  
+     		Rcpp::_["fyiqk"] = fyiqk  
      			) ;  
      
 END_RCPP
@@ -155,11 +155,11 @@ BEGIN_RCPP
      ///////////////////////////////////////  
      /// OUTPUT                  
        
-     return List::create(  
-     		_["LL"] = LL ,  
-     		_["fqkyi"] = fqkyi ,  
-     		_["nik"] = nik ,  
-             _["count_pik"] = pik1  
+     return Rcpp::List::create(  
+     		Rcpp::_["LL"] = LL ,  
+     		Rcpp::_["fqkyi"] = fqkyi ,  
+     		Rcpp::_["nik"] = nik ,  
+                Rcpp::_["count_pik"] = pik1  
     			) ;  
      
 END_RCPP

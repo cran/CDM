@@ -349,7 +349,7 @@
 		# ARb 2014-01-14 inclusion
 		ntheta <- ntheta / sum(ntheta )		
 		lntheta <- log(ntheta+eps)
-		mod <- lm( lntheta ~ 0 + Z , weights = ntheta )
+		mod <- stats::lm( lntheta ~ 0 + Z , weights = ntheta )
 		covbeta <- vcov(mod)		
 		beta <- coef(mod)		
 		pi.k[,gg] <- exp( Z %*% beta ) / Ngroup[gg]
@@ -404,7 +404,7 @@
 # cat( mg , sdg , "\n" )						
 #	if (standardized.latent){ mg <- 0 ; sdg <- 0 }					
 #		if (gg==1){ mg <- 0 }			
-		pi.k[,gg] <- dnorm( theta.k[,1] ,mean=mg , sd=sdg)		
+		pi.k[,gg] <- stats::dnorm( theta.k[,1] ,mean=mg , sd=sdg)		
 		pi.k[,gg] <- pi.k[,gg] / sum( pi.k[,gg] )
 		
 			}			
@@ -444,7 +444,7 @@
 		
 		if ( ! is.null(Sigma.constraint)){
 		if( dim(s.gg)[1] > 0 ){		
-			c1 <- cov2cor( Sigma.gg )
+			c1 <- stats::cov2cor( Sigma.gg )
 				d1 <- diag(Sigma.gg)
 				s.gg1 <- s.gg[ s.gg[,1] == s.gg[,2] , ]
 				if ( nrow(s.gg1) > 0 ){

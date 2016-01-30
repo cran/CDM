@@ -65,7 +65,7 @@ din.validate.qmatrix <- function( object , digits = 3 , print=TRUE){
 						)
     coef.modified[ , -1 ] <- round( coef.modified[,-1] , digits )
 	# calculate maximum delta index per item
-	a1 <- aggregate( coef.modified$IDI , list( coef.modified$itemindex ) , max )
+	a1 <- stats::aggregate( coef.modified$IDI , list( coef.modified$itemindex ) , max )
 	coef.modified$max.IDI <- a1[ coef.modified$itemindex , 2]
 	coef.modified <- coef.modified[ order( coef.modified$itemindex - coef.modified$IDI ) , ]	
 	# print output
