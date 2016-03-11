@@ -4,7 +4,8 @@
 # summary method for objects of class "din"                                    #
 ################################################################################
 summary.din <-
-function(object, top.n.skill.classes = 6, overwrite = FALSE, ...){
+function(object, top.n.skill.classes = 6, overwrite = FALSE, 
+    ...){
 
 # Call: generic
 # Input: 
@@ -30,6 +31,7 @@ function(object, top.n.skill.classes = 6, overwrite = FALSE, ...){
 ################################################################################
 
 	log.file <- NULL
+#	osink( file = file , suffix = paste0( "__SUMMARY.Rout") )
 
 	CALL <- paste(object$display,"on", ncol(object$data), "items for", nrow(object$skill.patt),"attributes")
 	
@@ -94,10 +96,10 @@ function(object, top.n.skill.classes = 6, overwrite = FALSE, ...){
 #			"SKILL.CLASSES"=SKILL.CLASSES, 
 			"AIC"=AIC, "BIC"=BIC, "item" = item , 
 			"Npars" = object$Npars , 
-			"log.file" = log.file, "din.object" = object,
+			"log.file" = file, "din.object" = object,
 			"start.analysis"=object$start.analysis ,
 			"end.analysis"=object$end.analysis
-			)
+			)			
 	class(out) <- "summary.din"
 	return(out)
 }

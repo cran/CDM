@@ -2,12 +2,17 @@
 
 ##################################################################
 # Summary of the GDINA model
-summary.mcdina <- function( object , rdigits = 4 , ... ){
+summary.mcdina <- function( object , digits = 4 , file = NULL , ... ){
 	#-------------------------------------------------------
 	# INPUT:
 	# object	... result from GDINA analysis
 	# rdigits 	... number of digits for rounding parameter estimates
 	#-------------------------------------------------------
+	rdigits <- digits
+	
+ 	osink( file = file , suffix = paste0( "__SUMMARY.Rout") )
+
+
 	# Parameter summary
 	cat("----------------------------------------------------------------------------\n")
 	d1 <- utils::packageDescription("CDM")
@@ -81,6 +86,7 @@ summary.mcdina <- function( object , rdigits = 4 , ... ){
 					}
 	print(xt)
 
+   csink( file = file )		
 		
 		}
 ##########################################################################

@@ -26,9 +26,10 @@
     the method is supposed to overwrite an existing \code{log.file}. 
     If the \code{log.file} exists and \code{overwrite} is 
     \code{FALSE}, the user is asked to confirm the overwriting.  }
-            
+
+    
   \item{\dots}{Optional parameters to be passed to or from other
-    methods will be ignored.  }
+    methods will be ignored.}
 }
 
 \details{

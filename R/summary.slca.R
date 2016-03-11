@@ -2,8 +2,11 @@
 
 #*******************************************************
 # Summary for slca object
-summary.slca <- function( object , ... ){
+summary.slca <- function( object , file = NULL , ... ){
     # object      ... object from rasch.mml                #
+	
+ 	osink( file = file , suffix = paste0( "__SUMMARY.Rout") )
+
     cat("-----------------------------------------------------------------------------\n")
     d1 <- utils::packageDescription("CDM")
 	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n\n" )
@@ -75,8 +78,11 @@ summary.slca <- function( object , ... ){
 		obji <- object$pi.k
 		obji <- round( obji , 4)
 		print( obji )   
-
+		
 #  cat("\nMean of RMSEA item fit:" , 
 #     round( object$mean.rmsea ,3 ) , "\n")		        
+
+   csink( file = file )
+
 			}
 #*******************************************************

@@ -25,7 +25,7 @@ mcdina(dat, q.matrix, group = NULL, itempars = "gr", weights = NULL,
     reduced.skillspace=TRUE , conv.crit = 1e-04, 
     dev.crit = 0.1, maxit = 1000, progress = TRUE)
 
-\method{summary}{mcdina}(object, rdigits=4 ,  \dots)
+\method{summary}{mcdina}(object, digits=4 , file = NULL ,  \dots)
 
 \method{print}{mcdina}(x, \dots)  
 }
@@ -83,9 +83,11 @@ Maximum number of iterations.
   \item{object}{
 Object of class \code{mcdina}.
 }
-  \item{rdigits}{
+  \item{digits}{
 Number of digits to display in \code{summary.mcdina}
 }
+\item{file}{Optional file name for a file in which \code{summary}
+should be sinked.}      
 \item{x}{Object of class \code{mcdina}}
 \item{\dots}{Further arguments to be passed.}
 }

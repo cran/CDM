@@ -267,6 +267,9 @@ zero to random initial values with \code{set.seed(seed)}.}
   
   See the \pkg{NPCD} package for joint maximum likelihood estimation
   of the DINA, DINO and NIDA model.
+  
+  See the \code{dina::DINA_Gibbs} function in the \pkg{dina}
+  package for MCMC based estimation of the DINA model.
 }
 
 \examples{

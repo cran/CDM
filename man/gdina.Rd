@@ -29,7 +29,7 @@ gdina(data, q.matrix, skillclasses=NULL, conv.crit=0.0001, dev.crit=.1 ,  maxit=
     fac.oldxsi=0 , avoid.zeroprobs = FALSE , seed=0, save.devmin=TRUE ,
     calc.se=TRUE , ...)
 
-\method{summary}{gdina}(object, rdigits = 4 ,  \dots)
+\method{summary}{gdina}(object, digits = 4 , file = NULL ,  \dots)
 
 \method{plot}{gdina}(x , ask=FALSE ,  \dots)
 
@@ -193,7 +193,9 @@ errors should be calculated.}
 
   \item{object}{A required object of class \code{gdina}, obtained
     from a call to the function \code{\link{gdina}}.  }
-  \item{rdigits}{Number of digits after decimal separator to display.  }
+  \item{digits}{Number of digits after decimal separator to display.  }
+\item{file}{Optional file name for a file in which \code{summary}
+should be sinked.}      
   \item{x}{A required object of class \code{gdina} }
   \item{ask}{A logical indicating whether every separate item should
   be displayed in \code{plot.gdina}} 

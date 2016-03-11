@@ -1,7 +1,10 @@
 #*******************************************************
 # Summary for gdm object
-summary.gdm <- function( object , ... ){
-    # object      ... object from rasch.mml                #
+summary.gdm <- function( object , file = NULL , ... ){
+    
+ 	osink( file = file , suffix = paste0( "__SUMMARY.Rout") )
+
+
     cat("-----------------------------------------------------------------------------\n")
     d1 <- utils::packageDescription("CDM")
 	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n\n" )	
@@ -92,5 +95,7 @@ summary.gdm <- function( object , ... ){
 		print( obji )   
   cat("\nMean of RMSEA item fit:" , 
      round( object$mean.rmsea ,3 ) , "\n")		        
+	 
+   csink( file = file )		 
 			}
 #*******************************************************

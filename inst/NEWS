@@ -15,11 +15,30 @@ CDM package
 mailto:
 robitzsch@ipn.uni-kiel.de
 
-For reporting a bug, please always provide a reproducible R script 
-and (if necessary) a corresponding dataset.
+For reporting a bug, please always provide a reproducible 
+R script and (if necessary) a corresponding dataset.
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+--------------------------------------------------------------
+CDM 4.8 (2016-03-10)   --  CRAN CDM 4.8-0
+--------------------------------------------------------------
+
+FIXED * fixed a bug in 'itemfit.sx2' for fitted objects in TAM
+NOTE  * slightly changed output of 'print' methods
+NOTE  * changed argument 'rdigits' to 'digits' in 'summary'
+        method if necessary
+NOTE  * included utility functions 'osink' and 'csink' for 
+        writing output of 'summary' into a file
+NOTE  * allowed argument 'file' in 'summary' method for objects 
+        of class 'gdina', 'gdm', 'mcdina' and 'slca'
+ADDED * included function 'numerical_Hessian' for a numerical
+        evaluation of the Hessian matrix
+        
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: osink (1),
+        numerical_Hessian (1)
 
 
 --------------------------------------------------------------

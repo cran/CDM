@@ -23,7 +23,7 @@ slca(data, group = NULL, weights = rep(1, nrow(data)), Xdes,
   maxiter = 1000, conv = 10^(-5), globconv = 10^(-5), msteps = 4, convM = 5e-04, 
   decrease.increments = FALSE, oldfac=0, seed=NULL , progress=TRUE , ...)
   
-\method{summary}{slca}(object, \dots)
+\method{summary}{slca}(object, file = NULL , \dots)
 
 \method{print}{slca}(x, \dots)    
 
@@ -110,6 +110,8 @@ of \code{NULL} corresponds to a random seed.}
 \item{progress}{An optional logical indicating whether the function
     should print the progress of iteration in the estimation process.  }
   \item{object}{A required object of class \code{slca}}
+\item{file}{Optional file name for a file in which \code{summary}
+should be sinked.}        
   \item{x}{A required object of class \code{slca}}
   \item{\dots}{Optional parameters to be passed to or from other
     methods will be ignored.  }  

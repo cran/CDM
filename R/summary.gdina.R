@@ -2,12 +2,17 @@
 
 ##################################################################
 # Summary of the GDINA model
-summary.gdina <- function( object , rdigits = 4 , ... ){
+summary.gdina <- function( object , digits = 4 , file = NULL , ... ){
 	#-------------------------------------------------------
 	# INPUT:
 	# object	... result from GDINA analysis
 	# rdigits 	... number of digits for rounding parameter estimates
 	#-------------------------------------------------------
+	rdigits <- digits
+	
+ 	osink( file = file , suffix = paste0( file, "__SUMMARY.Rout") )
+
+
 	# Parameter summary
     cat("---------------------------------------------------------------------------------------------------------- \n")
 	d1 <- utils::packageDescription("CDM")
@@ -115,8 +120,10 @@ summary.gdina <- function( object , rdigits = 4 , ... ){
 			cat("Higher Order GDINA Model ")
 			cat("\n  Attribute Response Function Parameters \n\n")
 			print( round( object$attr.rf,3) )
-					}
-		
+			}
+
+   csink( file = file )	
+			
 		}
 ##########################################################################
 

@@ -86,7 +86,7 @@ cognitive diagnosis by proximity to ideal response patterns.
 For estimating the mixed DINA/DINO model using marginal maximum
 likelihood estimation see \code{\link{din}}.
 
-See also the \code{JMLE} function in the \pkg{NPCD} package for 
+See also the \code{NPCD::JMLE} function in the \pkg{NPCD} package for 
 joint maximum likelihood estimation of the DINA or the DINO model.
 }
 

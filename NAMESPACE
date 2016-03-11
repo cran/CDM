@@ -86,6 +86,7 @@ importFrom(sfsmisc, QUnif)
 export(
     cdi.kli,
     cdm.est.class.accuracy,
+    csink,
     din, 
     din.deterministic,
     din.equivalent.class,
@@ -122,6 +123,8 @@ export(
     modelfit.cor,
     modelfit.cor.din,
     modelfit.cor2, 
+    numerical_Hessian,
+    osink,
     personfit.appropriateness,
     sequential.items,
     sim.din, 

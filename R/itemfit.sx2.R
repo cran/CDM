@@ -81,6 +81,12 @@ itemfit.sx2 <- function( object , Eik_min=1 , progress=TRUE ){
 		data <- object$resp
 		I <- ncol(data)
 		pi.k <-  object$pi.k
+		if ( is.matrix(pi.k) ){			
+			if (ncol(pi.k) > 1){
+				cat("Used first group for assessment of fit.\n")
+					}
+			pi.k <- pi.k[,1]
+				}
 		pjk <- aperm( object$rprobs , c(3,1,2) )
 		npars <- rep(1,I)
 		if ( object$irtmodel == "2PL"){ npars <- rep(2,I) }

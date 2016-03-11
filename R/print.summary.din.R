@@ -62,7 +62,9 @@ if(is.null(x$log.file)){
 ################################################################################
 # logfile output                                                               #
 ################################################################################
-    tr <- try({sink(file = x$log.file)})
+    # tr <- try({sink(file = x$log.file)})
+	tr <- try({sink(file = paste0( x$log.file , "__SUMMARY.Rout") )})
+
     if(is.null(tr)){
       gowidth <- getOption("width")
       options(width = 10000)

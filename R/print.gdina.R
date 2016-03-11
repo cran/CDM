@@ -3,7 +3,11 @@
 ################################################################################
 print.gdina <-
 function(x, ... ){
-	cat("Estimation of GDINA Model\n")
+	cat("Estimation of GDINA Model\n\n")
+	
+    d1 <- utils::packageDescription("CDM")
+	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n" )	
+	
 	cat("\nCall:\n", paste(deparse(x$call), sep = "\n", collapse = "\n"), 
 				"\n\n", sep = "")
 	#*** parameters
@@ -13,8 +17,8 @@ function(x, ... ){
 	cat(paste0("Number of skill dimensions = " , ncol(x$q.matrix) , "\n") )	
 	cat(paste0("Number of skill classes = " , nrow(x$attribute.patt) , "\n") )		
 	cat(paste0("Number of parameters = " , x$Npars , "\n") )
-	cat(paste0("  Number of item parameters = " , x$Nipar , "\n") )
-	cat(paste0("  Number of skill distribution parameters = " , 
+	cat(paste0("  # item parameters = " , x$Nipar , "\n") )
+	cat(paste0("  # skill distribution parameters = " , 
 				x$Nskillpar , "\n") )
 	#*** likelihood
 	cat( paste0( "\nLog-Likelihood = " , round( x$loglike ,2 ) , "\n") )

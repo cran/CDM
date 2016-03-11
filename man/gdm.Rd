@@ -25,7 +25,7 @@ gdm( data, theta.k, irtmodel="2PL", group=NULL, weights=rep(1, nrow(data)),
     maxiter=1000,  conv=10^(-5), globconv=10^(-5), msteps=4 , convM=.0005 ,
     decrease.increments = FALSE , use.freqpatt=FALSE , progress=TRUE , ...) 
 
-\method{summary}{gdm}(object, \dots)
+\method{summary}{gdm}(object, file = NULL , \dots)
 
 \method{print}{gdm}(x, \dots)
 
@@ -172,6 +172,8 @@ Global deviance convergence criterion
  	progress of iteration in the estimation process. 
 }		
   \item{object}{A required object of class \code{gdm}}
+\item{file}{Optional file name for a file in which \code{summary}
+should be sinked.}        
   \item{x}{A required object of class \code{gdm}}
 \item{perstype}{Person paramter estimate type. Can be either
 \code{"EAP"}, \code{"MAP"} or \code{"MLE"}.} 
