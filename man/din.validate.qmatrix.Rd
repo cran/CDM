@@ -77,7 +77,7 @@ See also the \code{Qrefine} function in the \pkg{NPCD} package.
 
 \examples{
 #############################################################################
-# SIMULATED EXAMPLE 1: Detection of a mis-specified Q-matrix
+# EXAMPLE 1: Detection of a mis-specified Q-matrix
 #############################################################################
 
 set.seed(679)

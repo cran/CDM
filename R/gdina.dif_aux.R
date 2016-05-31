@@ -12,6 +12,11 @@ gdina.dif.aux <- function( ocontrol , gg , data ){
 	aggr.attr.patt <- ocontrol$aggr.attr.patt
 	IP <- ocontrol$IP
 	p.aj.xi <- ocontrol$p.aj.xi[,,gg]
+	
+	ind1 <- match( ocontrol$item.patt , ocontrol$item.patt.subj)
+	ind1 <- stats::na.omit(ind1)
+	p.aj.xi <- p.aj.xi[ ind1 , ]
+	
 	item.patt.split <- ocontrol$item.patt.split
 	resp.patt <- ocontrol$resp.patt
 	item.patt.freq <- ocontrol$item.patt.freq[,gg]
@@ -24,7 +29,7 @@ gdina.dif.aux <- function( ocontrol , gg , data ){
 	I.lj <- ocontrol$I.lj.gg[,,gg]
     # calculation of expected counts
     R.ljM <- R.lj %*% aggr.patt.designmatrix
-    I.ljM <- I.lj %*% aggr.patt.designmatrix
+    I.ljM <- I.lj %*% aggr.patt.designmatrix	
     for (jj in 1:J){    # begin item
         Ajjj <- Aj[[jj]]
         Mjjj <- Mj[[jj]][[1]]
@@ -73,7 +78,7 @@ gdina.dif.aux <- function( ocontrol , gg , data ){
                 p.ajast.xi <- matrix( 0 , nrow=IP , ncol = M1 )
                 for (kk in 1:M1){
                     pg1 <-  PAJXI[ , apjj == kk  ]                  
-                    if ( is.vector(pg1)){ 
+                    if ( is.vector(pg1) ){ 
                                 p.ajast.xi[,kk] <- pg1 
                                     } else {
                                 p.ajast.xi[,kk] <- rowSums( pg1 ) 
@@ -107,7 +112,6 @@ gdina.dif.aux <- function( ocontrol , gg , data ){
                             }
                 varmat.palj[[jj]] <- Ijj <- a1
                 Wj <- diag( Ilj.ast[,2] )   
-
                 if ( ( method == "ULS" ) ){             
                     x1 <- t(Mjjj) %*% Mjjj  
                     diag(x1) <- diag(x1) + 10^(-8)                      

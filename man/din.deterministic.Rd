@@ -92,7 +92,7 @@ joint maximum likelihood estimation of the DINA or the DINO model.
 
 \examples{
 #############################################################################
-# SIMULATED EXAMPLE 1: 13 items and 3 attributes
+# EXAMPLE 1: 13 items and 3 attributes
 #############################################################################
 
 set.seed(679)

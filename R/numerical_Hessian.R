@@ -1,11 +1,12 @@
 
 ##############################################################################
 # numerical computation of the Hessian matrix
-numerical_Hessian <- function(par , FUN , h = 1E-5, gradient=FALSE){
+numerical_Hessian <- function(par , FUN , h = 1E-5, gradient=FALSE, 
+      hessian = TRUE , ... ){
 
 	NP <- length(par)
 	
-	f0 <- FUN( x = par )
+	f0 <- FUN( x = par, ... )
 	fh <- rep(NA,NP)    # f(x+h)
 	f2h <- rep(NA,NP)   # f(x+2*h)
 	hess <- matrix(NA,nrow=NP , ncol=NP)
@@ -20,12 +21,12 @@ numerical_Hessian <- function(par , FUN , h = 1E-5, gradient=FALSE){
 		# ii <- 1
 		par1 <- par
 		par1[ii] <- par[ii] + h
-		fh[ii] <- FUN( x = par1 )
+		fh[ii] <- FUN( x = par1 , ...)
 		}
     
 	#--- computation of the gradient
 	if (gradient){
-		res <- ( fh - f0 ) / h
+		grad1 <- res <- ( fh - f0 ) / h
 				}
 	
 	#------
@@ -36,7 +37,7 @@ numerical_Hessian <- function(par , FUN , h = 1E-5, gradient=FALSE){
 	#            = ( F(x+h,y+h) - F(x,y+h) - F(x+h,y) + F(x,y+h) ) / h^2 
 
 	#---- hessian
-	if (!gradient){
+	if ( hessian ){
 		
 		fh1 <- matrix( fh , nrow=NP , ncol=NP, byrow=TRUE)
 		fh2 <- matrix( fh , nrow=NP , ncol=NP, byrow=FALSE)
@@ -45,7 +46,7 @@ numerical_Hessian <- function(par , FUN , h = 1E-5, gradient=FALSE){
 		for (ii in 1:NP){
 			par1 <- par
 			par1[ii] <- par[ii] + 2*h
-			f2h[ii] <- FUN( x = par1 )
+			f2h[ii] <- FUN( x = par1 , ... )
 			}	
 		#--- computation f(x+h,y+h) 	
 		for (ii in 1:NP){
@@ -54,7 +55,7 @@ numerical_Hessian <- function(par , FUN , h = 1E-5, gradient=FALSE){
 			par1 <- par
 			par1[ii] <- par[ii] + h
 			par1[jj] <- par[jj] + h
-			fhh[ii,jj] <- fhh[jj,ii] <- FUN( x = par1 )
+			fhh[ii,jj] <- fhh[jj,ii] <- FUN( x = par1 , ... )
 				}
 			}	
 			}
@@ -64,6 +65,10 @@ numerical_Hessian <- function(par , FUN , h = 1E-5, gradient=FALSE){
 		diag(hess) <- ( f2h - 2*fh + f0)/ h^2		
 		res <- hess
 		}
+	
+	if ( gradient & hessian ){
+		res <- list( "grad" = grad1 , "hessian" = hess)	
+			}
 	
 	return(res)
 

@@ -109,7 +109,7 @@ rdes <- IRT.repDesign( data= dat,  wgt = "TOTWGT" , jktype="JK_TIMSS" ,
 str(rdes)
 
 #############################################################################
-# SIMULATED EXAMPLE 2: Bootstrap resampling
+# EXAMPLE 2: Bootstrap resampling
 #############################################################################
 
 data(sim.qmatrix)

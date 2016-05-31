@@ -9,7 +9,7 @@ function( data, q.matrix, skillclasses=NULL , conv.crit = 0.0001,
 					dev.crit = .1 , maxit = 1000,
 					linkfct = "identity" , Mj = NULL , 
 					group = NULL , 
-					method = "WLS" , 
+					method = NULL , 
 					delta.init = NULL , 
 					delta.fixed = NULL ,
 					delta.designmatrix = NULL , 
@@ -25,8 +25,11 @@ function( data, q.matrix, skillclasses=NULL , conv.crit = 0.0001,
                     weights = rep( 1, nrow( data ) ),  rule = "GDINA", 
                     progress = TRUE , 
 					progress.item = FALSE , 
+					mstep_iter = 10 ,
+					mstep_conv = 1E-4 , 
 					increment.factor = 1.01 ,
 					fac.oldxsi = 0 ,
+					max.increment = .3 ,
 					avoid.zeroprobs = FALSE , 
 					seed = 0 , 		
 					save.devmin=TRUE , calc.se = TRUE ,
@@ -65,9 +68,9 @@ function( data, q.matrix, skillclasses=NULL , conv.crit = 0.0001,
 # progress: an optional logical indicating whether the function should print the progress of iteration.
 
 #	skillclasses <- NULL
+		CALL <- match.call()
 
 
-max.increment <- .5
 # increment.factor <- 1.05
 
 if (progress){
@@ -110,12 +113,24 @@ if (progress){
 				}
 	# estimation of a reduced RUM model
     rrum.params <- rrum.model <- FALSE	
+	
+	
+	
 	if ( any( rule  == "RRUM" ) ){
 		rule <- "ACDM" 
 		linkfct <- "log"
+		if ( is.null(method) ){
+			method <- "ML"
+						}
 		rrum.model <- TRUE
+					} else {
+		  if ( is.null(method) ){
+			 method <- "WLS"
+						}										
 					}
 	
+
+
 	
 #    dat.items <- clean$data; q.matrix <- clean$q.matrix; conv.crit <- clean$conv.crit;
 #    maxit <- clean$maxit; constraint.guess <- clean$constraint.guess; 
@@ -507,7 +522,13 @@ if (progress){
 					dd2 <- stats::runif( 1 , .25 , 1 )
 						}
 				l1[1] <- dd1
-				l1[N1jj] <- dd2
+				l1[N1jj] <- dd2									
+				if ( rule[jj] == "ACDM"){
+					v1 <- .5 + 0*l1
+					v1[1] <- .80
+					l1 <- rrumpars2logpars(v1) 														
+									}
+						
 				delta[[jj]] <- l1
 							}
 						}	
@@ -612,6 +633,7 @@ djj_old <- as.list( 1:J )
 # probability of each item response pattern given an attribute pattern         #
 ################################################################################
 
+
 	if ( progress ){
 		  cat(disp)	
 		  cat("Iteration" , iter , "   " , paste( Sys.time() ) , "\n" )	   
@@ -682,8 +704,9 @@ djj_old <- as.list( 1:J )
 	if (G == 1){ 
 		if ( ! is.null( zeroprob.skillclasses ) ){
 			p.aj.xi[ , zeroprob.skillclasses ] <- 0 
-						}
+						}			
 		p.aj.xi <- p.aj.xi / rowSums( p.aj.xi )
+
 		# calculate marginal probability P(\alpha_l) for attribute alpha_l
 		if (! reduced.skillspace ){
 			attr.prob <- colSums( p.aj.xi * item.patt.freq / I )
@@ -702,7 +725,7 @@ djj_old <- as.list( 1:J )
 						}
 					}
 
- # cat( "\n Step 2 (calc P(alpha|xi) \n" ) ; a1 <- Sys.time() ; print(a1-a0) ; a0 <- a1					
+#  cat( "\n Step 2 (calc P(alpha|xi) \n" ) ; a1 <- Sys.time() ; print(a1-a0) ; a0 <- a1					
 
 
 #######################################################################
@@ -816,138 +839,47 @@ if (HOGDINA >= 0){
 		Ilj.ast <- I.ljM[ jj, Mj.index[jj,5]:Mj.index[jj,6] ]
 		pjjj <- Rlj.ast / ( Ilj.ast + eps2 )
 		suffstat_probs[[jj]] <- pjjj
-		
-		
-		if (linkfct == "logit" ){ 
-				pjjj[ pjjj > 1-eps ] <- 1 - eps
-				pjjj[ pjjj < eps ] <- eps
-				pjjj <- stats::qlogis( pjjj ) 
-				# maxval <- 5 ;  pjjj <- squeeze.cdm( pjjj , c(-maxval , maxval ) )
-								}
-		#*****
-	if (linkfct == "log" ){ 
-				pjjj[ pjjj < eps ] <- eps
-				pjjj <- log( pjjj ) 				
-								}
-
-								
-		Wj <- diag( Ilj.ast )
-
-		
-		if ( avoid.zeroprobs ){
-			 ind <- which( Ilj.ast  < 10^(-10)  )
-			 if ( length(ind) > 0 ){
-				 Wj <- diag( Ilj.ast[-ind] )
-				 Mjjj <- Mjjj[ - ind , ]
-				 pjjj <- pjjj[ - ind  ]
+		#*** optimization ULS		
+		if ( method %in% c("ULS","WLS") ){
+			res_jj <- gdina_mstep_item_uls( 
+					 pjjj , Ilj.ast , Rlj.ast , eps , avoid.zeroprobs , 
+					 Mjjj , invM.list , linkfct , rule , method ,
+					 iter , delta.new, max.increment , fac.oldxsi,
+					 jj , delta , rrum.model, delta.fixed , devchange
+						)		
 						}
+		#*** optimization ML
+		rrum <- ( rule[jj] == "ACDM" )	& ( linkfct == "log")
+		
+		# rrum <- FALSE
+
+		if ( method %in% c("ML") ){
+		  if ( ! rrum ){
+			res_jj <- gdina_mstep_item_ml( 
+					 pjjj , Ilj.ast , Rlj.ast , eps , avoid.zeroprobs , 
+					 Mjjj , invM.list , linkfct , rule , method ,
+					 iter , delta.new, max.increment , fac.oldxsi,
+					 jj , delta , rrum.model, delta.fixed , 
+					 mstep_iter , mstep_conv , devchange
+						)		
+						}
+		  if (  rrum ){
+			res_jj <- gdina_mstep_item_ml_rrum( 
+#			res_jj <- gdina_mstep_item_ml_rrum2( 
+					 pjjj , Ilj.ast , Rlj.ast , eps , avoid.zeroprobs , 
+					 Mjjj , invM.list , linkfct , rule , method ,
+					 iter , delta.new, max.increment , fac.oldxsi,
+					 jj , delta , rrum.model, delta.fixed , 
+					 mstep_iter , mstep_conv , devchange
+						)		
+						}						
+						
 					}
+						
+		delta.new <- res_jj$delta.new
 		
-	    if ( ( rule[jj] == "GDINA" )| ( method == "ULS" ) ){ 
-				invM <- invM.list[[jj]] 
-#				delta.jj <- invM %*% t(Mjjj) %*% pjjj				
-				delta.jj <- invM %*% crossprod(Mjjj ,pjjj)
-							} else { 
-#				invM <- solve( t(Mjjj) %*% Wj %*% Mjjj + diag( rep( eps2 , ncol(Mjjj) )) )
-				invM <- solve( crossprod(Mjjj , Wj ) %*% Mjjj + diag( rep( eps2 , ncol(Mjjj) )) )				
-#				delta.jj <- invM %*% t(Mjjj) %*% Wj %*% pjjj
-				delta.jj <- tcrossprod( invM , Mjjj ) %*% Wj %*% pjjj
-								}
-		djj <- delta.jj[,1]
-		djj.change <- djj - delta[[jj]]
-		if (linkfct == "identity" & (iter > 3) ){ 
-#		if ( (iter > 3) ){ 
-			step.change <- .20
-# 			djj.change <- ifelse( abs(djj.change) > step.change ,
-#									step.change*sign(djj.change) , djj.change )
- 			djj.change <- ifelse( abs(djj.change) > step.change ,
-									djj.change / 2 , djj.change )
-							}
-
-									
-			djj <- delta[[jj]] + djj.change
-		if ( linkfct == "identity"){
-				if ( sum(djj) > 1 ){ 	djj <- djj / ( sum( djj ) )  }											
-									}
-
-		#######################################################################
-		iter_min <- 10
-#		if (linkfct == "log" & iter > iter_min ){ 
-#			if ( rule[jj] == "ACDM" ){
-#				if ( sum( djj ) > 0 ){
-#					djj <- djj - sum(djj )
-#									}
-#								}
-#								}				
-								
-								
-		djj <- ifelse ( is.na(djj) , delta[[jj]] , djj )
 		
-#		if ( fac.oldxsi > 0 & (iter > 1 ) ){ 
-#				djj <- ( 1 - fac.oldxsi ) * djj + fac.oldxsi * djj_old[[jj]]
-#				djj_old[[jj]] <- djj				
-#								}
 		
-		# control
-        djj.change <- djj - delta[[jj]]		
-		while( max(abs(djj.change)) > max.increment ){
-#					djj.change <- djj.change / 2 
-				djj.change <- ifelse( abs(djj.change) > max.increment , djj.change / 2 , djj.change )
-						}
-		djj <- delta[[jj]] + djj.change						
-
-		if ( rrum.model & (iter > 10) ){
-
-	#---
-	#  RRUM parametrization
-	#  log( P(X=1) ) = b0 + b1*alpha1 + b2 * alpha2 
-	#  RRUM:
-	#  P(X=1) = pi * r1^( 1- alpha1) * r2^(1-alpha2)
-	#  => log( P(X=1) ) = log[ pi * r1 * r2 * r1^(-alpha1) * r2^(-alpha2) ]
-	#                   = log( pi ) + log(r1) + log(r2) + -log(r1)*alpha1 + -log(r2) * alpha2
-	#  => b1 = -log(r1) and r1 = exp( -b1 )
-	#  => log(pi) = b0 + b1 + b2 and pi = exp( b0 + b1 + b2 )		
-			
-			d1 <- djj
-# d01 <- d1	
-#			d1 <- ifelse( d1 < 0 , .1 , d1 )						
-	        sum_d1 <- sum(d1)
-			if ( sum_d1 > 0 ){
-                d1 <- d1 - sum(d1)
-							}
-
-			d1_samp <- stats::runif( length(d1) , 0 , .01 )
-			d1[-1] <- ifelse( d1[-1] < 0 , d1_samp[-1] , d1[-1] )						
-							
-	        sum_d1 <- sum(d1)
-			if ( sum_d1 > 0 ){
-                d1 <- d1 - sum(d1)
-							}														
-			djj <- d1										
-#			d1 <- djj[-1] 
-#			d1 <- ifelse( d1 < 0 , 0.01 , d1 )
-#			djj[-1] <- d1			
-#			if ( djj[1] > 0 ){
-#				djj[1] <- 0
-#								}						
-
-
-						}
-
-
-		delta.new[[jj]] <- djj
-		if ( (fac.oldxsi > 0 ) & (iter>3)){
-		    fac.oldxsi1 <- fac.oldxsi * ( devchange >= 0 )
-			delta.new[[jj]] <- fac.oldxsi1*delta[[jj]] + ( 1 - fac.oldxsi1 ) * delta.new[[jj]]
-						}
-
-		# fix delta parameter here!!
-		if ( ! is.null( delta.fixed ) ){
-			delta.fixed.jj <- delta.fixed[[jj]]
-			if ( ! is.na( delta.fixed.jj)[1] ){
-					delta.new[[jj]] <- delta.fixed.jj
-									}
-							}
 
 					}		# end item
 	#.............................................................					
@@ -1548,12 +1480,13 @@ if (HOGDINA >= 0){
 					p.aj.xi=p.aj.xi,item.patt.split=item.patt.split,
 					resp.patt=resp.patt,freq.pattern=freq.pattern ,
 					item.patt.freq=item.patt.freq,invM.list=invM.list ,
+					item.patt.subj = item.patt.subj , item.patt = item.patt , 
 					suffstat_probs = suffstat_probs , 					
 					increment.factor = increment.factor ,
 					fac.oldxsi = fac.oldxsi ,
 					avoid.zeroprobs = avoid.zeroprobs ,
 					attr.prob = attr.prob0	,
-					delta.fixed = delta.fixed
+					delta.fixed = delta.fixed 
 						) 	
 	res$control <- control	
 	

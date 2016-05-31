@@ -101,7 +101,7 @@ This function does not work properly for multiple groups.
 
 \examples{
 #############################################################################
-# SIMULATED EXAMPLE 1: Items with unequal item slopes
+# EXAMPLE 1: Items with unequal item slopes
 #############################################################################
 
 # simulate data

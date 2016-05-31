@@ -3,7 +3,7 @@
 \alias{data.cdm}
 \alias{data.cdm01}
 \alias{data.cdm02}
-
+\alias{data.cdm03}
 
 \docType{data}
 \title{
@@ -17,6 +17,7 @@ Several datasets for the \pkg{CDM} package
 \usage{
 data(data.cdm01)
 data(data.cdm02)
+data(data.cdm03)
 }
 
 
@@ -76,6 +77,24 @@ attributes.
 \code{  ..$ A3   : num [1:100] 0 0 0 0 0 0 0 0 0 0 ...} \cr
 \code{  ..$ B1   : num [1:100] 0 0 0 0 0 0 0 0 0 0 ...} \cr
 
+\item Dataset \code{data.cdm03}:
+
+This dataset is a resimulated dataset from Chiu, Koehn & Wu (2016) where
+the data generating model is a reduced RUM model. See Example 1.
+
+\code{List of 2} \cr
+\code{ $ data   : num [1:725, 1:16] 0 1 1 1 1 1 1 1 1 1 ...} \cr
+\code{  ..- attr(*, "dimnames")=List of 2} \cr
+\code{  .. ..$ : NULL} \cr
+\code{  .. ..$ : chr [1:16] "I01" "I02" "I03" "I04" ...} \cr
+\code{ $ qmatrix:'data.frame':        16 obs. of  6 variables:} \cr
+\code{  ..$ item: Factor w/ 16 levels "I01","I02","I03",..: 1 2 3 4 5 6 7 8 9 10 ...} \cr
+\code{  ..$ A1  : int [1:16] 1 0 0 0 0 0 0 0 1 1 ...} \cr
+\code{  ..$ A2  : int [1:16] 0 1 0 0 1 1 0 0 0 0 ...} \cr
+\code{  ..$ A3  : int [1:16] 0 0 1 1 1 1 0 0 0 0 ...} \cr
+\code{  ..$ A4  : int [1:16] 0 0 0 0 0 0 1 1 1 1 ...} \cr
+\code{  ..$ A5  : int [1:16] 0 0 0 0 0 0 0 0 0 0 ...} \cr
+
 
 }
   
@@ -90,15 +109,36 @@ attributes.
 %%  ~~ reference to a publication or URL from which the data were obtained ~~
 %}
 
-%\references{
-%%  ~~ possibly secondary sources and usages ~~
-%}
+\references{
+Chiu, C.-Y., Koehn, H.-F., & Wu, H.-M. (2016).
+Fitting the reduced RUM with Mplus: A tutorial. 
+\emph{International Journal of Testing, xx}, xxx-xxx.	
+}
 
 
 
-%\examples{
-%data(data.cdm01)
-%## maybe str(data.cdm01) ; plot(data.cdm01) ...
-%}
+\examples{
+\dontrun{
+#############################################################################
+# EXAMPLE 1: Reduced RUM model, Chiu et al. (2016)
+#############################################################################
+
+data(data.cdm03)
+dat <- data.cdm03$data
+qmatrix <- data.cdm03$qmatrix
+
+#*** Model 1: Reduced RUM
+mod1 <- gdina( dat , q.matrix = qmatrix[,-1] , rule="RRUM" )
+summary(mod1)
+
+#*** Model 2: Additive model with identity link function
+mod2 <- gdina( dat , q.matrix = qmatrix[,-1] , rule="ACDM" )
+summary(mod2)
+
+#*** Model 3: Additive model with logit link function
+mod3 <- gdina( dat , q.matrix = qmatrix[,-1] , rule="ACDM" , linkfct="logit")
+summary(mod3)
+}
+}
 
 \keyword{datasets}

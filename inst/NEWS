@@ -21,6 +21,28 @@ R script and (if necessary) a corresponding dataset.
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
+
+--------------------------------------------------------------
+CDM 4.991 (2016-05-31)   --  CRAN CDM 4.991-1
+--------------------------------------------------------------
+
+NOTE  * changed argument structure of 'numerical_hessian'
+NOTE  * included maximum likelihood estimation method for
+        GDINA models (method='ML') which seems to be more stable
+        when method='ULS' (or 'WLS') has a bad convergence
+        behavior. Now, the GDINA function switches to ML
+        estimation if the RRUM model is used 
+        (thanks to a correspondence with Thomas Eckes).
+NOTE  * added an example of fitting (data.cdm, Example 1) the 
+        reduced RUM model in the CDM package (see the recent
+        Chiu et al., IJT paper)
+NOTE  * changed default value of 'max.increment' argument in
+        'gdina' function to .3
+FIXED * fixed a bug in 'gdina.dif' (thanks to Sinem Senfarah)
+
+DATA  * included/modified datasets: data.cdm03
+EXAMP * included/modified examples: data.cdm (1)
+
 --------------------------------------------------------------
 CDM 4.8 (2016-03-10)   --  CRAN CDM 4.8-0
 --------------------------------------------------------------
@@ -39,7 +61,6 @@ ADDED * included function 'numerical_Hessian' for a numerical
 DATA  * included/modified datasets: ---
 EXAMP * included/modified examples: osink (1),
         numerical_Hessian (1)
-
 
 --------------------------------------------------------------
 CDM 4.7 (2016-01-30)   --  CRAN CDM 4.7-0

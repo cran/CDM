@@ -11,7 +11,7 @@ function(x, ...){
 ################################################################################
 # console output                                                               #
 ################################################################################
-if(is.null(x$log.file)){
+# if(is.null(x$log.file)){
   d <- utils::packageDescription("CDM")
   base::packageStartupMessage(paste(d$Package," " , d$Version," (Built ",d$Date,")",sep=""))
 #   cat("Call:\n",  x$CALL, "\n")
@@ -57,12 +57,13 @@ if(is.null(x$log.file)){
 	xt <- round( x$din.object$attribute.patt[,1] , digits=5 )
 	names(xt) <- rownames( x$din.object$attribute.patt )
 	print(xt)			
-}else{
+# }else{
 
 ################################################################################
 # logfile output                                                               #
 ################################################################################
     # tr <- try({sink(file = x$log.file)})
+if (FALSE){	
 	tr <- try({sink(file = paste0( x$log.file , "__SUMMARY.Rout") )})
 
     if(is.null(tr)){
@@ -116,4 +117,5 @@ if(is.null(x$log.file)){
       cat("\nExtensive summary written to log file:\n", x$log.file,"\n")
     }else cat("\nError while trying to write summary to log file:\n", tr[1])          
   }
+  
 }

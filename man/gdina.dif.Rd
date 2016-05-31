@@ -79,7 +79,7 @@ A list with following entries
 \examples{
 \dontrun{
 #############################################################################
-# SIMULATED EXAMPLE 1: DIF for DINA simulated data
+# EXAMPLE 1: DIF for DINA simulated data
 #############################################################################		
 
 # simulate some data

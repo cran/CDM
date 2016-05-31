@@ -8,7 +8,8 @@ Numerical Computation of the Hessian Matrix
 Computes numerically the Hessian matrix of a given function.
 }
 \usage{
-numerical_Hessian(par, FUN, h = 1e-05, gradient = FALSE)
+numerical_Hessian(par, FUN, h = 1e-05, gradient = FALSE, 
+       hessian = TRUE, ...)
 }
 
 %- maybe also 'usage' for other objects documented here.
@@ -24,8 +25,10 @@ Numerical differentiation parameter. Can be also a vector.
 }
   \item{gradient}{
 Logical indicating whether the gradient should be calculated.
-If it is \code{FALSE}, then the Hessian matrix is computed. 
 }
+\item{hessian}{Logical indicating whether the Hessian
+matrix should be calculated.}
+\item{\dots}{Further arguments to be passed to \code{FUN}.}
 }
 
 %\details{
@@ -33,7 +36,7 @@ If it is \code{FALSE}, then the Hessian matrix is computed.
 %}
 
 \value{
-Gradient vector or Hessian matrix
+Gradient vector or Hessian matrix or a list of both elements
 }
 
 %\references{
@@ -49,7 +52,8 @@ Gradient vector or Hessian matrix
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-See the \pkg{numDeriv} package and the \code{mirt::numerical_deriv}
+See the \pkg{numDeriv} package and the 
+\code{\link[mirt:numerical_deriv]{mirt::numerical_deriv}}
 function from the \pkg{mirt} package.
 }
 
@@ -66,7 +70,7 @@ f <- function(x){
 par <- c(3,8,4)
 
 #--- compute gradient 
-numerical_Hessian( par = par , FUN = f , gradient=TRUE )
+numerical_Hessian( par = par , FUN = f , gradient=TRUE , hessian = FALSE)
 \dontrun{
 mirt::numerical_deriv(par = par , f = f, gradient=TRUE)
 
@@ -74,6 +78,9 @@ mirt::numerical_deriv(par = par , f = f, gradient=TRUE)
 numerical_Hessian( par = par , FUN = f )
 mirt::numerical_deriv(par = par , f = f, gradient=FALSE)
 numerical_Hessian( par = par , FUN = f , h = 1E-4 )
+
+#--- compute gradient and Hessian matrix
+numerical_Hessian( par = par , FUN = f , gradient=TRUE , hessian=TRUE)
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

@@ -89,7 +89,7 @@ smoothing of the skillspace distribution (Xu & von Davier, 2008).
 If \code{skillspace="full"}, then all probabilities of the skill space
 are nonparametrically estimated. If \code{skillspace="est"}, then the 
 \eqn{\bold{\theta}} distribution vectors will be estimated
-(see Details and Simulated Examples 4 and 5; Bartolucci, 2007).
+(see Details and Examples 4 and 5; Bartolucci, 2007).
 }
   \item{b.constraint}{
 In this optional matrix with \eqn{C_b} rows and three columns,
@@ -566,7 +566,7 @@ mod7 <- gdm( dat , irtmodel="2PL" , theta.k=theta.k ,
 summary(mod7)
 
 #############################################################################
-# SIMULATED EXAMPLE 4: Unidimensional latent class 1PL IRT model
+# EXAMPLE 4: Unidimensional latent class 1PL IRT model
 #############################################################################
 
 # simulate data
@@ -592,7 +592,7 @@ summary(mod1)
   ##   4  2.000 0.11816
 
 #############################################################################
-# SIMULATED EXAMPLE 5: Multidimensional latent class IRT model
+# EXAMPLE 5: Multidimensional latent class IRT model
 #############################################################################
 
 # We simulate a two-dimensional IRT model in which theta vectors

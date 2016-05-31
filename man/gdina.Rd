@@ -20,14 +20,14 @@ Function for Estimating the Generalized DINA (GDINA) Model
 }
 \usage{
 gdina(data, q.matrix, skillclasses=NULL, conv.crit=0.0001, dev.crit=.1 ,  maxit=1000, 
-    linkfct="identity", Mj=NULL, group=NULL , method="WLS" , delta.init = NULL , 
+    linkfct="identity", Mj=NULL, group=NULL , method=NULL , delta.init = NULL , 
     delta.fixed = NULL , delta.designmatrix=NULL, delta.basispar.lower=NULL, 
     delta.basispar.upper=NULL, delta.basispar.init=NULL, zeroprob.skillclasses=NULL, 
     attr.prob.init = NULL , reduced.skillspace=TRUE , reduced.skillspace.method=2 , 
     HOGDINA=-1, Z.skillspace=NULL, weights=rep(1, nrow(data)), rule="GDINA", 
-    progress=TRUE, progress.item=FALSE , increment.factor=1.01,
-    fac.oldxsi=0 , avoid.zeroprobs = FALSE , seed=0, save.devmin=TRUE ,
-    calc.se=TRUE , ...)
+    progress=TRUE, progress.item=FALSE , mstep_iter = 10 , mstep_conv = 1E-4 ,         
+    increment.factor=1.01, fac.oldxsi=0 , max.increment = .3 , 
+    avoid.zeroprobs = FALSE , seed=0, save.devmin=TRUE , calc.se=TRUE , ...)
 
 \method{summary}{gdina}(object, digits = 4 , file = NULL ,  \dots)
 
@@ -82,12 +82,17 @@ default analysis. See Example 3.
 \item{group}{A vector of group identifiers for multiple group 
     estimation. Default is \code{NULL} (no multiple group estimation).
         }
-\item{method}{Estimation method for item parameters as described 
-    in de la Torre (2011). The default \code{"WLS"}
+\item{method}{Estimation method for item parameters (see) 
+    (de la Torre, 2011). The default \code{"WLS"}
     weights probabilities attribute classes by a weighting 
     matrix \eqn{W_j} of expected frequencies,
     whereas the method \code{"ULS"} perform unweighted least squares
     estimation on expected frequencies.
+    The method \code{"ML"} directly maximizes the log-likelihood
+    function.  The \code{"ML"} method is a bit slower but can be
+    much more stable, especially in the case of the RRUM model.
+    Only for the RRUM model, the default is changed to
+    \code{method="ML"} if not specified otherwise.
     }
 \item{delta.init}{List with initial \eqn{\delta} parameters}
 \item{delta.fixed}{List with fixed \eqn{\delta} parameters.
@@ -166,6 +171,8 @@ An optional vector of sample weights.
     An optional logical indicating whether item wise progress should
     be displayed
         }
+\item{mstep_iter}{Number of iterations in M-step if \code{method="ML"}.}        
+\item{mstep_conv}{Convergence criterion in M-step if \code{method="ML"}.}        
  \item{increment.factor}{A factor larger than 1 (say 1.1) to control
  	 maximum increments in item parameters. This parameter 
  	 can be used in case of nonconvergence. 	 
@@ -173,6 +180,9 @@ An optional vector of sample weights.
  \item{fac.oldxsi}{A convergence acceleration factor between 0 and 1 which 
  	 defines the weight of previously estimated values in
  	current parameter updates.}
+
+\item{max.increment}{Maximum size of change in increments in M steps
+of EM algorithm when \code{method="ML"} is used.} 	
  	
 \item{avoid.zeroprobs}{An optional logical indicating whether for estimating
 	item parameters probabilities occur. Especially if
@@ -572,7 +582,7 @@ mod2 <- gdina( data = sim.dino ,  q.matrix = sim.qmatrix ,  rule="ACDM" ,
 summary(mod2)            
 
 #############################################################################
-# SIMULATED EXAMPLE 5: Multiple group estimation
+# EXAMPLE 5: Multiple group estimation
 #############################################################################
 
 # simulate data
@@ -693,7 +703,7 @@ mod2 <- gdina( data , q.matrix , rule="RRUM"  , conv.crit=.001 ,
   ##   'log Lik.' -30326.52 (df=153)
 
 #############################################################################
-# SIMULATED EXAMPLE 10: CDM with a linear hierarchy
+# EXAMPLE 10: CDM with a linear hierarchy
 #############################################################################
 # This model is equivalent to a unidimensional IRT model with an ordered
 # ordinal latent trait and is actually a probabilistic Guttman model.
@@ -712,7 +722,7 @@ alpha <- alpha[ rep(  1:4 ,  c(300,300,200,200) ) , ]
 Q <- scan()  
     1 0 0   1 1 0   1 1 1
 
-Q <- matrix( Q , K ,  K , byrow= TRUE )
+Q <- matrix( Q , nrow=K ,  ncol=K , byrow= TRUE )
 Q <- Q[ rep(1:K , each=4 ) , ]
 colnames(skillspace) <- colnames(Q) <- paste0("A",1:K)
 I <- nrow(Q)

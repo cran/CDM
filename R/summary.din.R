@@ -83,7 +83,7 @@ function(object, top.n.skill.classes = 6, overwrite = FALSE,
       }
     }
   }
- 
+
 ################################################################################
 # return list                                                                  #
 ################################################################################
@@ -98,7 +98,7 @@ function(object, top.n.skill.classes = 6, overwrite = FALSE,
 			"Npars" = object$Npars , 
 			"log.file" = file, "din.object" = object,
 			"start.analysis"=object$start.analysis ,
-			"end.analysis"=object$end.analysis
+			"end.analysis"=object$end.analysis 
 			)			
 	class(out) <- "summary.din"
 	return(out)

@@ -9,14 +9,20 @@ summary.gdina <- function( object , digits = 4 , file = NULL , ... ){
 	# rdigits 	... number of digits for rounding parameter estimates
 	#-------------------------------------------------------
 	rdigits <- digits
-	
- 	osink( file = file , suffix = paste0( file, "__SUMMARY.Rout") )
+
+
+ 	osink( file = file , suffix = paste0( "__SUMMARY.Rout") )
 
 
 	# Parameter summary
     cat("---------------------------------------------------------------------------------------------------------- \n")
 	d1 <- utils::packageDescription("CDM")
 	cat( paste( d1$Package , " " , d1$Version , " (" , d1$Date , ")" , sep="") , "\n" )	
+	
+	cat("\nCall:\n")
+	print(object$call)
+	cat("\n")	
+	
 	cat( "Date of Analysis:" , paste( object$time$s2 ) , "\n" )
 	cat("Computation Time:" , print(object$time$s2 - object$time$s1), "\n\n")	
     if (object$HOGDINA==-1){ 

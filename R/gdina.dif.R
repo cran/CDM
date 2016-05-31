@@ -2,6 +2,7 @@
 # differential item functioning in the GDINA model
 # a Wald test is used for testing item-wise DIF
 gdina.dif <- function( object ){
+
 	ocontrol <- object$control
 	G <- object$G
 	J <- ncol(object$dat)
@@ -18,12 +19,10 @@ gdina.dif <- function( object ){
 		varmat.group[[gg]] <- res.gg$varmat.delta
 				}
 	ndj <- res.gg$ndj
-			
 	# expanded delta vectors and design matrix
 	Rdesign <- varmat_all <- delta_all <- as.list(1:J)
 	difstats <- data.frame( "item" = colnames(object$data) , "X2" = NA , "df" = NA)  
 	dif_es <- rep(NA,J)
-	  
 	for (jj in 1:J){          
 		# jj <- 7           
 		nj <- ndj[[jj]]

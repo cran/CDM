@@ -367,7 +367,7 @@ mod4 <- slca( dat , Xdes=Xdes , Xlambda.init=Xlambda.init ,
              maxiter = 300 )           
 
 #############################################################################
-# SIMULATED EXAMPLE 2: Latent class model with two classes
+# EXAMPLE 2: Latent class model with two classes
 #############################################################################
 
 set.seed(9876)
@@ -403,7 +403,7 @@ mod1 <- slca( dat , Xdes=Xdes )
 summary(mod1)
 
 #############################################################################
-# SIMULATED EXAMPLE 3: Mixed Rasch model with two classes
+# EXAMPLE 3: Mixed Rasch model with two classes
 #############################################################################
 
 set.seed(987)
@@ -537,7 +537,7 @@ summary(mod2d)
 plot(mod2d)
 
 #############################################################################
-# SIMULATED EXAMPLE 4: Located latent class model, Rasch model
+# EXAMPLE 4: Located latent class model, Rasch model
 #############################################################################
 
 set.seed(487)
@@ -585,7 +585,7 @@ cbind( mod1$Xlambda[ - c(1:I) ] , theta0 )
 cbind( mod1$pi.k , probs0 )
 
 #############################################################################
-# SIMULATED EXAMPLE 5: DINA model with two skills
+# EXAMPLE 5: DINA model with two skills
 #############################################################################
 
 set.seed(487)

@@ -501,7 +501,7 @@ lapply(list("guessing" = rbind("DINA" = d6$guess[,1],
   d6$slip[,1], "DINO" = d7$slip[,1])), round, 2) 
 
 #############################################################################
-# SIMULATED EXAMPLE 6: DINA model with attribute hierarchy
+# EXAMPLE 6: DINA model with attribute hierarchy
 #############################################################################
 
 set.seed(987)
