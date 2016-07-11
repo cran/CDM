@@ -9,6 +9,7 @@ function( data, q.matrix, skillclasses=NULL , conv.crit = 0.0001,
 					dev.crit = .1 , maxit = 1000,
 					linkfct = "identity" , Mj = NULL , 
 					group = NULL , 
+					invariance = TRUE , 
 					method = NULL , 
 					delta.init = NULL , 
 					delta.fixed = NULL ,
@@ -80,6 +81,25 @@ if (progress){
 		}
     time1 <- list( "s1" = Sys.time() )
 	cl <- match.call()
+
+#########################################################
+# treat sequential items
+#########################################################
+
+	res <- gdina_proc_sequential_items( data=data , q.matrix = q.matrix )
+	data <- res$data
+	sequential <- res$sequential
+	q.matrix <- res$q.matrix
+	
+#########################################################
+# in case of item parameter noninvariance restructured dataset
+#########################################################
+
+	res <- gdina_proc_noninvariance_multiple_groups( data=data , q.matrix = q.matrix ,
+				invariance = invariance , group = group )
+	data <- res$data
+	q.matrix <- res$q.matrix	
+
 	
 ########################################################
 # add item and attribute labels	if necessary
@@ -168,17 +188,16 @@ if (progress){
 								}
 							}	
     group.stat <- NULL							
-    if (G>1){							
+    if ( G > 1 ){							
 		# group statistics
 		a1 <- stats::aggregate( 1+0*group , list(group) , sum )
-	#    a2 <- aggregate( group0 , list(group) , mean )
 		a2 <- rep("",G)
 		for (gg in 1:G){
 			a2[gg] <- group0[ which( group == gg )[1]  ]
-						}
+		}
 		group.stat <- cbind( a2 , a1 )
 		colnames(group.stat) <- c(  "group.orig" , "group" , "N"  )	
-					}
+	}
 							
 				
 
@@ -191,7 +210,7 @@ if (progress){
 		wgt.theta <- stats::dnorm( theta.k )
 		w1 <- wgt.theta / sum( wgt.theta )
 		wgt.theta <- matrix( w1 , nrow=length(w1) , ncol=G)
-				}
+	}
 								
 							
 ################################################################################
@@ -951,7 +970,7 @@ if (HOGDINA >= 0){
         devchange <- g11 <- 2*(like.new-loglikeold)		
 			if (iter >1){ cat(" | Deviance change = " , round( 2*(like.new-loglikeold), 7) ) }
 			cat("\n" )
-			if (g11 < 0 ){ cat( "**** Deviances decreases! Check for nonconvergence.   ****\n") }
+			if ( g11 < 0 & iter>1){ cat( "**** Deviances decreases! Check for nonconvergence.   ****\n") }
 		cat("Maximum parameter change:" , round( max.par.change, 6), "\n") 			
 			}
     
@@ -1486,7 +1505,9 @@ if (HOGDINA >= 0){
 					fac.oldxsi = fac.oldxsi ,
 					avoid.zeroprobs = avoid.zeroprobs ,
 					attr.prob = attr.prob0	,
-					delta.fixed = delta.fixed 
+					delta.fixed = delta.fixed ,
+					sequential = sequential ,
+					invariance = invariance 
 						) 	
 	res$control <- control	
 	

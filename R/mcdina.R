@@ -10,12 +10,17 @@ mcdina <- function( dat , q.matrix , group =NULL ,
 	s1 <- Sys.time()
 	cl <- match.call()
 	dat <- as.matrix(dat)
+	
+	
+	
 	# zero/one entries. q.matrix from ordinary DINA model!!	
 	res0 <- .mcdina.prepare.qmatrix( dat , q.matrix )
-
 	dat <- res0$dat
 	q.matrix0 <- q.matrix <- res0$q.matrix
 
+	
+	
+	
 	# handle polytomous attributes
 	res1 <- mcdina.modify.qmatrix( q.matrix , skillclasses)
 	q.matrix <- res1$q.matrix

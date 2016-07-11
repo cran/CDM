@@ -1,13 +1,12 @@
 Package: CDM
 Type: Package
 Title: Cognitive Diagnosis Modeling
-Version: 4.991-1
-Date: 2016-05-31
+Version: 5.0-0
+Date: 2016-07-11
 Author: 
     Alexander Robitzsch [aut, cre], Thomas Kiefer [aut],
     Ann Cathrice George [aut], Ali Uenlue [aut]
-Maintainer: 
- Alexander Robitzsch <robitzsch@ipn.uni-kiel.de>
+Maintainer: Alexander Robitzsch <robitzsch@ipn.uni-kiel.de>
 Description: 
     Functions for cognitive diagnosis modeling
     and multidimensional item response modeling for
@@ -27,6 +26,6 @@ LazyLoad: yes
 LazyData: yes
 License: GPL (>= 2)
 NeedsCompilation: yes
-Packaged: 2016-05-31 13:37:30 UTC; sunpn563
+Packaged: 2016-07-11 08:37:22 UTC; sunpn563
 Repository: CRAN
-Date/Publication: 2016-05-31 15:57:50
+Date/Publication: 2016-07-11 11:36:50

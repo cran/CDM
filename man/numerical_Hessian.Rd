@@ -22,6 +22,9 @@ Specified function with argument vector \code{x}
 }
   \item{h}{
 Numerical differentiation parameter. Can be also a vector.
+The increment in the numerical approximation of the derivative is
+defined as \eqn{h_i \max ( 1 , \theta_i)} where \eqn{\theta_i}
+  denotes the \eqn{i}th parameter.
 }
   \item{gradient}{
 Logical indicating whether the gradient should be calculated.

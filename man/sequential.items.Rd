@@ -10,6 +10,15 @@ This function constructs dichotomous pseudo items from polytomous ordered
 items (Tutz, 1997). Using this method, developed test models for dichotomous
 data can be applied for polytomous item responses after transforming them
 into dichotomous data. See Details for the construction.
+
+Ma and de la Torre (2016) proposed a sequential GDINA model.
+Interestingly, the proposed model can be fitted with the
+\code{gdina} function in this \pkg{CDM} package while item responses
+has to be transformed with the \code{sequential.items} function for
+obtaining dichotomous pseudoitems. The Q-matrix for the sequential model of Ma and
+de la Torre (2016) can be used in the GDINA model for the
+dichotomous pseudoitems. This approach is implemented for automatic
+use in \code{\link{gdina}}.
 }
 
 
@@ -57,6 +66,11 @@ A list with following entries
 
 
 \references{
+Ma, W., & de la Torre, J. (2016).
+A sequential cognitive diagnosis model for polytomous responses.
+\emph{British Journal of Mathematical and Statistical Psychology, xx},
+xxx-xxx.
+	
 Tutz, G. (1997). Sequential models for ordered responses. 
 In W. van der Linden & R. K. Hambleton.
 \emph{Handbook of modern item response theory} (pp. 139-152). 

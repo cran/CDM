@@ -4,6 +4,7 @@
 \alias{data.cdm01}
 \alias{data.cdm02}
 \alias{data.cdm03}
+\alias{data.cdm04}
 
 \docType{data}
 \title{
@@ -18,6 +19,7 @@ Several datasets for the \pkg{CDM} package
 data(data.cdm01)
 data(data.cdm02)
 data(data.cdm03)
+data(data.cdm04)
 }
 
 
@@ -96,6 +98,27 @@ the data generating model is a reduced RUM model. See Example 1.
 \code{  ..$ A5  : int [1:16] 0 0 0 0 0 0 0 0 0 0 ...} \cr
 
 
+\item Dataset \code{data.cdm04}:
+
+Simulated dataset for the sequential DINA model (Ma & de la Torre, 2016).
+The dataset contains 1000 persons and 12 items which measure 2 skills.
+
+\code{List of 3} \cr
+\code{ $ data     : num [1:1000, 1:12] 0 0 0 1 1 0 0 0 0 0 ...} \cr
+\code{  ..- attr(*, "dimnames")=List of 2} \cr
+\code{  .. ..$ : NULL} \cr
+\code{  .. ..$ : chr [1:12] "I1" "I2" "I3" "I4" ...} \cr
+\code{ $ q.matrix1:'data.frame':      18 obs. of  4 variables:} \cr
+\code{  ..$ Item: chr [1:18] "I1" "I2" "I3" "I4" ...} \cr
+\code{  ..$ Cat : int [1:18] 1 1 1 1 1 1 1 2 1 2 ...} \cr
+\code{  ..$ A1  : int [1:18] 1 1 1 0 0 0 1 1 1 1 ...} \cr
+\code{  ..$ A2  : int [1:18] 0 0 0 1 1 1 0 0 0 0 ...} \cr
+\code{ $ q.matrix2:'data.frame':      18 obs. of  4 variables:} \cr
+\code{  ..$ Item: chr [1:18] "I1" "I2" "I3" "I4" ...} \cr
+\code{  ..$ Cat : int [1:18] 1 1 1 1 1 1 1 2 1 2 ...} \cr
+\code{  ..$ A1  : num [1:18] 1 1 1 0 0 0 1 1 1 1 ...} \cr
+\code{  ..$ A2  : num [1:18] 0 0 0 1 1 1 0 0 0 0 ...} \cr
+
 }
   
 }
@@ -113,6 +136,11 @@ the data generating model is a reduced RUM model. See Example 1.
 Chiu, C.-Y., Koehn, H.-F., & Wu, H.-M. (2016).
 Fitting the reduced RUM with Mplus: A tutorial. 
 \emph{International Journal of Testing, xx}, xxx-xxx.	
+
+Ma, W., & de la Torre, J. (2016).
+A sequential cognitive diagnosis model for polytomous responses.
+\emph{British Journal of Mathematical and Statistical Psychology, xx},
+xxx-xxx.
 }
 
 
@@ -128,15 +156,15 @@ dat <- data.cdm03$data
 qmatrix <- data.cdm03$qmatrix
 
 #*** Model 1: Reduced RUM
-mod1 <- gdina( dat , q.matrix = qmatrix[,-1] , rule="RRUM" )
+mod1 <- CDM::gdina( dat , q.matrix = qmatrix[,-1], rule="RRUM" )
 summary(mod1)
 
 #*** Model 2: Additive model with identity link function
-mod2 <- gdina( dat , q.matrix = qmatrix[,-1] , rule="ACDM" )
+mod2 <- CDM::gdina( dat , q.matrix = qmatrix[,-1], rule="ACDM" )
 summary(mod2)
 
 #*** Model 3: Additive model with logit link function
-mod3 <- gdina( dat , q.matrix = qmatrix[,-1] , rule="ACDM" , linkfct="logit")
+mod3 <- CDM::gdina( dat , q.matrix = qmatrix[,-1], rule="ACDM", linkfct="logit")
 summary(mod3)
 }
 }

@@ -20,7 +20,7 @@ slca(data, group = NULL, weights = rep(1, nrow(data)), Xdes,
   Xlambda.init = NULL, Xlambda.fixed = NULL, Xlambda.constr.V=NULL , 
   Xlambda.constr.c=NULL ,  delta.designmatrix = NULL, 
   delta.init = NULL, delta.fixed = NULL, delta.linkfct = "log" ,
-  maxiter = 1000, conv = 10^(-5), globconv = 10^(-5), msteps = 4, convM = 5e-04, 
+  maxiter = 1000, conv = 10^(-5), globconv = 10^(-5), msteps = 10, convM = 5e-04, 
   decrease.increments = FALSE, oldfac=0, seed=NULL , progress=TRUE , ...)
   
 \method{summary}{slca}(object, file = NULL , \dots)
@@ -266,17 +266,17 @@ v2 <- unlist( sapply( 1:I , FUN = function(ii){ # ii
 dimnames(Xdes)[[4]] <- c( v2 , "a" )
 # define theta design and item discriminations
 for (ii in 1:I){
-for (hh in 1:(maxK-1) ){
-    Xdes[ii , hh + 1 , , NXlam ] <- hh * theta.k
-                    }
-            }
+	for (hh in 1:(maxK-1) ){
+	    Xdes[ii , hh + 1 , , NXlam ] <- hh * theta.k
+	}
+}
 # item intercepts
 for (ii in 1:I){
-for (hh in 1:(maxK-1) ){
-    # ii <- 1  # Item    # hh <- 1  # category
-    Xdes[ii,hh+1,, ( ii - 1)*(maxK-1) + hh] <- 1
-                        }
-                    }
+	for (hh in 1:(maxK-1) ){
+	    # ii <- 1  # Item    # hh <- 1  # category
+	    Xdes[ii,hh+1,, ( ii - 1)*(maxK-1) + hh] <- 1
+	}
+}
 #****
 # skill space designmatrix
 TP <- length(theta.k)
@@ -343,16 +343,16 @@ dimnames(Xdes)[[4]] <- c( v2 , paste0( colnames(dat),"_a") )
 dimnames(Xdes)
 # define theta design and item discriminations
 for (ii in 1:I){
-for (hh in 1:(maxK-1) ){
-    Xdes[ii , hh + 1 , , I*(maxK-1) + ii ] <- hh * theta.k
-                    }
-            }
+	for (hh in 1:(maxK-1) ){
+	    Xdes[ii , hh + 1 , , I*(maxK-1) + ii ] <- hh * theta.k
+	}
+}
 # item intercepts
 for (ii in 1:I){
-for (hh in 1:(maxK-1) ){
-    Xdes[ii,hh+1,, ( ii - 1)*(maxK-1) + hh] <- 1
-                        }
-                    }
+	for (hh in 1:(maxK-1) ){
+	    Xdes[ii,hh+1,, ( ii - 1)*(maxK-1) + hh] <- 1
+	}
+}
 #****
 # skill space designmatrix
 delta.designmatrix <- cbind( 1, theta.k,theta.k^2 )
@@ -397,7 +397,7 @@ dimnames(Xdes)[[4]] <- c(paste0( colnames(dat) , "Class" , 1),
 for (ii in 1:I){
     Xdes[ ii , 2 , 1 , ii ] <- 1    # probabilities class 1
     Xdes[ ii , 2 , 2 , ii+I ] <- 1  # probabilities class 2
-                    }
+}
 # estimate model
 mod1 <- slca( dat , Xdes=Xdes )            
 summary(mod1)
@@ -432,9 +432,13 @@ dimnames(Xdes)[[1]] <- colnames(dat)
 dimnames(Xdes)[[2]] <- paste0("Cat" , 1:(maxK) )
 dimnames(Xdes)[[4]] <- c( paste0( "b_" , colnames(dat)[1:I] ) , "a" )
 # define item difficulties
-for (ii in 1:I){  Xdes[ii , 2 , , ii ] <- -1        }
+for (ii in 1:I){  
+	Xdes[ii , 2 , , ii ] <- -1        
+}
 # theta design
-for (tt in 1:TP){  Xdes[1:I , 2 , tt , I + 1] <- theta.k[tt]       }
+for (tt in 1:TP){  
+	Xdes[1:I , 2 , tt , I + 1] <- theta.k[tt]       
+}
 
 # skill space definition
 delta.designmatrix <- cbind( 1 , theta.k^2 )
@@ -473,12 +477,12 @@ dimnames(Xdes)[[4]] <- c( paste0( "bClass1_" , colnames(dat)[1:I] ) ,
 for (ii in 1:I){
     Xdes[ii , 2 , 1:TP , ii ] <- -1  # first class
     Xdes[ii , 2 , TP + 1:TP , I+ii ] <- -1  # second class    
-                    }                                                                               
+}                                                                               
 # theta design
 for (tt in 1:TP){
     Xdes[1:I , 2 , tt , 2*I+1 ] <- theta.k[tt]
     Xdes[1:I , 2 , TP+tt , 2*I+2 ] <- theta.k[tt]
-                    }
+}
 # skill space definition
 delta.designmatrix <- matrix( 0 , nrow=2*TP , ncol=4 )
 delta.designmatrix[1:TP,1] <- 1
@@ -561,9 +565,13 @@ dimnames(Xdes)[[2]] <- paste0("Cat" , 1:(maxK) )
 dimnames(Xdes)[[3]] <- paste0("Class" , 1:TP )
 dimnames(Xdes)[[4]] <- c( paste0( "b_" , colnames(dat)[1:I] ) , paste0("theta" , 1:TP) )
 # define item difficulties
-for (ii in 1:I){  Xdes[ii , 2 , , ii ] <- -1        }
+for (ii in 1:I){  
+	Xdes[ii , 2 , , ii ] <- -1        
+}
 # theta design
-for (tt in 1:TP){  Xdes[1:I , 2 , tt , I + tt] <- 1       }
+for (tt in 1:TP){  
+	Xdes[1:I , 2 , tt , I + tt] <- 1       
+}
 
 # skill space definition
 delta.designmatrix <- diag(TP)
@@ -626,7 +634,7 @@ for (ii in 1:I){
         Xdes[ii , 2 , latresp == 1, I+ii ] <- 1
         # guessing parameters
         Xdes[ii , 2 , latresp == 0, ii ] <- 1        
-                 }
+}
 Xdes[1,2,,] ; Xdes[7,2,,]
 # skill space definition
 delta.designmatrix <- diag(TP)

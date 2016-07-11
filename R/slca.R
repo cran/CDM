@@ -10,7 +10,7 @@ slca <- function( data , group=NULL,
 	Xlambda.constr.V=NULL , Xlambda.constr.c=NULL , 
 	delta.designmatrix =NULL ,  delta.init = NULL , 
 	delta.fixed = NULL , delta.linkfct = "log" ,  
-    maxiter=1000, conv=10^(-5), globconv=10^(-5), msteps=4 , 
+    maxiter=1000, conv=10^(-5), globconv=10^(-5), msteps=10 , 
 	convM=.0005 , decrease.increments = FALSE , oldfac = 0 , 
 	seed=NULL , progress = TRUE ,  ...){	
 	#************************************************************

@@ -84,61 +84,65 @@ importFrom(sfsmisc, QUnif)
 ########################################################
 ################ EXPORTS ###############################
 
-export(
-    cdi.kli,
-    cdm.est.class.accuracy,
-    csink,
-    din, 
-    din.deterministic,
-    din.equivalent.class,
-    din.validate.qmatrix,
-    entropy.lca,
-    equivalent.dina,
-    gdd,
-    gdina,
-    gdina.dif,
-    gdina.wald,
-    gdm,
-    ideal.response.pattern,
-    IRT.anova,
-    IRT.compareModels,
-    IRT.data,
-    IRT.derivedParameters,
-    IRT.expectedCounts,
-    IRT.factor.scores,
-    IRT.IC,
-    IRT.irfprob,
-    IRT.irfprobPlot,
-    IRT.itemfit,
-    IRT.jackknife,
-    IRT.likelihood,
-    IRT.modelfit,
-    IRT.parameterTable, 
-    IRT.posterior,
-    IRT.predict,
-    IRT.repDesign,
-    IRT.se,
-    itemfit.rmsea,
-    itemfit.sx2,
-    mcdina,
-    modelfit.cor,
-    modelfit.cor.din,
-    modelfit.cor2, 
-    numerical_Hessian,
-    osink,
-    personfit.appropriateness,
-    sequential.items,
-    sim.din, 
-    sim.gdina, 
-    sim.gdina.prepare,
-    skill.cor, 
-    skill.polychor,
-    skillspace.approximation,
-    skillspace.full,
-    skillspace.hierarchy,
-    slca,
-    WaldTest
-    )
+export(abs_approx)
+export(abs_approx_D1)
+export(cdi.kli)
+export(cdm.est.class.accuracy)
+export(csink)
+export(deltaMethod)
+export(din)
+export(din.deterministic)
+export(din.equivalent.class)
+export(din.validate.qmatrix)
+export(entropy.lca)
+export(equivalent.dina)
+export(gdd)
+export(gdina)
+export(gdina.dif)
+export(gdina.wald)
+export(gdm)
+export(ideal.response.pattern)
+export(IRT.anova)
+export(IRT.compareModels)
+export(IRT.data)
+export(IRT.derivedParameters)
+export(IRT.expectedCounts)
+export(IRT.factor.scores)
+export(IRT.IC)
+export(IRT.irfprob)
+export(IRT.irfprobPlot)
+export(IRT.itemfit)
+export(IRT.jackknife)
+export(IRT.likelihood)
+export(IRT.modelfit)
+export(IRT.parameterTable )
+export(IRT.posterior)
+export(IRT.predict)
+export(IRT.repDesign)
+export(IRT.se)
+export(item_by_group)
+export(itemfit.rmsea)
+export(itemfit.sx2)
+export(mcdina)
+export(modelfit.cor)
+export(modelfit.cor.din)
+export(modelfit.cor2 )
+export(numerical_Hessian)
+export(osink)
+export(personfit.appropriateness)
+export(sequential.items)
+export(sim.din )
+export(sim.gdina )
+export(sim.gdina.prepare)
+export(skill.cor )
+export(skill.polychor)
+export(skillspace.approximation)
+export(skillspace.full)
+export(skillspace.hierarchy)
+export(slca)
+export(summary_sink)
+export(WaldTest)
+
 
 # internal functions; not intended to be visible to users
 # export(check.input, rowMaxs, rowProds2, plot.din, print.din, summary.din,

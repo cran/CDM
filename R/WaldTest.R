@@ -8,7 +8,7 @@ WaldTest <- function( delta , vcov , R , nobs , cvec = NULL , eps=1E-10 ){
 					}
 		Rdii <- R %*% delta.ii - cvec
 		v1 <- R %*% var.delta.ii %*% t(R)
-		diag(v1) <- diag(v1)+ eps	
+		diag(v1) <- diag(v1) * ( 1 + eps )	
 		stat <- ( t( Rdii ) %*% solve( v1 ) %*% Rdii )[1,1]
 		stats <- list()
 		stats["X2"] <- stat

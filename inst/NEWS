@@ -23,6 +23,36 @@ R script and (if necessary) a corresponding dataset.
 
 
 --------------------------------------------------------------
+CDM 5.0  (2016-07-11)   --  CRAN CDM 5.0-0
+--------------------------------------------------------------
+
+NOTE  * changed the way of calculating numerical derivatives in
+        'numerical_Hessian'
+NOTE  * included utility function 'abs_approx' for a differentiable
+        function approximation (and its derivative 'abs_approx_D1')
+        of absolute value function
+NOTE  * added argument 'append' in function 'osink'
+NOTE  * included a utility function 'summary_sink' which sinks 
+        summary output of a method into a file
+NOTE  * included utility function 'deltaMethod' for nonlinear
+        transformations of parameters
+NOTE  * included utility function 'item_by_group' which extends
+        a dataset of item responses and a grouping variable to an
+        extended dataset of group-specific item responses
+ADDED * added sequential GDINA model for polytomous item responses
+        (Ma & de la Torre, 2016, BJMSP) in 'gdina' function.
+NOTE  * included argument 'invariance' in 'gdina' which allows
+        specification of non-invariant item parameters across
+        multiple groups (see ?gdina, Example 5)
+NOTE  * changed number of M-steps in 'slca' in default to 10 
+        iterations (msteps=10)
+      
+DATA  * included/modified datasets: data.cdm04
+EXAMP * included/modified examples: abs_approx (1), 
+        summary_sink (1), deltaMethod (1), item_by_group (1),
+        gdina (5,11)
+
+--------------------------------------------------------------
 CDM 4.991 (2016-05-31)   --  CRAN CDM 4.991-1
 --------------------------------------------------------------
 

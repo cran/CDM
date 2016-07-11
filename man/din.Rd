@@ -265,7 +265,8 @@ zero to random initial values with \code{set.seed(seed)}.}
   See also \code{\link{CDM-package}} for general
   information about this package.  
   
-  See the \pkg{NPCD} package for joint maximum likelihood estimation
+  See the \code{NPCD::JMLE} function in the \pkg{NPCD} package for 
+  joint maximum likelihood estimation
   of the DINA, DINO and NIDA model.
   
   See the \code{dina::DINA_Gibbs} function in the \pkg{dina}

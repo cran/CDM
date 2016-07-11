@@ -6,7 +6,7 @@
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Function for Estimating the Generalized DINA (GDINA) Model
+Estimating the Generalized DINA (GDINA) Model
 }
 \description{
     This function implements the generalized DINA model for dichotomous
@@ -17,17 +17,20 @@ Function for Estimating the Generalized DINA (GDINA) Model
     is also possible using the \code{gdina} function. This function also
     allows for the estimation of a higher order GDINA model
     (de la Torre & Douglas, 2004).
+    Polytomous item responses are treated by specifying a sequential
+    GDINA model (Ma & de la Torre, 2016; Tutz, 1997).
 }
 \usage{
 gdina(data, q.matrix, skillclasses=NULL, conv.crit=0.0001, dev.crit=.1 ,  maxit=1000, 
-    linkfct="identity", Mj=NULL, group=NULL , method=NULL , delta.init = NULL , 
-    delta.fixed = NULL , delta.designmatrix=NULL, delta.basispar.lower=NULL, 
-    delta.basispar.upper=NULL, delta.basispar.init=NULL, zeroprob.skillclasses=NULL, 
-    attr.prob.init = NULL , reduced.skillspace=TRUE , reduced.skillspace.method=2 , 
-    HOGDINA=-1, Z.skillspace=NULL, weights=rep(1, nrow(data)), rule="GDINA", 
-    progress=TRUE, progress.item=FALSE , mstep_iter = 10 , mstep_conv = 1E-4 ,         
-    increment.factor=1.01, fac.oldxsi=0 , max.increment = .3 , 
-    avoid.zeroprobs = FALSE , seed=0, save.devmin=TRUE , calc.se=TRUE , ...)
+    linkfct="identity", Mj=NULL, group=NULL , invariance = TRUE ,method=NULL , 
+    delta.init = NULL , delta.fixed = NULL , delta.designmatrix=NULL, 
+    delta.basispar.lower=NULL, delta.basispar.upper=NULL, delta.basispar.init=NULL,
+    zeroprob.skillclasses=NULL, attr.prob.init = NULL , reduced.skillspace=TRUE , 
+    reduced.skillspace.method=2 , HOGDINA=-1, Z.skillspace=NULL, 
+    weights=rep(1, nrow(data)), rule="GDINA", progress=TRUE, progress.item=FALSE ,
+    mstep_iter = 10 , mstep_conv = 1E-4 , increment.factor=1.01, fac.oldxsi=0 , 
+    max.increment = .3 , avoid.zeroprobs = FALSE , seed=0, save.devmin=TRUE , 
+    calc.se=TRUE , ...)
 
 \method{summary}{gdina}(object, digits = 4 , file = NULL ,  \dots)
 
@@ -38,14 +41,16 @@ gdina(data, q.matrix, skillclasses=NULL, conv.crit=0.0001, dev.crit=.1 ,  maxit=
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{data}{A required \eqn{N \times J} data matrix 
-    containing the binary responses, 0 or 1, of \eqn{N} respondents to \eqn{J}
-    test items, where 1 denotes a correct anwer and 0 an incorrect one. The 
-    \eqn{n}th row of the matrix represents the binary response pattern of respondent
-    \eqn{n}.  \code{NA} values are allowed.  }
+    containing integer responses, 0, 1, ..., K. Non-dichotomous
+    item responses are treated by the sequential GDINA model.
+  \code{NA} values are allowed.  
+  }
     
   \item{q.matrix}{A required integer \eqn{J \times K} matrix containing
     attributes not required or required, 0 or 1, to master the items in case
-    of dichotomous attributes or integers in case of polytomous attributes.    
+    of dichotomous attributes or integers in case of polytomous attributes. 
+    For polytomous item responses the Q-matrix must also include the
+    item name and item category, see Example 11.
   }
 
   \item{skillclasses}{An optional matrix for determining the skill space.
@@ -82,6 +87,9 @@ default analysis. See Example 3.
 \item{group}{A vector of group identifiers for multiple group 
     estimation. Default is \code{NULL} (no multiple group estimation).
         }
+\item{invariance}{Logical indicating whether invariance of item parameters
+is assumed for multiple group models.
+}     
 \item{method}{Estimation method for item parameters (see) 
     (de la Torre, 2011). The default \code{"WLS"}
     weights probabilities attribute classes by a weighting 
@@ -269,6 +277,7 @@ obtained by choosing \code{rule="RRUM"}.
 
 The compensatory RUM (C-RRUM) can be obtained by using the arguments
 \code{rule="ACDM"} and \code{linkfct="logit"}.
+
     }
     
 
@@ -337,6 +346,8 @@ An object of class \code{gdina} with following entries
 \item{control}{Optimization parameters used in estimation}
 \item{partable}{Parameter table for \code{gdina} function}
 \item{polychor}{Group-wise matrices with polychoric correlations}
+\item{sequential}{Logical indicating whether a sequential GDINA model
+is applied for polytomous item responses}
 \item{\dots}{Further values}
     }
     
@@ -356,10 +367,20 @@ An object of class \code{gdina} with following entries
   de la Torre, J. (2011). The generalized {DINA} model framework. 
   \emph{Psychometrika}, \bold{76}, 179-199.
 
+Ma, W., & de la Torre, J. (2016).
+A sequential cognitive diagnosis model for polytomous responses.
+\emph{British Journal of Mathematical and Statistical Psychology, xx},
+xxx-xxx.  
+  
   Rupp, A. A., & Templin, J. (2008). Unique characteristics of
   diagnostic classification models: A comprehensive review of the current
   state-of-the-art. \emph{Measurement: Interdisciplinary Research and
   Perspectives}, \bold{6}, 219-262.
+  
+Tutz, G. (1997). Sequential models for ordered responses. 
+In W. van der Linden & R. K. Hambleton.
+\emph{Handbook of modern item response theory} (pp. 139-152). 
+New York: Springer.  
   
   Xu, X., & von Davier, M. (2008). \emph{Fitting the structured general diagnostic
   model to NAEP data}. ETS Research Report ETS RR-08-27. Princeton, ETS.
@@ -600,13 +621,20 @@ dat <- rbind( dat1 , dat2 )
 # group indicator 
 group <- c( rep(1,N1) , rep(2,N2) )
 
-# estimate GDINA model
-mod <- gdina( data = dat , q.matrix = q.matrix ,  group= group)
-summary(mod)
+# estimate GDINA model with multiple groups assuming invariant item parameters
+mod1 <- gdina( data = dat , q.matrix = q.matrix ,  group= group)
+summary(mod1)
 
-# estimate DINA model
+# estimate DINA model with multiple groups assuming invariant item parameters
 mod2 <- gdina( data = dat , q.matrix = q.matrix , group= group , rule="DINA")
-summary(mod2)                       
+summary(mod2) 
+
+# estimate GDINA model with noninvariant item parameters
+mod3 <- gdina( data = dat , q.matrix = q.matrix ,  group= group, invariance=FALSE)
+summary(mod3)
+
+#--- model comparison
+IRT.compareModels(mod1,mod2,mod3)                      
 
 #############################################################################
 # EXAMPLE 6: User specified reduced skill space
@@ -728,8 +756,8 @@ colnames(skillspace) <- colnames(Q) <- paste0("A",1:K)
 I <- nrow(Q)
 
 # define guessing and slipping parameters
-guess <- runif( I , 0 , .3 )
-slip <- runif( I , 0 , .2 )
+guess <- stats::runif( I , 0 , .3 )
+slip <- stats::runif( I , 0 , .2 )
 # simulate data
 dat <- sim.din( q.matrix=Q , alpha=alpha , slip=slip , guess=guess )$dat
 
@@ -751,6 +779,27 @@ library(sirt)
 mod3 <- sirt::prob.guttman( dat , itemlevel=Q2[,1] )
 summary(mod3)
 # -> The three models result in nearly equivalent fit.
+
+#############################################################################
+# EXAMPLE 11: Sequential GDINA model (Ma & de la Torre, 2016)
+#############################################################################
+
+#** attach dataset
+data(data.cdm04)
+dat <- data.cdm04$data	# polytomous item responses
+q.matrix1 <- data.cdm04$q.matrix1
+q.matrix2 <- data.cdm04$q.matrix2
+
+#-- DINA model with first Q-matrix
+mod1 <- gdina( dat , q.matrix = q.matrix1 , rule="DINA")
+summary(mod1)
+#-- DINA model with second Q-matrix
+mod2 <- gdina( dat , q.matrix = q.matrix2 , rule="DINA")
+#-- GDINA model
+mod3 <- gdina( dat , q.matrix = q.matrix2 , rule="GDINA")
+
+#** model comparison
+IRT.compareModels(mod1,mod2,mod3)
 }
 }
 

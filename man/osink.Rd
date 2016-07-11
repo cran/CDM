@@ -14,7 +14,7 @@ Opens and closes a \code{sink} connection.
 }
 
 \usage{
-osink(file, suffix)
+osink(file, suffix, append = FALSE)
 
 csink(file)
 }
@@ -26,6 +26,9 @@ File name. No \code{sink} is done if it has the value \code{NULL}.
   \item{suffix}{
   Suffix which should be put next to the file name
 }
+\item{append}{Optional logical indicating whether console output should
+be appended to an already existing file. See argument \code{append} in 
+\code{\link[base:sink]{base::sink}}.}
 }
 
 %\details{
