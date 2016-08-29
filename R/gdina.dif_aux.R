@@ -22,7 +22,7 @@ gdina.dif.aux <- function( ocontrol , gg , data ){
 	item.patt.freq <- ocontrol$item.patt.freq[,gg]
 	freq.pattern <- ocontrol$freq.pattern
 	invM.list <- ocontrol$invM.list
-	eps <- eps2 <- 10^(-10)
+	eps <- eps2 <- 1E-10
 	J <- length(Mj)
 	prob_exp <- varmat.delta <- varmat.palj <- delta <- ndj <- as.list(1:J)
 	R.lj <- ocontrol$R.lj.gg[,,gg]
@@ -37,29 +37,33 @@ gdina.dif.aux <- function( ocontrol , gg , data ){
         Ilj.ast <- I.ljM[ jj, Mj.index[jj,5]:Mj.index[jj,6] ]
         pjjj <- Rlj.ast / ( Ilj.ast + eps2 )
         if (linkfct == "logit" ){ 
-                pjjj[ pjjj > 1-eps ] <- 1 - eps
-                pjjj[ pjjj < eps ] <- eps
-                pjjj <- stats::qlogis( pjjj ) 
-                                }
+            pjjj[ pjjj > 1-eps ] <- 1 - eps
+            pjjj[ pjjj < eps ] <- eps
+            pjjj <- stats::qlogis( pjjj ) 
+        }
         #*****
-    if (linkfct == "log" ){ 
-                pjjj[ pjjj < eps ] <- eps
-                pjjj <- log( pjjj )                         
-                                }
-                                
-        Wj <- diag( Ilj.ast )
-        
-        if ( ( rule[jj] == "GDINA" )| ( method == "ULS" ) ){ 
-                invM <- invM.list[[jj]] 
-                delta.jj <- invM %*% crossprod(Mjjj ,pjjj)					
-                            } else { 
-                invM <- solve( crossprod(Mjjj , Wj ) %*% Mjjj + diag( rep( eps2 , ncol(Mjjj) )) )               
-                delta.jj <- tcrossprod( invM , Mjjj ) %*% Wj %*% pjjj				
-                                }
-								
-				pjj_exp <- ( Mjjj %*% delta.jj )[,1]
-				if ( linkfct == "logit" ){ pjj_exp <- stats::plogis( pjj_exp) }
-				if ( linkfct == "log" ){ pjj_exp <- exp( pjj_exp) }	
+		if (linkfct == "log" ){ 
+			pjjj[ pjjj < eps ] <- eps
+			pjjj <- log( pjjj )                         
+		}
+									
+		Wj <- diag( Ilj.ast )
+			
+		if ( ( rule[jj] == "GDINA" )| ( method == "ULS" ) ){ 
+			invM <- invM.list[[jj]] 
+			delta.jj <- invM %*% crossprod(Mjjj ,pjjj)					
+		} else { 
+			invM <- solve( crossprod(Mjjj , Wj ) %*% Mjjj + diag( rep( eps2 , ncol(Mjjj) )) )               
+			delta.jj <- tcrossprod( invM , Mjjj ) %*% Wj %*% pjjj				
+		}
+									
+		pjj_exp <- ( Mjjj %*% delta.jj )[,1]
+		if ( linkfct == "logit" ){ 
+			pjj_exp <- stats::plogis( pjj_exp) 
+		}
+		if ( linkfct == "log" ){ 
+			pjj_exp <- exp( pjj_exp) 
+		}	
 		# data frame with counts and expected probabilities
 		prob_exp[[jj]] <- data.frame( "freq" = Ilj.ast / sum( Ilj.ast) , "prob" = pjj_exp )
 		rownames(prob_exp[[jj]]) <- apply( Ajjj , 1 , 
@@ -83,28 +87,37 @@ gdina.dif.aux <- function( ocontrol , gg , data ){
                                     } else {
                                 p.ajast.xi[,kk] <- rowSums( pg1 ) 
                                         }
-                                }   
+                }   
+			se_version <- ocontrol$se_version		
+			res_jj <- gdina_se_itemwise( R.lj_jj = R.lj[jj,] , I.lj_jj = I.lj[jj,] , 
+					apjj = apjj , Mjjj=Mjjj, Mjj2 = Mjj2 , PAJXI = PAJXI , IP=IP ,
+					item.patt.split_jj = item.patt.split[,jj] ,
+					resp.patt_jj = resp.patt[,jj] , freq.pattern = item.patt.freq ,
+					item.patt.freq = item.patt.freq , avoid.zeroprobs = FALSE ,
+					data = data , jj = jj , method = method , linkfct = linkfct ,
+					delta_jj = delta[[jj]] , se_version = se_version
+						)
+						
+			# varmat.delta[[jj]] <- res_jj$varmat.delta_jj
+							
                 Rlj.ast <- stats::aggregate( R.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
                 Ilj.ast <- stats::aggregate( I.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
                 pjjj <- Rlj.ast[,2] / Ilj.ast[,2]       
                 pjjjM <- outer( rep(1,IP) , pjjj ) + 10^(-20)
-                
                 nM <- ncol(pjjjM) 
                 x1 <- outer( item.patt.split[,jj] , rep(1,nM) )
                 r1 <- outer( resp.patt[,jj] * item.patt.freq , rep(1,ncol(pjjjM) ) )
                 # Formula (17) for calculating the standard error   
-                mat.jj <- p.ajast.xi * ( x1 - pjjjM) / ( pjjjM * ( 1 - pjjjM ) )    
+                mat.jj <- p.ajast.xi * ( x1 - pjjjM) / ( pjjjM * ( 1 - pjjjM ) )    				
                 infomat.jj <- matrix( 0 , nM , nM )
                 for (kk1 in 1:nM){
                     for (kk2 in kk1:nM){ 
-
                         # frequency weights must be taken into account
                         hh1 <- sum( mat.jj[,kk1] * mat.jj[,kk2] * item.patt.freq * 
                                             resp.patt[,jj] * item.patt.split[,jj] )
                         infomat.jj[kk2,kk1] <- infomat.jj[kk1,kk2] <-  hh1
                                         }
                                     }
-
                 try( a1 <- solve( infomat.jj + diag( eps2 , ncol(infomat.jj) ) ) )
                 if ( is.null(a1)){ 
                         cat( "Item" , colnames(data)[jj] , "Singular item parameter covariance matrix\n")
@@ -132,7 +145,11 @@ gdina.dif.aux <- function( ocontrol , gg , data ){
                     Wjjj <- Wjjj %*% pjjj.link
                         }
                 varmat.delta[[jj]] <- Wjjj %*% Ijj %*% t(Wjjj) 
-                
+				# varmat.delta[[jj]] <- t(Wjjj) %*% Ijj %*% Wjjj  # this is wrong!!
+		
+		#**** corrected version!!!
+		varmat.delta[[jj]] <- res_jj$varmat.delta_jj		  
+  
         ndj[[jj]] <- length( delta[[jj]] )
                 }   # end jj
 	res <- list( "delta" = delta , "varmat.delta" = varmat.delta ,

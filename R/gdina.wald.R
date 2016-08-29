@@ -84,9 +84,9 @@ gdina.wald <- function( object ){
 	levels <- c(.01 , .05 )
 	labels <- c("**" , "*")	
 	for (rule in cdm_rules){
-	stats[ ,paste0(rule,"_sig")] <- 
+		stats[ ,paste0(rule,"_sig")] <- 
 			label_significance_level( stats[,paste0(rule,"_p")] , levels , labels )		
-							}
+	}
 	res <- list("stats"=stats, "cdm_rules" = cdm_rules)
 	class(res) <- "gdina.wald"
 	return(res)

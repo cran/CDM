@@ -53,8 +53,11 @@ Numerical differentiation parameter
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
 \seealso{
-\code{\link[car:deltaMethod]{car::deltaMethod}}
+See \code{\link[car:deltaMethod]{car::deltaMethod}} or
+\code{msm::deltamethod}.
 }
+
+%% \code{\link{msm::deltamethod}}.
 
 \examples{
 #############################################################################

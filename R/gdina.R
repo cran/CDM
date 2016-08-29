@@ -34,6 +34,7 @@ function( data, q.matrix, skillclasses=NULL , conv.crit = 0.0001,
 					avoid.zeroprobs = FALSE , 
 					seed = 0 , 		
 					save.devmin=TRUE , calc.se = TRUE ,
+					se_version = 1 , 
 					...
 						){
                     
@@ -1097,122 +1098,52 @@ if (HOGDINA >= 0){
 	freq.pattern <- rowSums( item.patt.freq )
 	
     # if ( calc.se ){
-	
+	eps2 <- 1E-10	
 	for (jj in 1:J){	
 		se.jj <- NA
 		if ( calc.se ){
 #	 cat("........",jj,".,,,\n")
+# jj <- 7		
 			#	jj <- 1		# Item jj
-				Ajjj <- Aj[[jj]]
-				Mjjj <- Mj[[jj]][[1]]
-				Rlj.ast <- stats::aggregate( R.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
-				Ilj.ast <- stats::aggregate( I.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
-				pjjj <- Rlj.ast[,2] / Ilj.ast[,2]
-				Mjj2 <- Mj[[jj]][[2]]
-				apjj <- aggr.attr.patt[[jj]] 			
-				Mjjj <- Mjjj[ sort(unique(apjj)) , ]
+			Ajjj <- Aj[[jj]]
+			Mjjj <- Mj[[jj]][[1]]
+			apjj <- aggr.attr.patt[[jj]]
+			R.lj_jj <- R.lj[jj,]
+			I.lj_jj <- I.lj[jj,]
+			Mjj2 <- Mj[[jj]][[2]]
+			item.patt.split_jj <- item.patt.split[,jj]
+			resp.patt_jj <- resp.patt[,jj]
 
-				# M1 <- max( apjj )
-				M1 <- length( unique(apjj) )
-				p.ajast.xi <- matrix( 0 , nrow=IP , ncol = M1 )
-				for (kk in 1:M1){
-					pg1 <-  PAJXI[ , apjj == kk  ]					
-					if ( is.vector(pg1)){ 
-								p.ajast.xi[,kk] <- pg1 
-									} else {
-								p.ajast.xi[,kk] <- rowSums( pg1 ) 
-										}
-								}	
-				Rlj.ast <- stats::aggregate( R.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
-				Ilj.ast <- stats::aggregate( I.lj[jj,] , list( aggr.attr.patt[[jj]]) , sum )
-				pjjj <- Rlj.ast[,2] / Ilj.ast[,2]		
-				pjjjM <- outer( rep(1,IP) , pjjj ) + 10^(-20)		
-				nM <- ncol(pjjjM) 
-				x1 <- outer( item.patt.split[,jj] , rep(1,nM) )
-				r1 <- outer( resp.patt[,jj] * item.patt.freq , rep(1,ncol(pjjjM) ) )
-				# Formula (17) for calculating the standard error	
-				mat.jj <- p.ajast.xi * ( x1 - pjjjM) / ( pjjjM * ( 1 - pjjjM ) )	
-				infomat.jj <- matrix( 0 , nM , nM )
-				for (kk1 in 1:nM){
-					for (kk2 in kk1:nM){ 
-						# kk1 <- 1
-						# kk2 <- 1
-#							infomat.jj[kk2,kk1] <- infomat.jj[kk1,kk2] <-  
-#											sum( mat.jj[,kk1] * mat.jj[,kk2]  )
-						#@@ARb (2012-07-20) correction
-						# frequency weights must be taken into account
-						hh1 <- sum( mat.jj[,kk1] * mat.jj[,kk2] * freq.pattern * 
-											resp.patt[,jj] * item.patt.split[,jj] )
-						infomat.jj[kk2,kk1] <- infomat.jj[kk1,kk2] <-  hh1
-										}
-									}
-				a1 <- NULL
-		if ( avoid.zeroprobs ){
-			 ind <- which( is.na(diag(infomat.jj) ))
-			 if ( length(ind) > 0 ){
-				infomat.jj <- infomat.jj[-ind, -ind]	
-						}			 
-			 
-					}				
-		
-#				try( a1 <- solve( infomat.jj ) )
-				a1 <- try( solve( infomat.jj + diag( eps2 , ncol(infomat.jj) ) ) )
-				if ( is(a1 , "try-error") ){ 
-						cat( "Item" , colnames(data)[jj] , "Singular item parameter covariance matrix\n")
-						a1 <- NA*infomat.jj 
-							}
-				varmat.palj[[jj]] <- Ijj <- a1
-				Wj <- diag( Ilj.ast[,2] )	
+			res_jj <- gdina_se_itemwise( R.lj_jj = R.lj_jj , I.lj_jj = I.lj_jj , 
+					apjj = apjj , Mjjj=Mjjj, Mjj2 = Mjj2 , PAJXI = PAJXI , IP=IP ,
+					item.patt.split_jj = item.patt.split[,jj] ,
+					resp.patt_jj = resp.patt[,jj] , freq.pattern = freq.pattern ,
+					item.patt.freq = item.patt.freq , avoid.zeroprobs =avoid.zeroprobs ,
+					data = data , jj = jj , method = method , linkfct = linkfct ,
+					delta_jj = delta[[jj]] , se_version = se_version
+						)
 			
-		if ( avoid.zeroprobs ){
-			 ind <- which( Ilj.ast[,2]  < 10^(-10)  )
-			 if ( length(ind) > 0 ){
-				 Wj <- diag( Ilj.ast[-ind,2] )
-				 Mjjj <- Mjjj[ - ind , ]
-				 pjjj <- pjjj[ - ind  ]
-						}
-					}
-
-				if ( ( method == "ULS" ) ){ 			
-				    x1 <- t(Mjjj) %*% Mjjj	
-				    diag(x1) <- diag(x1) + 10^(-8)						
-					Wjjj <- solve( x1 ) %*% t(Mjjj)
-					
-									} else {
-					x1 <- t(Mjjj) %*% Wj %*% Mjjj									
-					diag(x1) <- diag(x1) + 10^(-8)					
-					Wjjj <- solve( x1 ) %*% t(Mjjj) %*% Wj
-											}
-				if ( linkfct == "logit" ){
-					pjjj.link <- 1 / ( ( pjjj * ( 1 - pjjj ) ) + eps2 )
-					pjjj.link <- diag( pjjj.link )
-				    Wjjj <- Wjjj %*% pjjj.link
-						}
-				if ( linkfct == "log" ){
-					pjjj.link <- 1 /  ( pjjj  + eps2 )
-					pjjj.link <- diag( pjjj.link )
-					Wjjj <- Wjjj %*% pjjj.link
-						}
-				varmat.delta[[jj]] <- Wjjj %*% Ijj %*% t(Wjjj)		
-				se.jj <- sqrt( diag(varmat.delta[[jj]] )  ) 
+			varmat.delta[[jj]] <- res_jj$varmat.delta_jj
+			varmat.palj[[jj]] <- res_jj$varmat.palj_jj
+			se.jj <- sqrt( diag(varmat.delta[[jj]] )  ) 			
 								}
-						
-				delta.summary.jj <-
+
+			delta.summary.jj <-
 					data.frame( "link" = linkfct , "item" = colnames(data)[jj] , 
-								"itemno" = jj , 
-								"type" = Mj[[jj]][2] , 
-								"rule" = rule[jj] , 
-								"est" = delta[[jj]] , 
-								"se" = se.jj
-								)
+							"itemno" = jj , 
+							"type" = Mj[[jj]][2] , 
+							"rule" = rule[jj] , 
+							"est" = delta[[jj]] , 
+							"se" = se.jj
+					)
 								
 		# fix delta parameter here!!
 		if ( ! is.null( delta.fixed ) ){
 			delta.fixed.jj <- delta.fixed[[jj]]
 			if ( ! is.na( delta.fixed.jj)[1] ){
 					delta.summary.jj$se <- 0
-									}
-							}								
+			}
+		}								
 								
 				colnames(delta.summary.jj)[4] <- "partype"					
 				delta.summary <- rbind( delta.summary , delta.summary.jj )
@@ -1246,21 +1177,19 @@ if (HOGDINA >= 0){
 	# compute RRUM parametrization if model is specified
 	if (rrum.model){
 		rrum.params <- .rrum.param( delta.summary , q.matrix )
-				}
+	}
 				
     # attribute pattern
 	if (G==1){ 
 		attr.prob <- matrix( attr.prob, ncol=1)
 		colnames( attr.prob ) <- "class.prob"		
-			}
+	}
 	if (G>1){
 		colnames( attr.prob ) <- paste( "class.prob.group" , 1:G , sep="")
-				}
-		rownames( attr.prob ) <- attr.patt.c
-
+	}
+	rownames( attr.prob ) <- attr.patt.c
 	
-	mA <- max( maxAttr)
-	
+	mA <- max( maxAttr)	
 	if (G==1){   
 	    sp <- NULL 
 		# pattern for separate skills
@@ -1507,7 +1436,8 @@ if (HOGDINA >= 0){
 					attr.prob = attr.prob0	,
 					delta.fixed = delta.fixed ,
 					sequential = sequential ,
-					invariance = invariance 
+					invariance = invariance ,
+					se_version = se_version
 						) 	
 	res$control <- control	
 	

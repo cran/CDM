@@ -15,7 +15,6 @@ numerical_Hessian <- function(par , FUN , h = 1E-5, gradient=FALSE,
 	#** select h parameters according to size of parameters
 	abs_par <- base::abs(par)	
 	hvec <- h * base::ifelse( abs_par > 1 , abs_par , 1 )
-
 	
 	#--- loop for computing f(x+h)
 	for (ii in 1:NP){

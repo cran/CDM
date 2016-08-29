@@ -21,6 +21,19 @@ R script and (if necessary) a corresponding dataset.
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
+--------------------------------------------------------------
+CDM 5.1 (2016-08-29)   --  CRAN CDM 5.1-0
+--------------------------------------------------------------
+
+FIXED  * changed the method of standard error calculation in
+         'gdina' function. It seems that previous CDM version produced
+         overestimated standard errors (thanks to Xue-Lan Qiu). 
+         The improved calculation is now the default specified as the 
+         argument 'se_version=1'. The behavior of older CDM versions can 
+         be obtained with 'se_version=0'.
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: ---
 
 --------------------------------------------------------------
 CDM 5.0  (2016-07-11)   --  CRAN CDM 5.0-0

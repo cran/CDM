@@ -30,7 +30,7 @@ gdina(data, q.matrix, skillclasses=NULL, conv.crit=0.0001, dev.crit=.1 ,  maxit=
     weights=rep(1, nrow(data)), rule="GDINA", progress=TRUE, progress.item=FALSE ,
     mstep_iter = 10 , mstep_conv = 1E-4 , increment.factor=1.01, fac.oldxsi=0 , 
     max.increment = .3 , avoid.zeroprobs = FALSE , seed=0, save.devmin=TRUE , 
-    calc.se=TRUE , ...)
+    calc.se=TRUE , se_version = 1 ,  ...)
 
 \method{summary}{gdina}(object, digits = 4 , file = NULL ,  \dots)
 
@@ -208,7 +208,11 @@ Setting the argument to \code{FALSE} could help for preventing
 working memory overflow.}
 \item{calc.se}{Optional logical indicating whether standard
 errors should be calculated.}
-
+\item{se_version}{Integer for calculation method of standard errors.
+	\code{se_version=1} is based on the observed log likelihood and included
+	since \pkg{CDM} 5.1 and is the default. Comparability with 
+    previous \pkg{CDM} versions can be obtained with \code{se_version=0}. 
+}
   \item{object}{A required object of class \code{gdina}, obtained
     from a call to the function \code{\link{gdina}}.  }
   \item{digits}{Number of digits after decimal separator to display.  }
