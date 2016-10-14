@@ -1,0 +1,29 @@
+bibentry(bibtype = "Article",
+  title        = "The {R} Package {CDM} for Cognitive Diagnosis Models",
+  author       = c(person(given = c("Ann", "Cathrice"),
+                          family = "George",
+                          email = "a.george@bifie.at"),
+                   person(given = "Alexander",
+                          family = "Robitzsch",
+                          email = "robitzsch@ipn.uni-kiel.de"),
+                   person(given = "Thomas",
+                          family = "Kiefer"),
+                   person(given = "J{\\\"u}rgen",
+                          family = "Gro{\\ss}"),
+                   person(given = "Ali",
+                          family = "{\\\"U}nl{\\\"u}")),
+  journal      = "Journal of Statistical Software",
+  year         = "2016",
+  volume       = "74",
+  number       = "2",
+  pages        = "1--24",
+  doi          = "10.18637/jss.v074.i02",
+
+  header       = "To cite CDM in publications use:",
+  textVersion  =
+  paste("Ann Cathrice George, Alexander Robitzsch, Thomas Kiefer, Juergen Gross, Ali Uenlue (2016).",
+        "The R Package CDM for Cognitive Diagnosis Models.",
+        "Journal of Statistical Software, 74(2), 1-24.",
+        "doi:10.18637/jss.v074.i02")
+)
+

@@ -88,7 +88,9 @@ default analysis. See Example 3.
     estimation. Default is \code{NULL} (no multiple group estimation).
         }
 \item{invariance}{Logical indicating whether invariance of item parameters
-is assumed for multiple group models.
+is assumed for multiple group models. If a subset of items should
+be treated as nonivariant, then \code{invariance} can be a vector
+of item names.
 }     
 \item{method}{Estimation method for item parameters (see) 
     (de la Torre, 2011). The default \code{"WLS"}
@@ -371,10 +373,11 @@ is applied for polytomous item responses}
   de la Torre, J. (2011). The generalized {DINA} model framework. 
   \emph{Psychometrika}, \bold{76}, 179-199.
 
+
 Ma, W., & de la Torre, J. (2016).
 A sequential cognitive diagnosis model for polytomous responses.
-\emph{British Journal of Mathematical and Statistical Psychology, xx},
-xxx-xxx.  
+\emph{British Journal of Mathematical and Statistical Psychology, 69}(3),
+253-275.
   
   Rupp, A. A., & Templin, J. (2008). Unique characteristics of
   diagnostic classification models: A comprehensive review of the current
@@ -637,8 +640,12 @@ summary(mod2)
 mod3 <- gdina( data = dat , q.matrix = q.matrix ,  group= group, invariance=FALSE)
 summary(mod3)
 
+# estimate GDINA model with some invariant item parameters (I001, I006, I008)
+mod4 <- gdina( data = dat , q.matrix = q.matrix ,  group= group, 
+            invariance= c("I001", "I006","I008") )
+
 #--- model comparison
-IRT.compareModels(mod1,mod2,mod3)                      
+IRT.compareModels(mod1,mod2,mod3,mod4)                      
 
 #############################################################################
 # EXAMPLE 6: User specified reduced skill space

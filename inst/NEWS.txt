@@ -24,7 +24,7 @@ R script and (if necessary) a corresponding dataset.
 
 
 --------------------------------------------------------------
-CDM 5.2 (2016-10-14)   --  CRAN CDM 5.2-1
+CDM 5.2 (2016-0m-dd)   --  CRAN CDM 5.2-ss
 --------------------------------------------------------------
 
 NOTE  * extended 'item_by_group' function which can now handle
@@ -34,12 +34,12 @@ ADDED * included option for a subset of invariant items in
         (requested by Hamid Bahrami)
 FIXED * fixed a bug in setting boundaries for guessing and slipping 
         parameters in 'din' (thanks to Jill-Jen Vie)
-NOTE  * reference to new Journal of Statistical Software George et al.
-        article in the CITATION file and the CDM manual
 
 DATA  * included/modified datasets: ---
 EXAMP * included/modified examples: item_by_group (1), 
         gdina (5)
+
+
 
 --------------------------------------------------------------
 CDM 5.1 (2016-08-29)   --  CRAN CDM 5.1-0

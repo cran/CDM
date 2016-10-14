@@ -11,7 +11,7 @@ group comparisons.
 }
 
 \usage{
-item_by_group(dat, group, rm.empty = TRUE)
+item_by_group(dat, group, invariant = NULL, rm.empty = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -20,6 +20,11 @@ Dataset with item responses
 }
   \item{group}{
 Vector of group identifiers
+}
+\item{invariant}{
+	Optional vector of variables which should
+not be made group-specific, i.e. which should be treated
+as invariant across groups.
 }
   \item{rm.empty}{
 Logical indicating whether empty columns should be removed
@@ -59,10 +64,17 @@ data(data.mg)
 dat <- data.mg
 
 #-- create dataset with group-specific item responses
-dat0 <- item_by_group( dat = dat[,paste0("I",1:11)] , group=dat$group )
+dat0 <- item_by_group( dat = dat[,paste0("I",1:5)] , group=dat$group )
 
 #-- summary statistics
-psych::describe(dat0)
+summary(dat0)
+colnames(dat0)
+
+#-- set some items to invariant
+invariant_items <- c("I1","I4")
+dat1 <- item_by_group( dat = dat[,paste0("I",1:5)] , group=dat$group ,
+            invariant=invariant_items)
+colnames(dat1)
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

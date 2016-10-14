@@ -100,7 +100,8 @@ the data generating model is a reduced RUM model. See Example 1.
 
 \item Dataset \code{data.cdm04}:
 
-Simulated dataset for the sequential DINA model (Ma & de la Torre, 2016).
+Simulated dataset for the sequential DINA model 
+(as described in Ma & de la Torre, 2016).
 The dataset contains 1000 persons and 12 items which measure 2 skills.
 
 \code{List of 3} \cr
@@ -135,12 +136,12 @@ The dataset contains 1000 persons and 12 items which measure 2 skills.
 \references{
 Chiu, C.-Y., Koehn, H.-F., & Wu, H.-M. (2016).
 Fitting the reduced RUM with Mplus: A tutorial. 
-\emph{International Journal of Testing, xx}, xxx-xxx.	
+\emph{International Journal of Testing, 16}(4), 331-351.	
 
 Ma, W., & de la Torre, J. (2016).
 A sequential cognitive diagnosis model for polytomous responses.
-\emph{British Journal of Mathematical and Statistical Psychology, xx},
-xxx-xxx.
+\emph{British Journal of Mathematical and Statistical Psychology, 69}(3),
+253-275.
 }
 
 

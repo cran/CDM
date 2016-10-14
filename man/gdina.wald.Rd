@@ -56,7 +56,7 @@ item-level comparison of saturated and reduced models in cognitive diagnosis.
 
 Ma, W., Iaconangelo, C., & de la Torre, J. (2016). Model similarity, 
 model selection, and attribute classification. 
-\emph{Applied Psychological Measurement}, \bold{xx}, xxx-xxx.
+\emph{Applied Psychological Measurement}, \bold{40}(3), 200-217.
 }
 
 %\author{

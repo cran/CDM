@@ -100,7 +100,6 @@ if (progress){
 				invariance = invariance , group = group )
 	data <- res$data
 	q.matrix <- res$q.matrix	
-
 	
 ########################################################
 # add item and attribute labels	if necessary
@@ -1382,6 +1381,7 @@ if (HOGDINA >= 0){
 				 "rrum.params"= rrum.params ,
 				 "group.stat" = group.stat , 
 				 "NAttr" = maxAttr , 
+				 invariance = invariance , 
 #				 "q.matrix" = q.matrix ,
 				 "HOGDINA" = HOGDINA ,
 				 "seed"= seed  ,

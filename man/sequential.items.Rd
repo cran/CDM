@@ -68,8 +68,8 @@ A list with following entries
 \references{
 Ma, W., & de la Torre, J. (2016).
 A sequential cognitive diagnosis model for polytomous responses.
-\emph{British Journal of Mathematical and Statistical Psychology, xx},
-xxx-xxx.
+\emph{British Journal of Mathematical and Statistical Psychology, 69}(3),
+253-275.
 	
 Tutz, G. (1997). Sequential models for ordered responses. 
 In W. van der Linden & R. K. Hambleton.

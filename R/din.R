@@ -450,13 +450,13 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 		guess.new <- ifelse( guess.new < guess.min , guess.min , guess.new )
 				}
 	if ( guess.max < 1 ){
-		guess.new <- ifelse( guess.new < guess.max , guess.max , guess.new )
+		guess.new <- ifelse( guess.new > guess.max , guess.max , guess.new )
 				}
 	if ( slip.min > 0 ){
 		slip.new <- ifelse( slip.new < slip.min , slip.min , slip.new )
 				}
 	if ( slip.max < 1 ){
-		slip.new <- ifelse( slip.new < slip.max , slip.max , slip.new )
+		slip.new <- ifelse( slip.new > slip.max , slip.max , slip.new )
 				}				
 				
 
