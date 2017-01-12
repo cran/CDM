@@ -68,9 +68,10 @@ model selection, and attribute classification.
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-%\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-%}
+\seealso{
+See the \code{\link[GDINA:modelcomp]{GDINA::modelcomp}} function in the
+\pkg{GDINA} package for similar functionality.
+}
 
 \examples{
 \dontrun{

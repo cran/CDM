@@ -65,7 +65,9 @@ Obtaining diagnostic classification model estimates using Mplus.
 \emph{Educational Measurement: Issues and Practice}, \bold{32}, 37-50.
 }
 
-
+\seealso{
+\code{\link[GDINA:ecpe]{GDINA::ecpe}}
+}
 
 \examples{
 \dontrun{

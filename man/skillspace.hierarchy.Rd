@@ -72,6 +72,9 @@ A variation on Tatsuoka's rule space approach.
 \seealso{
 See \code{\link{din}} (Example 6) for an application of 
 \code{skillspace.hierarchy} for model comparisons.
+
+See the \code{\link[GDINA:att.structure]{GDINA::att.structure}} function in the
+\pkg{GDINA} package for similar functionality.
 }
 
 \examples{

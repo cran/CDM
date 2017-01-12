@@ -90,6 +90,9 @@ in a list: \code{delta}, \code{necc.attr}, \code{Aj} and \code{Mj}.
 
 \seealso{
 For estimating the GDINA model see \code{\link{gdina}}.
+
+See the \code{\link[GDINA:simGDINA]{GDINA::simGDINA}} function in the
+\pkg{GDINA} package for similar functionality.
 }
 \examples{
 #############################################################################

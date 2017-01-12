@@ -9,6 +9,9 @@ This function estimates a chi squared based measure of item fit
 in cognitive diagnosis models similar to the RMSEA itemfit 
 implemented in mdltm (von Davier, 2005;
 cited in Kunina-Habenicht, Rupp & Wilhelm, 2009).
+
+The RMSEA statistic is also called as the RMSD statistic, see
+\code{\link{IRT.RMSD}}.
 }
 \usage{
 itemfit.rmsea(n.ik, pi.k, probs, itemnames=NULL)

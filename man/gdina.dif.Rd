@@ -72,9 +72,10 @@ A list with following entries
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-%\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-%}
+\seealso{
+See the \code{\link[GDINA:dif]{GDINA::dif}} function in the
+\pkg{GDINA} package for similar functionality.
+}
 
 \examples{
 \dontrun{

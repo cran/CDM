@@ -18,7 +18,7 @@ rowMaxs <- function(mat){
 	maxval <- mat[,1]
 	for ( cc in 2:p){
 		maxval <- ifelse( mat[,cc] > maxval  , mat[,cc] , maxval )
-				   }
+	}
 	return(maxval)
 }
 ###########################################################
@@ -31,7 +31,7 @@ rowMaxs2 <- function(mat){
 		ind <- ( mat[,cc] > maxval )
 		maxval <- ifelse( ind , mat[,cc] , maxval )
 		maxind <- ifelse( ind , cc , maxind)
-				   }
+	}
 	res <- list( "maxval" = maxval , "maxind" = maxind )
 	return(res)
 }
@@ -44,7 +44,7 @@ rowMaxs3 <- function(mat){
 	for ( cc in 2:p){
 		maxval <- ifelse( mat[,cc] > maxval , mat[,cc] , maxval )
 		maxind <- maxind + ( cc - maxind ) * (mat[,cc] ==maxval )		
-				   }
+	}
 	res <- list( "maxval" = maxval , "maxind" = maxind )
 	return(res)
 }

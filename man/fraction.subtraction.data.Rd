@@ -40,7 +40,7 @@
   The Royal Statistical Society Datasets Website, Series C, 
   Applied Statistics, Data analytic methods for latent partially
   ordered classification models:\cr
-  URL: \url{http://www.blackwellpublishing.com/rss/Volumes/Cv51p2_read2.htm}
+  URL: \emph{http://www.blackwellpublishing.com/rss/Volumes/Cv51p2_read2.htm}
 }
 
 \references{

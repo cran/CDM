@@ -71,7 +71,10 @@ validation for the DINA model: Development and applications.
 \seealso{
 The mixed DINA/DINO model can be estimated with \code{\link{din}}.
 
-See also the \code{Qrefine} function in the \pkg{NPCD} package.
+See also the \code{NPCD::Qrefine} function in the \pkg{NPCD} package.
+
+See the \code{\link[GDINA:Qval]{GDINA::Qval}} function in the
+\pkg{GDINA} package for more extended functionality.
 }
 
 

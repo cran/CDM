@@ -46,6 +46,10 @@ about data source.
 }
 
 
+\seealso{
+\code{\link[GDINA:frac20]{GDINA::frac20}}
+}
+
 
 \references{
   de la Torre, J. (2009). DINA model parameter estimation:

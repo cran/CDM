@@ -87,9 +87,10 @@ it is a matrix with attributes
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-%\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-%}
+\seealso{
+\code{\link[GDINA:indlogLik]{GDINA::indlogLik}},
+\code{\link[GDINA:indlogPost]{GDINA::indlogPost}}
+}
 %%% TAM, sirt and mirt links
 
 \examples{

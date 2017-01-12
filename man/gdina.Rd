@@ -426,6 +426,9 @@ rules at the item-level.
 
 See \code{\link{gdina.dif}} for assessing differential item
 functioning.
+
+See the \code{\link[GDINA:GDINA]{GDINA::GDINA}} function in the
+\pkg{GDINA} package for similar functionality.
 }
 
 
@@ -456,6 +459,16 @@ summary(mod1b)
 # Model 1c: fix all delta parameters to previously fitted model
 mod1c <- gdina( data = sim.dina ,  q.matrix = sim.qmatrix , delta.fixed=mod1$delta)
 summary(mod1c)
+
+# Model 1d: estimate GDINA model with GDINA package
+mod1d <- GDINA::GDINA( dat = sim.dina , Q = sim.qmatrix , model = "GDINA" )
+summary(mod1d)
+# extract item parameters
+GDINA::itemparm(mod1d)
+GDINA::itemparm(mod1d, what="delta")
+# compare likelihood
+logLik(mod1)
+logLik(mod1d)
 
 #***
 # Model 2: estimation of the DINA model with gdina function

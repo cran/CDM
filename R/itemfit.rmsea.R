@@ -40,8 +40,8 @@ itemfit.rmsea <- function( n.ik , pi.k , probs , itemnames=NULL){
 		for (gg in 2:G ){
 			N.ik <- N.ik + n.ik[,,,gg]
 			pitot <- pitot + pi.k[,gg]
-				}
-			}
+		}
+	}
 			
 	# calculate summed counts
 	N.ik_tot <- array( 0 , dim=dim(N.ik) )
@@ -56,22 +56,17 @@ itemfit.rmsea <- function( n.ik , pi.k , probs , itemnames=NULL){
 	# calculate itemwise statistics
 	p.ik_observed <- N.ik / ( N.ik_tot + eps )
 	p.ik_observed[ is.na( p.ik_observed ) ] <- 0
-	
 	# define class weights 
 	pi.k_tot <- array( 0 , dim=dim(p.ik_observed) )
 	for (kk in 1:K){
-#		pi.k_tot[,,kk] <- matrix( pitot , nrow= dim(pi.k_tot)[1] , ncol=dim(pi.k_tot)[2] , byrow=T )
 		pi.k_tot[,,kk] <- matrix( pitot , nrow= dim(pi.k_tot)[1] , ncol=dim(pi.k_tot)[2] , byrow=FALSE )
 				}
 	# calculate statistics
-	dist.item <- pi.k_tot * ( p.ik_observed - probs )^2			
-# Revalpr("round(pi.k_tot[,6,2],4)")	
-# Revalpr("round(p.ik_observed[,6,2],5)")
-# Revalpr("round(probs[,6,2],5)")
-# h1 <- cbind( pi.k_tot[,6,2] , p.ik_observed[,6,2] , probs[,6,2] )
-# write.csv2( h1 , "mod1.csv" )
+	dist.item <- pi.k_tot * ( p.ik_observed - probs )^2		
 	h1 <- dist.item[,,1]
-	for (kk in 2:K){ h1 <- h1 + dist.item[,,kk] }
-	itemfit.rmsea <- sqrt( colSums( h1 ) )
-	return(itemfit.rmsea)
-		}
+	for (kk in 2:K){ 
+		h1 <- h1 + dist.item[,,kk] 
+	}
+	itemfit.rmsea <- base::sqrt( base::colSums( h1 ) )
+	base::return(itemfit.rmsea)
+}
