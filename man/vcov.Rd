@@ -104,7 +104,7 @@ data(sim.qmatrix)
 dat <- sim.dina
 
 #****** Model 1: (Ordinary) DINA Model
-mod1 <- din( dat , q.matr = sim.qmatrix, rule = "DINA")
+mod1 <- CDM::din( dat , q.matr = sim.qmatrix, rule = "DINA")
 # look at parameter table of the model
 mod1$partable
 # covariance matrix
@@ -125,7 +125,7 @@ constraint.slip <- cbind( c(2,3,5) , c(.15,.20,.25) )
 # set some skill class probabilities to zero
 zeroprob.skillclasses <- c(2,4)
 # estimate model
-mod2 <- din( dat , q.matr = sim.qmatrix, guess.equal=TRUE , 
+mod2 <- CDM::din( dat , q.matr = sim.qmatrix, guess.equal=TRUE , 
      constraint.slip=constraint.slip, zeroprob.skillclasses=zeroprob.skillclasses)
 # parameter table
 mod2$partable

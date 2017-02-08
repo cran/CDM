@@ -19,13 +19,7 @@ Functions for cognitive diagnosis modeling
 }
 
 \details{
-  \tabular{ll}{
-    Package: \tab \pkg{CDM}\cr
-    Type: \tab Package\cr
-    Version: \tab 5.3\cr
-    Publication Year: \tab 2017\cr
-    License: \tab \acronym{GPL} (>= 2) \cr           
-  }
+
   Cognitive diagnosis models (CDMs) are restricted latent class models.  
   They represent model-based classification approaches, which aim at
   assigning respondents to different attribute profile groups.  The latent
@@ -170,219 +164,221 @@ Junker, B. W., & Sijtsma, K. (2001). Cognitive assessment models with few
 
 \keyword{package}
 \section{\R Function Versions }{
-\emph{abs_approx__0.01.R}, 
-\emph{anova.din__1.10.R}, 
-\emph{calc_posterior__1.02.R}, 
-\emph{cdi.kli__0.05.R}, \cr
-\emph{cdm.est.calc.accuracy__2.16.R}, 
-\emph{check.input__1.07.R}, 
-\emph{coef__0.04.R}, 
-\emph{confint.din__0.06.R}, \cr
-\emph{dataframe_summary__0.03.R}, 
-\emph{deltaMethod__0.02.R}, 
-\emph{din.deterministic__1.01.R}, \cr
-\emph{din.deterministic_alg__0.06.R}, 
-\emph{din.partable__0.14.R}, 
-\emph{din.validate.qmatrix__1.04.R}, \cr
-\emph{din__2.29.R}, 
-\emph{entropy.lca__0.08.R}, 
-\emph{equivalent.dina__1.02.R}, \cr
-\emph{equivalent.skillclasses__0.06.R}, 
-\emph{gdd__0.06.R}, 
-\emph{gdina.dif__1.11.R}, 
-\emph{gdina.dif_aux__1.31.R}, \cr
-\emph{gdina.partable__0.06.R}, 
-\emph{gdina.postproc__0.06.R}, 
-\emph{gdina.wald__0.21.R}, \cr
-\emph{gdina.wald_aux__0.11.R}, 
-\emph{gdina__9.021.R}, 
-\emph{gdina_designmatrices__0.11.R}, \cr
-\emph{gdina_hogdina_alg__1.08.R}, 
-\emph{gdina_mstep_item_ml__0.16.R}, \cr
-\emph{gdina_mstep_item_ml_rrum__0.23.R}, 
-\emph{gdina_mstep_item_ml_rrum2__1.02.R}, \cr
-\emph{gdina_mstep_item_uls__0.04.R}, 
-\emph{gdina_proc_noninvariance_multiple_groups__0.01.R}, \cr
-\emph{gdina_proc_sequential_items__0.01.R}, 
-\emph{gdina_reduced_skillspace__0.05.R}, \cr
-\emph{gdina_se_itemwise__0.05.R}, 
-\emph{gdm__8.33.R}, 
-\emph{gdm_algorithm__8.09.R}, 
-\emph{gdm_postproc__3.05.R}, \cr
-\emph{gdm_preproc__2.12.R}, 
-\emph{ideal.response.pattern__0.03.R}, 
-\emph{IRT.anova__0.02.R}, \cr
-\emph{IRT.compareModels__0.12.R}, 
-\emph{IRT.data__0.04.R}, 
-\emph{IRT.derivedParameters__0.02.R}, \cr
-\emph{IRT.expectedCounts__0.05.R}, 
-\emph{IRT.factor.scores__0.04.R}, 
-\emph{IRT.IC__0.03.R}, \cr
-\emph{IRT.irfprob__0.04.R}, 
-\emph{IRT.irfprobPlot__1.04.R}, 
-\emph{IRT.itemfit__0.02.R}, \cr
-\emph{IRT.jackknife.gdina__0.13.R}, 
-\emph{IRT.jackknife__0.01.R}, 
-\emph{IRT.likelihood__0.07.R}, \cr
-\emph{IRT.modelfit__0.08.R}, 
-\emph{IRT.parameterTable__0.02.R}, 
-\emph{IRT.posterior__0.01.R}, \cr
-\emph{IRT.predict__1.14.R}, 
-\emph{IRT.repDesign__0.07.R}, 
-\emph{IRT.RMSD__0.13.R}, 
-\emph{IRT.se.din__0.04.R}, \cr
-\emph{IRT.se__0.01.R}, 
-\emph{item_by_group__0.11.R}, 
-\emph{itemfit.rmsea__0.21.R}, 
-\emph{itemfit.sx2__3.06.R}, \cr
-\emph{itemfit.sx2_aux__3.05.R}, 
-\emph{jkestimates__0.04.R}, 
-\emph{label_significance_level__0.01.R}, \cr
-\emph{logLik_CDM__0.07.R}, 
-\emph{logpars2rrumpars__0.01.R}, 
-\emph{mad_aux__0.01.R}, 
-\emph{mcdina.est.item__0.07.R}, \cr
-\emph{mcdina.postproc__0.08.R}, 
-\emph{mcdina.simul__0.10.R}, 
-\emph{mcdina__0.62.R}, \cr
-\emph{mcdina_alg_cppcall__0.01.R}, 
-\emph{mcdina_prepare__0.18.R}, 
-\emph{md_aux__2.01.R}, \cr
-\emph{modelfit.cor.din__2.10.R}, 
-\emph{modelfit.cor__1.17.R}, 
-\emph{modelfit.cor2__3.18.R}, \cr
-\emph{numerical_Hessian__0.14.R}, 
-\emph{osink__1.03.R}, 
-\emph{personfit.appropriateness__1.05.R}, \cr
-\emph{plot.din__2.14.R}, 
-\emph{plot.gdina__0.02.R}, 
-\emph{plot.gdm__0.06.R}, 
-\emph{plot.slca__0.02.R}, \cr
-\emph{predict.CDM__0.02.R}, 
-\emph{print.din__2.03.R}, 
-\emph{print.gdina__0.03.R}, 
-\emph{print.gdm__0.02.R}, \cr
-\emph{print.mcdina__0.03.R}, 
-\emph{print.slca__0.03.R}, 
-\emph{print.summary.din__1.21.R}, \cr
-\emph{rmsd_chisquare__0.05.R}, 
-\emph{rmsea_aux__2.03.R}, 
-\emph{rowMaxs__1.06.R}, 
-\emph{rowProds__1.01.R}, \cr
-\emph{rrum.param__0.01.R}, 
-\emph{rrumpars2logpars__0.01.R}, 
-\emph{sequential.items__1.02.R}, \cr
-\emph{sim.din__1.04.R}, 
-\emph{sim.gdina__2.05.R}, 
-\emph{skill.cor__1.13.R}, \cr
-\emph{skillspace.approximation__0.02.R}, 
-\emph{skillspace.hierarchy__0.08.R}, \cr
-\emph{slca.algorithm__1.15.R}, 
-\emph{slca.postprocess__0.04.R}, 
-\emph{slca__1.37.R}, \cr
-\emph{solve_add_ridge__0.01.R}, 
-\emph{squeeze.cdm__0.02.R}, 
-\emph{summary.din__1.17.R}, \cr
-\emph{summary.gdina.wald__0.01.R}, 
-\emph{summary.gdina__1.26.R}, 
-\emph{summary.gdm__1.17.R}, \cr
-\emph{summary.IRT.RMSD__0.07.R}, 
-\emph{summary.IRT.RMSD_print_statistics__0.02.R}, \cr
-\emph{summary.mcdina__0.11.R}, 
-\emph{summary.slca__1.16.R}, 
-\emph{summary_sink__0.01.R}, 
-\emph{vcov.din__1.54.R}, \cr
-\emph{vcov.loglike.din__0.01.R}, 
-\emph{WaldTest__0.07.R}, 
-\emph{zzz__1.11.R}, 
+\emph{abs_approx__0.02.R}, 
+\emph{anova.din__1.11.R}, 
+\emph{calc_posterior__1.03.R}, 
+\emph{cdi.kli__0.07.R}, \cr
+\emph{cdm.est.calc.accuracy__2.17.R}, 
+\emph{check.input__1.08.R}, 
+\emph{coef__0.05.R}, 
+\emph{confint.din__0.07.R}, \cr
+\emph{dataframe_summary__0.04.R}, 
+\emph{deltaMethod__0.03.R}, 
+\emph{din.deterministic__1.02.R}, \cr
+\emph{din.deterministic_alg__0.09.R}, 
+\emph{din.partable__0.15.R}, 
+\emph{din.validate.qmatrix__1.05.R}, \cr
+\emph{din__2.30.R}, 
+\emph{entropy.lca__0.10.R}, 
+\emph{equivalent.dina__1.03.R}, \cr
+\emph{equivalent.skillclasses__0.07.R}, 
+\emph{gdd__0.08.R}, 
+\emph{gdina.dif__1.12.R}, 
+\emph{gdina.dif_aux__1.32.R}, \cr
+\emph{gdina.partable__0.07.R}, 
+\emph{gdina.postproc__0.07.R}, 
+\emph{gdina.wald__0.22.R}, \cr
+\emph{gdina.wald_aux__0.12.R}, 
+\emph{gdina__9.023.R}, 
+\emph{gdina_designmatrices__0.12.R}, \cr
+\emph{gdina_hogdina_alg__1.10.R}, 
+\emph{gdina_mstep_item_ml__0.17.R}, \cr
+\emph{gdina_mstep_item_ml_rrum__0.24.R}, 
+\emph{gdina_mstep_item_ml_rrum2__1.03.R}, \cr
+\emph{gdina_mstep_item_uls__0.05.R}, 
+\emph{gdina_proc_noninvariance_multiple_groups__0.02.R}, \cr
+\emph{gdina_proc_sequential_items__0.02.R}, 
+\emph{gdina_reduced_skillspace__0.06.R}, \cr
+\emph{gdina_se_itemwise__0.09.R}, 
+\emph{gdm__8.34.R}, 
+\emph{gdm_algorithm__8.10.R}, 
+\emph{gdm_postproc__3.06.R}, \cr
+\emph{gdm_preproc__2.13.R}, 
+\emph{ideal.response.pattern__0.05.R}, 
+\emph{IRT.anova__0.03.R}, \cr
+\emph{IRT.compareModels__0.13.R}, 
+\emph{IRT.data__0.05.R}, 
+\emph{IRT.derivedParameters__0.03.R}, \cr
+\emph{IRT.expectedCounts__0.06.R}, 
+\emph{IRT.factor.scores__0.05.R}, 
+\emph{IRT.IC__0.04.R}, \cr
+\emph{IRT.irfprob__0.05.R}, 
+\emph{IRT.irfprobPlot__1.05.R}, 
+\emph{IRT.itemfit__0.03.R}, \cr
+\emph{IRT.jackknife.gdina__0.14.R}, 
+\emph{IRT.jackknife__0.02.R}, 
+\emph{IRT.likelihood__0.08.R}, \cr
+\emph{IRT.modelfit__0.10.R}, 
+\emph{IRT.parameterTable__0.03.R}, 
+\emph{IRT.posterior__0.02.R}, \cr
+\emph{IRT.predict__1.16.R}, 
+\emph{IRT.repDesign__0.08.R}, 
+\emph{IRT.RMSD__0.14.R}, 
+\emph{IRT.se.din__0.05.R}, \cr
+\emph{IRT.se__0.02.R}, 
+\emph{item_by_group__0.12.R}, 
+\emph{itemfit.rmsea__0.22.R}, 
+\emph{itemfit.sx2__3.07.R}, \cr
+\emph{itemfit.sx2_aux__3.07.R}, 
+\emph{jkestimates__0.05.R}, 
+\emph{label_significance_level__0.02.R}, \cr
+\emph{logLik_CDM__0.08.R}, 
+\emph{logpars2rrumpars__0.02.R}, 
+\emph{mad_aux__0.02.R}, 
+\emph{mcdina.est.item__0.08.R}, \cr
+\emph{mcdina.postproc__0.10.R}, 
+\emph{mcdina.simul__0.11.R}, 
+\emph{mcdina__0.63.R}, \cr
+\emph{mcdina_alg_cppcall__0.03.R}, 
+\emph{mcdina_prepare__0.20.R}, 
+\emph{md_aux__2.02.R}, \cr
+\emph{modelfit.cor.din__2.11.R}, 
+\emph{modelfit.cor__1.18.R}, 
+\emph{modelfit.cor2__3.23.R}, \cr
+\emph{numerical_Hessian__0.15.R}, 
+\emph{osink__1.04.R}, 
+\emph{personfit.appropriateness__1.06.R}, \cr
+\emph{plot.din__2.15.R}, 
+\emph{plot.gdina__0.03.R}, 
+\emph{plot.gdm__0.07.R}, 
+\emph{plot.slca__0.03.R}, \cr
+\emph{predict.CDM__0.03.R}, 
+\emph{print.din__2.04.R}, 
+\emph{print.gdina__0.04.R}, 
+\emph{print.gdm__0.03.R}, \cr
+\emph{print.mcdina__0.04.R}, 
+\emph{print.slca__0.04.R}, 
+\emph{print.summary.din__1.22.R}, \cr
+\emph{RcppExports__0.01.R}, 
+\emph{rmsd_chisquare__0.06.R}, 
+\emph{rmsea_aux__2.04.R}, 
+\emph{rowMaxs__1.07.R}, \cr
+\emph{rowProds__1.02.R}, 
+\emph{rrum.param__0.02.R}, 
+\emph{rrumpars2logpars__0.02.R}, \cr
+\emph{sequential.items__1.03.R}, 
+\emph{sim.din__1.05.R}, 
+\emph{sim.gdina__2.06.R}, 
+\emph{skill.cor__1.14.R}, \cr
+\emph{skillspace.approximation__0.03.R}, 
+\emph{skillspace.hierarchy__0.10.R}, \cr
+\emph{slca.algorithm__1.17.R}, 
+\emph{slca.postprocess__0.05.R}, 
+\emph{slca__1.39.R}, \cr
+\emph{solve_add_ridge__0.02.R}, 
+\emph{squeeze.cdm__0.03.R}, 
+\emph{summary.din__1.18.R}, \cr
+\emph{summary.gdina.wald__0.02.R}, 
+\emph{summary.gdina__1.27.R}, 
+\emph{summary.gdm__1.18.R}, \cr
+\emph{summary.IRT.RMSD__0.08.R}, 
+\emph{summary.IRT.RMSD_print_statistics__0.03.R}, \cr
+\emph{summary.mcdina__0.12.R}, 
+\emph{summary.slca__1.17.R}, 
+\emph{summary_sink__0.02.R}, 
+\emph{vcov.din__1.55.R}, \cr
+\emph{vcov.loglike.din__0.02.R}, 
+\emph{WaldTest__0.08.R}, 
+\emph{zzz__1.12.R}, 
 }
 \section{\emph{Rcpp} Function Versions }{
 \emph{calc_posterior__1.01.c}, 
-\emph{cdm_kli_id_c__2.02.cpp}, \cr
-\emph{din.deterministic.devcrit_c__2.02.cpp}, 
-\emph{din.jml.devcrit_c__2.02.cpp}, 
-\emph{gdd_c__2.02.cpp}, \cr
-\emph{irt_predict_c__2.02.cpp}, 
-\emph{itemfit_sx2_calc_scoredistribution_cdm__2.01.cpp}, \cr
-\emph{modelfit_cor2_c__2.02.cpp}, 
-\emph{probs_multcat_items_counts_c__2.03.cpp}, \cr
-\emph{slca_cfunctions__2.02.cpp}, 
+\emph{cdm_kli_id_c__3.04.cpp}, \cr
+\emph{din.deterministic.devcrit_c__3.02.cpp}, 
+\emph{gdd_c__3.01.cpp}, 
+\emph{init__0.02.c}, \cr
+\emph{irt_predict_c__3.01.cpp}, 
+\emph{itemfit_sx2_calc_scoredistribution_cdm__3.01.cpp}, \cr
+\emph{modelfit_cor2_c__3.02.cpp}, 
+\emph{probs_multcat_items_counts_c__3.02.cpp}, \cr
+\emph{RcppExports__0.03.cpp}, 
+\emph{slca_cfunctions__3.01.cpp}, 
 }
 \section{\emph{Rd} Documentation Versions }{
-\emph{abs_approx__0.02.Rd}, 
-\emph{anova.din__1.21.Rd}, 
-\emph{cdi.kli__0.10.Rd}, 
-\emph{CDM-package__2.65.Rd}, \cr
-\emph{cdm.est.class.accuracy__1.12.Rd}, 
-\emph{coef__0.15.Rd}, 
-\emph{Data-sim__1.12.Rd}, 
-\emph{data.cdm__0.13.Rd}, \cr
-\emph{data.dcm__0.17.Rd}, 
-\emph{data.dtmr__0.10.Rd}, 
-\emph{data.ecpe__0.14.Rd}, 
-\emph{data.fraction1__0.11.Rd}, \cr
-\emph{data.fraction2__0.14.Rd}, 
-\emph{data.hr__0.08.Rd}, 
-\emph{data.jang__0.09.Rd}, 
-\emph{data.melab__0.08.Rd}, \cr
-\emph{data.mg__0.18.Rd}, 
-\emph{data.pgdina__0.13.Rd}, 
-\emph{data.sda6__0.06.Rd}, 
-\emph{data.Students__0.12.Rd}, \cr
-\emph{data.timss03.G8.su__0.04.Rd}, 
-\emph{data.timss07.G4.lee__0.04.Rd}, \cr
-\emph{data.timss11.G4.AUT__0.06.Rd}, 
-\emph{deltaMethod__0.04.Rd}, 
-\emph{din.deterministic__0.15.Rd}, \cr
-\emph{din.equivalent.class__0.16.Rd}, 
-\emph{din.validate.qmatrix__1.18.Rd}, 
-\emph{din__2.32.Rd}, \cr
-\emph{entropy.lca__0.16.Rd}, 
-\emph{equivalent.dina__1.11.Rd}, 
-\emph{fraction.subtraction.data__2.02.Rd}, \cr
-\emph{fraction.subtraction.qmatrix__1.03.Rd}, 
-\emph{gdd__0.08.Rd}, 
-\emph{gdina.dif__0.12.Rd}, \cr
-\emph{gdina.wald__0.21.Rd}, 
-\emph{gdina__2.992.Rd}, 
-\emph{gdm__4.26.Rd}, 
-\emph{ideal.response.pattern__0.04.Rd}, \cr
-\emph{IRT.anova__0.02.Rd}, 
-\emph{IRT.compareModels__0.11.Rd}, 
-\emph{IRT.data__0.04.Rd}, \cr
-\emph{IRT.expectedCounts__0.03.Rd}, 
-\emph{IRT.factor.scores__0.05.Rd}, 
-\emph{IRT.IC__0.05.Rd}, \cr
-\emph{IRT.irfprob__0.07.Rd}, 
-\emph{IRT.irfprobPlot__0.08.Rd}, 
-\emph{IRT.itemfit__0.03.Rd}, \cr
-\emph{IRT.jackknife__0.13.Rd}, 
-\emph{IRT.likelihood__0.09.Rd}, 
-\emph{IRT.modelfit__0.12.Rd}, \cr
-\emph{IRT.parameterTable__0.02.Rd}, 
-\emph{IRT.repDesign__0.12.Rd}, 
-\emph{IRT.RMSD__0.08.Rd}, \cr
-\emph{item_by_group__0.11.Rd}, 
-\emph{itemfit.rmsea__1.08.Rd}, 
-\emph{itemfit.sx2__1.25.Rd}, 
-\emph{logLik__0.12.Rd}, \cr
-\emph{mcdina__0.19.Rd}, 
-\emph{modelfit.cor__1.48.Rd}, 
-\emph{numerical_Hessian__0.17.Rd}, 
-\emph{osink__0.06.Rd}, \cr
-\emph{personfit.appropriateness__0.13.Rd}, 
-\emph{plot.din__2.07.Rd}, 
-\emph{predict__0.12.Rd}, \cr
-\emph{print.summary.din__1.04.Rd}, 
-\emph{sequential.items__0.11.Rd}, 
-\emph{sim.din__2.04.Rd}, \cr
-\emph{sim.gdina__1.16.Rd}, 
-\emph{skill.cor__2.05.Rd}, 
-\emph{skillspace.approximation__0.06.Rd}, \cr
-\emph{skillspace.hierarchy__0.14.Rd}, 
-\emph{slca__1.53.Rd}, 
-\emph{summary.din__2.04.Rd}, \cr
-\emph{summary_sink__0.03.Rd}, 
-\emph{vcov__0.26.Rd}, 
-\emph{WaldTest__0.06.Rd}, 
+\emph{abs_approx__0.03.Rd}, 
+\emph{anova.din__1.22.Rd}, 
+\emph{cdi.kli__0.11.Rd}, 
+\emph{CDM-package__2.68.Rd}, \cr
+\emph{cdm.est.class.accuracy__1.13.Rd}, 
+\emph{coef__0.16.Rd}, 
+\emph{Data-sim__1.13.Rd}, 
+\emph{data.cdm__0.14.Rd}, \cr
+\emph{data.dcm__0.18.Rd}, 
+\emph{data.dtmr__0.11.Rd}, 
+\emph{data.ecpe__0.15.Rd}, 
+\emph{data.fraction1__0.12.Rd}, \cr
+\emph{data.fraction2__0.15.Rd}, 
+\emph{data.hr__0.10.Rd}, 
+\emph{data.jang__0.10.Rd}, 
+\emph{data.melab__0.10.Rd}, \cr
+\emph{data.mg__0.20.Rd}, 
+\emph{data.pgdina__0.14.Rd}, 
+\emph{data.sda6__0.07.Rd}, 
+\emph{data.Students__0.13.Rd}, \cr
+\emph{data.timss03.G8.su__0.05.Rd}, 
+\emph{data.timss07.G4.lee__0.05.Rd}, \cr
+\emph{data.timss11.G4.AUT__0.07.Rd}, 
+\emph{deltaMethod__0.05.Rd}, 
+\emph{din.deterministic__0.16.Rd}, \cr
+\emph{din.equivalent.class__0.17.Rd}, 
+\emph{din.validate.qmatrix__1.20.Rd}, 
+\emph{din__2.33.Rd}, \cr
+\emph{entropy.lca__0.17.Rd}, 
+\emph{equivalent.dina__1.12.Rd}, 
+\emph{fraction.subtraction.data__2.03.Rd}, \cr
+\emph{fraction.subtraction.qmatrix__1.04.Rd}, 
+\emph{gdd__0.10.Rd}, 
+\emph{gdina.dif__0.13.Rd}, \cr
+\emph{gdina.wald__0.22.Rd}, 
+\emph{gdina__2.993.Rd}, 
+\emph{gdm__4.27.Rd}, 
+\emph{ideal.response.pattern__0.05.Rd}, \cr
+\emph{IRT.anova__0.03.Rd}, 
+\emph{IRT.compareModels__0.12.Rd}, 
+\emph{IRT.data__0.05.Rd}, \cr
+\emph{IRT.expectedCounts__0.04.Rd}, 
+\emph{IRT.factor.scores__0.06.Rd}, 
+\emph{IRT.IC__0.06.Rd}, \cr
+\emph{IRT.irfprob__0.08.Rd}, 
+\emph{IRT.irfprobPlot__0.10.Rd}, 
+\emph{IRT.itemfit__0.04.Rd}, \cr
+\emph{IRT.jackknife__0.14.Rd}, 
+\emph{IRT.likelihood__0.10.Rd}, 
+\emph{IRT.modelfit__0.13.Rd}, \cr
+\emph{IRT.parameterTable__0.03.Rd}, 
+\emph{IRT.repDesign__0.13.Rd}, 
+\emph{IRT.RMSD__0.10.Rd}, \cr
+\emph{item_by_group__0.12.Rd}, 
+\emph{itemfit.rmsea__1.10.Rd}, 
+\emph{itemfit.sx2__1.26.Rd}, 
+\emph{logLik__0.13.Rd}, \cr
+\emph{mcdina__0.20.Rd}, 
+\emph{modelfit.cor__1.50.Rd}, 
+\emph{numerical_Hessian__0.18.Rd}, 
+\emph{osink__0.07.Rd}, \cr
+\emph{personfit.appropriateness__0.14.Rd}, 
+\emph{plot.din__2.08.Rd}, 
+\emph{predict__0.13.Rd}, \cr
+\emph{print.summary.din__1.05.Rd}, 
+\emph{sequential.items__0.12.Rd}, 
+\emph{sim.din__2.05.Rd}, \cr
+\emph{sim.gdina__1.17.Rd}, 
+\emph{skill.cor__2.06.Rd}, 
+\emph{skillspace.approximation__0.07.Rd}, \cr
+\emph{skillspace.hierarchy__0.15.Rd}, 
+\emph{slca__1.54.Rd}, 
+\emph{summary.din__2.05.Rd}, \cr
+\emph{summary_sink__0.04.Rd}, 
+\emph{vcov__0.27.Rd}, 
+\emph{WaldTest__0.07.Rd}, 
 }

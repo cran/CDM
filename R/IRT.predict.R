@@ -3,7 +3,7 @@
 ########################################################################
 # function for predicting item responses based on posterior
 IRT.predict <- function( object , dat , group=1 ){
-a0 <- Sys.time()		
+# a0 <- Sys.time()		
 	resp <- as.matrix(dat)
 	# post1 <- IRT.posterior( object )
 	irf1 <- IRT.irfprob( object )
@@ -15,27 +15,24 @@ a0 <- Sys.time()
 	if ( length( dim(irf1) ) == 4 ){
 	     # handle case with group-wise item response functions
 	     irf1 <- irf1[ ,,,group]
-			}
+	}
 
 	irf1_ <- as.numeric(irf1)
 # cat("before IRT_predict\n") ; a1 <- Sys.time() ; print( a1- a0 )	; a0 <- a1
 	# Rcpp function
-	res0 <- .Call( "IRT_predict" , resp , irf1_ , K , TP ,
-					    PACKAGE="CDM" )
+	res0 <- IRT_predict( resp , irf1_ , K , TP )
 # cat("IRT_predict\n") ; a1 <- Sys.time() ; print( a1- a0 ) ; a0 <- a1 ;    
 	probs.categ <- array( res0$probs_categ , dim=c(N,K,TP,I) )
 	pred <- res0$pred
 	var1 <- res0$var1
 	resid1 <- res0$resid1
 	sresid1 <- res0$sresid1		
-
 # cat("arrange arrays\n") ; a1 <- Sys.time() ; print( a1- a0 ) ; a0 <- a1 ; 			
-		# output
-		res <- list( "expected" = pred , "probs.categ" = probs.categ , 
-					 "variance" = var1 , "residuals" = resid1 , "stand.resid" = sresid1 )
-
-		return(res)
-		}
+	# output
+	res <- list( "expected" = pred , "probs.categ" = probs.categ , 
+				 "variance" = var1 , "residuals" = resid1 , "stand.resid" = sresid1 )
+	return(res)		
+}
 #######################################################################		
 
 

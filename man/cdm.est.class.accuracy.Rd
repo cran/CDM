@@ -76,7 +76,7 @@ diagnostic assessment.
 
 #***
 # Model 1: estimate DINO model with din
-mod1 <- din( sim.dino , q.matrix = sim.qmatrix , rule="DINO")
+mod1 <- CDM::din( sim.dino , q.matrix = sim.qmatrix , rule="DINO")
 # estimate classification reliability
 cdm.est.class.accuracy(  mod1 , n.sims=5000)
   ##                P_a P_a_sim   P_c P_c_sim
@@ -88,7 +88,7 @@ cdm.est.class.accuracy(  mod1 , n.sims=5000)
 
 #***
 # Model 2: estimate DINO model with gdina
-mod2 <- gdina( sim.dino , q.matrix = sim.qmatrix , rule="DINO")
+mod2 <- CDM::gdina( sim.dino , q.matrix = sim.qmatrix , rule="DINO")
 # estimate classification reliability
 cdm.est.class.accuracy(  mod2 )
   ##                P_a   P_c

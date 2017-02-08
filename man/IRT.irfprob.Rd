@@ -95,9 +95,9 @@ dat <- data.cdm02$data
 q.matrix <- data.cdm02$q.matrix
 
 # estimate model (only 5 iterations for illustration purposes)
-mod1 <- mcdina( dat , q.matrix=q.matrix , maxit = 5)
+mod1 <- CDM::mcdina( dat , q.matrix=q.matrix , maxit = 5)
 # extract item response functions
-prmod1 <- IRT.irfprob(mod1)
+prmod1 <- CDM::IRT.irfprob(mod1)
 str(prmod1)
 }
 }

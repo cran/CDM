@@ -4,7 +4,7 @@
 coef.din <-
 function (object, ...) {
 	cof <- object$coef
-    base::return(cof)
+    return(cof)
 }
 
 ########################
@@ -12,7 +12,7 @@ function (object, ...) {
 coef.gdina <-
 function (object, ...) {
 	cof <- object$coef
-    base::return(cof)
+    return(cof)
 }
 
 ########################
@@ -20,7 +20,7 @@ function (object, ...) {
 coef.gdm <-
 function (object, ...) {
 	cof <- object$item
-    base::return(cof)
+    return(cof)
 }
 
 
@@ -29,7 +29,7 @@ function (object, ...) {
 coef.mcdina <-
 function (object, ...) {
 	cof <- object$item
-    base::return(cof)
+    return(cof)
 }
 
 ########################
@@ -37,5 +37,5 @@ function (object, ...) {
 coef.slca <-
 function (object, ...) {
 	cof <- object$Xlambda
-    base::return(cof)
+    return(cof)
 }

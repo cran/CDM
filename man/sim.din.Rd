@@ -151,7 +151,7 @@ slip <- c(.05,.16,.19,.03,.03,.19,.15,.05)
 dat <- sim.din(N=0, q.matrix= Qmatrix, guess = guess ,
         slip = slip , alpha=alpha)$dat
 # estimate model
-res <- din( dat , q.matrix=Qmatrix )
+res <- CDM::din( dat , q.matrix=Qmatrix )
 # extract maximum likelihood estimates for individual classifications
 est <- paste( res$pattern$mle.est )
 # calculate classification accuracy
@@ -168,7 +168,7 @@ q.matrix <- data.ecpe$q.matrix
 
 #***
 # (1) estimate DINA model
-mod <- din( data=dat[,-1] , q.matrix=q.matrix , rule="DINA")
+mod <- CDM::din( data=dat[,-1] , q.matrix=q.matrix , rule="DINA")
 
 #***
 # (2) simulate data according to DINA model

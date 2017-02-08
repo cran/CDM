@@ -113,16 +113,16 @@ colnames(q.matrix) <- paste0("Attr",1:ncol(q.matrix))
 dat <- sim.din( N=N , q.matrix)$dat
 
 # Joint maximum likelihood estimation (the default: method="JML")
-res1 <- din.deterministic( dat , q.matrix )
+res1 <- CDM::din.deterministic( dat , q.matrix )
 
 # Adaptive estimation of guessing and slipping parameters
-res <- din.deterministic( dat , q.matrix , method="adaptive" )
+res <- CDM::din.deterministic( dat , q.matrix , method="adaptive" )
 
 # Classification using Hamming distance
-res <- din.deterministic( dat , q.matrix , method="hamming" )
+res <- CDM::din.deterministic( dat , q.matrix , method="hamming" )
 
 # Classification using weighted Hamming distance
-res <- din.deterministic( dat , q.matrix , method="weighted.hamming" )
+res <- CDM::din.deterministic( dat , q.matrix , method="weighted.hamming" )
 
 \dontrun{
 #********* load NPCD library for JML estimation

@@ -104,7 +104,7 @@ library(BIFIEsurvey)
 data(data.timss11.G4.AUT)
 dat <- data.timss11.G4.AUT$data
 # generate design
-rdes <- IRT.repDesign( data= dat,  wgt = "TOTWGT" , jktype="JK_TIMSS" , 
+rdes <- CDM::IRT.repDesign( data= dat,  wgt = "TOTWGT" , jktype="JK_TIMSS" , 
              jkzone = "JKCZONE" , jkrep = "JKCREP" )
 str(rdes)
 
@@ -119,7 +119,7 @@ q.matrix <- sim.qmatrix
 dat <- sim.din(N=2000,q.matrix )$dat
 
 # bootstrap with 300 random samples
-rdes <- IRT.repDesign(  data= dat  ,  jktype="BOOT" , Nboot=300 )
+rdes <- CDM::IRT.repDesign(  data= dat  ,  jktype="BOOT" , Nboot=300 )
 
 }
 }

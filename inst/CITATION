@@ -25,12 +25,11 @@ bibentry(bibtype = "Article",
   pages        = "1--24",
   doi          = "10.18637/jss.v074.i02",
   textVersion  =
-  paste("Ann Cathrice George, Alexander Robitzsch, Thomas Kiefer, Juergen Gross, Ali Uenlue (2016).",
-        "The R Package CDM for Cognitive Diagnosis Models.",
+  paste("George, A. C., Robitzsch, A., Kiefer, T., Gross, J., & Uenlue, A. (2016).",
+        "The R Package CDM for cognitive diagnosis models.",
         "Journal of Statistical Software, 74(2), 1-24.",
         "doi:10.18637/jss.v074.i02")
 )
-
 
 
 
@@ -49,10 +48,11 @@ citEntry(entry="Manual",
                           family = "{\\\"U}nl{\\\"u}")) ,
          year = year,
          note = vers,
+	 url = "https://CRAN.R-project.org/package=CDM" ,
          textVersion =
          paste0("Robitzsch, A., Kiefer, T., George, A. C., & Uenlue, A. (",
                year,
                "). CDM: Cognitive diagnosis modeling. ",
-               vers, ".")
+               vers, ". https://CRAN.R-project.org/package=CDM")
 	)
 

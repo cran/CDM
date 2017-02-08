@@ -8,7 +8,7 @@
 	pjk.ii <- pjk[,-ii,]	
     P1ii <- pjk.ii[,,2]
     Q1ii <- pjk.ii[,,1]
-	scored.ii <- .Call("calc_scoredistribution_cdm" , P1ii , Q1ii , PACKAGE="CDM")
+	scored.ii <- calc_scoredistribution_cdm( P1ii , Q1ii )
     eik_t2 <- colSums( scoredistribution * pi.k )
     eik_t1 <- c(0,colSums( P1[,ii] * scored.ii * pi.k  ) )
 	# P1 is the probability of passing the item

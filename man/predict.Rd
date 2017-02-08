@@ -105,7 +105,7 @@ data(sim.rasch, package="TAM")
 #--- Model 1: Rasch model
 mod1 <- tam.mml(resp=sim.rasch) 
 # apply IRT.predict function
-prmod1 <- IRT.predict(mod1 , mod1$resp )
+prmod1 <- CDM::IRT.predict(mod1 , mod1$resp )
 str(prmod1)
 }
 
@@ -117,10 +117,10 @@ data(sim.dina)
 data(sim.qmatrix)
 
 # DINA Model
-mod1 <- din(sim.dina, q.matr = sim.qmatrix, rule = "DINA" )
+mod1 <- CDM::din(sim.dina, q.matr = sim.qmatrix, rule = "DINA" )
 summary(mod1)
 # apply predict method
-prmod1 <- IRT.predict( mod1 , sim.dina )
+prmod1 <- CDM::IRT.predict( mod1 , sim.dina )
 str(prmod1)
 }
 

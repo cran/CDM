@@ -5,26 +5,23 @@ cdi.kli <- function( object ){
 	# object must be of class din or gdina
 	if ( ! ( class(object) %in% c("din","gdina") ) ){
 		stop("This functions only supports objects of class din or gdina!")
-					}
+	}
 	items <- colnames( object$data )				
 	q.matrix <- object$q.matrix
 	pjk0 <- pjk <- object$pjk       # [ items , categories , skills ]
 	skillclasses <- as.matrix( object$attribute.patt.splitted )
 	# rearrange probabilities
-	pjk <- aperm( pjk , c(1,3,2 ) )
+	pjk <- aperm( pjk , c(1,3,2) )
 	dpjk <- dim(pjk)
 	pjk <- matrix( pjk , nrow=dpjk[1] , ncol=dpjk[2]*dpjk[3] )
 
-	eps <- 10^(-7) 	# prevent division by zero
+	eps <- 1E-7 	# prevent division by zero
 	pjk <- ( pjk + eps ) / ( 1 + 2*eps )
 
 	#*****
 	# apply Rcpp function for calculation
 #	res0 <-  cdm_kli_id( pjk , skillclasses )
-	res0 <- .Call( "cdm_kli_id_C", 
-					   pjk , skillclasses , 
-					   PACKAGE = "CDM")	
-	
+	res0 <- cdm_kli_id_C(  pjk , skillclasses )	
 	#****
 	# arrange Kullback Leibler information
 	kli <- array( res0$kli , dim=c( res0$TP , res0$TP , res0$I ) )
@@ -60,8 +57,8 @@ summary.cdi.kli <- function( object , digits=2, ...){
     V <- ncol(obji)
     for (vv in 2:V){
         obji[,vv] <- round( obji[,vv] , digits)
-                    }
+    }
     rownames(obji) <- NULL
     print(obji)
-        }
+}
 #####################################################################################

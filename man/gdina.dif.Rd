@@ -103,11 +103,11 @@ group <- rep(1:2 , each=N )
 dat <- rbind( dat1 , dat2 )
 
 #*** estimate multiple group GDINA model
-mod1 <- gdina( dat , q.matrix=q.matrix , rule="DINA" , group=group )
+mod1 <- CDM::gdina( dat , q.matrix=q.matrix , rule="DINA" , group=group )
 summary(mod1)
 
 #*** assess differential item functioning
-dmod1 <- gdina.dif( mod1)
+dmod1 <- CDM::gdina.dif( mod1)
 summary(dmod1)
   ##     item      X2 df      p p.holm     UA
   ##   1 I001 10.1711  2 0.0062 0.0495 0.0428

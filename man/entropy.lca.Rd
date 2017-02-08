@@ -67,10 +67,10 @@ data(sim.dina)
 data(sim.qmatrix)
 
 # fit DINA Model
-mod1 <- din( sim.dina , q.matr = sim.qmatrix, rule = "DINA")
+mod1 <- CDM::din( sim.dina , q.matr = sim.qmatrix, rule = "DINA")
 summary(mod1)
 # compute entropy for test and items
-emod1 <- entropy.lca( mod1 )
+emod1 <- CDM::entropy.lca( mod1 )
 summary(emod1)	
 
 \dontrun{
@@ -83,11 +83,11 @@ dat <- data.pgdina$dat
 q.matrix <- data.pgdina$q.matrix
 
 # pGDINA model with "DINA rule"
-mod1 <- gdina( dat , q.matrix=q.matrix , rule="DINA")
+mod1 <- CDM::gdina( dat , q.matrix=q.matrix , rule="DINA")
 summary(mod1)
 
 # compute entropy
-emod1 <- entropy.lca( mod1 )
+emod1 <- CDM::entropy.lca( mod1 )
 summary( emod1 )
 
 #############################################################################
@@ -99,10 +99,10 @@ dat <- data.cdm02$data
 q.matrix <- data.cdm02$q.matrix
 
 # estimate model with polytomous atribute
-mod1 <- mcdina( dat , q.matrix=q.matrix )
+mod1 <- CDM::mcdina( dat , q.matrix=q.matrix )
 summary(mod1)
 # computre entropy
-emod1 <- entropy.lca( mod1 )
+emod1 <- CDM::entropy.lca( mod1 )
 summary( emod1 )
 }
 }

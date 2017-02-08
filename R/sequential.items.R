@@ -36,8 +36,8 @@ sequential.items <- function( data )
 	iteminfo$category <- unlist( sapply( 1:I , FUN = function(ii){ 1:(maxK[ii])  } , 
 								simplify=FALSE)   )
 	iteminfo$pseudoitem <- colnames(dat.exp)
-	res <- base::list( "dat.expand" = dat.exp , "iteminfo" = iteminfo ,
+	res <- list( "dat.expand" = dat.exp , "iteminfo" = iteminfo ,
 						"maxK"= maxK)
-	base::return(res)	
+	return(res)	
 }
 ##############################################################

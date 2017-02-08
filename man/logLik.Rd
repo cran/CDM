@@ -38,7 +38,7 @@
 # logLik method | DINA model
 data(sim.dina)
 data(sim.qmatrix)
-d1 <- din(sim.dina, q.matr = sim.qmatrix, rule = "DINA")
+d1 <- CDM::din(sim.dina, q.matr = sim.qmatrix, rule = "DINA")
 summary(d1)
 lld1 <- logLik(d1)
   ##   > lld1

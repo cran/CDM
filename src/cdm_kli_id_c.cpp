@@ -1,39 +1,21 @@
-//  Code created: 2014-01-24 17:43:40
 
 
-// includes from the plugin
+
+
 
 #include <Rcpp.h>
-
-
-#ifndef BEGIN_RCPP
-#define BEGIN_RCPP
-#endif
-
-#ifndef END_RCPP
-#define END_RCPP
-#endif
+// #include <RcppArmadillo.h>
 
 using namespace Rcpp;
+// using namespace arma;
 
 
-// user includes
 
-
-// declarations
-extern "C" {
-SEXP cdm_kli_id_C( SEXP pjk_, SEXP skillclasses) ;
-}
-
-// definition
-
-SEXP cdm_kli_id_C( SEXP pjk_, SEXP skillclasses ){
-BEGIN_RCPP
-  
-     /////////////////////////////////////  
-     // INPUT  
-     Rcpp::NumericMatrix pjk(pjk_);  
-     Rcpp::NumericMatrix sc(skillclasses) ;   
+///********************************************************************
+///** cdm_kli_id_C
+ 
+// [[Rcpp::export]]
+Rcpp::List cdm_kli_id_C( Rcpp::NumericMatrix pjk, Rcpp::NumericMatrix sc ){ 
        
      int I= pjk.nrow();  // number of items  
      int TP = sc.nrow() ; // number of skill classes  
@@ -111,20 +93,14 @@ BEGIN_RCPP
      return Rcpp::List::create(_["pjk"]=pjk ,   
      		Rcpp::_["skillclasses"]= sc ,  
      		Rcpp::_["kli"] = kli , 
-                Rcpp::_["hdist"] = hdist ,   
-     //		_["sum_hdist"] = sum_hdist ,   
+            Rcpp::_["hdist"] = hdist ,     
      		Rcpp::_["I"]=I , 
-                Rcpp::_["TP"] = TP , 
-                Rcpp::_["K"] = K,  
+            Rcpp::_["TP"] = TP , 
+            Rcpp::_["K"] = K,  
      		Rcpp::_["glob_item"] = glob_item ,  
      		Rcpp::_["attr_item"] = attr_item ,  
      		Rcpp::_["attr_item_count"] = attr_item_count   
-     			) ;  
-     //	   _["matrk"]=MATRK  , _["indexmatr"]=INDEXMATR ) ;     
-     // return List::create(_["yM"]=YM , _["wM"]=WM ) ;     
-     
-END_RCPP
+     			) ;       
+
 }
-
-
-
+        

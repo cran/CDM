@@ -18,13 +18,11 @@
 # SEXP probs_pcm_groups_C( SEXP dat_, SEXP dat_resp_, SEXP group_, 
 #     SEXP probs_, SEXP CC_, SEXP TP_) ;
 #  }
-probs_pcm_groups_Cpp <- 
-function( dat_ , dat_resp_,  group_ , probs_,  CC_ ,  TP_ ){
-	res <- .Call("probs_pcm_groups_C", 
-					dat_, dat_resp_,  group_, probs_,  CC_,  TP_ ,
-					PACKAGE = "CDM")
+probs_pcm_groups_Cpp <- function( dat_ , dat_resp_,  group_ , probs_,  CC_ ,  TP_ )
+{
+	res <- probs_pcm_groups_C( dat_, dat_resp_,  group_, probs_,  CC_,  TP_ )
     return(res)			
-			}
+}
 # ---			
 # OUTPUT:			
 #     return List::create(  
@@ -45,12 +43,12 @@ function( dat_ , dat_resp_,  group_ , probs_,  CC_ ,  TP_ ){
 # CC_     ... maximum number of response categories per item
 # weight_ ... vector of sampling or frequency weights
 calccounts_pcm_groups_Cpp <- 
-function( dat_,  dat_resp_,  group_, fyiqk_,  pik_,  CC_,  weights_ ){
-	res <- .Call("calccounts_pcm_groups_C", 
-					dat_,  dat_resp_,  group_, fyiqk_,  pik_,  CC_,  weights_ ,
-					PACKAGE = "CDM")
+function( dat_,  dat_resp_,  group_, fyiqk_,  pik_,  CC_,  weights_ )
+{
+	res <- calccounts_pcm_groups_C(
+					dat_,  dat_resp_,  group_, fyiqk_,  pik_,  CC_,  weights_ )
     return(res)			
-			}
+}
 # ---
 # OUTPUT:
 #     return List::create(  

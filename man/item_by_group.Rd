@@ -64,7 +64,7 @@ data(data.mg)
 dat <- data.mg
 
 #-- create dataset with group-specific item responses
-dat0 <- item_by_group( dat = dat[,paste0("I",1:5)] , group=dat$group )
+dat0 <- CDM::item_by_group( dat = dat[,paste0("I",1:5)] , group=dat$group )
 
 #-- summary statistics
 summary(dat0)
@@ -72,7 +72,7 @@ colnames(dat0)
 
 #-- set some items to invariant
 invariant_items <- c("I1","I4")
-dat1 <- item_by_group( dat = dat[,paste0("I",1:5)] , group=dat$group ,
+dat1 <- CDM::item_by_group( dat = dat[,paste0("I",1:5)] , group=dat$group ,
             invariant=invariant_items)
 colnames(dat1)
 }

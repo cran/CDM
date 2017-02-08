@@ -291,7 +291,7 @@ Xlambda.init <- c( stats::rnorm( dim(Xdes)[[4]] - 1 ) , 1 )
 delta.fixed <- cbind( 1 , 1 ,1 )
 
 # estimate model
-mod1 <- slca( dat , Xdes=Xdes , delta.designmatrix=delta.designmatrix , 
+mod1 <- CDM::slca( dat , Xdes=Xdes , delta.designmatrix=delta.designmatrix , 
             Xlambda.init=Xlambda.init , delta.fixed = delta.fixed, maxiter = 70 )
 summary(mod1)
 plot(mod1, cex.names=.7 )
@@ -302,19 +302,19 @@ plot(mod1, cex.names=.7 )
 Xlambda.fixed <- cbind( c(1,19) , c(3.2,1.52 ) )
 # 1st parameter = 3.2
 # 19th parameter = 1.52 (joint item slope)
-mod2 <- slca( dat , Xdes=Xdes , delta.designmatrix=delta.designmatrix , 
+mod2 <- CDM::slca( dat , Xdes=Xdes , delta.designmatrix=delta.designmatrix , 
             delta.init=delta.init, Xlambda.init=Xlambda.init, delta.fixed=delta.fixed,
             Xlambda.fixed=Xlambda.fixed , maxiter = 70 )
 
 #*** Model 3: Partial credit model with non-normal distribution
 Xlambda.fixed <- cbind(  c(1,19) , c(3.2,1) ) # fix item slope to one
 delta.designmatrix <- cbind( 1 , theta.k , theta.k^2 , theta.k^3 )
-mod3 <- slca( dat , Xdes=Xdes,  delta.designmatrix=delta.designmatrix ,          
+mod3 <- CDM::slca( dat , Xdes=Xdes,  delta.designmatrix=delta.designmatrix ,          
             Xlambda.fixed=Xlambda.fixed ,  maxiter = 200 )
 summary(mod3)  
 
 # non-normal distribution with convergence regularizing factor oldfac
-mod3a <- slca( dat , Xdes=Xdes,  delta.designmatrix=delta.designmatrix ,          
+mod3a <- CDM::slca( dat , Xdes=Xdes,  delta.designmatrix=delta.designmatrix ,          
             Xlambda.fixed=Xlambda.fixed, maxiter = 500 , oldfac=.95 )
 summary(mod3a)  
 
@@ -362,7 +362,7 @@ Xlambda.init <- c( mod1$Xlambda[ - length(Xlambda.init) ] ,
          rep( Xlambda.init[ length(Xlambda.init)  ] ,I) )
 
 # estimate model
-mod4 <- slca( dat , Xdes=Xdes , Xlambda.init=Xlambda.init , 
+mod4 <- CDM::slca( dat , Xdes=Xdes , Xlambda.init=Xlambda.init , 
              delta.designmatrix=delta.designmatrix , decrease.increments=TRUE ,         
              maxiter = 300 )           
 
@@ -399,7 +399,7 @@ for (ii in 1:I){
     Xdes[ ii , 2 , 2 , ii+I ] <- 1  # probabilities class 2
 }
 # estimate model
-mod1 <- slca( dat , Xdes=Xdes )            
+mod1 <- CDM::slca( dat , Xdes=Xdes )            
 summary(mod1)
 
 #############################################################################
@@ -446,7 +446,7 @@ delta.fixed <- NULL
 Xlambda.init <- c( stats::runif( I  , -.8 , .8 ) , 1 )
 Xlambda.fixed <- cbind( I+1 , 1 )
 # estimate model
-mod1 <- slca( dat , Xdes=Xdes , delta.designmatrix=delta.designmatrix , 
+mod1 <- CDM::slca( dat , Xdes=Xdes , delta.designmatrix=delta.designmatrix , 
             delta.fixed=delta.fixed , Xlambda.fixed=Xlambda.fixed , 
             Xlambda.init=Xlambda.init, decrease.increments=TRUE , maxiter = 200 )
 summary(mod1)
@@ -461,7 +461,7 @@ Xlambda.constr.V <- matrix( 1 , nrow=I+1 , ncol=1 )
 Xlambda.constr.V[I+1,1] <- 0
 Xlambda.constr.c <- c(0)
 # estimate model
-mod1b <- slca( dat , Xdes=Xdes , delta.designmatrix=delta.designmatrix ,         
+mod1b <- CDM::slca( dat , Xdes=Xdes , delta.designmatrix=delta.designmatrix ,         
             Xlambda.fixed=Xlambda.fixed , Xlambda.constr.V=Xlambda.constr.V ,
             Xlambda.constr.c=Xlambda.constr.c  )
 summary(mod1b)
@@ -494,7 +494,7 @@ Xlambda.init <- c( b1 , b1 + stats::runif(I, -2  , 2 ) , 1 , 1 )
 Xlambda.init <- c( stats::runif( 2*I  , -1.8 , 1.8 ) , 1 ,1 )
 Xlambda.fixed <- cbind( c(2*I+1 , 2*I+2) , 1 )
 # estimate model
-mod2 <- slca( dat, Xdes=Xdes,  delta.designmatrix=delta.designmatrix ,          
+mod2 <- CDM::slca( dat, Xdes=Xdes,  delta.designmatrix=delta.designmatrix ,          
             Xlambda.fixed=Xlambda.fixed, decrease.increments=TRUE ,
             Xlambda.init=Xlambda.init, maxiter = 1000 )
 summary(mod2)
@@ -521,7 +521,7 @@ Xlambda.constr.V[1:I , 1 ] <- 1
 Xlambda.constr.V[I + 1:I , 2 ] <- 1
 Xlambda.constr.c <- c(0,0)
 # estimate model
-mod2b <- slca( dat, Xdes=Xdes, delta.designmatrix=delta.designmatrix ,          
+mod2b <- CDM::slca( dat, Xdes=Xdes, delta.designmatrix=delta.designmatrix ,          
             Xlambda.fixed=Xlambda.fixed ,  Xlambda.init=Xlambda.init ,  
             Xlambda.constr.V=Xlambda.constr.V , Xlambda.constr.c=Xlambda.constr.c , 
             decrease.increments=TRUE , maxiter = 1000 )
@@ -582,7 +582,7 @@ Xlambda.constr.V[1:I,1] <- 1
 Xlambda.constr.c <- c(0)
 delta.init <- matrix( c(1,1,1,1) , TP , 1 )
 # estimate model
-mod1 <- slca( dat , Xdes=Xdes, delta.designmatrix=delta.designmatrix, 
+mod1 <- CDM::slca( dat , Xdes=Xdes, delta.designmatrix=delta.designmatrix, 
             delta.init=delta.init, Xlambda.init=Xlambda.init , 
             Xlambda.constr.V=Xlambda.constr.V , Xlambda.constr.c=Xlambda.constr.c , 
             decrease.increments=TRUE,  maxiter = 400 )
@@ -641,7 +641,7 @@ delta.designmatrix <- diag(TP)
 Xlambda.init <- c( rep( stats::qlogis( .2 ) , I ) , rep( stats::qlogis( .8 ) , I ) )
 
 # estimate DINA model with slca function
-mod1 <- slca( dat , Xdes=Xdes, delta.designmatrix=delta.designmatrix , 
+mod1 <- CDM::slca( dat , Xdes=Xdes, delta.designmatrix=delta.designmatrix , 
             Xlambda.init=Xlambda.init, decrease.increments=TRUE, maxiter=400 )
 summary(mod1)
 

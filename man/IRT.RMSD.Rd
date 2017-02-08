@@ -101,7 +101,7 @@ mod1 <- TAM::tam.mml( resp = dat )
 summary(mod1)
 
 # item fit statistics
-imod1 <- IRT.RMSD(mod1)
+imod1 <- CDM::IRT.RMSD(mod1)
 summary(imod1)
 }
 }

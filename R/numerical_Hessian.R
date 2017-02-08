@@ -4,17 +4,17 @@
 numerical_Hessian <- function(par , FUN , h = 1E-5, gradient=FALSE, 
       hessian = TRUE , ... ){
 
-	NP <- base::length(par)
+	NP <- length(par)
 	
 	f0 <- FUN( x = par, ... )
-	fh <- base::rep(NA,NP)    # f(x+h)
-	f2h <- base::rep(NA,NP)   # f(x+2*h)
-	hess <- base::matrix(NA,nrow=NP , ncol=NP)
+	fh <- rep(NA,NP)    # f(x+h)
+	f2h <- rep(NA,NP)   # f(x+2*h)
+	hess <- matrix(NA,nrow=NP , ncol=NP)
 	fhh <- hess
 	
 	#** select h parameters according to size of parameters
-	abs_par <- base::abs(par)	
-	hvec <- h * base::ifelse( abs_par > 1 , abs_par , 1 )
+	abs_par <- abs(par)	
+	hvec <- h * ifelse( abs_par > 1 , abs_par , 1 )
 	
 	#--- loop for computing f(x+h)
 	for (ii in 1:NP){
@@ -39,8 +39,8 @@ numerical_Hessian <- function(par , FUN , h = 1E-5, gradient=FALSE,
 	#---- hessian
 	if ( hessian ){
 		
-		fh1 <- base::matrix( fh , nrow=NP , ncol=NP, byrow=TRUE)
-		fh2 <- base::matrix( fh , nrow=NP , ncol=NP, byrow=FALSE)
+		fh1 <- matrix( fh , nrow=NP , ncol=NP, byrow=TRUE)
+		fh2 <- matrix( fh , nrow=NP , ncol=NP, byrow=FALSE)
 		
 		#--- computation f(x+2*h)
 		for (ii in 1:NP){
@@ -59,15 +59,15 @@ numerical_Hessian <- function(par , FUN , h = 1E-5, gradient=FALSE,
 				}
 			}	
 		}	    
-		h_squared <- base::outer( hvec , hvec )		
+		h_squared <- outer( hvec , hvec )		
 		hess <- ( fhh - fh1 - fh2 + f0 ) / h_squared
-		base::diag(hess) <- ( f2h - 2*fh + f0)/ hvec^2
+		diag(hess) <- ( f2h - 2*fh + f0)/ hvec^2
 		res <- hess
 	}
 	
 	if ( gradient & hessian ){
-		res <- base::list( "grad" = grad1 , "hessian" = hess)	
+		res <- list( "grad" = grad1 , "hessian" = hess)	
 	}	
-	base::return(res)
+	return(res)
 }
 ##############################################################################		

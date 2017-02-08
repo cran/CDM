@@ -13,7 +13,7 @@ function(x, ...){
 ################################################################################
 # if(is.null(x$log.file)){
   d <- utils::packageDescription("CDM")
-  base::packageStartupMessage(paste(d$Package," " , d$Version," (Built ",d$Date,")",sep=""))
+  packageStartupMessage(paste(d$Package," " , d$Version," (Built ",d$Date,")",sep=""))
 #   cat("Call:\n",  x$CALL, "\n")
   cat("Call:\n",  x$call, "\n\n")
 	  

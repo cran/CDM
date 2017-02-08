@@ -58,7 +58,7 @@ data(sim.dina)
 data(sim.qmatrix)
 
 #*** Model 1: DINA model
-mod1 <- din( sim.dina , sim.qmatrix )
+mod1 <- CDM::din( sim.dina , sim.qmatrix )
 summary(mod1)
 IRT.IC(mod1)	
 }

@@ -82,11 +82,11 @@ data(sim.dina)
 data(sim.qmatrix)
 
 # Model 1: estimate GDINA model
-mod1 <- gdina( sim.dina , q.matrix = sim.qmatrix ,  rule = "GDINA")
+mod1 <- CDM::gdina( sim.dina , q.matrix = sim.qmatrix ,  rule = "GDINA")
 summary(mod1)
 
 # perform Wald test
-res1 <- gdina.wald( mod1 )
+res1 <- CDM::gdina.wald( mod1 )
 summary(res1)
 # -> results show that all but one item fit according to the DINA rule
 

@@ -88,7 +88,7 @@ psych::describe(resp)
 
 #--- Model 1: PCM in gdm
 theta.k <- seq( -5 , 5 , len=21 )
-mod1 <- gdm( dat = resp , irtmodel="1PL" , theta.k=theta.k , skillspace="normal" ,
+mod1 <- CDM::gdm( dat = resp , irtmodel="1PL" , theta.k=theta.k , skillspace="normal" ,
            centered.latent=TRUE)
 summary(mod1)
 
@@ -112,7 +112,7 @@ Qmatrix <- data.fraction2$q.matrix3
 
 # Model 1: 3-dimensional Rasch Model (normal distribution)
 theta.k <- seq( -4 , 4 , len=11 )   # discretized ability
-mod1 <- gdm( dat , irtmodel="1PL" , theta.k=theta.k , Qmatrix=Qmatrix , 
+mod1 <- CDM::gdm( dat , irtmodel="1PL" , theta.k=theta.k , Qmatrix=Qmatrix , 
               centered.latent=TRUE , maxiter=10 )
 summary(mod1)            
 

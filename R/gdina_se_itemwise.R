@@ -5,11 +5,12 @@ gdina_se_itemwise <- function( R.lj_jj , I.lj_jj , apjj ,
 		method , linkfct , delta_jj , se_version )
 {
 	eps2 <- 1E-10		
-	Rlj.ast <- stats::aggregate( R.lj_jj , base::list(apjj) , base::sum )
-	Ilj.ast <- stats::aggregate( I.lj_jj , base::list(apjj) , base::sum )
+	Rlj.ast <- stats::aggregate( R.lj_jj , list(apjj) , sum )
+	Ilj.ast <- stats::aggregate( I.lj_jj , list(apjj) , sum )
 	pjjj <- Rlj.ast[,2] / Ilj.ast[,2]
 	varmat.palj_jj  <- NULL
 	infomat.jj <- NULL
+
 	
 	#********* standard error calculation observed log-likelihood per item
 	if (se_version==1){		
@@ -19,12 +20,14 @@ gdina_se_itemwise <- function( R.lj_jj , I.lj_jj , apjj ,
 				pjjj_model <- stats::plogis(pjjj_model)
 			}
 			if ( linkfct == "log"){
-				pjjj_model <- base::exp( pjjj_model)
+				pjjj_model <- exp( pjjj_model)
 			}
-			ll1 <- Rlj.ast[,2] * log(pjjj_model)
-			ll2 <- (Ilj.ast-Rlj.ast)[,2] * log(1-pjjj_model)
-			ll <- base::sum(ll1 + ll2)
-			base::return( ll )
+			pjjj_ <- squeeze.cdm(pjjj_model , c(eps2, Inf) )
+			ll1 <- Rlj.ast[,2] * log(pjjj_)
+			pjjj_ <- squeeze.cdm(1-pjjj_model , c(eps2, Inf) )
+			ll2 <- (Ilj.ast-Rlj.ast)[,2] * log( pjjj_ )
+			ll <- sum(ll1 + ll2)
+			return( ll )
 		}
 		res_jj <- loglike_item_jj(x=delta_jj)
 		hess_jj <- numerical_Hessian( par = delta_jj , FUN = loglike_item_jj )
@@ -50,7 +53,7 @@ gdina_se_itemwise <- function( R.lj_jj , I.lj_jj , apjj ,
 		x1 <- outer( item.patt.split_jj , rep(1,nM) )	
 		r1 <- outer( resp.patt_jj * item.patt.freq , rep(1,ncol(pjjjM) ) )
 		# Formula (17) for calculating the standard error	
-		mat.jj <- p.ajast.xi * ( x1 - pjjjM) / ( pjjjM * ( 1 - pjjjM ) )	
+		mat.jj <- p.ajast.xi * ( x1 - pjjjM) / ( pjjjM * ( 1 - pjjjM ) + eps2)	
 
 		infomat.jj <- matrix( 0 , nM , nM )
 		for (kk1 in 1:nM){
@@ -76,7 +79,7 @@ gdina_se_itemwise <- function( R.lj_jj , I.lj_jj , apjj ,
 		varmat.palj_jj <- Ijj <- a1
 		Wj <- diag( Ilj.ast[,2] )	
 		if ( avoid.zeroprobs ){
-			ind <- which( Ilj.ast[,2]  < 10^(-10)  )
+			ind <- which( Ilj.ast[,2]  < 1E-10  )
 			if ( length(ind) > 0 ){
 				Wj <- diag( Ilj.ast[-ind,2] )
 				Mjjj <- Mjjj[ - ind , ]
@@ -86,11 +89,11 @@ gdina_se_itemwise <- function( R.lj_jj , I.lj_jj , apjj ,
 		
 		if ( ( method == "ULS" ) ){ 			
 			x1 <- t(Mjjj) %*% Mjjj	
-			diag(x1) <- diag(x1) + 10^(-8)						
+			diag(x1) <- diag(x1) + eps2
 			Wjjj <- solve( x1 ) %*% t(Mjjj)					
 		} else {
 			x1 <- t(Mjjj) %*% Wj %*% Mjjj									
-			diag(x1) <- diag(x1) + 10^(-8)	
+			diag(x1) <- diag(x1) + eps2
 			Wjjj <- solve( x1 ) %*% t(Mjjj) %*% Wj
 		}
 		if ( linkfct == "logit" ){

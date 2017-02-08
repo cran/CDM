@@ -23,15 +23,26 @@ R script and (if necessary) a corresponding dataset.
 
 
 --------------------------------------------------------------
+CDM 5.4 (2017-02-08)   --  CRAN CDM 5.4-0
+--------------------------------------------------------------
+
+FIXED  * fixed warnings in calculation of standard errors in
+         CDM::gdina and CDM::gdina.wald 
+         (thanks to Andres Alberto Burga Leon)
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: ---
+
+--------------------------------------------------------------
 CDM 5.3 (2017-01-11)   --  CRAN CDM 5.3-0
 --------------------------------------------------------------
 
-ADDED * included function 'IRT.RMSD' which computed group-wise
+ADDED * included function CDM::IRT.RMSD which computed group-wise
         item fit. The RMSD item fit statistic was denoted as 
         RMSEA in previous publications and is internally computed 
-        by the 'itemfit.rmsea' function in the CDM package.
+        by the CDM::itemfit.rmsea function in the CDM package.
 ADDED * included chi square statistic and MAD statistic (mean 
-        absolute deviation) of item fit in 'IRT.RMSD'
+        absolute deviation) of item fit in CDM::IRT.RMSD
 NOTE  * cleaned code in function 'WaldTest' a bit
         (thanks to suggestions of Michael Chirico)
 NOTE  * added links to recently released GDINA package in R. 

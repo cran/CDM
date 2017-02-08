@@ -79,9 +79,9 @@ dat <- data.fraction1$data
 theta.k <- seq( -6 , 6 , len=11 )   # discretized ability
 
 #--- Model 1: Rasch model
-mod1 <- gdm( dat , irtmodel="1PL" , theta.k=theta.k , skillspace="normal" ,
+mod1 <- CDM::gdm( dat , irtmodel="1PL" , theta.k=theta.k , skillspace="normal" ,
                centered.latent=TRUE )              
-emod1 <- IRT.expectedCounts(mod1)             
+emod1 <- CDM::IRT.expectedCounts(mod1)             
 str(emod1)          
 
 #############################################################################
@@ -92,15 +92,15 @@ data(sim.dina)
 data(sim.qmatrix)
 
 #--- Model 1: estimation of the GDINA model
-mod1 <- gdina( data = sim.dina ,  q.matrix = sim.qmatrix)
+mod1 <- CDM::gdina( data = sim.dina ,  q.matrix = sim.qmatrix)
 summary(mod1)
-emod1 <- IRT.expectedCounts( mod1 )
+emod1 <- CDM::IRT.expectedCounts( mod1 )
 str(emod1)
 
 #--- Model 2: GDINA model with two groups
-mod2 <- gdina( data = sim.dina ,  q.matrix = sim.qmatrix , group = rep(1:2, each=200) )
+mod2 <- CDM::gdina( data = sim.dina ,  q.matrix = sim.qmatrix , group = rep(1:2, each=200) )
 summary(mod2)
-emod2 <- IRT.expectedCounts( mod2 )
+emod2 <- CDM::IRT.expectedCounts( mod2 )
 str(emod2)
 }
 }

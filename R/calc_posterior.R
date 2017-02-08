@@ -11,16 +11,16 @@ calc_posterior.v2 <- function(rprobs , gwt , resp , nitems ,
 		fx <- gwt  
 	} else {
 		# calculate individual 'sampling weight'
-		swt <- fx <- gwt / base::outer( base::rep(1, base::nrow(gwt)) , thetasamp.density )
+		swt <- fx <- gwt / outer( rep(1, nrow(gwt)) , thetasamp.density )
 	} 
-	nstud <- base::nrow(fx)
+	nstud <- nrow(fx)
 	 
 	# using c Code here
-	base::storage.mode(resp) <- "integer"
-	fx <- base::.Call("calcfx", fx, rprobs, resp.ind.list, resp)
+	storage.mode(resp) <- "integer"
+	fx <- .Call("calcfx", fx, rprobs, resp.ind.list, resp)
 	# numerical integration
 	if ( snodes == 0 ){ 
-		rfx <- base::rowSums(fx)  
+		rfx <- rowSums(fx)  
 		if (normalization ){
 			hwt <- fx / rfx 
 		} else {   
@@ -29,17 +29,17 @@ calc_posterior.v2 <- function(rprobs , gwt , resp , nitems ,
 	}
 	# Monte Carlo integration
 	if ( snodes > 0 ){ 
-		rfx <- base::rowMeans(fx)
+		rfx <- rowMeans(fx)
 		if (normalization ){
 			hwt <- fx / rfx 
 		} else { 
 			hwt <- fx 
 		}
 	}
-	res <-  base::list("hwt" = hwt , "rfx" = rfx )
+	res <-  list("hwt" = hwt , "rfx" = rfx )
 	if ( snodes > 0 ){ 
 		res[["swt" ]] <- swt 
 	}
-	base::return(res)
+	return(res)
 }
 #..........................................................

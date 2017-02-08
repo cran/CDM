@@ -78,21 +78,21 @@ data(sim.dina)
 data(sim.qmatrix)
 
 #--- Model 1: GDINA model
-mod1 <- gdina( data = sim.dina ,  q.matrix = sim.qmatrix)
+mod1 <- CDM::gdina( data = sim.dina ,  q.matrix = sim.qmatrix)
 summary(mod1)
-dmod1 <- IRT.data(mod1)
+dmod1 <- CDM::IRT.data(mod1)
 str(dmod1)
 
 #--- Model 2: DINA model
-mod2 <- din( data = sim.dina ,  q.matrix = sim.qmatrix)
+mod2 <- CDM::din( data = sim.dina ,  q.matrix = sim.qmatrix)
 summary(mod2)
-dmod2 <- IRT.data(mod2)
+dmod2 <- CDM::IRT.data(mod2)
 
 #--- Model 3: Rasch model with gdm function
-mod3 <- gdm( data = sim.dina , irtmodel="1PL" , theta.k=seq(-4,4,length=11) ,
+mod3 <- CDM::gdm( data = sim.dina , irtmodel="1PL" , theta.k=seq(-4,4,length=11) ,
                 centered.latent=TRUE )
 summary(mod3)
-dmod3 <- IRT.data(mod3)
+dmod3 <- CDM::IRT.data(mod3)
 
 #--- Model 4: Latent class model with two classes
 
@@ -114,9 +114,9 @@ for (ii in 1:I){
     Xdes[ ii , 2 , 2 , ii+I ] <- 1  # probabilities class 2
                     }
 # estimate model
-mod4 <- slca( dat , Xdes=Xdes , maxiter=30 )            
+mod4 <- CDM::slca( dat , Xdes=Xdes , maxiter=30 )            
 summary(mod4)
-dmod4 <- IRT.data(mod4)
+dmod4 <- CDM::IRT.data(mod4)
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

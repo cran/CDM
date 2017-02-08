@@ -1,61 +1,22 @@
 
-
-
-// includes from the plugin
-
+// #include <RcppArmadillo.h>
 #include <Rcpp.h>
-
-
-#ifndef BEGIN_RCPP
-#define BEGIN_RCPP
-#endif
-
-#ifndef END_RCPP
-#define END_RCPP
-#endif
 
 using namespace Rcpp;
 
 
-// user includes
 
+///********************************************************************
+///**  calc_slca_probs
 
-// declarations
-extern "C" {
-SEXP calc_slca_probs( SEXP XdesM_, SEXP dimXdes_, SEXP Xlambda_) ;
-}
-
-// definition
-
-SEXP calc_slca_probs( SEXP XdesM_, SEXP dimXdes_, SEXP Xlambda_ ){
-BEGIN_RCPP
-  
-       
-     Rcpp::NumericMatrix XdesM(XdesM_);          
-     Rcpp::NumericVector dimXdes(dimXdes_);        
-     Rcpp::NumericVector Xlambda(Xlambda_);  
-       
-     // $dimXdes  
-     // [1]  6  4 21 19  
-       
+// [[Rcpp::export]]
+Rcpp::NumericVector calc_slca_probs( Rcpp::NumericMatrix XdesM , 
+       Rcpp::NumericVector dimXdes , Rcpp::NumericVector Xlambda ){
+         
      int I= dimXdes[0] ;  
      int maxK= dimXdes[1] ;  
      int TP= dimXdes[2] ;  
-//     int Nlam = dimXdes[3] ;  
      int RR = XdesM.nrow() ;  
-       
-     //	p1 <- probs <- array( 0 , dim=c(I,K+1,TP) )  
-     //	for (tt in 1:TP){  
-     //		tmp0 <- 0  
-     //		for (hh in 1:(K+1) ){  
-     //			tmp1 <- exp( Xdes[ , hh , tt , ] %*% Xlambda )  
-     //			tmp0 <- tmp0 + tmp1  
-     //			p1[ , hh , tt  ] <- tmp1   
-     //								}  
-     //		for (hh in 1:(K+1) ){  
-     //			probs[,hh,tt] <- p1[ , hh , tt  ] / tmp0  
-     //								}  
-     //				}  
        
      int PP = I * maxK * TP ;  
      Rcpp::NumericVector probs(PP);  
@@ -71,12 +32,10 @@ BEGIN_RCPP
         			}  
        
      //****  
-     // exponentiation and normalization  
-       
-     double tmp=0;  
-       
-     for (int ii = 0 ; ii<I;ii++){  
-     for (int tt = 0 ;tt<TP;tt++){  
+     // exponentiation and normalization         
+     double tmp=0;      
+     for (int ii = 0; ii<I; ii++){  
+     for (int tt = 0; tt<TP; tt++){  
        
      tmp=0 ;  
      for (int kk = 0 ; kk < maxK ; kk++ ){  
@@ -91,48 +50,27 @@ BEGIN_RCPP
      }  
      }  
           
-     return wrap(probs) ;  
-       
-     //*************************************************      
-     // OUTPUT              
-                   
-     // return Rcpp::List::create(    
-     //    _["probs" ] = probs   
-     //    ) ;  
-END_RCPP
+     return probs ;  
 }
+///********************************************************************
 
 
 
+///********************************************************************
+///**  calc_slca_deriv
 
-// declarations
-extern "C" {
-SEXP calc_slca_deriv( SEXP XdesM_, SEXP dimXdes_, SEXP Xlambda_, SEXP probs_, SEXP nik_, SEXP Nik_) ;
-}
-
-// definition
-
-SEXP calc_slca_deriv( SEXP XdesM_, SEXP dimXdes_, SEXP Xlambda_, SEXP probs_, SEXP nik_, SEXP Nik_ ){
-BEGIN_RCPP
+// [[Rcpp::export]]
+Rcpp::List calc_slca_deriv( Rcpp::NumericMatrix XdesM , Rcpp::NumericVector dimXdes, 
+     Rcpp::NumericVector Xlambda, Rcpp::NumericVector probs, Rcpp::NumericVector nik, 
+     Rcpp::NumericVector Nik ){
   
-       
-     Rcpp::NumericMatrix XdesM(XdesM_);          
-     Rcpp::NumericVector dimXdes(dimXdes_);        
-     Rcpp::NumericVector Xlambda(Xlambda_);  
-     Rcpp::NumericVector probs(probs_) ;  
-     Rcpp::NumericVector nik(nik_) ;  
-     Rcpp::NumericVector Nik(Nik_) ;  
-       
      // $dimXdes  
-     // [1]  6  4 21 19  
-       
+     // [1]  6  4 21 19         
      int I= dimXdes[0] ;  
      int maxK= dimXdes[1] ;  
      int TP= dimXdes[2] ;  
-     int Nlam = dimXdes[3] ;  
-       
-     int RR = XdesM.nrow() ;  
-       
+     int Nlam = dimXdes[3] ;         
+     int RR = XdesM.nrow() ;         
      // int PP = I * maxK * TP ;  
        
      Rcpp::NumericVector d1b(Nlam);  
@@ -148,8 +86,7 @@ BEGIN_RCPP
      //        # n.ik  num [1:I, 1:maxK, 1:TP]  
      //        # N.ik  num [1:I,1:TP]  
      //        # Xdes  num [1:I, 1:maxK, 1:TP, 1:Nlam]           
-       
-       
+              
      ///*********************  
      // First derivative  
        
@@ -166,12 +103,10 @@ BEGIN_RCPP
      	// sum( Xdes[ , hh , , ll] * ( n.ik[ , hh , ] - probs[,hh,] * N.ik ) )  
      	d1b[ll] += XdesM(rr,4) * ( nik[ii+I*hh+I*maxK*tt] -  
      	      probs[ii+I*hh+I*maxK*tt] * Nik[ ii+I*tt ] ) ;  
-     		}  
-       
-       
+    }  
+              
      ///*********************  
-     // Second derivative  
-       
+     // Second derivative         
      int NS = I*TP*Nlam ;  
      Rcpp::NumericVector tmp1(NS) ;  
      // tmp1 <- 0  
@@ -188,7 +123,7 @@ BEGIN_RCPP
         ll = XdesM(rr,3);  
         vv = ii + I*tt + I*TP*ll ;  
         tmp1[vv] += XdesM(rr,4) * probs[ii+I*hh+I*maxK*tt] ;  
-        			}  
+     }  
        
      // for (hh in 1:maxK){  
      //  t2 <- sum( Xdes[ , hh , , ll] * N.ik * probs[,hh,] *  
@@ -203,43 +138,31 @@ BEGIN_RCPP
         tt = XdesM(rr,2);  
         ll = XdesM(rr,3);  
         vv = ii + I*tt + I*TP*ll ;  
-     //  t2 <- sum( Xdes[ , hh , , ll] * N.ik * probs[,hh,] *  
-     //   ( Xdes[, hh , , ll ] - tmp1 ) )     
+         //  t2 <- sum( Xdes[ , hh , , ll] * N.ik * probs[,hh,] *  
+        //   ( Xdes[, hh , , ll ] - tmp1 ) )     
        d2b[ll] += XdesM(rr,4) * Nik[ii + I*tt ] * probs[ ii + I*hh + I*maxK*tt ] *   
        	              ( XdesM(rr,4) - tmp1[vv] ) ;  
-     //   tmp1[vv] += XdesM(rr,4) * probs[ii+I*hh+I*maxK*tt] ;  
-        			}  
-       
-        			  
+        //   tmp1[vv] += XdesM(rr,4) * probs[ii+I*hh+I*maxK*tt] ;  
+     }                 			  
      //*************************************************      
-     // OUTPUT              
-                   
-      return Rcpp::List::create(    
+     // OUTPUT                                 
+     return Rcpp::List::create(    
          Rcpp::_["d1b" ] = d1b ,  
          Rcpp::_["d2b" ] = d2b 
-                       ) ;  
-END_RCPP
+                  ) ;  
 }
+///********************************************************************
 
 
 
-// declarations
-extern "C" {
-SEXP calc_Xdes( SEXP Xdes_, SEXP dimXdes_) ;
-}
+///********************************************************************
+///**  calc_Xdes
 
-// definition
+// [[Rcpp::export]]
+Rcpp::List calc_Xdes( Rcpp::NumericVector XDES , Rcpp::NumericVector dimXdes ){
 
-SEXP calc_Xdes( SEXP Xdes_, SEXP dimXdes_ ){
-BEGIN_RCPP
-  
-       
-     Rcpp::NumericVector XDES(Xdes_);          
-     Rcpp::NumericVector dimXdes(dimXdes_);        
-       
      // $dimXdes  
-     // [1]  6  4 21 19  
-       
+     // [1]  6  4 21 19         
      int I= dimXdes[0] ;  
      int maxK= dimXdes[1] ;  
      int TP= dimXdes[2] ;  
@@ -253,38 +176,32 @@ BEGIN_RCPP
      int ind = 0 ;  
        
      for (int ii=0; ii<I;ii++){  
-     for (int kk=0; kk <maxK ; kk++){  
-     for ( int tt=0; tt<TP; tt++ ){   
-     for ( int ll=0; ll<Nlam ; ll++ ){  
-       
-        rr=ii+I*kk+I*maxK*tt+I*maxK*TP*ll ;  
-       
-     // Rcpp::Rcout << "rr = " << rr << " XDES[rr] = " << XDES[rr] << std::endl;  
-       
-     if ( XDES[rr] != 0 ){  
-          XdesM(ind,0) = ii ;	  
-          XdesM(ind,1) = kk ;  
-          XdesM(ind,2) = tt ;  
-          XdesM(ind,3) = ll ;  
-          XdesM(ind,4) = XDES[rr] ;  
-          ind = ind + 1 ;  
-          		}  
-          	}  
-     }  
-     }  
-     }  
-       
-       
+       for (int kk=0; kk <maxK ; kk++){  
+         for (int tt=0; tt<TP; tt++ ){   
+           for (int ll=0; ll<Nlam ; ll++ ){         
+              rr=ii+I*kk+I*maxK*tt+I*maxK*TP*ll ;      
+              // Rcpp::Rcout << "rr = " << rr << " XDES[rr] = " << XDES[rr] << std::endl;  
+             
+             if ( XDES[rr] != 0 ){  
+                  XdesM(ind,0) = ii ;	  
+                  XdesM(ind,1) = kk ;  
+                  XdesM(ind,2) = tt ;  
+                  XdesM(ind,3) = ll ;  
+                  XdesM(ind,4) = XDES[rr] ;  
+                  ind = ind + 1 ;  
+              }  
+            }  
+        }  
+       }  
+     }             
      //*************************************************      
-     // OUTPUT              
-                   
+     // OUTPUT                                 
      return Rcpp::List::create(    
          Rcpp::_["NXdesM"] = ind  ,  
          Rcpp::_["XdesM" ] = XdesM  
          ) ;  
-END_RCPP
 }
-
+///********************************************************************
 
 
 

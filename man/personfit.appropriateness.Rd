@@ -107,14 +107,14 @@ diagnosis. \emph{Applied Psychological Measurement}, \bold{33(8)}, 579-598.
 data(data.ecpe)
 
 # fit DINA model 
-mod1 <- din( data.ecpe$data[,-1] , q.matrix= data.ecpe$q.matrix )
+mod1 <- CDM::din( data.ecpe$data[,-1] , q.matrix= data.ecpe$q.matrix )
 summary(mod1)
 
 # person fit appropriateness statistic
 data <- mod1$data
 probs <- mod1$pjk
 skillclassprobs <- mod1$attribute.patt[,1]
-res <- personfit.appropriateness( data , probs , skillclassprobs , maxiter=8)
+res <- CDM::personfit.appropriateness( data , probs , skillclassprobs , maxiter=8)
                  # only few iterations
 summary(res)
 plot(res)
@@ -138,7 +138,7 @@ probs <- array( 0 , dim=c( ncol(dat) , 2 , dim(probs0)[2] ) )
 probs[,2,] <- probs0
 probs[,1,] <- 1 - probs0
 skillclassprobs <- mod1$trait.distr$pi.k
-res <- personfit.appropriateness( data , probs , skillclassprobs )
+res <- CDM::personfit.appropriateness( data , probs , skillclassprobs )
 summary(res)
 plot(res)          
 }

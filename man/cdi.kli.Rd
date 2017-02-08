@@ -86,7 +86,7 @@ Press.
 data(sim.dina)
 data(sim.qmatrix)
 
-mod <- din( sim.dina , q.matrix = sim.qmatrix )
+mod <- CDM::din( sim.dina , q.matrix = sim.qmatrix )
 summary(mod)
   ##  Item parameters
   ##         item guess  slip   IDI rmsea
@@ -100,7 +100,7 @@ summary(mod)
   ##  Item8 Item8 0.278 0.125 0.597 0.109
   ##  Item9 Item9 0.317 0.027 0.656 0.065
 
-cmod <- cdi.kli( mod )
+cmod <- CDM::cdi.kli( mod )
 
 # attribute discrimination indices
 round( cmod$attr_disc , 3 )

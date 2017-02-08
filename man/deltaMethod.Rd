@@ -75,7 +75,7 @@ derived.pars <- list( "d" = ~ I( ( mu - 508 ) / sigma ) ,
                       "dsig" = ~ I( sigma / 100 - 1) )
 
 #*** apply delta method
-res <- deltaMethod( derived.pars , est , Sigma )	
+res <- CDM::deltaMethod( derived.pars , est , Sigma )	
 res
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

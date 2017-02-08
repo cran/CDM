@@ -77,27 +77,27 @@ dat <- sim.dina
 q.matrix <- sim.qmatrix
 
 #*** Model 0: DINA model with equal guessing and slipping parameters
-mod0 <- din( dat , q.matrix , guess.equal=TRUE , slip.equal = TRUE )
+mod0 <- CDM::din( dat , q.matrix , guess.equal=TRUE , slip.equal = TRUE )
 summary(mod0)
 
 #*** Model 1: DINA model
-mod1 <- din( dat , q.matrix )
+mod1 <- CDM::din( dat , q.matrix )
 summary(mod1)
 
 #*** Model 2: DINO model
-mod2 <- din( dat , q.matrix , rule="DINO")
+mod2 <- CDM::din( dat , q.matrix , rule="DINO")
 summary(mod2)
 
 #*** Model 3: Additive GDINA model
-mod3 <- gdina( dat , q.matrix , rule="ACDM")
+mod3 <- CDM::gdina( dat , q.matrix , rule="ACDM")
 summary(mod3)
 
 #*** Model 4: GDINA model
-mod4 <- gdina( dat , q.matrix , rule="GDINA")
+mod4 <- CDM::gdina( dat , q.matrix , rule="GDINA")
 summary(mod4)
 
 # model comparisons
-res <- IRT.compareModels( mod0 , mod1 , mod2 , mod3 , mod4 )
+res <- CDM::IRT.compareModels( mod0 , mod1 , mod2 , mod3 , mod4 )
 res
   ##   > res
   ##   $IC
@@ -132,12 +132,12 @@ summary(res,extended=FALSE)
 # applying model comparison for objects of class IRT.modelfit
 
 # compute model fit statistics
-fmod0 <- IRT.modelfit(mod0)
-fmod1 <- IRT.modelfit(mod1)
-fmod4 <- IRT.modelfit(mod4)
+fmod0 <- CDM::IRT.modelfit(mod0)
+fmod1 <- CDM::IRT.modelfit(mod1)
+fmod4 <- CDM::IRT.modelfit(mod4)
 
 # model comparison
-res <- IRT.compareModels( fmod0 , fmod1 ,  fmod4 )
+res <- CDM::IRT.compareModels( fmod0 , fmod1 ,  fmod4 )
 res
   ##   $IC
   ##        Model   loglike Deviance Npars Nobs      AIC      BIC     AIC3

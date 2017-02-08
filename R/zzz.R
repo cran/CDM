@@ -21,7 +21,7 @@ version <- function(pkg="CDM"){
   # d$Version <- "4.1"  
   dc <- nchar(d$Version)
   m1 <- paste(rep( " " , 12-dc ), collapse="")
-  base::packageStartupMessage("**********************************\n",  
+  packageStartupMessage("**********************************\n",  
 		paste("** ", d$Package," " , d$Version," (",d$Date,")" ,
      		m1 , "**\n",sep="") ,
 		paste("** Cognitive Diagnostic Models  **",sep="") ,		

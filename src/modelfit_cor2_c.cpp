@@ -1,54 +1,25 @@
 
-
-// includes from the plugin
-
+// #include <RcppArmadillo.h>
 #include <Rcpp.h>
-
-
-#ifndef BEGIN_RCPP
-#define BEGIN_RCPP
-#endif
-
-#ifndef END_RCPP
-#define END_RCPP
-#endif
 
 using namespace Rcpp;
 
 
-// user includes
+///********************************************************************
+///**  modelfit_cor2_Cpp
 
-
-// declarations
-extern "C" {
-SEXP modelfit_cor2_Cpp( SEXP posterior_, SEXP data_, SEXP dataresp_, SEXP probs1_, SEXP probs0_, SEXP ip_, SEXP expiijj_) ;
-}
-
-// definition
-
-SEXP modelfit_cor2_Cpp( SEXP posterior_, SEXP data_, SEXP dataresp_, SEXP probs1_, SEXP probs0_, SEXP ip_, SEXP expiijj_ ){
-BEGIN_RCPP
-  
-     /// model fit statistics  
-       
-     Rcpp::NumericMatrix posterior(posterior_);          
-     Rcpp::NumericMatrix data(data_);    
-     Rcpp::NumericMatrix dataresp(dataresp_);    
-     Rcpp::NumericMatrix probs0(probs0_);    
-     Rcpp::NumericMatrix probs1(probs1_);    
-     Rcpp::NumericMatrix ip(ip_);   
-     Rcpp::NumericMatrix expiijj(expiijj_);   
-       
-       
+// [[Rcpp::export]]
+Rcpp::List modelfit_cor2_Cpp( Rcpp::NumericMatrix posterior, 
+        Rcpp::NumericMatrix data, Rcpp::NumericMatrix dataresp, Rcpp::NumericMatrix probs1, 
+        Rcpp::NumericMatrix probs0, Rcpp::NumericMatrix ip, 
+        Rcpp::NumericMatrix expiijj ){
+        
      int NIP = ip.nrow() ;  
      int N = posterior.nrow() ;  
      int TP = posterior.ncol() ;  
-       
      Rcpp::NumericMatrix itempair_stat(NIP,4) ;  
      Rcpp::NumericVector psiijj(TP) ;  
-     Rcpp::NumericVector Q3(NIP) ;  
-       
-       
+     Rcpp::NumericVector Q3(NIP) ;                
      double t1 = 0 ;  
      double mii = 0 ;  
      double mjj = 0 ;  
@@ -70,10 +41,10 @@ BEGIN_RCPP
          for (int nn=0;nn<N;nn++){  // begin nn  
              if ( ( dataresp(nn,ii) > 0 ) & ( dataresp(nn,jj) > 0 ) ){  
                  t1 += posterior(nn,tt) ;  
-                     }  
-                 }      // end nn          
+             }  
+         }      // end nn          
          psiijj[tt] = t1 ;        
-             }              
+     }              
        
      //    	 itempairs[ii1,"Exp11"] <- sum( probs[ii,2,]*probs[jj,2,] * ps.iijj )          
      //    ....  
@@ -83,7 +54,7 @@ BEGIN_RCPP
          itempair_stat(zz,1) += probs1(ii,vv) * probs0(jj,vv) * psiijj[vv] ;      
          itempair_stat(zz,2) += probs0(ii,vv) * probs1(jj,vv) * psiijj[vv] ;          
          itempair_stat(zz,3) += probs0(ii,vv) * probs0(jj,vv) * psiijj[vv] ;              
-                 }  
+      }  
        
         /// calculation of Q3 statistic  
          mii = 0 ;  
@@ -119,17 +90,14 @@ BEGIN_RCPP
              Q3[zz] = ciijj / sqrt( vii * vjj ) ;      
                        
              }   // end zz ( item pairs ii and jj )  
-       
-               
+                      
      /////////////////////////////////////////////  
      // OUTPUT:  
      return Rcpp::List::create(  
          Rcpp::_["itempair_stat"] =itempair_stat ,  
          Rcpp::_["Q3"] = Q3   
-                 ) ;  
-       
-END_RCPP
+                 ) ;         
 }
-
+///********************************************************************
 
 

@@ -884,7 +884,6 @@ if (HOGDINA >= 0){
 						}
 		  if (  rrum ){
 			res_jj <- gdina_mstep_item_ml_rrum( 
-#			res_jj <- gdina_mstep_item_ml_rrum2( 
 					 pjjj , Ilj.ast , Rlj.ast , eps , avoid.zeroprobs , 
 					 Mjjj , invM.list , linkfct , rule , method ,
 					 iter , delta.new, max.increment , fac.oldxsi,

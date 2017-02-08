@@ -65,11 +65,11 @@ Q <- matrix( c( 1,0,0 ,  0,1,0 ,
 Q <- Q[ rep(1:(nrow(Q)),each=2) , ]
 
 # equivalent DINA model (using the default reparametrization B)
-res1 <- equivalent.dina( q.matrix=Q )
+res1 <- CDM::equivalent.dina( q.matrix=Q )
 res1
 
 # equivalent DINA model (reparametrization A)
-res2 <- equivalent.dina( q.matrix=Q , reparametrization="A")
+res2 <- CDM::equivalent.dina( q.matrix=Q , reparametrization="A")
 res2
 
 # simulate data
@@ -80,10 +80,10 @@ r1 <- .5 ; Sigma.alpha <- matrix( r1 , D , D ) + diag(1-r1,D)
 dat1 <- sim.din( N=2000 , q.matrix=Q , mean = mean.alpha , Sigma=Sigma.alpha )
 
 # estimate DINA model
-mod1 <- din( dat1$dat , q.matrix=Q )
+mod1 <- CDM::din( dat1$dat , q.matrix=Q )
 
 # estimate equivalent DINA model
-mod2 <- din( dat1$dat , q.matrix=res1$q.matrix.ast ,
+mod2 <- CDM::din( dat1$dat , q.matrix=res1$q.matrix.ast ,
             skillclasses = res1$alpha.ast)
 # restricted skill space must be defined by using the argument 'skillclasses'
 

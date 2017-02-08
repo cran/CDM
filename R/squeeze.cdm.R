@@ -4,5 +4,5 @@
 squeeze.cdm <- function (x, bounds ){
     x[x < bounds[1] ] <- bounds[1]
     x[x > bounds[2] ] <- bounds[2]
-    base::return(x)
+    return(x)
 }

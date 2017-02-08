@@ -6,12 +6,12 @@
 
 osink <- function( file , suffix, append = FALSE){
 	if ( ! is.null( file ) ){
-		base::sink( paste0( file , suffix) , split=TRUE , append = append )
+		sink( paste0( file , suffix) , split=TRUE , append = append )
 						}
 				}
 				
 csink <- function( file){
 	if ( ! is.null( file ) ){  
-	   base::sink()	
+	   sink()	
 				}	
 					}

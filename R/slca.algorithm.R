@@ -19,14 +19,13 @@
 #############################################################
 # Rcpp function for calculating probabilities
 .slca.calc.prob <- function( XdesM , dimXdes , Xlambda ){
-#   res <- calc_slca_probs( XdesM , dimXdes , Xlambda )  # .Call
-   res <- .Call( "calc_slca_probs" , XdesM , dimXdes , Xlambda , packlage="CDM")  # .Call
+   res <- calc_slca_probs( XdesM , dimXdes , Xlambda )
    I <- dimXdes[1]
    maxK <- dimXdes[2]
    TP <- dimXdes[3]
    probs <- array( res , dim=c( I , maxK , TP ))   
    return(probs)
-		}
+}
 # .slca.calc.prob( XdesM , dimXdes , Xlambda )
 ## [ii,kk,jj] =Cpp= [ii+kk*I+jj*I*K]  (ii,kk,jj=0,...)
 
@@ -50,12 +49,9 @@
 		# probs  num [1:I, 1:maxK, 1:TP]
 		# n.ik  num [1:I, 1:maxK, 1:TP]
 		# N.ik  num [1:I,1:TP]
-		# Xdes  num [1:I, 1:maxK, 1:TP, 1:Nlam] 	    
-				
-#		res <- calc_slca_deriv( XdesM , dimXdes , Xlambda , as.vector(probs) ,
-#			as.vector(n.ik) , as.vector(N.ik) )   # .Call
-		res <- .Call( "calc_slca_deriv" , XdesM , dimXdes , Xlambda , as.vector(probs) ,
-			as.vector(n.ik) , as.vector(N.ik) , PACKAGE="CDM" )   
+		# Xdes  num [1:I, 1:maxK, 1:TP, 1:Nlam] 	    				
+		res <- calc_slca_deriv( XdesM , dimXdes , Xlambda , as.vector(probs) ,
+			as.vector(n.ik) , as.vector(N.ik) )   
 		res$d1b -> d1.b
 		res$d2b -> d2.b							
 
@@ -143,10 +139,9 @@
 				}
 	res <- list("n.ik" = n.ik , "N.ik" = N.ik , "n.ik1" = n.ik1,
 				"N.ik1" = N.ik1)					
-	return( res)
+	return(res)
 	}
 
-	
 
 ###########################################################################
 # reduced skillspace estimation
@@ -159,17 +154,17 @@
 	delta0 <- delta
 	ND <- length(delta)
 	for (gg in 1:G){
-	   if ( delta.linkfct == "log"){
-		ntheta <- Ngroup[gg] * pi.k[,gg]
-		#*****
-		# ARb 2014-01-14 inclusion
-		ntheta <- ntheta / sum(ntheta )		
-		lntheta <- log(ntheta+eps)
-		mod <- stats::lm( lntheta ~ 0 + Z , weights = ntheta )
-		covbeta <- vcov(mod)		
-		beta <- coef(mod)
-							}
-	   if ( delta.linkfct == "logit"){
+		if ( delta.linkfct == "log"){
+			ntheta <- Ngroup[gg] * pi.k[,gg]
+			#*****
+			# ARb 2014-01-14 inclusion
+			ntheta <- ntheta / sum(ntheta )		
+			lntheta <- log(ntheta+eps)
+			mod <- stats::lm( lntheta ~ 0 + Z , weights = ntheta )
+			covbeta <- vcov(mod)		
+			beta <- coef(mod)
+		}
+		if ( delta.linkfct == "logit"){
 			nj <- Ngroup[gg] * pi.k[,gg]
 			pij <- stats::qlogis( pi.k[,gg] + eps )
 			wj <- stats::plogis( delta.designmatrix %*% delta[,gg,drop=FALSE] )
@@ -179,7 +174,7 @@
 			mod1 <- stats::lm( pij ~ 0 + delta.designmatrix ) 
 			beta <- coef(mod1)		
 			covbeta <- vcov(mod1)
-				}						
+		}						
 		if ( ! is.null( delta.fixed ) ){
 		# delta.fixed: 1st column: parameter index
 		#              2nd column: group index
@@ -187,22 +182,23 @@
 		    ind.gg <- which( delta.fixed[ ,2] == gg )
 			if ( length(ind.gg) > 0 ){
 				beta[ delta.fixed[ind.gg,1] ] <- delta.fixed[ind.gg,3]
-									}
-							}
+			}
+		}
 		if ( delta.linkfct == "log"){
 			pi.k[,gg] <- exp( Z %*% beta ) / Ngroup[gg]
-									}
+		}
 		if ( delta.linkfct == "logit"){
 			pi.k[,gg] <- exp( delta.designmatrix %*% beta ) 
-							}
+		}
 		pi.k[,gg] <- pi.k[,gg] / sum( pi.k[,gg] )
 		if ( oldfac > 0 ){
 			beta <- oldfac*delta0[,gg] + ( 1 - oldfac)*beta
-						}
+		}
 		delta[,gg] <- beta
 		covdelta[[gg]] <- covbeta
-			}
+	}
 	res <- list( "pi.k"=pi.k , "delta"=delta , 
 			"covdelta" = covdelta )			
-			}
+	return(res)		
+}
 	

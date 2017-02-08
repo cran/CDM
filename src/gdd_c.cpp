@@ -1,41 +1,22 @@
 
 
-// includes from the plugin
 
+// #include <RcppArmadillo.h>
 #include <Rcpp.h>
-
-
-#ifndef BEGIN_RCPP
-#define BEGIN_RCPP
-#endif
-
-#ifndef END_RCPP
-#define END_RCPP
-#endif
 
 using namespace Rcpp;
 
 
-// user includes
 
+///********************************************************************
+///**  generalized_distance_method__C
 
-// declarations
-extern "C" {
-SEXP generalized_distance_method__C( SEXP data_, SEXP dataresp_, SEXP idealresp_, SEXP theta_, SEXP a_, SEXP b_) ;
-}
-
-// definition
-
-SEXP generalized_distance_method__C( SEXP data_, SEXP dataresp_, SEXP idealresp_, SEXP theta_, SEXP a_, SEXP b_ ){
-BEGIN_RCPP
-  
-     Rcpp::NumericMatrix data(data_);          
-     Rcpp::NumericMatrix dataresp(dataresp_);          
-     Rcpp::NumericMatrix idealresp(idealresp_);    
-     Rcpp::NumericVector theta(theta_);    
-     Rcpp::NumericVector a(a_);    
-     Rcpp::NumericVector b(b_);    
-       
+// [[Rcpp::export]]
+Rcpp::List generalized_distance_method__C( Rcpp::NumericMatrix data, 
+        Rcpp::NumericMatrix dataresp , Rcpp::NumericMatrix idealresp, 
+        Rcpp::NumericVector theta , Rcpp::NumericVector a , 
+        Rcpp::NumericVector b ){
+        
      int I = idealresp.nrow() ;  
      int L = idealresp.ncol() ;  
      int N = data.nrow() ;  
@@ -45,9 +26,7 @@ BEGIN_RCPP
        
      Rcpp::NumericMatrix dist(N,L) ;  
      Rcpp::NumericVector est_skill(N) ;  
-       
-       
-       
+                     
      for (int nn=0;nn<N;nn++){ // begin person nn  
          // int nn = 0 ;  
          dmin=100*I;  
@@ -77,61 +56,43 @@ BEGIN_RCPP
              }   // end ll         
          est_skill[nn] = ind ;      
      }  // end nn      
-           
-           
+                      
      /////////////////////////////////////////////  
      // OUTPUT:  
       return Rcpp::List::create(  
          Rcpp::_["dist"] = dist ,  
          Rcpp::_["est_skill"] = est_skill  
-                 ) ;  
-                   
-END_RCPP
+                 ) ;                     
 }
+///********************************************************************
 
 
+///********************************************************************
+///**  ideal_resp_pattern__C
 
-
-// declarations
-extern "C" {
-SEXP ideal_resp_pattern__C( SEXP qmatrix_, SEXP skillspace_) ;
-}
-
-// definition
-
-SEXP ideal_resp_pattern__C( SEXP qmatrix_, SEXP skillspace_ ){
-BEGIN_RCPP
-  
-     /// model fit statistics  
-       
-     Rcpp::NumericMatrix qmatrix(qmatrix_);          
-     Rcpp::NumericMatrix skillspace(skillspace_);    
-       
+// [[Rcpp::export]]
+Rcpp::NumericMatrix ideal_resp_pattern__C( Rcpp::NumericMatrix qmatrix, 
+      Rcpp::NumericMatrix skillspace ){
+         
      int I = qmatrix.nrow() ;  
      int K = skillspace.ncol() ;  
-     int L = skillspace.nrow() ;  
-       
+     int L = skillspace.nrow() ;         
      Rcpp::NumericMatrix idealresp(I,L) ;  
-       
-       
-     for (int ii=0;ii<I;ii++){  
-       
-     for (int ll=0;ll<L;ll++){  
-         idealresp(ii,ll) = 1 ;  
-         for (int kk=0;kk<K;kk++){  
-             // int kk = 0 ;  
-             if ( ( qmatrix(ii,kk) == 1 ) & ( skillspace(ll,kk) == 0 ) ){  
-                 idealresp(ii, ll) = 0 ;  
-             }  
-         }  
+              
+     for (int ii=0;ii<I;ii++){         
+        for (int ll=0;ll<L;ll++){  
+             idealresp(ii,ll) = 1 ;  
+             for (int kk=0;kk<K;kk++){  
+                // int kk = 0 ;  
+                if ( ( qmatrix(ii,kk) == 1 ) & ( skillspace(ll,kk) == 0 ) ){  
+                     idealresp(ii, ll) = 0 ;  
+                }  
+            }  
+        }  
      }  
-     }  
-       
-     return wrap( idealresp ) ;  
-
-END_RCPP
+     return idealresp ;  
 }
-
+///********************************************************************
 
 
 

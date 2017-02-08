@@ -104,7 +104,7 @@ items <- colnames(dat)[ which( substring( colnames(dat) ,1,1)=="I" ) ]
 data <- dat[,items]
 
 # construct sequential dichotomous pseudo items
-res <- sequential.items(data)
+res <- CDM::sequential.items(data)
 
 # item information table
 res$iteminfo
@@ -166,7 +166,7 @@ stats::xtabs( ~ paste(data$I7) + paste(dat.expand$I7_Cat3) )
 
 \dontrun{
 #*** Model 1: Rasch model for sequentially created pseudo items
-mod <- gdm( dat.expand , irtmodel="1PL" , theta.k=seq(-5,5,len=21) ,
+mod <- CDM::gdm( dat.expand , irtmodel="1PL" , theta.k=seq(-5,5,len=21) ,
              skillspace="normal" , decrease.increments=TRUE)
 }
 }

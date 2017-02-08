@@ -14,7 +14,7 @@
 simul.mcdina <- function( alpha ,  pars_lc , pars_lr , skillcl ){
     # skills ... alpha vectors
     #   skillcl <- scan.vec( "P000 P100 P010 P110 P001 P101 P011 P111" )		
-	base::requireNamespace("sirt")
+	requireNamespace("sirt")
     skills <- alpha 
     N <- length(alpha)
     I <- max( pars_lc$item )

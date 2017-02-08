@@ -9,13 +9,11 @@
 modelfit_cor2_aux <- function( posterior_ , data_, dataresp_, probs1_ , 
 			probs0_, ip_, expiijj_ ){
     # note that ip_ = ip -1 ;
-	res <- .Call("modelfit_cor2_Cpp", 
-					as.matrix(posterior_) , as.matrix(data_) , 
+	res <- modelfit_cor2_Cpp( as.matrix(posterior_) , as.matrix(data_) , 
 					as.matrix(dataresp_) , as.matrix(probs1_) , 
-					as.matrix(probs0_) , as.matrix(ip_) , as.matrix(expiijj_) ,
-					PACKAGE = "CDM")
+					as.matrix(probs0_) , as.matrix(ip_) , as.matrix(expiijj_) )
     return(res)			
-			}
+}
 ###############################################################################
 
 

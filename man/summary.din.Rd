@@ -100,7 +100,7 @@ Press.
 
 ## Parameter estimation of DINA model
 # rule = "DINA" is default
-fractions.dina <- din(data = fraction.subtraction.data,
+fractions.dina <- CDM::din(data = fraction.subtraction.data,
   q.matrix = fraction.subtraction.qmatrix, rule = "DINA")
   
 ## corresponding summaries, including diagnostic accuracies,

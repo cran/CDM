@@ -83,8 +83,8 @@ data(sim.dina)
 data(sim.qmatrix)
 
 #*** Model 1: DINA model for DINA simulated data
-mod1 <- din(sim.dina, q.matr = sim.qmatrix, rule = "DINA" )
-fmod1 <- IRT.modelfit( mod1 )
+mod1 <- CDM::din(sim.dina, q.matr = sim.qmatrix, rule = "DINA" )
+fmod1 <- CDM::IRT.modelfit( mod1 )
 summary(fmod1)
   ##  Test of Global Model Fit
   ##         type value     p
@@ -100,8 +100,8 @@ summary(fmod1)
   ##  MADaQ3          0.059
 
 #*** Model 2: GDINA model
-mod2 <- gdina( sim.dina , q.matr = sim.qmatrix , rule="GDINA" )
-fmod2 <- IRT.modelfit( mod2 )
+mod2 <- CDM::gdina( sim.dina , q.matr = sim.qmatrix , rule="GDINA" )
+fmod2 <- CDM::IRT.modelfit( mod2 )
 summary(fmod2)
   ##  Test of Global Model Fit
   ##         type value p

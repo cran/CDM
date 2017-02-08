@@ -112,7 +112,7 @@ cov.alpha[1,3] <- cov.alpha[3,1] <- .6
 cov.alpha[3,2] <- cov.alpha[2,3] <- .8
 
 # prepare design matrix by applying sim.gdina.prepare function
-rp <- sim.gdina.prepare( q.matrix )
+rp <- CDM::sim.gdina.prepare( q.matrix )
 delta <- rp$delta
 necc.attr <- rp$necc.attr
 Aj <- rp$Aj
@@ -159,14 +159,14 @@ q.matrix <- data.ecpe$q.matrix
 
 #***
 # (1) estimate GDINA model
-mod <- gdina( data=dat[,-1] , q.matrix=q.matrix )
+mod <- CDM::gdina( data=dat[,-1] , q.matrix=q.matrix )
 
 #***
 # (2) simulate data according to GDINA model
 set.seed(977)
 
 # prepare design matrix by applying sim.gdina.prepare function
-rp <- sim.gdina.prepare( q.matrix )
+rp <- CDM::sim.gdina.prepare( q.matrix )
 necc.attr <- rp$necc.attr
 
 # number of subjects to be simulated
@@ -192,7 +192,7 @@ q.matrix <- data.ecpe$q.matrix
 
 #***
 # (1) estimate reduced RUM model
-mod <- gdina( data=dat[,-1] , q.matrix=q.matrix , rule="RRUM" )
+mod <- CDM::gdina( data=dat[,-1] , q.matrix=q.matrix , rule="RRUM" )
 summary(mod)
 
 #***
@@ -200,7 +200,7 @@ summary(mod)
 set.seed(977)
 
 # prepare design matrix by applying sim.gdina.prepare function
-rp <- sim.gdina.prepare( q.matrix )
+rp <- CDM::sim.gdina.prepare( q.matrix )
 necc.attr <- rp$necc.attr
 
 # number of subjects to be simulated

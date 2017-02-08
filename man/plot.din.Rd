@@ -127,7 +127,7 @@
 ## Fix the guessing parameters of items 5, 8 and 9 equal to .20
 # define a constraint.guess matrix
 constraint.guess <-  matrix(c(5,8,9, rep(0.2, 3)), ncol = 2)
-fractions.dina.fixed <- din(data = fraction.subtraction.data, 
+fractions.dina.fixed <- CDM::din(data = fraction.subtraction.data, 
   q.matrix = fraction.subtraction.qmatrix, 
   constraint.guess=constraint.guess)
 

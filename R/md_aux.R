@@ -18,8 +18,8 @@ md_aux <- function( n.ik , pi.k , probs , eps=10^(-30) ){
 	}
 
 	#*** extract maximum number of categories
-	maxK <- base::apply( N.ik , base::c(2,3) , base::sum , na.rm=TRUE )
-	maxK <- base::rowSums( maxK > eps )
+	maxK <- apply( N.ik , c(2,3) , sum , na.rm=TRUE )
+	maxK <- rowSums( maxK > eps )
 	
 	# calculate summed counts
 	N.ik_tot <- array( 0 , dim=dim(N.ik) )
@@ -35,11 +35,11 @@ md_aux <- function( n.ik , pi.k , probs , eps=10^(-30) ){
 	
 	# calculate itemwise statistics
 	p.ik_observed <- N.ik / ( N.ik_tot + eps )
-	p.ik_observed[ base::is.na( p.ik_observed ) ] <- 0
+	p.ik_observed[ is.na( p.ik_observed ) ] <- 0
 	# define class weights 
-	pi.k_tot <- base::array( 0 , dim=dim(p.ik_observed) )
+	pi.k_tot <- array( 0 , dim=dim(p.ik_observed) )
 	for (kk in 1:K){
-		pi.k_tot[,,kk] <- base::matrix( pitot , nrow= dim(pi.k_tot)[1] , ncol=dim(pi.k_tot)[2] , byrow=FALSE )
+		pi.k_tot[,,kk] <- matrix( pitot , nrow= dim(pi.k_tot)[1] , ncol=dim(pi.k_tot)[2] , byrow=FALSE )
 	}
 	# calculate statistics
 	dist.item <- pi.k_tot * ( p.ik_observed - probs )	
@@ -49,7 +49,7 @@ md_aux <- function( n.ik , pi.k , probs , eps=10^(-30) ){
 		h1 <- h1 + (kk-1) * dist.item[,,kk] 
 	}
 	
-	itemfit.md <- base::colSums( h1 / maxK )
-	base::return(itemfit.md)
+	itemfit.md <- colSums( h1 / maxK )
+	return(itemfit.md)
 }
 

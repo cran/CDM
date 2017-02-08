@@ -53,7 +53,7 @@ using cognitive diagnosis models. \emph{Psychological Methods},
 %}
 \examples{
 # estimate model
-d4 <- din(sim.dino, q.matr = sim.qmatrix)
+d4 <- CDM::din(sim.dino, q.matr = sim.qmatrix)
 # compute tetrachoric correlations
 skill.cor(d4)
   ## estimated tetrachoric correlations

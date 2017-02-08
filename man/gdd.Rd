@@ -86,7 +86,7 @@ q.matrix <- sim.qmatrix
 data <- sim.dina
 
 # estimate 1PL (use irtmodel="2PL" for 2PL estimation)
-mod <- gdm( data , irtmodel="1PL" , theta.k=seq(-6,6,len=21) , 
+mod <- CDM::gdm( data , irtmodel="1PL" , theta.k=seq(-6,6,len=21) , 
             decrease.increments=TRUE , conv=.001 , globconv=.001)
 # extract item parameters in parametrization b + a*theta
 b <- mod$b[,1]
@@ -95,7 +95,7 @@ a <- mod$a[,,1]
 theta <- mod$person$EAP.F1
 
 # generalized distance discriminating method
-res <- gdd( data , q.matrix , theta=theta , b=b, a=a )
+res <- CDM::gdd( data , q.matrix , theta=theta , b=b, a=a )
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

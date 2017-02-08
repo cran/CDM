@@ -67,9 +67,9 @@ This function is based on \code{\link{IRT.anova}}.
 #############################################################################
 
 # Model 1
-d1 <- din(sim.dina, q.matr = sim.qmatrix )
+d1 <- CDM::din(sim.dina, q.matr = sim.qmatrix )
 # Model 2 with equal guessing and slipping parameters
-d2 <- din(sim.dina, q.matr = sim.qmatrix , guess.equal=TRUE , slip.equal =TRUE)
+d2 <- CDM::din(sim.dina, q.matr = sim.qmatrix , guess.equal=TRUE , slip.equal =TRUE)
 # model comparison
 anova(d1,d2)
   ##     Model   loglike Deviance Npars      AIC      BIC    Chisq df  p
@@ -82,10 +82,10 @@ anova(d1,d2)
 #############################################################################
 
 # Model 3: GDINA model
-d3 <- gdina( sim.dina, q.matr = sim.qmatrix )
+d3 <- CDM::gdina( sim.dina, q.matr = sim.qmatrix )
 
 # Model 4: DINA model
-d4 <- gdina( sim.dina, q.matr = sim.qmatrix , rule="DINA")
+d4 <- CDM::gdina( sim.dina, q.matr = sim.qmatrix , rule="DINA")
 
 # model comparison
 anova(d3,d4)

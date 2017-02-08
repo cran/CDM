@@ -67,6 +67,6 @@ itemfit.rmsea <- function( n.ik , pi.k , probs , itemnames=NULL){
 	for (kk in 2:K){ 
 		h1 <- h1 + dist.item[,,kk] 
 	}
-	itemfit.rmsea <- base::sqrt( base::colSums( h1 ) )
-	base::return(itemfit.rmsea)
+	itemfit.rmsea <- sqrt( colSums( h1 ) )
+	return(itemfit.rmsea)
 }

@@ -7,7 +7,7 @@ rmsd_chisquare <- function( n.ik , pi.k , probs , eps=10^(-30) ){
 	# n.ik ... [ classes , items , categories , groups ]	
 	# N.ik ... [ classes , items , categories]	
 	N.ik <- n.ik[,,,1]
-	G <- base::dim(n.ik)[4]
+	G <- dim(n.ik)[4]
 	pitot <- pi.k[,1]
 	eps <- 1E-10
 	if (G>1){ 
@@ -18,13 +18,13 @@ rmsd_chisquare <- function( n.ik , pi.k , probs , eps=10^(-30) ){
 	}
 
 	#*** extract maximum number of categories
-	maxK <- base::apply( N.ik , base::c(2,3) , base::sum , na.rm=TRUE )
-	maxK <- base::rowSums( maxK > eps )
+	maxK <- apply( N.ik , c(2,3) , sum , na.rm=TRUE )
+	maxK <- rowSums( maxK > eps )
 	
 	# calculate summed counts
-	N.ik_tot <- base::array( 0 , dim=dim(N.ik) )
+	N.ik_tot <- array( 0 , dim=dim(N.ik) )
 	N.ik_tot[,,1] <- N.ik[,,1,drop=FALSE]
-	K <- base::dim(N.ik)[3]			
+	K <- dim(N.ik)[3]			
 	for (kk in 2:K){
 		N.ik_tot[,,1] <- N.ik_tot[,,1,drop=FALSE] + N.ik[,,kk,drop=FALSE] 
 	}
@@ -39,8 +39,8 @@ rmsd_chisquare <- function( n.ik , pi.k , probs , eps=10^(-30) ){
 	for (kk in 2:K){
 		chisq_stat <- chisq_stat + chisq_stat0[,,kk]
 	}
-	chisq_stat <- base::colSums(chisq_stat)
+	chisq_stat <- colSums(chisq_stat)
 		# divide it by maxK?
-	base::return(chisq_stat)
+	return(chisq_stat)
 }
 

@@ -1,46 +1,23 @@
 
+// [[Rcpp::depends(RcppArmadillo)]]
 
-// includes from the plugin
 #include <RcppArmadillo.h>
 #include <Rcpp.h>
-
-
-#ifndef BEGIN_RCPP
-#define BEGIN_RCPP
-#endif
-
-#ifndef END_RCPP
-#define END_RCPP
-#endif
 
 using namespace Rcpp;
 
 
-// user includes
+///********************************************************************
+///**  IRT_predict
 
-
-// declarations
-extern "C" {
-SEXP IRT_predict( SEXP resp_, SEXP irf1_, SEXP K_, SEXP TP_) ;
-}
-
-// definition
-
-SEXP IRT_predict( SEXP resp_, SEXP irf1_, SEXP K_, SEXP TP_ ){
-BEGIN_RCPP
-   
-       
-     Rcpp::NumericMatrix resp(resp_);          
-     Rcpp::NumericVector irf1(irf1_);  
-     int K = as<int>(K_);  
-     int TP = as<int>(TP_);  
-       
-       
+// [[Rcpp::export]]
+Rcpp::List IRT_predict( Rcpp::NumericMatrix resp, Rcpp::NumericVector irf1, 
+        int K, int TP){
+             
      int N=resp.nrow();  
      int I=resp.ncol();  
        
-     Rcpp::NumericVector probs_categ(N*K*TP*I);   
-     // Rcpp::NumericVector pred(N*TP*I);  
+     Rcpp::NumericVector probs_categ(N*K*TP*I);    
      arma::cube pred(N,TP,I);  
      arma::cube var1(N,TP,I);  
      arma::cube resid1(N,TP,I);  
@@ -83,14 +60,9 @@ BEGIN_RCPP
        			}  
      	       } // end nn  
      	     } // end ii  
-       
-                      
-     //	Rcpp::Rcout << "Ntot=" <<  Ntot <<  std::flush << std::endl ;  
-         		  
-         		  
+          		  
      //*************************************************      
-     // OUTPUT              
-               
+     // OUTPUT                             
      return Rcpp::List::create(   
          Rcpp::_["pred"] = pred , 
          Rcpp::_["probs_categ"] = probs_categ ,    
@@ -98,16 +70,9 @@ BEGIN_RCPP
          Rcpp::_["resid1"] = resid1 , 
          Rcpp::_["sresid1"] = sresid1  
          ) ;    
-       
-     // maximal list length is 20!  
-       
-       
-     // Rcpp::Rcout << "tmp1 " <<  tmp1 <<  std::flush << std::endl ;  
-       
-       
-     
-END_RCPP
+
 }
+///********************************************************************
 
 
 

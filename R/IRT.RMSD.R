@@ -1,38 +1,38 @@
 
 IRT.RMSD <- function( object )
 {
-	CALL <- base::match.call()
+	CALL <- match.call()
 	mod <- object
 	mod_counts <- IRT.expectedCounts(mod)
 	
 	mod_irfprob <- IRT.irfprob(mod)
-	G <- base::attr(mod_counts, "G" )
-	I <- base::dim(mod_counts)[1]
+	G <- attr(mod_counts, "G" )
+	I <- dim(mod_counts)[1]
 	#*** create matrix with results
-	RMSD <- base::matrix( NA , nrow=I , ncol=G+1)
-	RMSD <- base::as.data.frame(RMSD)
-	base::colnames(RMSD) <- base::c("item" , paste0("Group" , 1:G) )
-	RMSD$item <- base::dimnames(mod_counts)[[1]]
+	RMSD <- matrix( NA , nrow=I , ncol=G+1)
+	RMSD <- as.data.frame(RMSD)
+	colnames(RMSD) <- c("item" , paste0("Group" , 1:G) )
+	RMSD$item <- dimnames(mod_counts)[[1]]
 	chisquare_stat <- MD <- MAD <- RMSD
 	RMSD$WRMSD <- NA
 	# sample sizes per group
-	weight_group <- base::matrix( NA , nrow=I , ncol=G )
+	weight_group <- matrix( NA , nrow=I , ncol=G )
 	for (gg in 1:G){
 		# gg <- 1
-		mc_gg <- base::apply( mod_counts[,,,gg] , c(1) , base::sum )
+		mc_gg <- apply( mod_counts[,,,gg] , c(1) , sum )
 		weight_group[,gg] <- as.vector( mc_gg )
 	}
-	weight_group <- base::t( base::apply( weight_group , 1 , FUN = function(ww){ 
+	weight_group <- t( apply( weight_group , 1 , FUN = function(ww){ 
 							ww / sum(ww) } ) )
-	# weight_group <- weight_group / base::sum( weight_group )
+	# weight_group <- weight_group / sum( weight_group )
 
 	#*** extract objects
 	
 	for (gg in 1:G){
 		# gg <- 1	
-		pi.k <- base::attr(mod_irfprob, "prob.theta")[ , gg , drop=FALSE ]
-		probs <- base::aperm( mod_irfprob , perm= base::c(3,1,2) )
-		n.ik <- base::aperm( mod_counts , perm= base::c(3,1,2,4) )[,,,gg,drop=FALSE]
+		pi.k <- attr(mod_irfprob, "prob.theta")[ , gg , drop=FALSE ]
+		probs <- aperm( mod_irfprob , perm= c(3,1,2) )
+		n.ik <- aperm( mod_counts , perm= c(3,1,2,4) )[,,,gg,drop=FALSE]
 		#*** chi square calculation
 		chisquare_stat[,gg+1] <- rmsd_chisquare( n.ik=n.ik , pi.k = pi.k , probs = probs )
 		#*** RMSD calculation
@@ -44,8 +44,8 @@ IRT.RMSD <- function( object )
 		
 	}
 	
-	M1 <- base::rowSums( RMSD[,2:(G+1) ]^2 * weight_group )
-    RMSD$WRMSD <- base::sqrt( M1 )
+	M1 <- rowSums( RMSD[,2:(G+1) ]^2 * weight_group )
+    RMSD$WRMSD <- sqrt( M1 )
 	
 	if ( G==1 ){
 		RMSD$WRMSD <- NULL
@@ -62,11 +62,11 @@ IRT.RMSD <- function( object )
 						labels = colnames(MAD)[-1] )
 							
 	#*** output
-	res <- base::list( MD = MD , RMSD = RMSD , MAD = MAD , 
+	res <- list( MD = MD , RMSD = RMSD , MAD = MAD , 
 					chisquare_stat = chisquare_stat , 
 					CALL = CALL , G = G ,
 					RMSD_summary = RMSD_summary , MD_summary = MD_summary,
 					MAD_summary = MAD_summary)
-	base::class(res) <- "IRT.RMSD"
-	base::return(res)
+	class(res) <- "IRT.RMSD"
+	return(res)
 }

@@ -99,9 +99,9 @@ Q1 <- q.matrix
 Q1[1,] <- c(1,1,0)
 Q1[10,] <- c(1,0,0)
 # estimate DINA model
-mod <- din( dat , q.matr = Q1, rule = "DINA")
+mod <- CDM::din( dat , q.matr = Q1, rule = "DINA")
 # apply Q-matrix validation
-res <- din.validate.qmatrix( mod )  
+res <- CDM::din.validate.qmatrix( mod )  
   ## item itemindex Skill1 Skill2 Skill3 guess  slip   IDI qmatrix.orig IDI.orig delta.IDI max.IDI
   ## I001         1      1      0      0 0.309 0.251 0.440            0    0.431     0.009   0.440
   ## I010        10      1      1      0 0.235 0.329 0.437            0    0.320     0.117   0.437

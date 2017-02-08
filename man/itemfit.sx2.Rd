@@ -115,10 +115,10 @@ library(sirt)
 dat <- sirt::sim.raschtype( theta= stats::rnorm(N) , b=b , fixed.a=a)
 
 #*** 1PL model estimated with gdm
-mod1 <- gdm( dat , theta.k=seq(-6,6,len=21) , irtmodel="1PL" )
+mod1 <- CDM::gdm( dat , theta.k=seq(-6,6,len=21) , irtmodel="1PL" )
 summary(mod1)
 # estimate item fit statistic
-fitmod1 <- itemfit.sx2(mod1)
+fitmod1 <- CDM::itemfit.sx2(mod1)
 summary(fitmod1)
   ##       item itemindex   S-X2 df     p S-X2_df RMSEA Nscgr Npars p.holm
   ##   1  I0001         1  4.173  9 0.900   0.464 0.000    10     1  1.000
@@ -142,10 +142,10 @@ plot(fitmod1)
 
 \dontrun{
 #*** 2PL model estimated with gdm
-mod2 <- gdm( dat , theta.k=seq(-6,6,len=21) , irtmodel="2PL" , maxiter=100 )
+mod2 <- CDM::gdm( dat , theta.k=seq(-6,6,len=21) , irtmodel="2PL" , maxiter=100 )
 summary(mod2)
 # estimate item fit statistic
-fitmod2 <- itemfit.sx2(mod2)
+fitmod2 <- CDM::itemfit.sx2(mod2)
 summary(fitmod2)
   ##       item itemindex   S-X2 df     p S-X2_df RMSEA Nscgr Npars p.holm
   ##   1  I0001         1  4.083  8 0.850   0.510 0.000    10     2  1.000
@@ -165,21 +165,21 @@ Qmatrix <- matrix(1 , I,1 )
 mod1a <- sirt::smirt( dat , Qmatrix=Qmatrix )
 summary(mod1a)
 # item fit statistic
-fitmod1a <- itemfit.sx2(mod1a)
+fitmod1a <- CDM::itemfit.sx2(mod1a)
 summary(fitmod1a)
 
 #*** 2PL model estimation in smirt (sirt package)
 mod2a <- sirt::smirt( dat , Qmatrix=Qmatrix , est.a="2PL")
 summary(mod2a)
 # item fit statistic
-fitmod2a <- itemfit.sx2(mod2a)
+fitmod2a <- CDM::itemfit.sx2(mod2a)
 summary(fitmod2a)
 
 #*** 1PL model estimated with rasch.mml2 (in sirt)
 mod1b <- sirt::rasch.mml2( dat )
 summary(mod1b)
 # estimate item fit statistic
-fitmod1b <- itemfit.sx2(mod1b)
+fitmod1b <- CDM::itemfit.sx2(mod1b)
 summary(fitmod1b)
 
 #*** 1PL estimated in TAM
@@ -187,7 +187,7 @@ library(TAM)
 mod1c <- TAM::tam.mml( resp=dat )
 summary(mod1c)
 # item fit
-summary( itemfit.sx2( mod1c) )
+summary( CDM::itemfit.sx2( mod1c) )
 # conversion to mirt object
 library(sirt)
 library(mirt)
@@ -199,7 +199,7 @@ mirt::itemfit( cmod1c$mirt )
 mod2c <- TAM::tam.mml.2pl( resp=dat )
 summary(mod2c)
 # item fit
-summary( itemfit.sx2( mod2c) )
+summary( CDM::itemfit.sx2( mod2c) )
 # conversion to mirt object and item fit in mirt
 cmod2c <- sirt::tam2mirt( mod2c )
 mirt::itemfit( cmod2c$mirt )
@@ -216,10 +216,10 @@ data(sim.dina)
 data(sim.qmatrix)
 
 #*** Model 1: DINA model (correctly specified model)
-mod1 <- din( data=sim.dina , q.matrix = sim.qmatrix )
+mod1 <- CDM::din( data=sim.dina , q.matrix = sim.qmatrix )
 summary(mod1)
 # item fit statistic
-summary( itemfit.sx2( mod1 ) )
+summary( CDM::itemfit.sx2( mod1 ) )
   ##   -- Average Item Fit Statistics --
   ##   S-X2 = 7.397 | S-X2_df = 1.233 
 
@@ -228,18 +228,18 @@ summary( itemfit.sx2( mod1 ) )
 I <- ncol(sim.dina)
 rule <- rep("DINA" , I )
 rule[1] <- "DINO"
-mod2 <- din( data=sim.dina , q.matrix = sim.qmatrix , rule=rule)
+mod2 <- CDM::din( data=sim.dina , q.matrix = sim.qmatrix , rule=rule)
 summary(mod2)
 # item fit statistic
-summary( itemfit.sx2( mod2 ) )
+summary( CDM::itemfit.sx2( mod2 ) )
   ##   -- Average Item Fit Statistics --
   ##   S-X2 = 9.925 | S-X2_df = 1.654 
 
 #*** Model 3: Additive GDINA model
-mod3 <- gdina( data=sim.dina , q.matrix = sim.qmatrix , rule="ACDM")
+mod3 <- CDM::gdina( data=sim.dina , q.matrix = sim.qmatrix , rule="ACDM")
 summary(mod3)
 # item fit statistic
-summary( itemfit.sx2( mod3 ) )
+summary( CDM::itemfit.sx2( mod3 ) )
   ##   -- Average Item Fit Statistics --
   ##   S-X2 = 8.416 | S-X2_df = 1.678 
 }

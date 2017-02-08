@@ -84,7 +84,7 @@ data(sim.dina)
 data(sim.qmatrix)
 
 # estimate model
-mod1 <- din(sim.dina, sim.qmatrix)
+mod1 <- CDM::din(sim.dina, sim.qmatrix)
 # compute item fit
 IRT.itemfit( mod1 )
 }

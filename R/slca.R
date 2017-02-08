@@ -167,8 +167,7 @@ slca <- function( data , group=NULL,
 	# reducing computational burden for design matrix
 	dimXdes <- dim(Xdes)
 	Xdes_ <- as.vector(Xdes)
-#	res <- calc_Xdes( Xdes_ , dimXdes )			# Rcpp function  .Call
-	res <- .Call( "calc_Xdes" , Xdes_ , dimXdes , package="CDM" )
+	res <- calc_Xdes( Xdes_ , dimXdes )
 	# XdesM     [ii,kk,tt,ll, value ] 
 	NX <- res$NXdesM
 	XdesM <- res$XdesM[1:NX,]

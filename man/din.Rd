@@ -282,26 +282,26 @@ zero to random initial values with \code{set.seed(seed)}.}
 head(fraction.subtraction.data)
 fraction.subtraction.qmatrix
 
-## Misspecification in parameter specification for method din()
+## Misspecification in parameter specification for method CDM::din()
 ## leads to warnings and terminates estimation procedure. E.g.,
 
 # See Q-Matrix specification
-fractions.dina.warning1 <- din(data = fraction.subtraction.data,
+fractions.dina.warning1 <- CDM::din(data = fraction.subtraction.data,
   q.matrix = t(fraction.subtraction.qmatrix)) 
   
 # See guess.init specification
-fractions.dina.warning2 <- din(data = fraction.subtraction.data,
+fractions.dina.warning2 <- CDM::din(data = fraction.subtraction.data,
   q.matrix = fraction.subtraction.qmatrix, guess.init = rep(1.2,
   ncol(fraction.subtraction.data)))
   
 # See rule specification   
-fractions.dina.warning3 <- din(data = fraction.subtraction.data,
+fractions.dina.warning3 <- CDM::din(data = fraction.subtraction.data,
   q.matrix = fraction.subtraction.qmatrix, rule = c(rep("DINA",
   10), rep("DINO", 9)))
 
 ## Parameter estimation of DINA model
 # rule = "DINA" is default
-fractions.dina <- din(data = fraction.subtraction.data,
+fractions.dina <- CDM::din(data = fraction.subtraction.data,
   q.matrix = fraction.subtraction.qmatrix, rule = "DINA")
 attributes(fractions.dina)
 str(fractions.dina)	  
@@ -327,13 +327,13 @@ plot(fractions.dina)
 round(fractions.dina$guess[,1], 2)
 
 ## Estimate DINA model with different random initial parameters using seed=1345
-fractions.dina1 <- din(data = fraction.subtraction.data,
+fractions.dina1 <- CDM::din(data = fraction.subtraction.data,
   q.matrix = fraction.subtraction.qmatrix, rule = "DINA" , seed=1345)
   
 ## Fix the guessing parameters of items 5, 8 and 9 equal to .20
 # define a constraint.guess matrix
 constraint.guess <-  matrix(c(5,8,9, rep(0.2, 3)), ncol = 2)
-fractions.dina.fixed <- din(data = fraction.subtraction.data, 
+fractions.dina.fixed <- CDM::din(data = fraction.subtraction.data, 
   q.matrix = fraction.subtraction.qmatrix, 
   constraint.guess=constraint.guess)
 
@@ -364,14 +364,14 @@ plot(fractions.dina.fixed, uncertainty = 0.1, top.n.skill.classes = 6,
 #############################################################################
 
 # DINA Model
-d1 <- din(sim.dina, q.matr = sim.qmatrix, rule = "DINA",
+d1 <- CDM::din(sim.dina, q.matr = sim.qmatrix, rule = "DINA",
   conv.crit = 0.01, maxit = 500, progress = TRUE)
 summary(d1)
 
 # DINA model with hierarchical skill classes (Hierarchical DINA model)
 # 1st step:  estimate an initial full model to look at the indexing
 #    of skill classes
-d0 <- din(sim.dina, q.matr = sim.qmatrix, maxit=1)
+d0 <- CDM::din(sim.dina, q.matr = sim.qmatrix, maxit=1)
 d0$attribute.patt.splitted
 #      [,1] [,2] [,3]
 # [1,]    0    0    0
@@ -390,18 +390,18 @@ d0$attribute.patt.splitted
 # d0$attribute.patt.splitted above)
 zeroprob.skillclasses <- c(2,3,5,6)     # classes 100, 010, 110, 101
 # estimate the hierarchical DINA model
-d1a <- din(sim.dina, q.matr = sim.qmatrix, 
+d1a <- CDM::din(sim.dina, q.matr = sim.qmatrix, 
           zeroprob.skillclasses =zeroprob.skillclasses )
 summary(d1a)
 
 # Mixed DINA and DINO Model
-d1b <- din(sim.dina, q.matr = sim.qmatrix, rule = 
+d1b <- CDM::din(sim.dina, q.matr = sim.qmatrix, rule = 
           c(rep("DINA", 7), rep("DINO", 2)), conv.crit = 0.01,
           maxit = 500, progress = FALSE)
 summary(d1b)
 
 # DINO Model
-d2 <- din(sim.dina, q.matr = sim.qmatrix, rule = "DINO",
+d2 <- CDM::din(sim.dina, q.matr = sim.qmatrix, rule = "DINO",
   conv.crit = 0.01, maxit = 500, progress = FALSE)
 summary(d2)
 
@@ -425,12 +425,12 @@ d1$subj.pattern    # pattern per subject
 d1$posterior       
 
 # Equal guessing parameters
-d2a <- din( data = sim.dina , q.matrix = sim.qmatrix ,  
+d2a <- CDM::din( data = sim.dina , q.matrix = sim.qmatrix ,  
             guess.equal = TRUE , slip.equal = FALSE )
 d2a$coef
 
 # Equal guessing and slipping parameters
-d2b <- din( data = sim.dina , q.matrix = sim.qmatrix ,  
+d2b <- CDM::din( data = sim.dina , q.matrix = sim.qmatrix ,  
             guess.equal = TRUE , slip.equal = TRUE )
 d2b$coef
 
@@ -439,16 +439,16 @@ d2b$coef
 #############################################################################
 
 # DINO Estimation
-d3 <- din(sim.dino, q.matr = sim.qmatrix, rule = "DINO",
+d3 <- CDM::din(sim.dino, q.matr = sim.qmatrix, rule = "DINO",
         conv.crit = 0.005, progress = FALSE)
 
 # Mixed DINA and DINO Model
-d3b <- din(sim.dino, q.matr = sim.qmatrix, 
+d3b <- CDM::din(sim.dino, q.matr = sim.qmatrix, 
           rule = c(rep("DINA", 4), rep("DINO", 5)), conv.crit = 0.001, 
           progress = FALSE)
                         
 # DINA Estimation
-d4 <- din(sim.dino, q.matr = sim.qmatrix, rule = "DINA",
+d4 <- CDM::din(sim.dino, q.matr = sim.qmatrix, rule = "DINA",
   conv.crit = 0.005, progress = FALSE)
             
 # Comparison of DINA and DINO estimates
@@ -468,7 +468,7 @@ c("DINO"=d3$AIC, "MIXED"=d3b$AIC, "DINA"=d4$AIC)
 # i.e. first 200 persons have weight 2, the other have weight 1
 (weights <- c(rep(2, 200), rep(1, 200)))
 
-d5 <- din(sim.dina, sim.qmatrix, rule = "DINA", conv.crit = 
+d5 <- CDM::din(sim.dina, sim.qmatrix, rule = "DINA", conv.crit = 
   0.005, weights = weights, progress = FALSE)
         
 # Comparison of the information criteria
@@ -490,10 +490,10 @@ sim.dina.bib[1:100, 1:3] <- NA
 sim.dina.bib[101:300, 4:8] <- NA
 sim.dina.bib[301:400, c(1,2,9)] <- NA
 
-d6 <- din(sim.dina.bib, sim.qmatrix, rule = "DINA", 
+d6 <- CDM::din(sim.dina.bib, sim.qmatrix, rule = "DINA", 
          conv.crit = 0.0005, weights = weights, maxit=200)
 
-d7 <- din(sim.dina.bib, sim.qmatrix, rule = "DINO",
+d7 <- CDM::din(sim.dina.bib, sim.qmatrix, rule = "DINO",
          conv.crit = 0.005, weights = weights)
 
 # Comparison of DINA and DINO estimates
@@ -534,13 +534,13 @@ q.matrix <- matrix( q.matrix , nrow=length(q.matrix)/K , ncol=K , byrow=TRUE )
 dat <- sim.din( alpha=alpha , q.matrix=q.matrix )$dat
 
 #*** Model 1: estimate DINA model | no skill space restriction
-mod1 <- din( dat , q.matrix )
+mod1 <- CDM::din( dat , q.matrix )
 
 #*** Model 2: DINA model | hierarchy A2 > A3
 B <- "A2 > A3"
 skill.names <- paste0("A",1:3)
-skillspace <- skillspace.hierarchy( B , skill.names )$skillspace.reduced
-mod2 <- din( dat , q.matrix , skillclasses = skillspace )
+skillspace <- CDM::skillspace.hierarchy( B , skill.names )$skillspace.reduced
+mod2 <- CDM::din( dat , q.matrix , skillclasses = skillspace )
 
 #*** Model 3: DINA model | linear hierarchy A1 > A2 > A3
 #   This is a misspecied model because due to P(010)=.02 the relation A1>A2
@@ -548,11 +548,11 @@ mod2 <- din( dat , q.matrix , skillclasses = skillspace )
 B <- "A1 > A2
       A2 > A3"
 skill.names <- paste0("A",1:3)
-skillspace <- skillspace.hierarchy( B , skill.names )$skillspace.reduced
-mod3 <- din( dat , q.matrix , skillclasses = skillspace )
+skillspace <- CDM::skillspace.hierarchy( B , skill.names )$skillspace.reduced
+mod3 <- CDM::din( dat , q.matrix , skillclasses = skillspace )
 
 #*** Model 4: 2PL model in gdm
-mod4 <- gdm( dat , theta.k=seq(-5,5,len=21) , 
+mod4 <- CDM::gdm( dat , theta.k=seq(-5,5,len=21) , 
            decrease.increments= TRUE , skillspace="normal" )
 summary(mod4)
 
@@ -572,8 +572,8 @@ anova(mod2,mod4)
   ##   1 Model 1 -7052.46 14104.92    29 14162.92 14305.24       NA NA NA
 
 # compare fit statistics
-summary( modelfit.cor.din( mod2 ) )
-summary( modelfit.cor.din( mod4 ) )
+summary( CDM::modelfit.cor.din( mod2 ) )
+summary( CDM::modelfit.cor.din( mod4 ) )
 
 #############################################################################
 # EXAMPLE 7: Fitting the basic local independence model (BLIM) with din
@@ -616,7 +616,7 @@ rownames(skillclasses) <- v1
 skillclasses[ cbind( 2:(SC+1) , 1:SC ) ] <- 1
 
 # estimate BLIM with din function
-mod1 <- din(data= dat, q.matrix=q.matrix, skillclasses = skillclasses , 
+mod1 <- CDM::din(data= dat, q.matrix=q.matrix, skillclasses = skillclasses , 
             rule="DINO" , weights=weights   )
 summary(mod1)
   ##   Item parameters

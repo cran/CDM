@@ -95,7 +95,7 @@ anova(mod1,mod3)
   ##   1 Model 1 -75707.57 151415.1    79 151573.1 152088.0       NA NA NA
 
 #--- model fit
-summary( modelfit.cor.din( mod1 ) )
+summary( CDM::modelfit.cor.din( mod1 ) )
   ##   Test of Global Model Fit
   ##          type   value       p
   ##   1   max(X2) 7.74382 1.00000

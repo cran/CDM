@@ -102,14 +102,14 @@ data(sim.data)
 data(sim.qmatrix)
 
 #*** estimate model
-mod1 <- din(sim.dina, sim.qmatrix, rule = "DINA" , maxit=10)
+mod1 <- CDM::din(sim.dina, sim.qmatrix, rule = "DINA" , maxit=10)
 #*** extract likelihood
-likemod1 <- IRT.likelihood(mod1)
+likemod1 <- CDM::IRT.likelihood(mod1)
 str(likemod1)
 # extract theta
 attr(likemod1, "theta" )
 #*** extract posterior
-pomod1 <- IRT.posterior( mod1 )
+pomod1 <- CDM::IRT.posterior( mod1 )
 str(pomod1)
 }
 

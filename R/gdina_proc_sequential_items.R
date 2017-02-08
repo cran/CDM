@@ -1,6 +1,6 @@
 
 gdina_proc_sequential_items <- function( data , q.matrix ){
-	maxK <- base::max( data , na.rm=TRUE )
+	maxK <- max( data , na.rm=TRUE )
 	sequential <- FALSE
 	if ( maxK > 1){
 		res0 <- sequential.items( data = data )
@@ -9,7 +9,7 @@ gdina_proc_sequential_items <- function( data , q.matrix ){
 		q.matrix <- q.matrix[,-c(1:2)]
 	}
 	
-	res <- base::list( data = data , sequential = sequential ,
+	res <- list( data = data , sequential = sequential ,
 				q.matrix = q.matrix )
-	base::return(res)
+	return(res)
 }
