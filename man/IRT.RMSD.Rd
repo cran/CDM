@@ -50,6 +50,8 @@ uniform and nonuniform differential item functioning.
 \value{
 List with entries
  \item{RMSD}{Item-wise and group-wise RMSD statistic}
+ \item{RMSD_bc}{Item-wise and group-wise RMSD statistic with analytical
+      bias correction} 
  \item{MAD}{Item-wise and group-wise MAD statistic}
  \item{MD}{Item-wise and group-wise MD statistic}
  \item{chisquare_stat}{Item-wise and group-wise \eqn{\chi^2} statistic}

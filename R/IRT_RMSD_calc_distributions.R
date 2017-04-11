@@ -1,8 +1,6 @@
 
-	
-##########################################
-# auxiliary function
-rmsea_aux <- function( n.ik , pi.k , probs , eps=10^(-30) ){
+IRT_RMSD_calc_distributions <- function( n.ik , pi.k , eps = 1E-30 )
+{
 	# probs ... [ classes , items , categories ]
 	# n.ik ... [ classes , items , categories , groups ]	
 	# N.ik ... [ classes , items , categories]	
@@ -16,11 +14,9 @@ rmsea_aux <- function( n.ik , pi.k , probs , eps=10^(-30) ){
 			pitot <- pitot + pi.k[,gg]
 		}
 	}
-
 	#*** extract maximum number of categories
 	maxK <- apply( N.ik , c(2,3) , sum , na.rm=TRUE )
 	maxK <- rowSums( maxK > eps )
-	
 	# calculate summed counts
 	N.ik_tot <- array( 0 , dim=dim(N.ik) )
 	N.ik_tot[,,1] <- N.ik[,,1,drop=FALSE]
@@ -28,29 +24,22 @@ rmsea_aux <- function( n.ik , pi.k , probs , eps=10^(-30) ){
 	for (kk in 2:K){
 		N.ik_tot[,,1] <- N.ik_tot[,,1,drop=FALSE] + N.ik[,,kk,drop=FALSE] 
 	}
-
 	for (kk in 2:K){	
 		N.ik_tot[,,kk] <- N.ik_tot[,,1] 
 	}
-	
+		
 	# calculate itemwise statistics
 	p.ik_observed <- N.ik / ( N.ik_tot + eps )
-	p.ik_observed[ is.na( p.ik_observed ) ] <- 0
+	p.ik_observed <- replace_NA( p.ik_observed , value=0 )
 	# define class weights 
 	pi.k_tot <- array( 0 , dim= dim(p.ik_observed) )
 	for (kk in 1:K){
 		pi.k_tot[,,kk] <- matrix( pitot , nrow= dim(pi.k_tot)[1] , 
 				ncol= dim(pi.k_tot)[2] , byrow=FALSE )
-	}
-	# calculate statistics
-	dist.item <- pi.k_tot * ( p.ik_observed - probs )^2		
-	h1 <- dist.item[,,1]
-	for (kk in 2:K){ 
-		h1 <- h1 + dist.item[,,kk] 
-	}
-	itemfit.rmsea <- sqrt( colSums( h1 ) / maxK )
-	return(itemfit.rmsea)
+	}	
+	#--- output
+	res <- list( N.ik = N.ik , N.ik_tot = N.ik_tot , p.ik_observed = p.ik_observed , 
+					pi.k_tot = pi.k_tot , maxK = maxK , K = K )
+	return(res)	
 }
-
-
-.rmsea.aux <- rmsea_aux
+		

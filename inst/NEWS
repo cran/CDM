@@ -23,6 +23,21 @@ R script and (if necessary) a corresponding dataset.
 
 
 --------------------------------------------------------------
+VERSIONS CDM 5.5  |  2017-04-11  |  Last: CDM 5.5-21
+--------------------------------------------------------------
+
+NOTE  * corrected a wrong specification in the Rd manual
+        of 'skillspace.hierarchy' (Example 2; thanks to
+        Peida Zhan) 
+FIXED * corrected calculations of MD and MAD statistics in 
+        'IRT.RMSD'
+FIXED * fixed a bug in computation of 'itemfit.sx2' in case of
+        cells with frequencies of zero (thanks to Carmen Koehler)
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: skillspace.hierarchy (2)
+
+--------------------------------------------------------------
 CDM 5.4 (2017-02-08)   --  CRAN CDM 5.4-0
 --------------------------------------------------------------
 

@@ -24,6 +24,12 @@ summary.IRT.RMSD <- function( object , file = NULL , digits = 3 , ... ){
 				stat = object$RMSD , digits=digits)	
 
 	cat("-----------------------------------------------------------------------------\n")
+	cat("Bias Corrected Root Mean Square Deviation (RMSD) \n\n")
+	
+	res0 <- summary.IRT.RMSD_print_statistics( stat_summary = object$RMSD_bc_summary , 
+				stat = object$RMSD_bc , digits=digits)					
+				
+	cat("-----------------------------------------------------------------------------\n")
 	cat("Mean Absolute Deviation (MAD) \n\n")
 	
 	res0 <- summary.IRT.RMSD_print_statistics( stat_summary = object$MAD_summary , 

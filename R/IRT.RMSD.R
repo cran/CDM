@@ -13,7 +13,7 @@ IRT.RMSD <- function( object )
 	RMSD <- as.data.frame(RMSD)
 	colnames(RMSD) <- c("item" , paste0("Group" , 1:G) )
 	RMSD$item <- dimnames(mod_counts)[[1]]
-	chisquare_stat <- MD <- MAD <- RMSD
+	RMSD_bc <- chisquare_stat <- MD <- MAD <- RMSD
 	RMSD$WRMSD <- NA
 	# sample sizes per group
 	weight_group <- matrix( NA , nrow=I , ncol=G )
@@ -35,26 +35,32 @@ IRT.RMSD <- function( object )
 		n.ik <- aperm( mod_counts , perm= c(3,1,2,4) )[,,,gg,drop=FALSE]
 		#*** chi square calculation
 		chisquare_stat[,gg+1] <- rmsd_chisquare( n.ik=n.ik , pi.k = pi.k , probs = probs )
-		#*** RMSD calculation
-		RMSD[,gg+1] <- rmsea_aux( n.ik=n.ik , pi.k = pi.k , probs = probs )
-		#*** MD calculation
-		MD[,gg+1] <- md_aux( n.ik=n.ik , pi.k = pi.k , probs = probs )
-		#*** MAD calculation
-		MAD[,gg+1] <- mad_aux( n.ik=n.ik , pi.k = pi.k , probs = probs )
-		
+		#*** RMSD calculations		
+		res0 <- IRT_RMSD_calc_rmsd( n.ik=n.ik , pi.k = pi.k , probs = probs )				
+		RMSD[,gg+1] <- res0$RMSD   # RMSD
+		RMSD_bc[,gg+1] <- res0$RMSD_bc   # RMSD_bc
+		MD[,gg+1] <- res0$MD      # MD
+		MAD[,gg+1] <- res0$MAD   # MAD
 	}
 	
 	M1 <- rowSums( RMSD[,2:(G+1) ]^2 * weight_group )
     RMSD$WRMSD <- sqrt( M1 )
+	M1 <- rowSums( RMSD_bc[,2:(G+1) ]^2 * weight_group )
+    RMSD_bc$WRMSD <- sqrt( M1 )
+
 	
 	if ( G==1 ){
 		RMSD$WRMSD <- NULL
+		RMSD_bc$WRMSD <- NULL
 	}
 	
 	#*** summaries of statistics
 	RMSD_summary <- dataframe_summary( dfr = RMSD , exclude_index=1 , 
 						labels = colnames(RMSD)[-1] )
 
+	RMSD_bc_summary <- dataframe_summary( dfr = RMSD_bc , exclude_index=1 , 
+						labels = colnames(RMSD_bc)[-1] )
+											
 	MD_summary <- dataframe_summary( dfr = MD , exclude_index=1 , 
 						labels = colnames(MD)[-1] )
 
@@ -62,10 +68,12 @@ IRT.RMSD <- function( object )
 						labels = colnames(MAD)[-1] )
 							
 	#*** output
-	res <- list( MD = MD , RMSD = RMSD , MAD = MAD , 
+	res <- list( MD = MD , RMSD = RMSD , RMSD_bc = RMSD_bc , MAD = MAD , 
 					chisquare_stat = chisquare_stat , 
 					CALL = CALL , G = G ,
-					RMSD_summary = RMSD_summary , MD_summary = MD_summary,
+					RMSD_summary = RMSD_summary , 
+					RMSD_bc_summary = RMSD_bc_summary ,
+					MD_summary = MD_summary,
 					MAD_summary = MAD_summary)
 	class(res) <- "IRT.RMSD"
 	return(res)

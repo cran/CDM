@@ -117,14 +117,13 @@ itemfit.sx2 <- function( object , Eik_min=1 , progress=TRUE ){
 		cat( paste0( "|" , paste0( rep("*" , 10) , collapse="") , "|\n|") )
 				}
 	# calculate fit for item ii
-	eps <- 10^(-10)
+	eps <- 1E-10
 	for (ii in 1:I){
 		  #ii <- 3
 #		res <- .calc.itemfit.oneitem( data , ii , pjk , pi.k , P1 , I , 
 		res <- .calc.itemfit.oneitem( ii , pjk , pi.k , P1 , I , 
-				Eik_min , sumscore.distribution,  scoredistribution , data , sumscore )
+				Eik_min , sumscore.distribution,  scoredistribution , data , sumscore )		
 		itemtable <- rbind( itemtable , res$table2.ii )
-
 		r1 <- res$table2.ii
 		itemfit.stat[ ii , "S-X2" ] <- sum( r1$Nik * ( r1$oik - r1$eik )^2 / ( r1$eik * ( 1 - r1$eik)  + eps ) )
 		itemfit.stat[ ii , "df" ] <- nrow(r1) - npars[ii]

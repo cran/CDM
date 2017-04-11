@@ -166,31 +166,32 @@ Junker, B. W., & Sijtsma, K. (2001). Cognitive assessment models with few
 \section{\R Function Versions }{
 \emph{abs_approx__0.02.R}, 
 \emph{anova.din__1.11.R}, 
-\emph{calc_posterior__1.03.R}, 
-\emph{cdi.kli__0.07.R}, \cr
+\emph{array3_sum__0.01.R}, 
+\emph{calc_posterior__1.03.R}, \cr
+\emph{cdi.kli__0.07.R}, 
 \emph{cdm.est.calc.accuracy__2.17.R}, 
 \emph{check.input__1.08.R}, 
-\emph{coef__0.05.R}, 
-\emph{confint.din__0.07.R}, \cr
+\emph{coef__0.05.R}, \cr
+\emph{confint.din__0.07.R}, 
 \emph{dataframe_summary__0.04.R}, 
-\emph{deltaMethod__0.03.R}, 
-\emph{din.deterministic__1.02.R}, \cr
+\emph{deltaMethod__0.03.R}, \cr
+\emph{din.deterministic__1.02.R}, 
 \emph{din.deterministic_alg__0.09.R}, 
-\emph{din.partable__0.15.R}, 
-\emph{din.validate.qmatrix__1.05.R}, \cr
+\emph{din.partable__0.15.R}, \cr
+\emph{din.validate.qmatrix__1.05.R}, 
 \emph{din__2.30.R}, 
-\emph{entropy.lca__0.10.R}, 
-\emph{equivalent.dina__1.03.R}, \cr
+\emph{entropy.lca__0.10.R}, \cr
+\emph{equivalent.dina__1.03.R}, 
 \emph{equivalent.skillclasses__0.07.R}, 
-\emph{gdd__0.08.R}, 
+\emph{gdd__0.08.R}, \cr
 \emph{gdina.dif__1.12.R}, 
-\emph{gdina.dif_aux__1.32.R}, \cr
-\emph{gdina.partable__0.07.R}, 
+\emph{gdina.dif_aux__1.32.R}, 
+\emph{gdina.partable__0.07.R}, \cr
 \emph{gdina.postproc__0.07.R}, 
-\emph{gdina.wald__0.22.R}, \cr
+\emph{gdina.wald__0.22.R}, 
 \emph{gdina.wald_aux__0.12.R}, 
-\emph{gdina__9.023.R}, 
-\emph{gdina_designmatrices__0.12.R}, \cr
+\emph{gdina__9.023.R}, \cr
+\emph{gdina_designmatrices__0.12.R}, 
 \emph{gdina_hogdina_alg__1.10.R}, 
 \emph{gdina_mstep_item_ml__0.17.R}, \cr
 \emph{gdina_mstep_item_ml_rrum__0.24.R}, 
@@ -223,53 +224,54 @@ Junker, B. W., & Sijtsma, K. (2001). Cognitive assessment models with few
 \emph{IRT.posterior__0.02.R}, \cr
 \emph{IRT.predict__1.16.R}, 
 \emph{IRT.repDesign__0.08.R}, 
-\emph{IRT.RMSD__0.14.R}, 
+\emph{IRT.RMSD__0.16.R}, 
 \emph{IRT.se.din__0.05.R}, \cr
 \emph{IRT.se__0.02.R}, 
+\emph{IRT_RMSD_calc_distributions__0.02.R}, 
+\emph{IRT_RMSD_calc_rmsd__3.15.R}, \cr
+\emph{IRT_RMSD_proc_dist_item__0.02.R}, 
 \emph{item_by_group__0.12.R}, 
-\emph{itemfit.rmsea__0.22.R}, 
-\emph{itemfit.sx2__3.07.R}, \cr
-\emph{itemfit.sx2_aux__3.07.R}, 
-\emph{jkestimates__0.05.R}, 
-\emph{label_significance_level__0.02.R}, \cr
+\emph{itemfit.rmsea__0.22.R}, \cr
+\emph{itemfit.sx2__3.11.R}, 
+\emph{itemfit.sx2_aux__3.08.R}, 
+\emph{jkestimates__0.05.R}, \cr
+\emph{label_significance_level__0.02.R}, 
 \emph{logLik_CDM__0.08.R}, 
-\emph{logpars2rrumpars__0.02.R}, 
-\emph{mad_aux__0.02.R}, 
-\emph{mcdina.est.item__0.08.R}, \cr
+\emph{logpars2rrumpars__0.02.R}, \cr
+\emph{mcdina.est.item__0.08.R}, 
 \emph{mcdina.postproc__0.10.R}, 
 \emph{mcdina.simul__0.11.R}, 
 \emph{mcdina__0.63.R}, \cr
 \emph{mcdina_alg_cppcall__0.03.R}, 
 \emph{mcdina_prepare__0.20.R}, 
-\emph{md_aux__2.02.R}, \cr
-\emph{modelfit.cor.din__2.11.R}, 
+\emph{modelfit.cor.din__2.11.R}, \cr
 \emph{modelfit.cor__1.18.R}, 
-\emph{modelfit.cor2__3.23.R}, \cr
+\emph{modelfit.cor2__3.23.R}, 
 \emph{numerical_Hessian__0.15.R}, 
-\emph{osink__1.04.R}, 
-\emph{personfit.appropriateness__1.06.R}, \cr
+\emph{osink__1.04.R}, \cr
+\emph{personfit.appropriateness__1.06.R}, 
 \emph{plot.din__2.15.R}, 
-\emph{plot.gdina__0.03.R}, 
+\emph{plot.gdina__0.03.R}, \cr
 \emph{plot.gdm__0.07.R}, 
-\emph{plot.slca__0.03.R}, \cr
+\emph{plot.slca__0.03.R}, 
 \emph{predict.CDM__0.03.R}, 
-\emph{print.din__2.04.R}, 
+\emph{print.din__2.04.R}, \cr
 \emph{print.gdina__0.04.R}, 
-\emph{print.gdm__0.03.R}, \cr
+\emph{print.gdm__0.03.R}, 
 \emph{print.mcdina__0.04.R}, 
-\emph{print.slca__0.04.R}, 
-\emph{print.summary.din__1.22.R}, \cr
+\emph{print.slca__0.04.R}, \cr
+\emph{print.summary.din__1.22.R}, 
 \emph{RcppExports__0.01.R}, 
+\emph{replace_NA__0.01.R}, \cr
 \emph{rmsd_chisquare__0.06.R}, 
-\emph{rmsea_aux__2.04.R}, 
-\emph{rowMaxs__1.07.R}, \cr
+\emph{rowMaxs__1.07.R}, 
 \emph{rowProds__1.02.R}, 
-\emph{rrum.param__0.02.R}, 
-\emph{rrumpars2logpars__0.02.R}, \cr
+\emph{rrum.param__0.02.R}, \cr
+\emph{rrumpars2logpars__0.02.R}, 
 \emph{sequential.items__1.03.R}, 
 \emph{sim.din__1.05.R}, 
-\emph{sim.gdina__2.06.R}, 
-\emph{skill.cor__1.14.R}, \cr
+\emph{sim.gdina__2.06.R}, \cr
+\emph{skill.cor__1.14.R}, 
 \emph{skillspace.approximation__0.03.R}, 
 \emph{skillspace.hierarchy__0.10.R}, \cr
 \emph{slca.algorithm__1.17.R}, 
@@ -281,7 +283,7 @@ Junker, B. W., & Sijtsma, K. (2001). Cognitive assessment models with few
 \emph{summary.gdina.wald__0.02.R}, 
 \emph{summary.gdina__1.27.R}, 
 \emph{summary.gdm__1.18.R}, \cr
-\emph{summary.IRT.RMSD__0.08.R}, 
+\emph{summary.IRT.RMSD__0.09.R}, 
 \emph{summary.IRT.RMSD_print_statistics__0.03.R}, \cr
 \emph{summary.mcdina__0.12.R}, 
 \emph{summary.slca__1.17.R}, 
@@ -289,7 +291,7 @@ Junker, B. W., & Sijtsma, K. (2001). Cognitive assessment models with few
 \emph{vcov.din__1.55.R}, \cr
 \emph{vcov.loglike.din__0.02.R}, 
 \emph{WaldTest__0.08.R}, 
-\emph{zzz__1.12.R}, 
+\emph{zzz__1.13.R}, 
 }
 \section{\emph{Rcpp} Function Versions }{
 \emph{calc_posterior__1.01.c}, 
@@ -357,7 +359,7 @@ Junker, B. W., & Sijtsma, K. (2001). Cognitive assessment models with few
 \emph{IRT.modelfit__0.13.Rd}, \cr
 \emph{IRT.parameterTable__0.03.Rd}, 
 \emph{IRT.repDesign__0.13.Rd}, 
-\emph{IRT.RMSD__0.10.Rd}, \cr
+\emph{IRT.RMSD__0.11.Rd}, \cr
 \emph{item_by_group__0.12.Rd}, 
 \emph{itemfit.rmsea__1.10.Rd}, 
 \emph{itemfit.sx2__1.26.Rd}, 
@@ -375,7 +377,7 @@ Junker, B. W., & Sijtsma, K. (2001). Cognitive assessment models with few
 \emph{sim.gdina__1.17.Rd}, 
 \emph{skill.cor__2.06.Rd}, 
 \emph{skillspace.approximation__0.07.Rd}, \cr
-\emph{skillspace.hierarchy__0.15.Rd}, 
+\emph{skillspace.hierarchy__0.16.Rd}, 
 \emph{slca__1.54.Rd}, 
 \emph{summary.din__2.05.Rd}, \cr
 \emph{summary_sink__0.04.Rd}, 

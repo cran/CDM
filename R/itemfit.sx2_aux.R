@@ -5,6 +5,7 @@
 .calc.itemfit.oneitem <- function( ii , pjk , pi.k , P1 , I , Eik_min ,
          sumscore.distribution , scoredistribution , data , sumscore ){
 #    scored.ii <- .calc.scoredistribution.cdm( pjk[,-ii,] )
+    eps <- 1E-10
 	pjk.ii <- pjk[,-ii,]	
     P1ii <- pjk.ii[,,2]
     Q1ii <- pjk.ii[,,1]
@@ -45,8 +46,8 @@
         dfr2.iivv$score.max <- max( dfr2vv$score )
         dfr2.iivv$score <- mean( dfr2vv$score )
         dfr2.iivv$Nik <- sum( dfr2vv$Nik )
-        dfr2.iivv$oik <- sum( dfr2vv$Nik*dfr2vv$oik ) / sum( dfr2vv$Nik)
-        dfr2.iivv$eik <- sum( dfr2vv$eik_t1 ) / sum( dfr2vv$eik_t2 )
+        dfr2.iivv$oik <- sum( dfr2vv$Nik*dfr2vv$oik ) / sum( dfr2vv$Nik + eps)
+        dfr2.iivv$eik <- sum( dfr2vv$eik_t1 ) / sum( dfr2vv$eik_t2 + eps )
         dfr2.iivv$Eik <- sum( dfr2vv$Eik )
         dfr2.ii <- rbind( dfr2.ii , dfr2.iivv )
         mm1 <- mm2 + 1 
@@ -71,8 +72,8 @@
         dfr2.iivv$score.max <- max( dfr2vv$score )
         dfr2.iivv$score <- mean( dfr2vv$score )
         dfr2.iivv$Nik <- sum( dfr2vv$Nik )
-        dfr2.iivv$oik <- sum( dfr2vv$Nik*dfr2vv$oik ) / sum( dfr2vv$Nik)
-        dfr2.iivv$eik <- sum( dfr2vv$eik_t1 ) / sum( dfr2vv$eik_t2 )
+        dfr2.iivv$oik <- sum( dfr2vv$Nik*dfr2vv$oik ) / sum( dfr2vv$Nik + eps)
+        dfr2.iivv$eik <- sum( dfr2vv$eik_t1 ) / sum( dfr2vv$eik_t2 + eps )
         dfr2.iivv$Eik <- sum( dfr2vv$Eik )
         dfr2.ii <- rbind( dfr2.ii , dfr2.iivv )
         mm1 <- mm2 - 1 
@@ -104,9 +105,9 @@
         for (kk in seq( 0 , ii - 2 , 1 ) ){
             scoredistribution[,ii-kk] <- Q1[,ii] * scoredistribution0[,ii-kk] + 
 					P1[,ii] * scoredistribution0[,ii-kk-1]
-                        }
+        }
         scoredistribution[,1] <- Q1[,ii] * scoredistribution0[,1]
-                }			
+    }			
     return(scoredistribution)
-            }
+}
 ##############################################################################

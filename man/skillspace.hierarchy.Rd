@@ -177,8 +177,7 @@ sp2$skillspace.reduced
 #*** Model 3: Divergent hierarchy (C)
 B <- "A1 > A2 > A3
       A1 > A4 > A5
-      A3 > A5 > A6
-      A5 > A6"
+      A1 > A4 > A6"            
 sp3 <- CDM::skillspace.hierarchy( B=B , skill.names=skill.names )
 sp3$skillspace.reduced
 
