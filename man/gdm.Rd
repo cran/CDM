@@ -22,7 +22,7 @@ gdm( data, theta.k, irtmodel="2PL", group=NULL, weights=rep(1, nrow(data)),
     mean.constraint=NULL , Sigma.constraint=NULL , delta.designmatrix=NULL, 
     standardized.latent=FALSE , centered.latent=FALSE , 
     centerintercepts=FALSE , centerslopes=FALSE ,
-    maxiter=1000,  conv=10^(-5), globconv=10^(-5), msteps=4 , convM=.0005 ,
+    maxiter=1000,  conv=1e-5, globconv=1e-5, msteps=4 , convM=.0005 ,
     decrease.increments = FALSE , use.freqpatt=FALSE , progress=TRUE , ...) 
 
 \method{summary}{gdm}(object, file = NULL , \dots)

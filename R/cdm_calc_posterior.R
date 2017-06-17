@@ -1,9 +1,7 @@
 
 ###########################################################
-# compute posterior distribution V2 BY ARb
-#...TK 06.08.2012 -- speed up by using c Code
-#..........................................................
-calc_posterior.v2 <- function(rprobs , gwt , resp , nitems , 
+# compute posterior distribution
+cdm_calc_posterior <- function(rprobs , gwt , resp , nitems , 
 	resp.ind.list , normalization = TRUE , 
 	thetasamp.density = NULL , snodes = 0 ){
 
@@ -43,3 +41,5 @@ calc_posterior.v2 <- function(rprobs , gwt , resp , nitems ,
 	return(res)
 }
 #..........................................................
+
+calc_posterior.v2 <- cdm_calc_posterior

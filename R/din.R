@@ -311,7 +311,7 @@ function( data, q.matrix, skillclasses = NULL , conv.crit = 0.001, dev.crit = 10
 
 # cat("probs") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1		
 	
-    res.hwt <- calc_posterior.v2(rprobs= pjM , gwt=h1 , resp=item.patt.split , 
+    res.hwt <- cdm_calc_posterior(rprobs= pjM , gwt=h1 , resp=item.patt.split , 
 								 nitems= J , 
                                  resp.ind.list=resp.ind.list , normalization=FALSE , 
                                  thetasamp.density= NULL , snodes=0 )	

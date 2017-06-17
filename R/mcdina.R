@@ -196,11 +196,10 @@ mcdina <- function( dat , q.matrix , group =NULL ,
 		if (reduced.skillspace){
 			for (gg in 1:G){
 				ntheta <- pi.k[,gg]
-				res <- gdina.reduced.skillspace( ntheta , Z , 
-						  reduced.skillspace.method= 2 )		
+				res <- gdina_reduced_skillspace( ntheta , Z ,  reduced.skillspace.method= 2 )		
 				pi.k[,gg] <- res$pred.ntheta
-						}
-					}
+			}
+		}
 # cat("calc smoothing distribution") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1						
 					
 		#--- (5) calculate updated item parameters
@@ -276,20 +275,20 @@ mcdina <- function( dat , q.matrix , group =NULL ,
 		# kk <- 4
 		sckk <- matrix( skillclasses[,kk] , nrow=N11 , ncol=K12 , byrow=TRUE )
 		eap.class[,kk] <- rowSums( sckk * f.qk.yi )
-						}
-	# output	
-	res <- list( "item" = item , "posterior"=f.qk.yi , "like"=f.yi.qk , "ic"=ic , 
-				"q.matrix" = q.matrix , "pik"=probs , 
-				"delta"=delta , "se.delta"=se.delta ,  "itemstat" = itemstat , 
-				"n.ik"=n.ik , "deviance" = dev, 
-				"attribute.patt" = pi.k , "attribute.patt.splitted" = skillclasses , 
-				"skill.patt" = skill.patt , 
-				"MLE.class" = mle.class , "MAP.class" = map.class , "EAP.class" = eap.class , 
-				"dat" = dat0 , "skillclasses"= skillclasses , "group"=group0 ,
-				"lc" = lc , "lr" =lr , "iter"=iter , "itempars" = itempars , 
-				"weights"=weights , "I" = nrow(dat) , "G"= G , "CC" = CC ,
-				"loglike" = - dev / 2 , "AIC" = ic$AIC , "BIC" = ic$BIC , 
-				"Npars" = ic$np )
+	}
+	#---- OUTPUT
+	res <- list( item = item , posterior=f.qk.yi , like=f.yi.qk , ic=ic , 
+				q.matrix = q.matrix , pik=probs , 
+				delta=delta , se.delta=se.delta ,  itemstat = itemstat , 
+				n.ik=n.ik , deviance = dev, 
+				attribute.patt = pi.k , attribute.patt.splitted = skillclasses , 
+				skill.patt = skill.patt , 
+				MLE.class = mle.class , MAP.class = map.class , EAP.class = eap.class , 
+				dat = dat0 , skillclasses= skillclasses , group=group0 ,
+				lc = lc , lr =lr , iter=iter , itempars = itempars , 
+				weights=weights , I = nrow(dat) , G= G , CC = CC ,
+				loglike = - dev / 2 , AIC = ic$AIC , BIC = ic$BIC , 
+				Npars = ic$np )
 	res$converged <- iter < maxit			
 				
 	res$control$weights <- weights
@@ -306,5 +305,5 @@ mcdina <- function( dat , q.matrix , group =NULL ,
 	class(res) <- "mcdina"	
 	res$call <- cl
 	return(res)
-		}
+}
 ###########################################################

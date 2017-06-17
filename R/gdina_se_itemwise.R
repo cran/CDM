@@ -10,7 +10,6 @@ gdina_se_itemwise <- function( R.lj_jj , I.lj_jj , apjj ,
 	pjjj <- Rlj.ast[,2] / Ilj.ast[,2]
 	varmat.palj_jj  <- NULL
 	infomat.jj <- NULL
-
 	
 	#********* standard error calculation observed log-likelihood per item
 	if (se_version==1){		
@@ -47,7 +46,6 @@ gdina_se_itemwise <- function( R.lj_jj , I.lj_jj , apjj ,
 				p.ajast.xi[,kk] <- rowSums( pg1 ) 
 			}
 		}
-
 		pjjjM <- outer( rep(1,IP) , pjjj ) + 10^(-20)		
 		nM <- ncol(pjjjM) 
 		x1 <- outer( item.patt.split_jj , rep(1,nM) )	
@@ -70,7 +68,6 @@ gdina_se_itemwise <- function( R.lj_jj , I.lj_jj , apjj ,
 				infomat.jj <- infomat.jj[-ind, -ind]	
 			}			 			 
 		}				
-			
 		a1 <- try( solve( infomat.jj + diag( eps2 , ncol(infomat.jj) ) ) )
 		if ( is(a1 , "try-error") ){ 
 			cat( "Item" , colnames(data)[jj] , "Singular item parameter covariance matrix\n")
@@ -106,13 +103,10 @@ gdina_se_itemwise <- function( R.lj_jj , I.lj_jj , apjj ,
 			pjjj.link <- diag( pjjj.link )
 			Wjjj <- Wjjj %*% pjjj.link
 		}
-						
 		varmat.delta_jj <- Wjjj %*% Ijj %*% t(Wjjj)		
-	}
-	
+	}	
 	#--- output
 	res <- list( infomat.jj = infomat.jj , varmat.palj_jj = varmat.palj_jj ,
 			varmat.delta_jj = varmat.delta_jj)
 	return(res)
-	
 }

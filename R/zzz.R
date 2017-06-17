@@ -2,14 +2,6 @@
 #
 # This function is simply copied from mice package.
 
-#------------------------------.onLoad-------------------------------
-#.onLoad <- function(...){
-#  d <- packageDescription("CDM")
-#  cat("\n#############################\n")
-#  packageStartupMessage(paste(d$Package," " , d$Version," (",d$Date,")",sep=""))
-#  cat("#############################\n")
-#  return()
-#}
 version <- function(pkg="CDM"){
   lib <- dirname(system.file(package = pkg))
   d <- utils::packageDescription(pkg)
@@ -24,6 +16,6 @@ version <- function(pkg="CDM"){
   packageStartupMessage("**********************************\n",  
 		paste("** ", d$Package," " , d$Version," (",d$Date,")" ,
      		m1 , "\n",sep="") ,
-		paste("** Cognitive Diagnostic Models  **",sep="") ,		
+		paste("** Cognitive Diagnostic Models",sep="") ,		
 		"\n**********************************\n" )
 }

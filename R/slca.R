@@ -213,7 +213,7 @@ slca <- function( data , group=NULL,
 		#*****
 		#2 calculate individual likelihood
 		h1 <- matrix( 1 , nrow=n , ncol=TP )
-		res.hwt <- calc_posterior.v2(rprobs= probs , gwt=h1 , 
+		res.hwt <- cdm_calc_posterior(rprobs= probs , gwt=h1 , 
 					 resp=dat , nitems= I , 
 					 resp.ind.list=resp.ind.list , normalization=FALSE , 
 					 thetasamp.density= NULL , snodes=0 )	
