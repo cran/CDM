@@ -11,7 +11,7 @@ IRT.data.din <- function( object , ... ){
 	attr(dat,"weights") <- object$control$weights
 	attr(dat,"group") <- object$control$group
     return(dat)
-			}
+}
 ############################################################			
 IRT.data.gdina <- IRT.data.din
 IRT.data.gdm <- IRT.data.din

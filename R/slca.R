@@ -204,11 +204,7 @@ slca <- function( data , group=NULL,
  		
 		#****
 		#1 calculate probabilities
-#		probs <- .slca.calc.prob( Xdes , Xlambda , I,K,TP)
 		probs <- .slca.calc.prob( XdesM , dimXdes , Xlambda )
-
-#  cat("calc.prob") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1		
-
 
 		#*****
 		#2 calculate individual likelihood
@@ -218,12 +214,10 @@ slca <- function( data , group=NULL,
 					 resp.ind.list=resp.ind.list , normalization=FALSE , 
 					 thetasamp.density= NULL , snodes=0 )	
 		p.xi.aj <- res.hwt$hwt 	
-
-# cat("calc.like") ; z1 <- Sys.time(); print(z1-z0) ; z0 <- z1	
 		
 		#*****
 		#3 calculate posterior and marginal distributions
-		res <- .gdm.calc.post(pi.k,group,p.xi.aj,weights,G,ind.group,
+		res <- gdm_calc_post(pi.k,group,p.xi.aj,weights,G,ind.group,
 				use.freqpatt )
 		p.aj.xi <- res$p.aj.xi
 		pi.k <- res$pi.k
@@ -428,33 +422,26 @@ slca <- function( data , group=NULL,
 #   item$itemfit.rmsea <- itemfit.rmsea$rmsea
 
 	# person parameters
-#	res <- .gdm.person.parameters( data , D , theta.k , p.xi.aj , p.aj.xi , weights )	
-#	.attach.environment( res , envir=e1 )
+	# ...
 	
 	# person parameters
 	mle.class <- max.col( p.xi.aj ) 
 	map.class <- max.col( p.aj.xi ) 
-	
-	
-	
+			
 	#*************************
 	# collect output	
 	s2 <- Sys.time()
-	res <- list( "item" = item , # "person" = person , 
-				"deviance"=dev , "ic" = ic , 
-				"Xlambda" = Xlambda , "se.Xlambda" = se.Xlambda , 
-				"pi.k"=pi.k , 	
-				"pjk" = probs , "n.ik" = n.ik ,  
-				"G"=G , "I" = ncol(data) , "N" = nrow(data) , 
-				"TP"=TP , 
-				"delta" = delta , "covdelta"=covdelta , 
-				"delta.designmatrix" = delta.designmatrix , 
-				"MLE.class"=mle.class , "MAP.class" = map.class , 
-				"data" = data ,
-				"group.stat"=group.stat )
+	res <- list( item = item , deviance=dev , ic = ic , 
+				Xlambda = Xlambda , se.Xlambda = se.Xlambda , 
+				pi.k=pi.k , pjk = probs , n.ik = n.ik ,  
+				G=G , I = ncol(data) , N = nrow(data) , 
+				TP=TP , delta = delta , covdelta=covdelta , 
+				delta.designmatrix = delta.designmatrix , 
+				MLE.class=mle.class , MAP.class = map.class , data = data ,
+				group.stat=group.stat )
 	res$p.xi.aj <- p.xi.aj ; res$posterior <- p.aj.xi 
 	res$K.item <- K.item
-	res$time <- list( "s1"=s1,"s2"=s2 , "timediff"=s2-s1)
+	res$time <- list( s1=s1,s2=s2 , timediff=s2-s1)
 	res$iter <- iter
 	res$iter.min <- iter.min
 	res$converged <- iter < maxiter

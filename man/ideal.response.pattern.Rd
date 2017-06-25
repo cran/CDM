@@ -62,12 +62,12 @@ A list with following entries
 data(sim.qmatrix)
 
 q.matrix <- sim.qmatrix
-ideal.response.pattern( q.matrix )
+CDM::ideal.response.pattern( q.matrix )
 
 # compute ideal responses for a reduced skill space
 skillspace <- matrix( c( 0,1,0 ,
                          1,1,0 ) , 2 ,3 , byrow=TRUE )
-ideal.response.pattern( q.matrix , skillspace=skillspace)
+CDM::ideal.response.pattern( q.matrix , skillspace=skillspace)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

@@ -27,9 +27,7 @@ Rcpp::List din_deterministic_devcrit_C( Rcpp::NumericMatrix DAT, Rcpp::NumericMa
      Rcpp::NumericVector rn (1) ;  
      Rcpp::NumericVector indexcrit (N) ;  
      mincrit.fill(10000);  
-       
-     RNGScope scope;		// ensure RNG gets set/reset  
-       
+               
      for (int aa=0;aa<AP;aa++){ // begin attributes  
      for (int nn=0;nn<N;nn++){ // begin cases   
      for (int ii=0;ii<I;ii++){ // begin item loop  
@@ -89,9 +87,7 @@ Rcpp::List din_jml_devcrit_C( Rcpp::NumericMatrix DAT, Rcpp::NumericMatrix DATRE
      NumericVector rn (1) ;  
      mincrit.fill(-1);  
      devcrit.fill(1);  
-       
-     RNGScope scope;		// ensure RNG gets set/reset  
-       
+              
      for (int aa=0;aa<AP;aa++){ // begin attributes  
      for (int nn=0;nn<N;nn++){ // begin cases   
      for (int ii=0;ii<I;ii++){ // begin item loop  

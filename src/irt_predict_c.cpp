@@ -58,8 +58,8 @@ Rcpp::List IRT_predict( Rcpp::NumericMatrix resp, Rcpp::NumericVector irf1,
        	sresid1(nn,tt,ii) = NA_REAL ;  	  
        			     }  
        			}  
-     	       } // end nn  
-     	     } // end ii  
+         } // end nn  
+    } // end ii  
           		  
      //*************************************************      
      // OUTPUT                             
@@ -70,7 +70,6 @@ Rcpp::List IRT_predict( Rcpp::NumericMatrix resp, Rcpp::NumericVector irf1,
          Rcpp::_["resid1"] = resid1 , 
          Rcpp::_["sresid1"] = sresid1  
          ) ;    
-
 }
 ///********************************************************************
 

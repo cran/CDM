@@ -21,6 +21,19 @@ R script and (if necessary) a corresponding dataset.
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
+
+
+--------------------------------------------------------------
+VERSIONS CDM 5.7  |  2017-06-24  |  Last: CDM 5.7-16
+--------------------------------------------------------------
+
+ADDED * included S3 method 'IRT.frequencies' for calculation 
+        of observed and expected frequencies of univariate and 
+        bivariate distributions (suggested by Rudolf Debelak)
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: IRT.frequencies (1)
+
 --------------------------------------------------------------
 VERSIONS CDM 5.6  |  2017-06-17  |  Last: CDM 5.6-16
 --------------------------------------------------------------
@@ -29,7 +42,6 @@ NOTE  * internal restructure of 'gdina' and 'gdm' functions
 
 DATA  * included/modified datasets: ---
 EXAMP * included/modified examples: ---
-
 
 --------------------------------------------------------------
 VERSIONS CDM 5.5  |  2017-04-11  |  Last: CDM 5.5-21
@@ -51,7 +63,7 @@ CDM 5.4 (2017-02-08)   --  CRAN CDM 5.4-0
 --------------------------------------------------------------
 
 FIXED  * fixed warnings in calculation of standard errors in
-         CDM::gdina and CDM::gdina.wald 
+         'gdina' and 'gdina.wald'
          (thanks to Andres Alberto Burga Leon)
 
 DATA  * included/modified datasets: ---
