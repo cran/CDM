@@ -1,8 +1,8 @@
 Package: CDM
 Type: Package
 Title: Cognitive Diagnosis Modeling
-Version: 5.7-16
-Date: 2017-06-24 15:28:37
+Version: 5.8-9
+Date: 2017-08-07 17:48:04
 Author: 
     Alexander Robitzsch [aut, cre], Thomas Kiefer [aut],
     Ann Cathrice George [aut], Ali Uenlue [aut]
@@ -18,15 +18,15 @@ Description:
     item response model and the structured latent class
     model (SLCA).
 Depends: R (>= 3.1), mvtnorm
-Imports: graphics, grDevices, lattice, MASS, methods, plyr, polycor,
-        psych, Rcpp, sfsmisc, stats, utils
-Suggests: BIFIEsurvey, GDINA, miceadds, mirt, sirt, TAM
+Imports: graphics, grDevices, methods, polycor, Rcpp, sfsmisc, stats,
+        utils
+Suggests: BIFIEsurvey, GDINA, lattice, miceadds, mirt, psych, sirt, TAM
 LinkingTo: Rcpp, RcppArmadillo
 LazyLoad: yes
 LazyData: yes
 URL: https://github.com/alexanderrobitzsch/CDM
 License: GPL (>= 2)
 NeedsCompilation: yes
-Packaged: 2017-06-24 13:29:05 UTC; sunpn563
+Packaged: 2017-08-07 15:48:39 UTC; sunpn563
 Repository: CRAN
-Date/Publication: 2017-06-25 07:20:55 UTC
+Date/Publication: 2017-08-07 18:42:34 UTC
