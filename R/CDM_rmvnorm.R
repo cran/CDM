@@ -1,6 +1,9 @@
+## File Name: CDM_rmvnorm.R
+## File Version: 0.02
+## File Last Change: 2017-09-20 09:40:48
 
 
-CDM_rmvnorm <- function(n, mean, sigma, ...)
+CDM_rmvnorm <- function(n, mean=NULL, sigma, ...)
 {
 	add_means <- FALSE
 	if ( missing(n) ){
@@ -9,6 +12,9 @@ CDM_rmvnorm <- function(n, mean, sigma, ...)
 		mean0 <- mean
 		mean <- rep(0,ncol(mean))
 	}
+	if (is.null(mean)){
+		mean <- rep(0,ncol(sigma) )
+	}		
 	x <- mvtnorm::rmvnorm(n=n, mean=mean, sigma=sigma, ...)
 	if (n==1){
 		x <- as.vector(x)

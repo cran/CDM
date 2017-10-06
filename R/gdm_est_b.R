@@ -1,10 +1,11 @@
-
-
+## File Name: gdm_est_b.R
+## File Version: 0.06
+## File Last Change: 2017-10-06 10:32:47
 
 ###########################################################################
 # estimation of b parameters
-gdm_est_b <- function(probs, n.ik, N.ik, I, K, G,b,b.constraint,
-	max.increment,a,thetaDes,Qmatrix,TP,TD,msteps,convM ,
+gdm_est_b <- function(probs, n.ik, N.ik, I, K, G, b, b.constraint,
+	max.increment, a, thetaDes, Qmatrix, TP, TD, msteps, convM,
 	centerintercepts, decrease.increments=TRUE )
 {		
  	max.increment <- 1

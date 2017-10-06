@@ -1,5 +1,6 @@
-
-
+## File Name: gdm_calc_counts.R
+## File Version: 0.02
+## File Last Change: 2017-10-06 10:30:40
 
 ################################################	
 # calculation of expected counts

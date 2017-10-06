@@ -23,6 +23,23 @@ R script and (if necessary) a corresponding dataset.
 
 
 --------------------------------------------------------------
+VERSIONS CDM 5.9  |  2017-10-06  |  Last: CDM 5.9-27
+--------------------------------------------------------------
+
+FIXED * fixed a bug in 'gdina' function in argument 'invariance'
+        if a vector of item names is used
+        (thanks to Hamdollah Ravand) 
+FIXED * fixed the broken function 'gdina.dif'
+        (thanks again to Hamdollah Ravand)
+ADDED * added EM acceleration method P-EM in function 'slca' by 
+        argument 'PEM'
+NOTE  * included P-EM utility functions 'cdm_pen_XXX' and
+        'cdm_print_summary_data_frame'
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: gdina (5.5)
+
+--------------------------------------------------------------
 VERSIONS CDM 5.8  |  2017-08-07  |  Last: CDM 5.8-9
 --------------------------------------------------------------
 
@@ -34,7 +51,7 @@ NOTE  * moved lattice and psych packages from 'Imports' to
 NOTE  * imported utility functions 'CDM_require_namespace'
         and 'CDM_rmvnorm'.
 FIXED * fixed a bug in 'gdina' for Q-matrices with only one
-        skills (thanks to Matthew Madison)
+        skill (thanks to Matthew Madison)
 
 DATA  * included/modified datasets: ---
 EXAMP * included/modified examples: equivalent.dina (3)

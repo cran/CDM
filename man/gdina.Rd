@@ -1,3 +1,7 @@
+%% File Name: gdina.Rd
+%% File Version: 2.994
+%% File Last Change: 2017-09-18 15:53:46
+
 \name{gdina}
 \alias{gdina}
 \alias{summary.gdina}
@@ -659,6 +663,12 @@ mod4 <- CDM::gdina( data = dat , q.matrix = q.matrix ,  group= group,
 
 #--- model comparison
 IRT.compareModels(mod1,mod2,mod3,mod4)                      
+
+
+# estimate GDINA model with non-invariant item parameters except for the
+# items I001, I006, I008
+mod5 <- CDM::gdina( data = dat , q.matrix = q.matrix ,  group= group, 
+            invariance= setdiff( colnames(dat) , c("I001", "I006","I008") ) )
 
 #############################################################################
 # EXAMPLE 6: User specified reduced skill space
