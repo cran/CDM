@@ -1,6 +1,5 @@
 ## File Name: expand_matrix.R
-## File Version: 0.01
-## File Last Change: 2017-06-20 15:57:03
+## File Version: 0.02
 
 expand_matrix <- function(x)
 {
@@ -15,7 +14,7 @@ expand_matrix <- function(x)
 		}
 		if (NR > NC){
 			y[ , 1:NC ] <- x
-		}		
+		}
 	}
 	return(y)
 }

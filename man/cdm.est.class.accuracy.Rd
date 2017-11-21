@@ -1,6 +1,5 @@
 %% File Name: cdm.est.class.accuracy.Rd
-%% File Version: 1.13
-%% File Last Change: 2017-01-31 14:08:30
+%% File Version: 1.15
 
 \name{cdm.est.class.accuracy}
 \alias{cdm.est.class.accuracy}
@@ -77,6 +76,9 @@ diagnostic assessment.
 #############################################################################
 # EXAMPLE 1: DINO data example
 #############################################################################
+
+data(sim.dino, package="CDM")
+data(sim.qmatrix, package="CDM")
 
 #***
 # Model 1: estimate DINO model with din

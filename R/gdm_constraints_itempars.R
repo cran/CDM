@@ -1,6 +1,5 @@
 ## File Name: gdm_constraints_itempars.R
-## File Version: 0.01
-## File Last Change: 2017-06-14 18:41:36
+## File Version: 0.02
 
 ###############################################
 # constraints for item parameters
@@ -19,7 +18,7 @@ gdm_constraints_itempars <- function( b.constraint , a.constraint ,
 	}
 	if ( ! is.null( a.constraint) ){
 		a.constraint <- as.matrix( a.constraint )
-	}				
-    res <- list( a.constraint = a.constraint , b.constraint=b.constraint , a=a)			
+	}
+	res <- list( a.constraint = a.constraint , b.constraint=b.constraint , a=a)			
 	return(res)
 }

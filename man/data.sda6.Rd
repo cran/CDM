@@ -1,6 +1,5 @@
 %% File Name: data.sda6.Rd
-%% File Version: 0.07
-%% File Last Change: 2017-01-31 14:08:30
+%% File Version: 0.09
 
 \name{data.sda6}
 \alias{data.sda6}
@@ -67,7 +66,8 @@ classification modeling in student learning outcomes assessment.
 
 \examples{
 \dontrun{	
-data(data.sda6)
+data(data.sda6, package="CDM")
+
 data <- data.sda6$data
 q.matrix <- data.sda6$q.matrix
 

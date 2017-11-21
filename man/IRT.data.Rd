@@ -1,6 +1,5 @@
 %% File Name: IRT.data.Rd
-%% File Version: 0.05
-%% File Last Change: 2017-01-31 14:08:31
+%% File Version: 0.12
 
 \name{IRT.data}
 \alias{IRT.data}
@@ -9,6 +8,7 @@
 \alias{IRT.data.mcdina}
 \alias{IRT.data.gdm}
 \alias{IRT.data.slca}
+\alias{IRT.data.reglca}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
@@ -26,9 +26,11 @@ IRT.data(object, ...)
 
 \method{IRT.data}{gdina}(object, \dots)
 
+\method{IRT.data}{gdm}(object, \dots)
+
 \method{IRT.data}{mcdina}(object, \dots)
 
-\method{IRT.data}{gdm}(object, \dots)
+\method{IRT.data}{reglca}(object, \dots)
 
 \method{IRT.data}{slca}(object, \dots)
 }
@@ -38,7 +40,8 @@ IRT.data(object, ...)
 \arguments{
   \item{object}{
 Object of classes \code{\link{din}}, \code{\link{gdina}},
-\code{\link{mcdina}}, \code{\link{gdm}} or \code{\link{slca}}.
+\code{\link{mcdina}}, \code{\link{gdm}}, \code{\link{slca}},
+\code{\link{reglca}}.
 }
   \item{\dots}{
 More arguments to be passed.
@@ -78,22 +81,25 @@ weights vector as attributes.
 # EXAMPLE 1: Several models for sim.dina data
 #############################################################################
 
-data(sim.dina)
-data(sim.qmatrix)
+data(sim.dina, package="CDM")
+data(sim.qmatrix, package="CDM")
+
+dat <- sim.dina
+q.matrix <- sim.qmatrix
 
 #--- Model 1: GDINA model
-mod1 <- CDM::gdina( data = sim.dina ,  q.matrix = sim.qmatrix)
+mod1 <- CDM::gdina( data = dat, q.matrix = q.matrix)
 summary(mod1)
 dmod1 <- CDM::IRT.data(mod1)
 str(dmod1)
 
 #--- Model 2: DINA model
-mod2 <- CDM::din( data = sim.dina ,  q.matrix = sim.qmatrix)
+mod2 <- CDM::din( data = dat, q.matrix = q.matrix)
 summary(mod2)
 dmod2 <- CDM::IRT.data(mod2)
 
 #--- Model 3: Rasch model with gdm function
-mod3 <- CDM::gdm( data = sim.dina , irtmodel="1PL" , theta.k=seq(-4,4,length=11) ,
+mod3 <- CDM::gdm( data = dat, irtmodel="1PL" , theta.k=seq(-4,4,length=11) ,
                 centered.latent=TRUE )
 summary(mod3)
 dmod3 <- CDM::IRT.data(mod3)
@@ -116,9 +122,9 @@ dimnames(Xdes)[[4]] <- c(paste0( colnames(dat) , "Class" , 1),
 for (ii in 1:I){
     Xdes[ ii , 2 , 1 , ii ] <- 1    # probabilities class 1
     Xdes[ ii , 2 , 2 , ii+I ] <- 1  # probabilities class 2
-                    }
+}
 # estimate model
-mod4 <- CDM::slca( dat , Xdes=Xdes , maxiter=30 )            
+mod4 <- CDM::slca( dat, Xdes=Xdes)            
 summary(mod4)
 dmod4 <- CDM::IRT.data(mod4)
 }

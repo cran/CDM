@@ -1,6 +1,5 @@
 %% File Name: IRT.modelfit.Rd
-%% File Version: 0.13
-%% File Last Change: 2017-01-31 14:08:31
+%% File Version: 0.15
 
 \name{IRT.modelfit}
 \alias{IRT.modelfit}
@@ -83,11 +82,12 @@ function in the \pkg{TAM} package.
 #############################################################################
 # EXAMPLE 1: Absolute model fit
 #############################################################################
-data(sim.dina)
-data(sim.qmatrix)
+
+data(sim.dina, package="CDM")
+data(sim.qmatrix, package="CDM")
 
 #*** Model 1: DINA model for DINA simulated data
-mod1 <- CDM::din(sim.dina, q.matr = sim.qmatrix, rule = "DINA" )
+mod1 <- CDM::din( sim.dina, q.matrix = sim.qmatrix, rule = "DINA" )
 fmod1 <- CDM::IRT.modelfit( mod1 )
 summary(fmod1)
   ##  Test of Global Model Fit
@@ -104,7 +104,7 @@ summary(fmod1)
   ##  MADaQ3          0.059
 
 #*** Model 2: GDINA model
-mod2 <- CDM::gdina( sim.dina , q.matr = sim.qmatrix , rule="GDINA" )
+mod2 <- CDM::gdina( sim.dina , q.matrix = sim.qmatrix , rule="GDINA" )
 fmod2 <- CDM::IRT.modelfit( mod2 )
 summary(fmod2)
   ##  Test of Global Model Fit

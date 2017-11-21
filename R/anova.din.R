@@ -1,6 +1,5 @@
 ## File Name: anova.din.R
-## File Version: 1.11
-## File Last Change: 2017-01-31 14:07:25
+## File Version: 1.12
 
 anova.din <- IRT.anova
 
@@ -8,6 +7,7 @@ anova.gdina <- anova.din
 anova.gdm <- anova.din
 anova.mcdina <- anova.din
 anova.slca <- anova.din
+anova.reglca <- anova.din
 
 
 

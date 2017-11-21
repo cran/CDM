@@ -1,12 +1,12 @@
 ## File Name: IRT.frequencies.R
-## File Version: 0.04
-## File Last Change: 2017-06-24 15:27:14
+## File Version: 0.05
 
 
 ###########################################################
 # extracts used dataset
-IRT.frequencies <- function(object, ...){
-    UseMethod("IRT.frequencies")
+IRT.frequencies <- function(object, ...)
+{
+	UseMethod("IRT.frequencies")
 }
 
 IRT_frequencies_wrapper <- function(object, ...)

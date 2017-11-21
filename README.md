@@ -2,7 +2,7 @@
 #### Cognitive Diagnosis Modeling
 
 
-If you use `CDM` and have suggestions for improvement or have found bugs, please email me at robitzsch@ipn.uni.kiel.de.
+If you use `CDM` and have suggestions for improvement or have found bugs, please email me at robitzsch@ipn.uni-kiel.de.
 
 #### CRAN version
 
@@ -10,7 +10,7 @@ The official version of `CDM` is hosted on CRAN and may be found [here](https://
 The CRAN version can be installed from within R using:
 
 ```r
-install.packages("CDM")
+utils::install.packages("CDM")
 ```
 
 #### GitHub version
@@ -19,6 +19,6 @@ The version hosted [here](https://github.com/alexanderrobitzsch/CDM) is the deve
 The GitHub version can be installed using `devtools` as:
 
 ```r
-install.packages("devtools")
+utils::install.packages("devtools")
 devtools::install_github("alexanderrobitzsch/CDM")
 ```

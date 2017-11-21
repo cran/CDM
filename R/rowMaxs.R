@@ -1,6 +1,5 @@
 ## File Name: rowMaxs.R
-## File Version: 1.07
-## File Last Change: 2017-01-31 14:07:29
+## File Version: 1.08
 ################################################################################
 # utility method for computing intermediate information                        #
 ################################################################################
@@ -15,9 +14,10 @@
 #    x[p , ]
 #}
 #########################################################
-rowMaxs <- function(mat){
-    n <- nrow(mat)
-    p <- ncol(mat)
+rowMaxs <- function(mat)
+{
+	n <- nrow(mat)
+	p <- ncol(mat)
 	maxval <- mat[,1]
 	for ( cc in 2:p){
 		maxval <- ifelse( mat[,cc] > maxval  , mat[,cc] , maxval )
@@ -25,9 +25,10 @@ rowMaxs <- function(mat){
 	return(maxval)
 }
 ###########################################################
-rowMaxs2 <- function(mat){
-    n <- nrow(mat)
-    p <- ncol(mat)
+rowMaxs2 <- function(mat)
+{
+	n <- nrow(mat)
+	p <- ncol(mat)
 	maxval <- mat[,1]
 	maxind <- 1
 	for ( cc in 2:p){
@@ -39,9 +40,10 @@ rowMaxs2 <- function(mat){
 	return(res)
 }
 #############################################################
-rowMaxs3 <- function(mat){
-    n <- nrow(mat)
-    p <- ncol(mat)
+rowMaxs3 <- function(mat)
+{
+	n <- nrow(mat)
+	p <- ncol(mat)
 	maxval <- mat[,1]
 	maxind <- 1
 	for ( cc in 2:p){

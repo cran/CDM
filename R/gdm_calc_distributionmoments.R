@@ -1,8 +1,7 @@
 ## File Name: gdm_calc_distributionmoments.R
-## File Version: 0.01
-## File Last Change: 2017-06-12 14:33:31
+## File Version: 0.03
 
-				
+
 #######################################################################
 # moments of distribution
 gdm_calc_distributionmoments <- function( D , G , pi.k , theta.k )
@@ -39,7 +38,7 @@ gdm_calc_distributionmoments <- function( D , G , pi.k , theta.k )
 	#--- OUTPUT
 	res <- list( mean.trait=mean.trait , sd.trait = sd.trait , 
 				skewness.trait = skewness.trait , correlation.trait=correlation.trait)
-    return(res)				
+	return(res)
 }
 
 	

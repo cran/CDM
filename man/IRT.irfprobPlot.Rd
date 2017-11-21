@@ -1,6 +1,5 @@
 %% File Name: IRT.irfprobPlot.Rd
-%% File Version: 0.10
-%% File Last Change: 2017-01-31 14:08:31
+%% File Version: 0.12
 
 \name{IRT.irfprobPlot}
 \alias{IRT.irfprobPlot}
@@ -83,14 +82,15 @@ More arguments to be passed for the plot in \pkg{lattice}.
 #############################################################################
 # EXAMPLE 1: Plot item response functions from a unidimensional model
 #############################################################################
-data(data.Students)
-dat <- data.Students
 
+data(data.Students, package="CDM")
+
+dat <- data.Students
 resp <- dat[ , paste0("sc",1:4) ]
 resp[ paste(resp[,1]) == 3 ,1] <-  2
 psych::describe(resp)
 
-#--- Model 1: PCM in gdm
+#--- Model 1: PCM in CDM::gdm
 theta.k <- seq( -5 , 5 , len=21 )
 mod1 <- CDM::gdm( dat = resp , irtmodel="1PL" , theta.k=theta.k , skillspace="normal" ,
            centered.latent=TRUE)
@@ -110,9 +110,8 @@ IRT.irfprobPlot( mod1 , cumul=TRUE )
 # EXAMPLE 2: Fitted mutidimensional model with gdm
 #############################################################################
 
-data( data.fraction2 )
-dat <- data.fraction2$data
-Qmatrix <- data.fraction2$q.matrix3
+dat <- CDM::data.fraction2$data
+Qmatrix <- CDM::data.fraction2$q.matrix3
 
 # Model 1: 3-dimensional Rasch Model (normal distribution)
 theta.k <- seq( -4 , 4 , len=11 )   # discretized ability

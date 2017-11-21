@@ -1,6 +1,5 @@
 %% File Name: plot.din.Rd
-%% File Version: 2.08
-%% File Last Change: 2017-01-31 14:08:32
+%% File Version: 2.09
 
 \name{plot.din}
 
@@ -127,6 +126,9 @@
 ##
 ## (1) examples based on dataset fractions.subtraction.data
 ##
+
+data(fraction.subtraction.data)
+data(fraction.subtraction.qmatrix)
 
 ## Fix the guessing parameters of items 5, 8 and 9 equal to .20
 # define a constraint.guess matrix

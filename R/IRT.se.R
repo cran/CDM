@@ -1,11 +1,11 @@
 ## File Name: IRT.se.R
-## File Version: 0.02
-## File Last Change: 2017-01-31 14:07:28
+## File Version: 0.03
 
 
 ###########################################################
-IRT.se <- function (object, ...) {
-    UseMethod("IRT.se")
-       }
+IRT.se <- function (object, ...)
+{
+	UseMethod("IRT.se")
+}
 ###########################################################
 

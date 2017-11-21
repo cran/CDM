@@ -1,13 +1,10 @@
 ## File Name: item_by_group.R
-## File Version: 0.12
-## File Last Change: 2017-01-31 14:07:28
+## File Version: 0.14
 
 ##########################################################
 # creates an extended dataset with item responses in which
-# items are defined as combinations of original items and
-# group
-item_by_group <- function( dat , group , invariant = NULL ,
-		rm.empty = TRUE )
+# items are defined as combinations of original items and group
+item_by_group <- function( dat , group , invariant = NULL, rm.empty = TRUE )
 {
 	vars <- colnames(dat)
 	some_invariant_items <- ( ! is.null(invariant) )	
@@ -21,7 +18,7 @@ item_by_group <- function( dat , group , invariant = NULL ,
 	#*** create extended dataset
 	dat2 <- matrix( NA , nrow = nrow(dat) , ncol= I*G )
 	cn <- sapply( vars , FUN = function(vv){
-			  paste0( vv , "_group" , group_unique ) } , simplify=FALSE)
+				paste0( vv , "_group" , group_unique ) } , simplify=FALSE)
 	colnames(dat2) <- unlist(cn)
 	for (gg in 1:G){
 		# gg <- 1
@@ -51,8 +48,7 @@ item_by_group <- function( dat , group , invariant = NULL ,
 	attr(dat2,"noninvariant_index_extended") <- 
 			rep( attr(dat2,"noninvariant_index") , each = G )
 	attr(dat2,"invariant_index") <- match( invariant , colnames(dat))	
-	attr(dat2,"all_index") <- c( attr(dat2,"invariant_index") , 
-					attr(dat2,"noninvariant_index_extended") )
+	attr(dat2,"all_index") <- c( attr(dat2,"invariant_index"), attr(dat2,"noninvariant_index_extended") )
 	cn <- colnames(dat2)
 	names(cn) <- NULL
 	colnames(dat2) <- cn					

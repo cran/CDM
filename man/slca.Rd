@@ -1,6 +1,5 @@
 %% File Name: slca.Rd
-%% File Version: 1.59
-%% File Last Change: 2017-10-05 18:36:31
+%% File Version: 1.803
 
 \name{slca}
 \alias{slca}
@@ -16,7 +15,9 @@ Structured Latent Class Analysis (SLCA)
 
 \description{
 This function implements a structured latent class model for
-polytomous item responses (Formann, 1992).
+polytomous item responses (Formann, 1985, 1992). Lasso estimation for the
+item parameters is included (Chen et al., 2015; Chen et al., 2017;
+Sun et al., 2016).
 }
 
 \usage{
@@ -24,9 +25,10 @@ slca(data, group = NULL, weights = rep(1, nrow(data)), Xdes,
   Xlambda.init = NULL, Xlambda.fixed = NULL, Xlambda.constr.V=NULL , 
   Xlambda.constr.c=NULL ,  delta.designmatrix = NULL, 
   delta.init = NULL, delta.fixed = NULL, delta.linkfct = "log" ,
-  maxiter = 1000, conv = 1e-5, globconv = 1e-5, msteps = 10, convM = 5e-04, 
-  decrease.increments = FALSE, oldfac=0, dampening_factor=1.01, seed=NULL, progress=TRUE,
-  PEM=TRUE, PEM_itermax=maxiter, ...)
+  Xlambda_positive=NULL, regular_type = "lasso", regular_lam = 0, regular_w = NULL,
+  regular_n = nrow(data), maxiter = 1000, conv = 1e-5, globconv = 1e-5, msteps = 10, 
+  convM = 5e-04, decrease.increments = FALSE, oldfac=0, dampening_factor=1.01, 
+  seed=NULL, progress=TRUE, PEM=TRUE, PEM_itermax=maxiter, ...)
   
 \method{summary}{slca}(object, file = NULL , \dots)
 
@@ -81,6 +83,16 @@ Fixed \eqn{\delta} parameters. This must be a matrix with three columns:
 	This can be the log-linear link (\code{log}) or the
 	logistic link function (\code{logit}).
 }
+\item{Xlambda_positive}{Optional vector of logical indicating which
+	elements of \eqn{\bold{\lambda}_x} should be constrained to be
+positive.}
+\item{regular_type}{Regularization method which can be \code{lasso},
+\code{scad} or \code{mcp}. See \code{\link{gdina}} for more 
+ionformation and references.}
+\item{regular_lam}{Numeric. Regularization parameter}
+\item{regular_w}{Vector for weighting the regularization penalty}
+\item{regular_n}{Vector of regularization factor. This will be 
+typically the sample size.}
   \item{maxiter}{
 Maximum number of iterations
 }
@@ -153,6 +165,14 @@ This model contains classical uni- and multidimensional latent trait models,
 latent class analysis, located latent class analysis, cognitive diagnostic
 models, the general diagnostic model and mixture item response models as 
 special cases (see Formann & Kohlmann, 1998; Formann, 2007).
+
+The function also allows for regularization of \eqn{\lambda_{xv}} parameters
+using the lasso approach (Sun et al., 2016).
+More formally, the penalty function can be written as 
+\deqn{pen( \bold{\lambda}_x ) =  p_\lambda \sum_v n_v w_v | \lambda_{xv} | }
+where \eqn{p_\lambda} can be specified with \code{regular_lam},
+\eqn{w_v} can be specified with \code{regular_w}, and
+\eqn{n_v} can be specified with \code{regular_n}.
 }
 
 
@@ -206,6 +226,18 @@ Berlinet, A. F., & Roland, C. (2012).
 Acceleration of the EM algorithm: P-EM versus epsilon algorithm.
 \emph{Computational Statistics & Data Analysis}, \bold{56}(12), 4122-4137.		
 
+Chen, Y., Liu, J., Xu, G., & Ying, Z. (2015). 
+Statistical analysis of Q-matrix based diagnostic classification models. 
+\emph{Journal of the American Statistical Association}, \bold{110}, 850-866.
+
+Chen, Y., Li, X., Liu, J., & Ying, Z. (2017). Regularized latent class analysis 
+with application in cognitive diagnosis. \emph{Psychometrika}, 
+\bold{82}, 660-692.
+
+Formann, A. K. (1985). Constrained latent class models: Theory and applications.
+\emph{British Journal of Mathematical and Statistical Psychology},
+\bold{38}, 87-111.
+
 Formann, A. K. (1992). Linear logistic latent class analysis for polytomous data. 
 \emph{Journal of the American Statistical Association}, \bold{87}, 476-486.	
 
@@ -219,6 +251,10 @@ Formann, A. K., & Kohlmann, T. (1998). Structural latent class models.
 
 Neuhaus, W. (1996). Optimal estimation under
 linear constraints. \emph{Astin Bulletin}, \bold{26}, 233-245. 
+
+Sun, J., Chen, Y., Liu, J., Ying, Z., & Xin, T. (2016).
+Latent variable selection for multidimensional item response theory models 
+via \eqn{L_1} regularization. \emph{Psychometrika}, \bold{81}(4), 921-939.
 
 Xu, X., & von Davier, M. (2008). \emph{Fitting the structured general diagnostic
 model to NAEP data}. ETS Research Report ETS RR-08-27. Princeton, ETS.
@@ -242,7 +278,8 @@ See \url{http://www.antonformann.at/} for more information.
 
 \seealso{
 For latent trait models with continuous latent variables see the
-\pkg{mirt}, \pkg{MultiLCIRT} or \pkg{TAM} package.
+\pkg{mirt} or \pkg{TAM} packages. For a discrete trait distribution see
+the \pkg{MultiLCIRT} package. 
 
 For latent class models see the \pkg{poLCA}, \pkg{covLCA} or \pkg{randomLCA}
 package.
@@ -257,7 +294,8 @@ For mixture Rasch or mixture IRT models see the \pkg{psychomix} or
 # EXAMPLE 1: data.Students | (Generalized) Partial Credit Model
 #############################################################################
 
-data(data.Students)
+data(data.Students, package="CDM")
+
 dat <- data.Students[ , c("mj1","mj2","mj3","mj4","sc1" , "sc2") ]
 # define discretized ability
 theta.k <- seq( -6 , 6 , len=21 )
@@ -307,7 +345,7 @@ delta.fixed <- cbind( 1 , 1 ,1 )
 
 # estimate model
 mod1 <- CDM::slca( dat , Xdes=Xdes , delta.designmatrix=delta.designmatrix , 
-            Xlambda.init=Xlambda.init , delta.fixed = delta.fixed, maxiter = 70 )
+            Xlambda.init=Xlambda.init , delta.fixed = delta.fixed )
 summary(mod1)
 plot(mod1, cex.names=.7 )
 
@@ -504,8 +542,7 @@ delta.designmatrix[1:TP,1] <- 1
 delta.designmatrix[1:TP,2] <- theta.k^2
 delta.designmatrix[TP + 1:TP,3] <- 1
 delta.designmatrix[TP+ 1:TP,4] <- theta.k^2
-b1 <- stats::qnorm( colMeans( dat ) )
-Xlambda.init <- c( b1 , b1 + stats::runif(I, -2  , 2 ) , 1 , 1 )
+b1 <- stats::qnorm( colMeans(dat) )
 Xlambda.init <- c( stats::runif( 2*I  , -1.8 , 1.8 ) , 1 ,1 )
 Xlambda.fixed <- cbind( c(2*I+1 , 2*I+2) , 1 )
 # estimate model
@@ -650,7 +687,8 @@ for (ii in 1:I){
         # guessing parameters
         Xdes[ii , 2 , latresp == 0, ii ] <- 1        
 }
-Xdes[1,2,,] ; Xdes[7,2,,]
+Xdes[1,2,,]
+Xdes[7,2,,]
 # skill space definition
 delta.designmatrix <- diag(TP)
 Xlambda.init <- c( rep( stats::qlogis( .2 ) , I ) , rep( stats::qlogis( .8 ) , I ) )
@@ -666,6 +704,85 @@ cbind( mod1$pi.k , probs0 )
 cbind( mod1$pjk[1,,2] , guess )
 # compare estimated and simulated slipping parameters
 cbind( 1 - mod1$pjk[4,,2] , slip )
+
+#############################################################################
+# EXAMPLE 6: Investigating differential item functioning in Rasch models
+#            with regularization
+#############################################################################
+
+#---- simulate data
+set.seed(987)
+N <- 1000   # number of persons in a group
+I <- 20    # number of items
+#* population parameters of two groups
+mu1 <- 0
+mu2 <- .6
+sd1 <- 1.4
+sd2 <- 1
+# item difficulties
+b <- seq( -1.1, 1.1 , len=I )
+# define some DIF effects
+dif <- rep(0,I)
+dif[ c(3,6,9,12)] <- c( .6 , -1, .75 , -.35 )
+print(dif)
+#* simulate datasets
+dat1 <- sirt::sim.raschtype( rnorm(N, mean=mu1, sd=sd1) , b = b - dif /2 )
+colnames(dat1) <- paste0("I", 1:I, "_G1")
+dat2 <- sirt::sim.raschtype( rnorm(N, mean=mu2, sd=sd2) , b = b + dif /2 )
+colnames(dat2) <- paste0("I", 1:I, "_G2")
+dat <- CDM::CDM_rbind_fill( dat1 , dat2 )
+dat <- data.frame( "group" = rep(1:2, each=N) , dat )
+
+#-- nodes for distribution
+theta.k <- seq(-4, 4, len=11)
+# define design matrix for lambda
+nitems <- ncol(dat) - 1
+maxK <- 2
+TP <- length(theta.k)
+NXlam <- 2*I + 1
+Xdes <- array( 0 , dim=c( nitems , maxK , TP ,  NXlam  ) )
+dimnames(Xdes)[[1]] <- colnames(dat)[-1]
+dimnames(Xdes)[[2]] <- paste0("Cat" , 0:(maxK-1) )
+dimnames(Xdes)[[3]] <- paste0("Theta" , 1:TP )
+dimnames(Xdes)[[4]] <- c( paste0("b" , 1:I ), paste0("dif" , 1:I ), "const" )
+# define theta design 
+for (ii in 1:nitems){
+    Xdes[ii,2,,NXlam ] <- theta.k
+}
+# item intercepts and DIF effects
+for (ii in 1:I){
+    Xdes[c(ii,ii+I) ,2,, ii ] <- -1
+    Xdes[ii,2,,ii+I] <- - 1/2
+    Xdes[ii+I,2,,ii+I] <- 1/2    
+}
+#--- skill space designmatrix
+TP <- length(theta.k)
+w1 <- stats::dnorm(theta.k)
+w1 <- w1 / sum(w1)  
+delta.designmatrix <- matrix( 1 , nrow=TP , ncol=2 )
+delta.designmatrix[,2] <- log(w1)
+
+# fixed lambda parameters
+Xlambda.fixed <- cbind(NXlam, 1 )
+# initial Xlambda parameters
+dif_sim <- 0*stats::rnorm(I, sd=.2)
+Xlambda.init <- c( - stats::qnorm( colMeans(dat1) )  , dif_sim , 1 )
+
+# delta.fixed 
+delta.fixed <- cbind( 1 , 1 , 0 )
+# regularization parameter
+regular_lam <- .2
+# weighting vector: regularize only DIF effects
+regular_w <- c( rep(0,I), rep(1,I) , 0 )
+
+#--- estimation model with scad penalty
+mod1 <- CDM::slca( dat[,-1] , group=dat$group, Xdes=Xdes, 
+            delta.designmatrix=delta.designmatrix, regular_type = "scad", 
+            Xlambda.init=Xlambda.init, delta.fixed=delta.fixed, Xlambda.fixed=Xlambda.fixed,
+            regular_lam=regular_lam, regular_w=regular_w )
+# compare true and estimated DIF effects
+cbind( "true"=dif , "estimated" = round(coef(mod1)[seq(I+1,2*I)],2) )
+summary(mod1)
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

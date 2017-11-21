@@ -1,6 +1,5 @@
 %% File Name: data.melab.Rd
-%% File Version: 0.10
-%% File Last Change: 2017-01-31 14:08:30
+%% File Version: 0.12
 
 \name{data.melab}
 \alias{data.melab}
@@ -61,7 +60,8 @@ cognitive diagnostic analyses of a reading test.
 
 \examples{
 \dontrun{	
-data(data.melab)
+data(data.melab, package="CDM")
+
 data <- data.melab$data
 q.matrix <- data.melab$q.matrix
 

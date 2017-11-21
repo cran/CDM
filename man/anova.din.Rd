@@ -1,6 +1,5 @@
 %% File Name: anova.din.Rd
-%% File Version: 1.22
-%% File Last Change: 2017-01-31 14:08:30
+%% File Version: 1.23
 
 \name{anova}
 \alias{anova.din}
@@ -8,6 +7,7 @@
 \alias{anova.mcdina}
 \alias{anova.gdm}
 \alias{anova.slca}
+\alias{anova.reglca}
 
 
 %- Also NEED an '\alias' for EACH other topic documented here.
@@ -23,9 +23,11 @@ or \code{gdm} using a likelihood ratio test.
 
 \method{anova}{gdina}(object,\dots)
 
+\method{anova}{gdm}(object,\dots)
+
 \method{anova}{mcdina}(object,\dots)
 
-\method{anova}{gdm}(object,\dots)
+\method{anova}{reglca}(object,\dots)
 
 \method{anova}{slca}(object,\dots)
 }
@@ -33,7 +35,7 @@ or \code{gdm} using a likelihood ratio test.
 \arguments{
   \item{object}{
 Two objects of class \code{din}, \code{gdina}, \code{mcdina},
-\code{slca} or \code{gdm}
+\code{slca}, \code{gdm}, \code{reglca}
 }
   \item{\dots}{
 Further arguments to be passed

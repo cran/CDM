@@ -1,6 +1,5 @@
 ## File Name: gdina_post_posterior_output.R
-## File Version: 0.02
-## File Last Change: 2017-06-17 14:09:55
+## File Version: 0.05
 
 gdina_post_posterior_output <- function(G, p.aj.xi, p.xi.aj, pattern, data, item.patt.subj,
 		item.patt, attr.prob, group)
@@ -14,13 +13,13 @@ gdina_post_posterior_output <- function(G, p.aj.xi, p.xi.aj, pattern, data, item
 		
 		# subject pattern
 		item.patt.subj <- data.frame( "case" = 1:(nrow(data) ), 
-									   "pattern" = item.patt.subj, 
-                                       "pattern.index" = match( item.patt.subj, item.patt[,1] ) )											
+								"pattern" = item.patt.subj, 
+								"pattern.index" = match( item.patt.subj, item.patt[,1] ) )
 		# attribute pattern (expected frequencies)
 		attr.prob0 <- attr.prob
 		attr.prob <- data.frame( attr.prob )
 		attr.prob$class.expfreq <-  attr.prob[,1] * nrow(data) 
-		
+
 		#*****
 		pattern <- pattern[ item.patt.subj$pattern.index , ]	
 		pattern[,1] <- paste( item.patt.subj$pattern )
@@ -44,7 +43,7 @@ gdina_post_posterior_output <- function(G, p.aj.xi, p.xi.aj, pattern, data, item
 		rownames(p.aj.xi) <- pattern$pattern				
 		ND <- dim(p.aj.xi)
 		posterior <- matrix( 0 , nrow=ND[1] , ncol=ND[2] )
-	    for (gg in 1:G){
+		for (gg in 1:G){
 			ind.gg <- which( group == gg )
 			posterior[ ind.gg , ] <- p.aj.xi[ ind.gg , , gg ]
 		}
@@ -53,8 +52,14 @@ gdina_post_posterior_output <- function(G, p.aj.xi, p.xi.aj, pattern, data, item
 	# labels likelihood
 	colnames(p.xi.aj) <- paste(rownames(attr.prob))	
 	
+	if (G==1){
+		attr_prob <- as.vector( attr.prob$class.prob )
+	} else {
+		attr_prob <- as.matrix( attr.prob )
+	}	
+	
 	#--------- OUTPUT
 	res <- list( item.patt.subj=item.patt.subj, attr.prob=attr.prob, p.xi.aj=p.xi.aj, posterior=posterior,
-					pattern=pattern, attr.prob0 = attr.prob0 )
+					pattern=pattern, attr.prob0 = attr.prob0, attr_prob=attr_prob )
 	return(res)
 }

@@ -1,8 +1,8 @@
 ## File Name: deltaMethod.R
-## File Version: 0.03
-## File Last Change: 2017-01-31 14:07:26
+## File Version: 0.04
 ###############################################################
-deltaMethod <- function( derived.pars , est, Sigma , h=1E-5 ){
+deltaMethod <- function( derived.pars , est, Sigma , h=1E-5 )
+{
 	#***
 	ND <- length(derived.pars)
 	#** select h parameters according to size of parameters

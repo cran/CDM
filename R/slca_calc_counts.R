@@ -1,6 +1,5 @@
 ## File Name: slca_calc_counts.R
-## File Version: 0.01
-## File Last Change: 2017-10-03 18:56:57
+## File Version: 0.02
 
 
 ################################################	
@@ -13,15 +12,15 @@ slca_calc_counts <- function(G, weights, dat.ind, dat, dat.resp,
 	n.ik1 <- array( 0 , dim=c(TP,I,K+1 ) ) 
 	#-------------------------------------
 	#--- single group
-    if (G==1){
+	if (G==1){
 		gg <- 1
 		for (kk in 1:(K+1)){   #		kk <- 1	# category 0 ( -> 1 )
-            dkk2 <- dat.ind2[[kk]][[gg]]
+			dkk2 <- dat.ind2[[kk]][[gg]]
 			n.ik[,,kk,gg] <- crossprod( p.aj.xi , dkk2 )
 			n.ik1[,,kk] <- n.ik[,,kk,gg]
 			N.ik[,,gg] <- N.ik[,,gg] + n.ik[,,kk,gg]
 		}
-        N.ik1 <- N.ik1 + N.ik[,,gg]						
+		N.ik1 <- N.ik1 + N.ik[,,gg]	
 	}
 	#-------------------------------------
 	#--- multiple groups	
@@ -33,7 +32,7 @@ slca_calc_counts <- function(G, weights, dat.ind, dat, dat.resp,
 			} 
 			if (  use.freqpatt ){	
 				t.p.aj.xi.gg <- t( p.aj.xi[[gg]] )
-			} 					
+			} 
 			for (kk in 1:(K+1)){   #		kk <- 1	# category 0 ( -> 1 )
 				dkk2 <- dat.ind2[[kk]][[gg]]
 				if ( use.freqpatt ){
@@ -44,7 +43,7 @@ slca_calc_counts <- function(G, weights, dat.ind, dat, dat.resp,
 				n.ik[,,kk,gg] <- t.p.aj.xi.gg %*% dkk2
 				n.ik1[,,kk] <- n.ik1[,,kk] + n.ik[,,kk,gg]
 				N.ik[,,gg] <- N.ik[,,gg] + n.ik[,,kk,gg]
-			}						
+			}
 			N.ik1 <- N.ik1 + N.ik[,,gg]
 		}  # end gg
 	}  # end multiple group

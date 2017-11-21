@@ -1,35 +1,35 @@
 ## File Name: cdm.est.calc.accuracy.R
-## File Version: 2.17
-## File Last Change: 2017-01-31 14:07:25
+## File Version: 2.21
 
 ########################################################################
 # CDM classification accuracy
-cdm.est.class.accuracy <- function( cdmobj , n.sims=0 , seed=987){ 
+cdm.est.class.accuracy <- function( cdmobj , n.sims=0 , seed=987)
+{
 	set.seed(seed)
 	# original data
 	data <- cdmobj$data
-    # likelihood
-    p.xi.aj <- cdmobj$like
-    # class probabilities
-    class.prob <- cdmobj$attribute.patt$class.prob	
-    # MLE (orginal data)
-    c1 <- .est.class.accuracy( p.xi.aj = p.xi.aj , 
-                est.class = cdmobj$pattern$mle.est ,
-                class.prob= class.prob)			
-				
-    # MAP (original data)
-    c2 <- .est.class.accuracy( p.xi.aj = p.xi.aj , 
-                est.class = cdmobj$pattern$map.est ,
-                class.prob= class.prob)
-    dfr <- rbind( c1 , c2 )
-    rownames(dfr) <- c("MLE" , "MAP" )
+	# likelihood
+	p.xi.aj <- cdmobj$like
+	# class probabilities
+	class.prob <- cdmobj$attribute.patt$class.prob	
+	# MLE (orginal data)
+	c1 <- .est.class.accuracy( p.xi.aj = p.xi.aj, est.class = cdmobj$pattern$mle.est,
+				class.prob= class.prob)	
+
+	# MAP (original data)
+	c2 <- .est.class.accuracy( p.xi.aj = p.xi.aj, est.class = cdmobj$pattern$map.est,
+				class.prob= class.prob)
+	dfr <- rbind( c1 , c2 )
+	rownames(dfr) <- c("MLE" , "MAP" )
 	if ( class(cdmobj) == "gdina" ){ n.sims <- 0 }
 	#***********************************
 	# simulated classification
 	
-	if ( sum(is.na(data) ) > 0 & n.sims > 0 ){ n.sims <- nrow(data) }
+	if ( sum(is.na(data) ) > 0 & n.sims > 0 ){ 
+		n.sims <- nrow(data) 
+	}
 	if ( n.sims > 0 ){
-	    I <- ncol(data)
+		I <- ncol(data)
 		# splitted attribute pattern
 		attr.splitted <- cdmobj$attribute.patt.splitted
 		# attribute classes 
@@ -53,7 +53,6 @@ cdm.est.class.accuracy <- function( cdmobj , n.sims=0 , seed=987){
 					guess = guess0 , slip=slip0 ,  rule = cdmobj$rule ,alpha=alpha.sim)
 		# handle missings
 		d1 <- simdata1$dat
-#		d1[ as.matrix(is.na(data)) ] <- NA
 		if ( sum( is.na( data) ) > 0 ){ d1[ is.na(data) ] <- NA	}
 		simdata1$dat <- d1
 		d1 <- simdata2$dat
@@ -86,7 +85,8 @@ cdm.est.class.accuracy <- function( cdmobj , n.sims=0 , seed=987){
 		dfr11 <- rbind( dfr11 , dfr12 )
 		rownames(dfr11) <- c( "MLE" , "MAP" )
 		dfr <- cbind( dfr , dfr11 )
-		}
+	}
+	
 	#********************************************
 	# marginal classification
 	# likelihood
@@ -98,7 +98,6 @@ cdm.est.class.accuracy <- function( cdmobj , n.sims=0 , seed=987){
 	dfr10 <- NULL
 	for (kk in 1:K){
 		# compute marginal likelihood distribution
-	#    kk <- 1  # skill kk
 		ind.kk0 <- which( attribute.patt.splitted[ , kk ] == 0 )
 		ind.kk1 <- which( attribute.patt.splitted[ , kk ] == 1 )
 		# marginal likelihood
@@ -110,54 +109,50 @@ cdm.est.class.accuracy <- function( cdmobj , n.sims=0 , seed=987){
 		c2 <- .est.class.accuracy( p.xi.aj = pxiaj_kk ,  est.class = patt1 ,
 						class.prob= class.prob.kk)
 		dfr10 <- rbind( dfr10 , c2 )
-			}
+	}
 	rownames(dfr10) <- paste0( "MAP_Skill" , 1:K)  
 	if (n.sims>0){ dfr10 <- cbind( dfr10 , NA , NA ) }
 	colnames(dfr10) <- colnames(dfr)
 	dfr <- rbind( dfr , dfr10 )
 	#*****************************************************	
 	dfr <- dfr[ , order( paste(colnames(dfr)))  ]
-    print( dfr , digits=3 )
-    invisible(dfr)
-        }
+	print( dfr, digits=3 )
+	invisible(dfr)
+}
 ########################################################################
-
 
 
 
 #####################################################################################
 # estimate classification accuracy and consistency
-.est.class.accuracy <- function( p.xi.aj , est.class , class.prob ){
-    m0 <- matrix(  colSums( p.xi.aj ) , nrow=nrow(p.xi.aj) , ncol=ncol(p.xi.aj) , 
-        byrow=TRUE )
-    p.xi.aj <- p.xi.aj  / m0	
-    # calculate class index
-#    est.class.index <- match( est.class , colnames(p.xi.aj ) )
-    est.class.index <- match( paste(est.class) , colnames(p.xi.aj ) )
-    # calculate formula (5)
-    CC <- ncol( p.xi.aj )
-    # classification probability matrix
-    class.prob.matrix2 <- class.prob.matrix1 <- matrix( NA , CC , CC )
-    for (aa in 1:CC){
+.est.class.accuracy <- function( p.xi.aj , est.class , class.prob )
+{
+	m0 <- matrix(  colSums( p.xi.aj ) , nrow=nrow(p.xi.aj) , ncol=ncol(p.xi.aj), byrow=TRUE )
+	p.xi.aj <- p.xi.aj  / m0
+	# calculate class index
+	est.class.index <- match( paste(est.class) , colnames(p.xi.aj ) )
+	# calculate formula (5)
+	CC <- ncol( p.xi.aj )
+	# classification probability matrix
+	class.prob.matrix2 <- class.prob.matrix1 <- matrix( NA , CC , CC )
+	for (aa in 1:CC){
 		for (cc in 1:CC){
-			# aa <- 1 ;  cc <- 2
 			class.prob.matrix1[cc,aa] <- sum( p.xi.aj[ est.class.index == cc , aa ] )^2
 			class.prob.matrix2[cc,aa] <- sum( p.xi.aj[ est.class.index == cc , aa ] )
-        }
+		}
 	}
-    # classification consistency
-    P_c <- sum( colSums( class.prob.matrix1 ) * class.prob )
-    # marginal classification accuracy
-    P_a <- sum( diag( class.prob.matrix2 ) * class.prob )
+	# classification consistency
+	P_c <- sum( colSums( class.prob.matrix1 ) * class.prob )
+	# marginal classification accuracy
+	P_a <- sum( diag( class.prob.matrix2 ) * class.prob )
 	#**** calculate kappa
 	M1 <- class.prob.matrix1
 	p1 <- rowSums(M1)
 	p2 <- colSums(M1)
 	h1 <- outer( p1 , p2 )
 	#--- output	
-    res <- data.frame( "P_c" = P_c , "P_a" = P_a )
-    return(res)
-    }
+	res <- data.frame( P_c = P_c , P_a = P_a )
+	return(res)
+}
 #####################################################################################
-
 

@@ -1,11 +1,11 @@
 ## File Name: cdm_tetrachoric.R
-## File Version: 0.01
-## File Last Change: 2017-06-04 19:29:16
+## File Version: 0.15
 
 
 ####################################################################
 # hogdina: tetrachoric correlation
-cdm_tetrachoric <- function( dat , weights , delta=.007 , maxit = 10000  )
+cdm_tetrachoric <- function( dat , weights , rho_init=NULL,
+		delta=.007 , maxit = 10000, maxval =.999 )
 {
 	# process data
 	dat <- as.matrix(dat)
@@ -16,9 +16,8 @@ cdm_tetrachoric <- function( dat , weights , delta=.007 , maxit = 10000  )
 	dat[ dat.resp==0] <- 9
 	I <- ncol(dat)
 	# calculate frequencies
-	dfr <- data.frame( "item1" = rep(1:I,I) , "item2" = rep(1:I, each=I ) )
-
-	h1 <- crossprod( 1*(dat==1 ) , ( dat==0 ) )
+	dfr <- data.frame( "item1" = rep(1:I,I) , "item2" = rep(1:I, each=I ) )	
+	h1 <- crossprod( 1*(dat==1) , (dat==0) )
 	dfr$f11 <- matrix( crossprod( ( dat==1 )*w2 , (w2*( dat==1 ))) , ncol=1 , byrow=TRUE )
 	dfr$f10 <- matrix( crossprod( ( dat==1 )*w2 , (w2*( dat==0 ))) , ncol=1 , byrow=TRUE )
 	dfr$f01 <- matrix( crossprod( ( dat==0 )*w2 , (w2*( dat==1 ))) , ncol=1 , byrow=TRUE ) 
@@ -28,19 +27,31 @@ cdm_tetrachoric <- function( dat , weights , delta=.007 , maxit = 10000  )
 	dfr$p11 <- dfr$f11 / dfr$ftot
 	dfr$pi1 <- ( dfr$f11 + dfr$f10 ) / dfr$ftot
 	dfr$pi2 <- ( dfr$f11 + dfr$f01 ) / dfr$ftot
-	# subdata of dfr
+	# subdataset of dfr
 	dfr <- dfr[ dfr$item1 > dfr$item2 , ]
-	dfr <- dfr[ dfr$ftot > 0 , ]
+	dfr <- dfr[ dfr$ftot > 0 , ]	
 	dfr$qi1 <- stats::qnorm( dfr$pi1)
 	dfr$qi2 <- stats::qnorm( dfr$pi2)
+	
 	# functions defined by Cengiz Zopluoglu   
-	L <- function(r,h,k) {(1/(2*pi*sqrt(1-r^2)))*exp(-((h^2-2*h*k*r+k^2)/(2*(1-r^2))))}
-	S <- function(x,r,h,k) { x-(L(r,h,k)*delta) }
+	L <- function(r,h,k) {
+		(1/(2*pi*sqrt(1-r^2)))*exp(-((h^2-2*h*k*r+k^2)/(2*(1-r^2))))
+	}
+	S <- function(x,r,h,k) { 
+		x-(L(r,h,k)*delta) 
+	}
 	A0 <- dfr$A0 <- dfr$p11 - dfr$pi1 * dfr$pi2 
 	dfr$r0 <- delta / 2
+	#-- include inits if provided
+	if ( ( ! is.null(rho_init) ) & ( is.matrix(rho_init) ) ){		
+		dfr$r0 <- rho_init[ lower.tri(rho_init) ]
+		dfr$r0 <- ifelse( dfr$r0 == maxval, maxval - 10*( 1 - maxval ) , dfr$r0 )
+	}
+	
 	dfr$iter <- 0
 	dfr$iter <- 0
 	dfr$conv <- 0
+	
 	ii <- 0
 	vars <-  c("A0","r0","iter","conv")
 	while( ( mean( dfr$conv) < 1 ) & ( ii < maxit ) ){
@@ -59,8 +70,11 @@ cdm_tetrachoric <- function( dat , weights , delta=.007 , maxit = 10000  )
 		}
 		i2 <- which( dfr$conv==1 & dfr0$conv==1 )
 		if (length(i2) > 0){    
-			dfr[ i2 , vars] <- dfr0[ i2 , vars] }
-	}
+			dfr[ i2 , vars] <- dfr0[ i2 , vars] 
+		}
+		dfr$r0 <- ifelse( abs(dfr$r0) > maxval , sign(dfr$r0)*maxval , dfr$r0 )	
+		dfr$conv <- ifelse( abs(dfr$r0) >= maxval , 1 , dfr$conv )
+	}	
 	TC <- matrix(NA , I , I )
 	diag(TC) <- 1
 	TC[ as.matrix(dfr[ , c("item1","item2") ] ) ] <- dfr$r0

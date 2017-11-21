@@ -1,6 +1,5 @@
 ## File Name: gdina_create_attribute_patterns.R
-## File Version: 0.02
-## File Last Change: 2017-06-05 18:14:23
+## File Version: 0.04
 
 gdina_create_attribute_patterns <- function( q.matrix, skillclasses, zeroprob.skillclasses,
 		Z.skillspace, G, reduced.skillspace )
@@ -22,11 +21,21 @@ gdina_create_attribute_patterns <- function( q.matrix, skillclasses, zeroprob.sk
 	colnames(attr.patt) <- colnames(q.matrix)			
 	L <- nrow(attr.patt)
 
-    # combine all attributes in an attribute pattern as a string
-    attr.patt.c <- apply( attr.patt, 1, FUN = function(ll){ paste(ll,collapse="" ) } )
+	# combine all attributes in an attribute pattern as a string
+	attr.patt.c <- apply( attr.patt, 1, FUN = function(ll){ paste(ll,collapse="" ) } )
 
 	# create designmatrix for reduced skill space
-    if ( K < 4 | ( ! is.null( zeroprob.skillclasses ) ) | G > 1 ){ 
+	
+	if ( is.null(reduced.skillspace) ){
+		if (K < 4){
+			reduced.skillspace <- FALSE
+		} else {
+			reduced.skillspace <- TRUE
+		}
+	}
+	
+	# if ( K < 4 | ( ! is.null( zeroprob.skillclasses ) ) | G > 1 ){ 
+	if ( ! is.null( zeroprob.skillclasses )  ){ 
 		reduced.skillspace <- FALSE 
 	}
 	if ( ! is.null(Z.skillspace) ){ 

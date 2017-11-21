@@ -1,6 +1,5 @@
 %% File Name: sequential.items.Rd
-%% File Version: 0.12
-%% File Last Change: 2017-01-31 14:08:32
+%% File Version: 0.14
 
 \name{sequential.items}
 \alias{sequential.items}
@@ -101,7 +100,7 @@ New York: Springer.
 # EXAMPLE 1: Constructing sequential pseudo items for data.mg
 #############################################################################
 
-data(data.mg)
+data(data.mg, package="CDM")
 dat <- data.mg
 items <- colnames(dat)[ which( substring( colnames(dat) ,1,1)=="I" ) ]
 ##    [1] "I1"  "I2"  "I3"  "I4"  "I5"  "I6"  "I7"  "I8"  "I9"  "I10" "I11"
@@ -170,7 +169,7 @@ stats::xtabs( ~ paste(data$I7) + paste(dat.expand$I7_Cat3) )
 
 \dontrun{
 #*** Model 1: Rasch model for sequentially created pseudo items
-mod <- CDM::gdm( dat.expand , irtmodel="1PL" , theta.k=seq(-5,5,len=21) ,
+mod <- CDM::gdm( dat.expand, irtmodel="1PL" , theta.k=seq(-5,5,len=21) ,
              skillspace="normal" , decrease.increments=TRUE)
 }
 }

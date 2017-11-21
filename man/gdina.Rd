@@ -1,6 +1,5 @@
 %% File Name: gdina.Rd
-%% File Version: 2.994
-%% File Last Change: 2017-09-18 15:53:46
+%% File Version: 3.402
 
 \name{gdina}
 \alias{gdina}
@@ -23,18 +22,31 @@ Estimating the Generalized DINA (GDINA) Model
     (de la Torre & Douglas, 2004).
     Polytomous item responses are treated by specifying a sequential
     GDINA model (Ma & de la Torre, 2016; Tutz, 1997).
+    
+    The estimation can also be conducted by posing monotonocity 
+    constraints using the argument \code{mono.constr}. Moreover,
+    regularization methods SCAD, lasso, ridge, SCAD-L2 and
+    truncated \eqn{L_1} penalty (TLP) for item parameters 
+    can be employed (Xu & Shang, xxxx).
+    
+    Normally distributed priors can be specified for item parameters 
+    (item intercepts and item slopes). Note that (for convenience) the
+    prior specification holds simultaneously for all items.
 }
 \usage{
 gdina(data, q.matrix, skillclasses=NULL, conv.crit=0.0001, dev.crit=.1 ,  maxit=1000, 
     linkfct="identity", Mj=NULL, group=NULL , invariance = TRUE ,method=NULL , 
     delta.init = NULL , delta.fixed = NULL , delta.designmatrix=NULL, 
     delta.basispar.lower=NULL, delta.basispar.upper=NULL, delta.basispar.init=NULL,
-    zeroprob.skillclasses=NULL, attr.prob.init = NULL , reduced.skillspace=TRUE , 
+    zeroprob.skillclasses=NULL, attr.prob.init = NULL , reduced.skillspace=NULL , 
     reduced.skillspace.method=2 , HOGDINA=-1, Z.skillspace=NULL, 
-    weights=rep(1, nrow(data)), rule="GDINA", progress=TRUE, progress.item=FALSE ,
-    mstep_iter = 10 , mstep_conv = 1E-4 , increment.factor=1.01, fac.oldxsi=0 , 
-    max.increment = .3 , avoid.zeroprobs = FALSE , seed=0, save.devmin=TRUE , 
-    calc.se=TRUE , se_version = 1 ,  ...)
+    weights=rep(1, nrow(data)), rule="GDINA", regular_lam = 0, regular_type = "none", 
+    regular_alpha=NA, regular_tau=NA, mono.constr = FALSE, 
+    prior_intercepts = NULL, prior_slopes = NULL, progress=TRUE, 
+    progress.item=FALSE, mstep_iter = 10, mstep_conv = 1E-4, increment.factor=1.01, 
+    fac.oldxsi=0, max.increment = .3, avoid.zeroprobs = FALSE, seed=0, 
+    save.devmin=TRUE, calc.se=TRUE, se_version=1, PEM = TRUE, PEM_itermax=maxit, 
+    cd = FALSE, cd_steps = 1 , mono_maxiter = 10, freq_weights=FALSE, ...)
 
 \method{summary}{gdina}(object, digits = 4 , file = NULL ,  \dots)
 
@@ -132,9 +144,9 @@ For free estimated parameters \code{NA} must be declared.}
 \item{attr.prob.init}{Initial probabilities of skill distribution.}    
 
 \item{reduced.skillspace}{A logical which indicates if the latent class skill space should be
-        dimensionally reduced (see Xu & von Davier, 2008). Default is \code{TRUE}.
+        dimensionally reduced (see Xu & von Davier, 2008). The default is \code{NULL}
+        which applies skill space reduction for more than four skills.
         The dimensional reduction is only well defined for more than three skills.
-        The dimensional reduction is not yet implemented for multiple groups.
         If the argument \code{zeroprob.skillclasses} is not \code{NULL}, then
         \code{reduced.skillspace} is set to \code{FALSE}.}
 
@@ -179,6 +191,23 @@ An optional vector of sample weights.
     If \code{rule} is a vector, condensation rules can be specified itemwise. 
     The default is \code{GDINA} for all items.
 }
+\item{regular_lam}{Regularization parameter \eqn{\lambda}}
+\item{regular_type}{Type of regularization. Can be \code{scad} (SCAD penalty),
+\code{lasso} (lasso penalty), \code{ridge} (ridge penalty),
+\code{elnet} (elastic net), \code{scadL2} (SCAD-\eqn{L_2};
+Zeng & Xie, 2014), \code{tlp} (truncated \eqn{L_1} penalty; Xu & Shang, xxxx;
+Shen, Pan, & Zhu, 2012), \code{mcp} (MCP penalty; Zhang, 2010)
+or \code{none} (no regularization).}
+\item{regular_alpha}{Regularization parameter \eqn{\alpha} 
+(applicable for elastic net or SCAD-L2.}
+\item{regular_tau}{Regularization paramezer \eqn{\tau} for truncated
+\eqn{L_1} penalty.}
+\item{mono.constr}{Logical indicating whether monotonicity constraints
+should be fulfilled in estimation.}
+\item{prior_intercepts}{Vector with mean and standard deviation for prior
+of random intercepts (applies to all items)}
+\item{prior_slopes}{Vector with mean and standard deviation for prior
+of random slopes (applies to all items and all parameters)}
 \item{progress}{An optional logical indicating whether the function
     should print the progress of iteration in the estimation process.  }     
   \item{progress.item}{
@@ -219,6 +248,16 @@ errors should be calculated.}
 	since \pkg{CDM} 5.1 and is the default. Comparability with 
     previous \pkg{CDM} versions can be obtained with \code{se_version=0}. 
 }
+\item{PEM}{Logical indicating whether the P-EM acceleration should be
+applied (Berlinet & Roland, 2012).}
+\item{PEM_itermax}{Number of iterations in which the P-EM method should be
+applied.} 
+\item{cd}{Logical indicating whether coordinate descent algorithm should be used.}
+\item{cd_steps}{Number of steps for each parameter in coordinate descent algorithm}
+\item{mono_maxiter}{Maximum number of iterations for fulfilling the
+monotonicity constraint}
+\item{freq_weights}{Logical indicating whether frequency weights should
+be used. Default is \code{FALSE}.}
   \item{object}{A required object of class \code{gdina}, obtained
     from a call to the function \code{\link{gdina}}.  }
   \item{digits}{Number of digits after decimal separator to display.  }
@@ -347,6 +386,15 @@ An object of class \code{gdina} with following entries
 	if \code{rule="RRUM"}.}
 \item{group.stat}{Group statistics (sample sizes, group labels)}                
 \item{HOGDINA}{The used value of \code{HOGDINA}}
+\item{mono.constr}{Monotonocity constraint}
+\item{regularization}{Logical indicating whether regularization is used}
+\item{regular_lam}{Regularization parameter}
+\item{numb_bound_mono}{Number of items with parameters at boundary of
+monotonicity constraints}
+\item{numb_regular_pars}{Number of regularized item parameters}
+\item{cd_algorithm}{Logical indicating whether coordinate descent algorithm is
+used}
+\item{cd_steps}{Number of steps for each parameter in coordinate descent algorithm} 
 \item{seed}{Used simulation seed}
 \item{a.attr}{Attribute parameters \eqn{a_k} in case of \code{HOGDINA>=0}}
 \item{b.attr}{Attribute parameters \eqn{b_k} in case of \code{HOGDINA>=0}}
@@ -367,6 +415,10 @@ is applied for polytomous item responses}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
 \references{
+Berlinet, A. F., & Roland, C. (2012). 
+Acceleration of the EM algorithm: P-EM versus epsilon algorithm.
+\emph{Computational Statistics & Data Analysis}, \bold{56}(12), 4122-4137.
+
   Chen, J., & de la Torre, J. (2013). 
   A general cognitive diagnosis model for expert-defined polytomous attributes.
   \emph{Applied Psychological Measurement}, \bold{37}, 419-437.
@@ -387,21 +439,31 @@ A sequential cognitive diagnosis model for polytomous responses.
   diagnostic classification models: A comprehensive review of the current
   state-of-the-art. \emph{Measurement: Interdisciplinary Research and
   Perspectives}, \bold{6}, 219-262.
+
+Shen, X., Pan, W., & Zhu, Y. (2012). Likelihood-based selection and sharp
+parameter estimation.
+\emph{Journal of the American Statistical Association}, \bold{107}, 223-232.
   
 Tutz, G. (1997). Sequential models for ordered responses. 
 In W. van der Linden & R. K. Hambleton.
 \emph{Handbook of modern item response theory} (pp. 139-152). 
 New York: Springer.  
+
+Xu, G., & Shang, Z. (xxxx). Identying latent structures in 
+restricted latent class models.
+\emph{Journal of the American Statistical Association}, \bold{xxx}, xxx-xxx.
+
+Xu, X., & von Davier, M. (2008). \emph{Fitting the structured general diagnostic
+model to NAEP data}. ETS Research Report ETS RR-08-27. Princeton, ETS.
   
-  Xu, X., & von Davier, M. (2008). \emph{Fitting the structured general diagnostic
-  model to NAEP data}. ETS Research Report ETS RR-08-27. Princeton, ETS.
-    }
+Zeng, L., & Xie, J. (2014). Group variable selection via
+SCAD-\eqn{L_2}. \emph{Statistics}, \bold{48}, 49-66.
+
+Zhang, C.-H. (2010). Nearly unbiased variable selection under minimax concave 
+penalty. \emph{Annals of Statistics}, \bold{38}, 894-942.
+}
     
-    
-%\author{
-%Alexander Robitzsch, Thomas Kiefer
-%    }
-    
+        
     
 \note{    
     The function \code{\link{din}} does not allow for multiple group estimation.
@@ -440,32 +502,37 @@ See the \code{\link[GDINA:GDINA]{GDINA::GDINA}} function in the
 #############################################################################
 # EXAMPLE 1: Simulated DINA data | different condensation rules 
 #############################################################################
-data(sim.dina)
+
+data(sim.dina, package="CDM")
+data(sim.qmatrix, package="CDM")
+
+dat <- sim.dina
+Q <- sim.qmatrix
 
 #***
 # Model 1: estimation of the GDINA model (identity link)
-mod1 <- CDM::gdina( data = sim.dina ,  q.matrix = sim.qmatrix , maxit=700)
+mod1 <- CDM::gdina( data = dat,  q.matrix = Q)
 summary(mod1)
 plot(mod1) # apply plot function
 
 \dontrun{
 # Model 1a: estimate model with different simulation seed
-mod1a <- CDM::gdina( data = sim.dina ,  q.matrix = sim.qmatrix , seed=9089)
+mod1a <- CDM::gdina( data = dat ,  q.matrix = Q , seed=9089)
 summary(mod1a)
 
 # Model 1b: estimate model with some fixed delta parameters
 delta.fixed <- as.list( rep(NA,9) )		# List for parameters of 9 items
 delta.fixed[[2]] <- c( 0 , .15 , .15 , .45 )
 delta.fixed[[6]] <- c( .25 , .25 )
-mod1b <- CDM::gdina( data = sim.dina ,  q.matrix = sim.qmatrix , delta.fixed=delta.fixed)
+mod1b <- CDM::gdina( data = dat ,  q.matrix = Q , delta.fixed=delta.fixed)
 summary(mod1b)
 
 # Model 1c: fix all delta parameters to previously fitted model
-mod1c <- CDM::gdina( data = sim.dina ,  q.matrix = sim.qmatrix , delta.fixed=mod1$delta)
+mod1c <- CDM::gdina( data = dat ,  q.matrix = Q , delta.fixed=mod1$delta)
 summary(mod1c)
 
 # Model 1d: estimate GDINA model with GDINA package
-mod1d <- GDINA::GDINA( dat = sim.dina , Q = sim.qmatrix , model = "GDINA" )
+mod1d <- GDINA::GDINA( dat = dat , Q = Q , model = "GDINA" )
 summary(mod1d)
 # extract item parameters
 GDINA::itemparm(mod1d)
@@ -476,83 +543,118 @@ logLik(mod1d)
 
 #***
 # Model 2: estimation of the DINA model with gdina function
-mod2 <- CDM::gdina( data = sim.dina ,  q.matrix = sim.qmatrix , rule="DINA")
+mod2 <- CDM::gdina( data = dat ,  q.matrix = Q , rule="DINA")
 summary(mod2)
 plot(mod2)
 
 #***
 # Model 2b: compare results with din function
-mod2b <- CDM::din( data = sim.dina ,  q.matrix = sim.qmatrix , rule="DINA")
+mod2b <- CDM::din( data = dat ,  q.matrix = Q , rule="DINA")
 summary(mod2b)
 
 # Model 2: estimation of the DINO model with gdina function
-mod3 <- CDM::gdina( data = sim.dina ,  q.matrix = sim.qmatrix , rule="DINO")
+mod3 <- CDM::gdina( data = dat ,  q.matrix = Q , rule="DINO")
 summary(mod3)
 
 #***
 # Model 4: DINA model with logit link
-mod4 <- CDM::gdina( data = sim.dina ,  q.matrix = sim.qmatrix , maxit= 20 , 
-                rule="DINA" , linkfct = "logit" )
+mod4 <- CDM::gdina( data = dat, q.matrix = Q, rule="DINA", linkfct = "logit" )
 summary(mod4)
 
 #***
 # Model 5: DINA model log link
-mod5 <- CDM::gdina( data = sim.dina ,  q.matrix = sim.qmatrix , maxit=100 , 
-                    rule="DINA" , linkfct = "log" )
+mod5 <- CDM::gdina( data = dat, q.matrix = Q, rule="DINA", linkfct = "log")
 summary(mod5)
 
 #***
 # Model 6: RRUM model
-mod6 <- CDM::gdina( data = sim.dina, q.matrix = sim.qmatrix, maxit=100,  rule="RRUM")
+mod6 <- CDM::gdina( data = dat, q.matrix = Q, rule="RRUM")
 summary(mod6)
 
 #***
 # Model 7: Higher order GDINA model
-mod7 <- CDM::gdina( data = sim.dina, q.matrix = sim.qmatrix, maxit=100,  HOGDINA=1)
+mod7 <- CDM::gdina( data = dat, q.matrix = Q, HOGDINA=1)
 summary(mod7)
 
 #***
-# Model 8: Independence GDINA model
-mod8 <- CDM::gdina( data = sim.dina, q.matrix = sim.qmatrix, maxit=100,  HOGDINA=0)
+# Model 8: GDINA model with independent attributes
+mod8 <- CDM::gdina( data = dat, q.matrix = Q, HOGDINA=0)
 summary(mod8)
+
+#***
+# Model 9: Estimating the GDINA model with monotonocity constraints
+mod9 <- CDM::gdina( data = dat, q.matrix = Q, rule="GDINA", 
+              mono.constr=TRUE, linkfct="logit")
+summary(mod9)
+              
+#***
+# Model 10: Estimating the ACDM model with SCAD penalty and regularization
+#           parameter of .05
+mod10 <- CDM::gdina( data = dat, q.matrix = Q, rule="ACDM",
+                linkfct="logit", regular_type="scad", regular_lam=.05 )
+summary(mod10)                
+
+#***
+# Model 11: Estimation of GDINA model with prior distributions
+
+# N(0,10^2) prior for item intercepts
+prior_intercepts <- c(0,10)
+# N(0,1^2) prior for item slopes
+prior_slopes <- c(0,1)
+# estimate model
+mod11 <- CDM::gdina( data = dat, q.matrix = Q, rule="GDINA", 
+              prior_intercepts=prior_intercepts, prior_slopes = prior_slopes)
+summary(mod11)
 
 #############################################################################
 # EXAMPLE 2: Simulated DINO data
 #    additive cognitive diagnosis model with different link functions
 #############################################################################
 
+data(sim.dino, package="CDM")
+data(sim.matrix, package="CDM")
+
+dat <- sim.dino
+Q <- sim.qmatrix
+
 #***
 # Model 1: additive cognitive diagnosis model (ACDM; identity link)
-mod1 <- CDM::gdina( data=sim.dino,  q.matrix=sim.qmatrix,  rule="ACDM")
+mod1 <- CDM::gdina( data=dat, q.matrix=Q,  rule="ACDM")
 summary(mod1)
 
 #***
 # Model 2: ACDM logit link
-mod2 <- CDM::gdina( data=sim.dino, q.matrix=sim.qmatrix, rule="ACDM", linkfct="logit" )
+mod2 <- CDM::gdina( data=dat, q.matrix=Q, rule="ACDM", linkfct="logit")
 summary(mod2)
 
 #***
 # Model 3: ACDM log link
-mod3 <- CDM::gdina( data=sim.dino,  q.matrix=sim.qmatrix, rule="ACDM", linkfct="log" )
+mod3 <- CDM::gdina( data=dat, q.matrix=Q, rule="ACDM", linkfct="log")
 summary(mod3)
 
 #***
 # Model 4: Different condensation rules per item
 I <- 9      # number of items
-rule <- rep( "GDINA" , I )
+rule <- rep( "GDINA", I )
 rule[1] <- "DINO"   # 1st item: DINO model
 rule[7] <- "GDINA2" # 7th item: GDINA model with first- and second-order interactions
 rule[8] <- "ACDM"   # 8ht item: additive CDM
 rule[9] <- "DINA"   # 9th item: DINA model
-mod4 <- CDM::gdina( data=sim.dino, q.matrix=sim.qmatrix, rule=rule )
+mod4 <- CDM::gdina( data=dat, q.matrix=Q, rule=rule )
 summary(mod4)
 
 #############################################################################
 # EXAMPLE 3: Model with user-specified design matrices
 #############################################################################
 
+data(sim.dino, package="CDM")
+data(sim.qmatrix, package="CDM")
+
+dat <- sim.dino
+Q <- sim.qmatrix
+
 # do a preliminary analysis and modify obtained design matrices
-mod0 <- CDM::gdina( data = sim.dino ,  q.matrix = sim.qmatrix ,  maxit=1)
+mod0 <- CDM::gdina( data = dat ,  q.matrix = Q ,  maxit=1)
 
 # extract default design matrices
 Mj <- mod0$Mj
@@ -590,7 +692,7 @@ Mj.user[[8]]
   ##   
   ##   [[2]]
   ##   [1] "0"   "1=2" "1-2"
-mod <- CDM::gdina( data = sim.dino ,  q.matrix = sim.qmatrix ,
+mod <- CDM::gdina( data = dat ,  q.matrix = Q ,
                     Mj = Mj.user ,  maxit=200 )
 summary(mod)
 
@@ -598,9 +700,11 @@ summary(mod)
 # EXAMPLE 4: Design matrix for delta parameters
 #############################################################################
 
+data(sim.dino, package="CDM")
+data(sim.qmatrix, package="CDM")
+
 #~~~ estimate an initial model
-mod0 <- CDM::gdina( data = sim.dino ,  q.matrix = sim.qmatrix , 
-            rule="ACDM" , maxit=1)
+mod0 <- CDM::gdina( data = dat ,  q.matrix = Q , rule="ACDM" , maxit=1)
 # extract coefficients
 c0 <- mod0$coef
 I <- 9  # number of items
@@ -615,15 +719,14 @@ delta.designmatrix <- delta.designmatrix[ , -c(7:8) ]
 
 #***
 # Model 1: ACDM with designmatrix
-mod1 <- CDM::gdina( data = sim.dino ,  q.matrix = sim.qmatrix ,  rule="ACDM" , 
+mod1 <- CDM::gdina( data = dat ,  q.matrix = Q ,  rule="ACDM" , 
             delta.designmatrix = delta.designmatrix )
 summary(mod1)            
 
 #***
 # Model 2: Same model, but with logit link instead of identity link function
-mod2 <- CDM::gdina( data = sim.dino ,  q.matrix = sim.qmatrix ,  rule="ACDM" , 
-            delta.designmatrix = delta.designmatrix , 
-            maxit=100 , linkfct = "logit")
+mod2 <- CDM::gdina( data=dat,  q.matrix=Q,  rule="ACDM",
+            delta.designmatrix = delta.designmatrix, linkfct = "logit")
 summary(mod2)            
 
 #############################################################################
@@ -664,7 +767,6 @@ mod4 <- CDM::gdina( data = dat , q.matrix = q.matrix ,  group= group,
 #--- model comparison
 IRT.compareModels(mod1,mod2,mod3,mod4)                      
 
-
 # estimate GDINA model with non-invariant item parameters except for the
 # items I001, I006, I008
 mod5 <- CDM::gdina( data = dat , q.matrix = q.matrix ,  group= group, 
@@ -681,7 +783,7 @@ q.matrix <- q.matrix[ -1 , ]
 Sigma <- matrix( .5 , nrow=4 , ncol=4 )
 diag(Sigma) <- 1
 Sigma[3,2] <- Sigma[2,3] <- 0 # set correlation of attribute A2 and A3 to zero
-dat <- sim.din( N=1000 , q.matrix = q.matrix , Sigma = Sigma)$dat
+dat <- CDM::sim.din( N=1000 , q.matrix = q.matrix , Sigma = Sigma)$dat
 
 #~~~ Step 1: initial estimation
 mod1a <- CDM::gdina( data=dat , q.matrix = q.matrix , maxit= 1 , rule="DINA")
@@ -695,8 +797,8 @@ vars <- c("A2_A3","A2_A4")
 for (vv in vars){ Z.skillspace[,vv] <- NULL }
 
 #~~~ Step 3: estimate model with reduced skillspace
-mod2 <- CDM::gdina( data=dat , q.matrix = q.matrix , 
-        Z.skillspace=Z.skillspace , rule="DINA")
+mod2 <- CDM::gdina( data=dat, q.matrix = q.matrix, 
+              Z.skillspace=Z.skillspace, rule="DINA")
 
 #~~~ eliminate all covariances
 Z.skillspace <- data.frame( mod1$Z.skillspace )
@@ -705,54 +807,60 @@ Z.skillspace <- Z.skillspace[, -grep( "_" , colnames(Z.skillspace),fixed=TRUE)]
 colnames(Z.skillspace)
 
 mod3 <- CDM::gdina( data=dat , q.matrix = q.matrix , 
-        Z.skillspace=Z.skillspace , rule="DINA")
-summary(mod1); summary(mod2); summary(mod3)
+               Z.skillspace=Z.skillspace , rule="DINA")
+summary(mod1)
+summary(mod2)
+summary(mod3)
 
 #############################################################################
 # EXAMPLE 7: Polytomous GDINA model (Chen & de la Torre, 2013)
 #############################################################################
-data(data.pgdina)
+
+data(data.pgdina, package="CDM")
+
 dat <- data.pgdina$dat
 q.matrix <- data.pgdina$q.matrix
 
 # pGDINA model with "DINA rule"
-mod1 <- CDM::gdina( dat , q.matrix=q.matrix , rule="DINA")
+mod1 <- CDM::gdina( dat, q.matrix=q.matrix, rule="DINA")
 summary(mod1)
 # no reduced skill space
-mod1a <- CDM::gdina( dat , q.matrix=q.matrix , rule="DINA",reduced.skillspace=FALSE)
+mod1a <- CDM::gdina( dat, q.matrix=q.matrix, rule="DINA",reduced.skillspace=FALSE)
 summary(mod1)
 
 # pGDINA model with "GDINA rule"
-mod2 <- CDM::gdina( dat , q.matrix=q.matrix , rule="GDINA")
+mod2 <- CDM::gdina( dat, q.matrix=q.matrix, rule="GDINA")
 summary(mod2)
 
 #############################################################################
 # EXAMPLE 8: Fraction subtraction data: DINA and HO-DINA model
 #############################################################################
 
-data(fraction.subtraction.data)
-data(fraction.subtraction.qmatrix)
+data(fraction.subtraction.data, package="CDM")
+data(fraction.subtraction.qmatrix, package="CDM")
+
+dat <- fraction.subtraction.data
+Q <- fraction.subtraction.qmatrix
 
 # Model 1: DINA model
-mod1 <- CDM::gdina(fraction.subtraction.data, q.matrix = fraction.subtraction.qmatrix,
-       rule = "DINA")
+mod1 <- CDM::gdina( dat, q.matrix = Q, rule = "DINA")
 summary(mod1)
 
 # Model 2: HO-DINA model
-mod2 <- CDM::gdina(fraction.subtraction.data, q.matrix = fraction.subtraction.qmatrix,
-             HOGDINA = 1, rule = "DINA")
+mod2 <- CDM::gdina( dat, q.matrix = Q, HOGDINA = 1, rule = "DINA")
 summary(mod2)
 
 #############################################################################
 # EXAMPLE 9: Skill space approximation data.jang
 #############################################################################
 
-data(data.jang)
+data(data.jang, package="CDM")
+
 data <- data.jang$data
 q.matrix <- data.jang$q.matrix
 
 #*** Model 1: Reduced RUM model
-mod1 <- CDM::gdina( data , q.matrix , rule="RRUM"  , conv.crit=.001 , maxit=500 )
+mod1 <- CDM::gdina( data, q.matrix, rule="RRUM"  , conv.crit=.001 , maxit=500 )
 
 #*** Model 2: Reduced RUM model with skill space approximation
 # use 300 instead of 2^9 = 512 skill classes
@@ -793,10 +901,10 @@ I <- nrow(Q)
 guess <- stats::runif( I , 0 , .3 )
 slip <- stats::runif( I , 0 , .2 )
 # simulate data
-dat <- sim.din( q.matrix=Q , alpha=alpha , slip=slip , guess=guess )$dat
+dat <- CDM::sim.din( q.matrix=Q, alpha=alpha, slip=slip, guess=guess )$dat
 
 #*** Model 1: DINA model with linear hierarchy
-mod1 <- CDM::din( dat , q.matrix=Q , rule="DINA" ,   skillclasses = skillspace )
+mod1 <- CDM::din( dat, q.matrix=Q, rule="DINA",  skillclasses = skillspace )
 summary(mod1)
 
 #*** Model 2: pGDINA model with 3 levels
@@ -818,8 +926,9 @@ summary(mod3)
 # EXAMPLE 11: Sequential GDINA model (Ma & de la Torre, 2016)
 #############################################################################
 
+data(data.cdm04, package="CDM")
+
 #** attach dataset
-data(data.cdm04)
 dat <- data.cdm04$data	# polytomous item responses
 q.matrix1 <- data.cdm04$q.matrix1
 q.matrix2 <- data.cdm04$q.matrix2

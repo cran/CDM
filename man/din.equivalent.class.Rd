@@ -1,6 +1,5 @@
 %% File Name: din.equivalent.class.Rd
-%% File Version: 0.17
-%% File Last Change: 2017-01-31 14:08:30
+%% File Version: 0.21
 
 \name{din.equivalent.class}
 \alias{din.equivalent.class}
@@ -63,8 +62,10 @@ in Q-matrix based cognitive diagnosis models.
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
 \examples{
-# DINA models
-data(data.fraction2)
+#-- DINA models
+
+data(data.fraction2, package="CDM")
+
 # first Q-matrix
 Q1 <- data.fraction2$q.matrix1
 m1 <- CDM::din.equivalent.class( q.matrix = Q1 , rule="DINA" )
@@ -81,8 +82,7 @@ m1 <- CDM::din.equivalent.class( q.matrix = Q1 , rule="DINA" )
   ## 8 Skill classes | 8  distinguishable skill classes | Gini coefficient = 0 
 
 # original fraction subtraction data
-data(fraction.subtraction.qmatrix)
-m1 <- CDM::din.equivalent.class( q.matrix = fraction.subtraction.qmatrix , rule="DINA" )
+m1 <- CDM::din.equivalent.class( q.matrix=CDM::fraction.subtraction.qmatrix, rule="DINA")
   ## 256 Skill classes | 58  distinguishable skill classes | Gini coefficient = 0.659
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

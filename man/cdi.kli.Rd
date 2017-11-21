@@ -1,6 +1,5 @@
 %% File Name: cdi.kli.Rd
-%% File Version: 0.11
-%% File Last Change: 2017-01-31 14:08:30
+%% File Version: 0.13
 
 \name{cdi.kli}
 \alias{cdi.kli}
@@ -84,13 +83,13 @@ Press.
 
 \examples{
 #############################################################################
-# EXAMPLE 1: Examples based on sim.dina
+# EXAMPLE 1: Examples based on CDM::sim.dina
 #############################################################################	
 
-data(sim.dina)
-data(sim.qmatrix)
+data(sim.dina, package="CDM")
+data(sim.qmatrix, package="CDM")
 
-mod <- CDM::din( sim.dina , q.matrix = sim.qmatrix )
+mod <- CDM::din( sim.dina, q.matrix = sim.qmatrix )
 summary(mod)
   ##  Item parameters
   ##         item guess  slip   IDI rmsea

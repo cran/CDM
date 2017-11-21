@@ -1,6 +1,5 @@
 ## File Name: gdina_se_itemwise.R
-## File Version: 0.11
-## File Last Change: 2017-06-05 18:15:27
+## File Version: 0.16
 
 gdina_se_itemwise <- function( R.lj_jj , I.lj_jj , apjj ,
 		Mjjj , Mjj2 , PAJXI , IP , item.patt.split_jj , resp.patt_jj ,
@@ -24,16 +23,16 @@ gdina_se_itemwise <- function( R.lj_jj , I.lj_jj , apjj ,
 			if ( linkfct == "log"){
 				pjjj_model <- exp( pjjj_model)
 			}
-			pjjj_ <- squeeze.cdm(pjjj_model , c(eps2, Inf) )
+			pjjj_ <- cdm_squeeze(pjjj_model , c(eps2, Inf) )
 			ll1 <- Rlj.ast[,2] * log(pjjj_)
-			pjjj_ <- squeeze.cdm(1-pjjj_model , c(eps2, Inf) )
+			pjjj_ <- cdm_squeeze(1-pjjj_model , c(eps2, Inf) )
 			ll2 <- (Ilj.ast-Rlj.ast)[,2] * log( pjjj_ )
 			ll <- sum(ll1 + ll2)
 			return( ll )
 		}
 		res_jj <- loglike_item_jj(x=delta_jj)
 		hess_jj <- numerical_Hessian( par = delta_jj , FUN = loglike_item_jj )
-		varmat.delta_jj <- solve_add_ridge( - hess_jj )
+		varmat.delta_jj <- MASS::ginv( - hess_jj )
 	}		
 	
 	#********* standard error calculation formulas de la Torre (2011)
@@ -49,7 +48,7 @@ gdina_se_itemwise <- function( R.lj_jj , I.lj_jj , apjj ,
 				p.ajast.xi[,kk] <- rowSums( pg1 ) 
 			}
 		}
-		pjjjM <- outer( rep(1,IP) , pjjj ) + 10^(-20)		
+		pjjjM <- outer( rep(1,IP) , pjjj ) + eps2
 		nM <- ncol(pjjjM) 
 		x1 <- outer( item.patt.split_jj , rep(1,nM) )	
 		r1 <- outer( resp.patt_jj * item.patt.freq , rep(1,ncol(pjjjM) ) )
@@ -79,7 +78,7 @@ gdina_se_itemwise <- function( R.lj_jj , I.lj_jj , apjj ,
 		varmat.palj_jj <- Ijj <- a1
 		Wj <- diag( Ilj.ast[,2] )	
 		if ( avoid.zeroprobs ){
-			ind <- which( Ilj.ast[,2]  < 1E-10  )
+			ind <- which( Ilj.ast[,2]  < eps2  )
 			if ( length(ind) > 0 ){
 				Wj <- diag( Ilj.ast[-ind,2] )
 				Mjjj <- Mjjj[ - ind , ]
@@ -110,6 +109,6 @@ gdina_se_itemwise <- function( R.lj_jj , I.lj_jj , apjj ,
 	}	
 	#--- output
 	res <- list( infomat.jj = infomat.jj , varmat.palj_jj = varmat.palj_jj ,
-			varmat.delta_jj = varmat.delta_jj)
+					varmat.delta_jj = varmat.delta_jj)
 	return(res)
 }

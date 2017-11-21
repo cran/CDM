@@ -1,6 +1,5 @@
 %% File Name: personfit.appropriateness.Rd
-%% File Version: 0.14
-%% File Last Change: 2017-01-31 14:08:32
+%% File Version: 0.17
 
 \name{personfit.appropriateness}
 \alias{personfit.appropriateness}
@@ -108,10 +107,10 @@ diagnosis. \emph{Applied Psychological Measurement}, \bold{33(8)}, 579-598.
 # EXAMPLE 1: DINA model data.ecpe
 #############################################################################
 
-data(data.ecpe)
+data(data.ecpe, package="CDM")
 
 # fit DINA model 
-mod1 <- CDM::din( data.ecpe$data[,-1] , q.matrix= data.ecpe$q.matrix )
+mod1 <- CDM::din( CDM::data.ecpe$data[,-1] , q.matrix=CDM::data.ecpe$q.matrix )
 summary(mod1)
 
 # person fit appropriateness statistic
@@ -128,8 +127,7 @@ plot(res)
 # EXAMPLE 2: Person fit 2PL model
 #############################################################################
 
-library(sirt)
-data( data.read , package="sirt")
+data(data.read, package="sirt")
 dat <- data.read
 I <- ncol(dat)
 
@@ -138,13 +136,13 @@ mod1 <- sirt::rasch.mml2( dat , est.a= 1:I)
 # person fit statistic
 data <- mod1$dat
 probs0 <- t(mod1$pjk)
-probs <- array( 0 , dim=c( ncol(dat) , 2 , dim(probs0)[2] ) )
+probs <- array( 0 , dim=c( I, 2, dim(probs0)[2] ) )
 probs[,2,] <- probs0
 probs[,1,] <- 1 - probs0
 skillclassprobs <- mod1$trait.distr$pi.k
 res <- CDM::personfit.appropriateness( data , probs , skillclassprobs )
 summary(res)
-plot(res)          
+plot(res)
 }
 }
 

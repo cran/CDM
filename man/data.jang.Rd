@@ -1,6 +1,5 @@
 %% File Name: data.jang.Rd
-%% File Version: 0.10
-%% File Last Change: 2017-01-31 14:08:30
+%% File Version: 0.12
 
 \name{data.jang}
 \alias{data.jang}
@@ -57,20 +56,21 @@ ability: Validity arguments for Fusion Model application to LanguEdge assessment
 
 \examples{
 \dontrun{	
-data(data.jang)
+data(data.jang, package="CDM")
+
 data <- data.jang$data
 q.matrix <- data.jang$q.matrix
 
 #*** Model 1: Reduced RUM model
-mod1 <- CDM::gdina( data , q.matrix , rule="RRUM" , conv.crit = .001 , increment.factor=1.025 )
+mod1 <- CDM::gdina( data, q.matrix, rule="RRUM", conv.crit = .001, increment.factor=1.025 )
 summary(mod1)
 
 #*** Model 2: Additive model (identity link)
-mod2 <- CDM::gdina( data , q.matrix , rule="ACDM" , conv.crit = .001 , linkfct="identity" )
+mod2 <- CDM::gdina( data, q.matrix, rule="ACDM", conv.crit = .001, linkfct="identity" )
 summary(mod2)
 
 #*** Model 3: DINA model
-mod3 <- CDM::gdina( data , q.matrix , rule="DINA" , conv.crit = .001 )
+mod3 <- CDM::gdina( data, q.matrix, rule="DINA", conv.crit = .001 )
 summary(mod3)
 
 anova(mod1,mod2)

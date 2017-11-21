@@ -1,6 +1,5 @@
 %% File Name: din.validate.qmatrix.Rd
-%% File Version: 1.20
-%% File Last Change: 2017-01-31 14:08:31
+%% File Version: 1.22
 
 \name{din.validate.qmatrix}
 \alias{din.validate.qmatrix}
@@ -97,7 +96,7 @@ q.matrix[10,] <- c(1,1,0)
 q.matrix[11,] <- c(1,0,1)
 q.matrix[12,] <- c(0,1,1)
 # simulate data
-dat <- sim.din( N=4000 , q.matrix)$dat
+dat <- CDM::sim.din( N=4000 , q.matrix)$dat
 # incorrectly modify Q-matrix rows 1 and 10
 Q1 <- q.matrix
 Q1[1,] <- c(1,1,0)
@@ -130,7 +129,7 @@ res <- CDM::din.validate.qmatrix( mod )
 \dontrun{
 #*****************
 # Q-matrix estimation ('Qrefine') in the NPCD package
-# See Chiu (2014, APM).
+# See Chiu (2013, APM).
 #*****************
 
 library(NPCD)

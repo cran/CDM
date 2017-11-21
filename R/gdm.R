@@ -1,6 +1,5 @@
 ## File Name: gdm.R
-## File Version: 8.622
-## File Last Change: 2017-10-06 10:28:27
+## File Version: 8.641
 
 
 ###########################################
@@ -69,16 +68,15 @@
 # GDM function
 # 
 gdm <- function( data , theta.k, irtmodel="2PL", group=NULL, 
-    weights=rep(1, nrow(data)), 
-	Qmatrix=NULL ,thetaDes = NULL , skillspace="loglinear",
-    b.constraint=NULL, a.constraint=NULL, 
-	mean.constraint=NULL , Sigma.constraint=NULL , 
-    delta.designmatrix=NULL, standardized.latent=FALSE , 
-	centered.latent=FALSE , centerintercepts=FALSE , centerslopes=FALSE , 
-    maxiter=1000, conv=1E-5, globconv=1E-5, msteps=4 , 
-	convM=.0005 , 
-	decrease.increments = FALSE , use.freqpatt=FALSE ,
-	progress=TRUE  , ...)
+			weights=rep(1, nrow(data)), 
+			Qmatrix=NULL ,thetaDes = NULL , skillspace="loglinear",
+			b.constraint=NULL, a.constraint=NULL, 
+			mean.constraint=NULL , Sigma.constraint=NULL , 
+			delta.designmatrix=NULL, standardized.latent=FALSE , 
+			centered.latent=FALSE , centerintercepts=FALSE , centerslopes=FALSE , 
+			maxiter=1000, conv=1E-5, globconv=1E-5, msteps=4 , 
+			convM=.0005 , decrease.increments = FALSE , use.freqpatt=FALSE ,
+			progress=TRUE , PEM=FALSE, PEM_itermax=maxiter, ...)
 {	
 	# mean.constraint [ dimension , group , value ]
 	# Sigma.constraint [ dimension1 , dimension2 , group , value ]		
@@ -91,7 +89,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 	## gdm: no visible binding for global variable 'TD'
 	TD <- TP <- EAP.rel <- mean.trait <- sd.trait <- skewness.trait <- NULL
 	K.item <- correlation.trait <- D <- NULL 
-    se.theta.k <- NULL	
+	se.theta.k <- NULL	
 	data0 <- data <- as.matrix(data)
 	dat.resp0 <- dat.resp <- 1 - is.na(data)
 	dat <- data
@@ -119,33 +117,16 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 	}
 	I <- ncol(dat)	# number of items
 	n <- nrow(dat)
+	#--- response patterns
+	resp.ind.list <- gdm_proc_response_indicators(dat.resp=dat.resp)	
 	
-	# arrange groups
-	if ( is.null(group)){ 
-		G <- 1 
-		group0 <- group <- rep(1,n)
-	} else {
-		group0 <- group
-		if( ! ( is.numeric(group) ) ){
-			gr2 <- unique( sort(paste( group ) ))
-		} else {
-			gr2 <- unique( sort( group ) )
-		}
-		G <- length(gr2)
-		group <- match( group , gr2 )
-	}
-	group.stat <- NULL
-	if (G>1){
-		a1 <- stats::aggregate( 1+0*group , list(group) , sum )
-			a2 <- rep("",G)
-		for (gg in 1:G){
-			a2[gg] <- group0[ which( group == gg )[1]  ]
-						}
-		group.stat <- cbind( a2 , a1 )
-		colnames(group.stat) <- c(  "group.orig" , "group" , "N"  )
-	    Ngroup <- a1[,2]		
-	}	
-    if (G==1){ Ngroup <- length(group) }
+	#-- process data for multiple groups
+	res <- slca_proc_multiple_groups( group=group, n=n ) 
+	G <- res$G
+	group <- res$group
+	group0 <- res$group0
+	group.stat <- res$group.stat
+	Ngroup <- res$Ngroup	
 	
 	#--- theta design
 	res <- gdm_thetadesign( theta.k=theta.k, thetaDes=thetaDes, Qmatrix=Qmatrix ) 
@@ -156,13 +137,8 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 	thetaDes <- res$thetaDes
 	Qmatrix <- res$Qmatrix
 	
-	#****
-	# arrange b parameters and starting values
-	b <- matrix( 0 , nrow=I , ncol=K )	
-	for (ii in 1:K){	# ii <- 1
-		cm1 <- colMeans( ( dat0 >= ii )*dat.resp0 )
-		b[,ii] <-  stats::qlogis( ( cm1 + .01 ) / 1.02 )
-	}	
+	#--- starting values for b
+	b <- gdm_inits_b( dat0=dat0, dat.resp0=dat.resp0, I=I, K=K ) 
 
 	#****
 	# item slope matrix
@@ -190,12 +166,9 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 	for (gg in 1:G){ 
 		pi.k[,gg] <- cdm_sumnorm( pik )
 	}
-	n.ik <- array( 0, dim=c(TP,I,K+1,G) )	
+	n.ik <- array( 0, dim=c(TP,I,K+1,G) )		
 	
-	#--- response patterns
-	resp.ind.list <- gdm_proc_response_indicators(dat.resp=dat.resp)	
-	
-    #***
+	#***
 	# extract number of skills per dimensions
 	skill.levels <- rep(0,D)
 	for (dd in 1:D){ 
@@ -238,10 +211,31 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 				use.freqpatt=use.freqpatt ) 
 	ind.group <- res$ind.group
 	dat.ind2 <- res$dat.ind2	
-						
+					
+	#-- preliminaries PEM acceleration
+	if (PEM){	
+		envir <- environment()	
+		pem_pars <- c("b","a","pi.k")
+		if ( skillspace=="est"){
+			pem_pars <- c(pem_pars, "theta.k")
+		}
+		if ( skillspace=="loglinear"){
+			pem_pars <- c(pem_pars, "delta")
+		}		
+		pem_output_vars <- unique( c( pem_pars ) )
+		parmlist <- cdm_pem_inits_assign_parmlist(pem_pars=pem_pars, envir=envir)
+		res <- cdm_pem_inits( parmlist=parmlist)
+		pem_parameter_index <- res$pem_parameter_index
+		pem_parameter_sequence <- res$pem_parameter_sequence				
+	}
+
+	deviance.history <- rep(NA, maxiter )
+	gwt0 <- matrix( 1 , nrow=n , ncol=TP )
+
 	#---
 	# initial values algorithm
-	dev <- 0	; iter <- 0
+	dev <- 0
+	iter <- 0
 	globconv1 <- conv1 <- 1000
 	disp <- paste( paste( rep(".", 70 ) , collapse="") ,"\n", sep="")
 	
@@ -258,16 +252,14 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 		dev0 <- dev
 		delta0 <- delta
 		pi.k0 <- pi.k
- 		
+
 		#****
 		#1 calculate probabilities
 		probs <- gdm_calc_prob( a=a, b=b, thetaDes=thetaDes, Qmatrix=Qmatrix, I=I, K=K, TP=TP, TD=TD ) 
- 
+
 		#*****
 		#2 calculate individual likelihood
-		h1 <- matrix( 1 , nrow=n , ncol=TP )
-		res.hwt <- cdm_calc_posterior( rprobs=probs, gwt=h1, resp=dat, nitems=I, resp.ind.list=resp.ind.list, 
-						normalization=FALSE, thetasamp.density=NULL, snodes=0 ) 
+		res.hwt <- gdm_calc_posterior( probs=probs, gwt0=gwt0, dat=dat, I=I, resp.ind.list=resp.ind.list ) 
 		p.xi.aj <- res.hwt$hwt 	
 		
 		#*****
@@ -285,7 +277,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 					ind.group=ind.group, use.freqpatt=use.freqpatt ) 		
 		n.ik <- res$n.ik
 		N.ik <- res$N.ik
-
+		
 		#*****
 		#5 M step: b parameter estimation
 		# n.ik  [1:TP,1:I,1:K,1:G]
@@ -306,7 +298,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 						msteps=msteps, convM=convM, centerslopes=centerslopes, decrease.increments=decrease.increments ) 
 			a <- res$a						
 			se.a <- res$se.a
-			max.increment.a <- res$max.increment.a
+			max.increment.a <- res$max.increment.a	
 		}
 					
 		if ( irtmodel == "2PLcat"){
@@ -317,7 +309,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 			se.a <- res$se.a
 			max.increment.a <- res$max.increment.a
 		}				
-						
+		
 		#*****
 		#7 M step: estimate reduced skillspace	
 		if ( skillspace == "loglinear" ){
@@ -337,20 +329,47 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 		}
 					
 		# estimate skillspace		
-        if ( skillspace == "est" ){
+		if ( skillspace == "est" ){
 			res <- gdm_est_skillspace_traits( n.ik=n.ik, a=a, b=b, theta.k=theta.k, Qmatrix=Qmatrix, I=I, K=K, TP=TP, TD=TD, 
 						numdiff.parm=1E-3, max.increment=1, msteps=msteps, convM=convM ) 
 			theta.k <- res$theta.k
 			se.theta.k <- res$se.theta.k
 			thetaDes <- theta.k
 		}
-			
+
+		#-- PEM acceleration
+		if (PEM){
+			#-- collect all parameters in a list
+			parmlist <- cdm_pem_inits_assign_parmlist(pem_pars=pem_pars, envir=envir)			
+			#-- define log-likelihood function
+			ll_fct <- gdm_calc_loglikelihood
+			#- extract parameters
+			ll_args <- list( irtmodel=irtmodel, skillspace=skillspace, b=b, a=a, centerintercepts=centerintercepts, 
+								centerslopes=centerslopes, TD=TD, Qmatrix=Qmatrix, Ngroup=Ngroup, pi.k=pi.k, 
+								delta.designmatrix=delta.designmatrix, delta=delta, G=G, theta.k=theta.k, D=D, 
+								mean.constraint=mean.constraint, Sigma.constraint=Sigma.constraint, 
+								standardized.latent=standardized.latent, p.aj.xi=p.aj.xi, group=group, 
+								ind.group=ind.group, weights=weights, thetaDes=thetaDes, I=I, K=K, gwt0=gwt0, dat=dat, 
+								resp.ind.list=resp.ind.list, use.freqpatt=use.freqpatt, p.xi.aj=p.xi.aj, TP=TP ) 
+			#-- apply general acceleration function
+			res <- cdm_pem_acceleration( iter=iter, pem_parameter_index=pem_parameter_index, 
+						pem_parameter_sequence=pem_parameter_sequence, pem_pars=pem_pars, 
+						PEM_itermax=PEM_itermax, parmlist=parmlist, ll_fct=ll_fct, ll_args=ll_args,
+						deviance.history=deviance.history )
+			#-- collect output					
+			PEM <- res$PEM
+			pem_parameter_sequence <- res$pem_parameter_sequence
+			cdm_pem_acceleration_assign_output_parameters( res_ll_fct=res$res_ll_fct, 
+							vars=pem_output_vars , envir=envir, update=res$pem_update ) 			
+		}				
+		
 		#*****
 		#8 calculate likelihood
 		res <- gdm_calc_deviance( G=G, use.freqpatt=use.freqpatt, ind.group=ind.group, p.xi.aj=p.xi.aj, 
 					pi.k=pi.k, weights=weights ) 
 		ll <- res$ll
 		dev <- res$dev
+		deviance.history[iter+1] <- dev
 
 		#~~~~~~~~~~~~~~~~~~~~~~~~~~
 		# display progress		
@@ -389,14 +408,14 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 				b.constraint=b.constraint, a.constraint=a.constraint, mean.constraint=mean.constraint, 
 				Sigma.constraint=Sigma.constraint, delta.designmatrix=delta.designmatrix, 
 				standardized.latent=standardized.latent, data0=data0, centerslopes=centerslopes, TP=TP, 
-				centerintercepts=centerintercepts ) 
+				centerintercepts=centerintercepts, centered.latent=centered.latent ) 
 
 	#########################################
 	# item fit [ items , theta , categories ] 
 	# # n.ik [ 1:TP , 1:I , 1:(K+1) , 1:G ]
 	probs <- aperm( probs , c(3,1,2) )
 	itemfit.rmsea <- itemfit.rmsea( n.ik , pi.k , probs , itemnames = colnames(data) )		
-    item$itemfit.rmsea <- itemfit.rmsea$rmsea
+	item$itemfit.rmsea <- itemfit.rmsea$rmsea
 	rownames(item) <- NULL
 	
 	# person parameters
@@ -415,7 +434,7 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 				Qmatrix=Qmatrix , pi.k=pi.k , 	
 				mean.trait=mean.trait , sd.trait = sd.trait , 
 				skewness.trait = skewness.trait , correlation.trait = correlation.trait , 
-				pjk = probs , n.ik = n.ik ,  
+				pjk = probs , n.ik = n.ik ,  delta.designmatrix=delta.designmatrix, 
 				G=G , D=D , I = ncol(data) , N = nrow(data) , 
 				delta = delta , covdelta=covdelta , data = data ,
 				group.stat=group.stat )
@@ -437,19 +456,20 @@ gdm <- function( data , theta.k, irtmodel="2PL", group=NULL,
 	res$Npars <- res$ic$np	
 	res$loglike <- - res$deviance / 2
 	res$irtmodel <- irtmodel
+	res$deviance.history <- deviance.history
 	# control arguments
 	res$control$weights <- weights
 	res$control$group <- group
-	
+
 	if (progress){
-        cat("----------------------------------- \n")
-        cat("Start:" , paste( s1) , "\n")
-        cat("End:" , paste(s2) , "\n")
-        cat("Difference:" , print(s2 -s1), "\n")
-        cat("----------------------------------- \n")
+		cat("----------------------------------- \n")
+		cat("Start:" , paste( s1) , "\n")
+		cat("End:" , paste(s2) , "\n")
+		cat("Difference:" , print(s2 -s1), "\n")
+		cat("----------------------------------- \n")
 	}
 	class(res) <- "gdm"
 	res$call <- cl
-	return(res)				
-}		
+	return(res)
+}
 ###################################################

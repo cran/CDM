@@ -1,6 +1,5 @@
 %% File Name: data.timss03.G8.su.Rd
-%% File Version: 0.05
-%% File Last Change: 2017-01-31 14:08:30
+%% File Version: 0.07
 
 \name{data.timss03.G8.su}
 \alias{data.timss03.G8.su}
@@ -73,7 +72,8 @@ Measurement and Assessment (CASMA), University of Iowa.
 
 \examples{
 \dontrun{
-data(data.timss03.G8.su)
+data(data.timss03.G8.su, package="CDM")
+
 data <- data.timss03.G8.su$data[,-c(1,2)]
 q.matrix <- data.timss03.G8.su$q.matrix
 

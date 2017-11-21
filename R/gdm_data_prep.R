@@ -1,6 +1,5 @@
 ## File Name: gdm_data_prep.R
-## File Version: 0.01
-## File Last Change: 2017-06-04 17:54:46
+## File Version: 0.04
 
 
 ############################################
@@ -28,8 +27,7 @@ gdm_data_prep <- function( dat , data , weights , group )
 		G <- length(gr2)
 		group <- match( group , gr2 )
 	}	
-    # calculate frequency of each item response pattern
-	# case of one group
+	# calculate frequency of each item response pattern in case of one group
 	if (G==1){ 
 		if ( is.null(weights) ){ weights <- rep(1,N) }
 		a2 <- rowsum( weights , item.patt.subj) 
@@ -46,18 +44,17 @@ gdm_data_prep <- function( dat , data , weights , group )
 	}
 	if (G>1){
 		for (gg in 1:G){
-	#gg <- 1
-		ind.gg <- which( group == gg )
-		a2 <- rowsum( weights[ind.gg] , item.patt.subj[ind.gg] )
-		a2 <- data.frame( "pattern" = rownames(a2) , a2[,1] )		
-		colnames(a2)[2] <- paste0("freq.Gr" , gg)
-		rownames(a2) <- NULL
-		if (gg == 1){ item.patt <- a2 }
-		if (gg > 1){
-			item.patt <- merge( item.patt , a2 , by ="pattern" , all=TRUE )
-					}
-		item.patt[ is.na(item.patt) ] <- 0
-				}
+			ind.gg <- which( group == gg )
+			a2 <- rowsum( weights[ind.gg] , item.patt.subj[ind.gg] )
+			a2 <- data.frame( "pattern" = rownames(a2) , a2[,1] )		
+			colnames(a2)[2] <- paste0("freq.Gr" , gg)
+			rownames(a2) <- NULL
+			if (gg == 1){ item.patt <- a2 }
+			if (gg > 1){
+				item.patt <- merge( item.patt , a2 , by ="pattern" , all=TRUE )
+			}
+			item.patt[ is.na(item.patt) ] <- 0
+		}
 		weights <- item.patt[,-1]
 	}	
 	#***
@@ -72,10 +69,10 @@ gdm_data_prep <- function( dat , data , weights , group )
 	dat[ dat.resp==0] <- 0
 	cat("Number of response patterns =" , nrow(dat) , "\n")
 	utils::flush.console()
-	res <- list( "weights"=weights , "dat" = dat , "dat.resp"=dat.resp ,
-		"data"=data , "item.patt" = item.patt )
+	res <- list( weights=weights , dat = dat , dat.resp=dat.resp ,
+					data=data , item.patt = item.patt )
 	return(res)
-}			
+}
 ####################################################
 
 .gdm.data.prep <- gdm_data_prep

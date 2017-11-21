@@ -1,6 +1,5 @@
 ## File Name: mcdina_alg_cppcall.R
-## File Version: 0.03
-## File Last Change: 2017-01-31 15:50:50
+## File Version: 0.06
 
 
 ###############################################################################
@@ -24,7 +23,7 @@
 probs_pcm_groups_Cpp <- function( dat_ , dat_resp_,  group_ , probs_,  CC_ ,  TP_ )
 {
 	res <- probs_pcm_groups_C( dat_, dat_resp_,  group_, probs_,  CC_,  TP_ )
-    return(res)			
+	return(res)
 }
 # ---			
 # OUTPUT:			
@@ -50,7 +49,7 @@ function( dat_,  dat_resp_,  group_, fyiqk_,  pik_,  CC_,  weights_ )
 {
 	res <- calccounts_pcm_groups_C(
 					dat_,  dat_resp_,  group_, fyiqk_,  pik_,  CC_,  weights_ )
-    return(res)			
+	return(res)
 }
 # ---
 # OUTPUT:
@@ -62,4 +61,3 @@ function( dat_,  dat_resp_,  group_, fyiqk_,  pik_,  CC_,  weights_ )
 #    			) ;  			
 #############################################################################
 
-  
