@@ -1,5 +1,5 @@
 %% File Name: IRT.frequencies.Rd
-%% File Version: 0.09
+%% File Version: 0.12
 
 \name{IRT.frequencies}
 \alias{IRT.frequencies}
@@ -14,11 +14,11 @@
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 S3 Method for Computing Observed and Expected Frequencies of Univariate and
-Bivariate Marginals 
+Bivariate Marginals
 }
 
 \description{
-This S3 method computes observed and expected frequences for univariate and
+This S3 method computes observed and expected frequencies for univariate and
 bivariate distributions.
 }
 
@@ -114,7 +114,7 @@ summary(mod1)
 # direct usage of IRT.frequencies
 fres1 <- CDM::IRT.frequencies(mod1)
 
-# use of the default function with input data 
+# use of the default function with input data
 data <- CDM::IRT.data(object)
 post <- CDM::IRT.posterior(object)
 probs <- CDM::IRT.irfprob(object)

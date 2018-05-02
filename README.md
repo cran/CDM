@@ -6,6 +6,10 @@ If you use `CDM` and have suggestions for improvement or have found bugs, please
 
 #### CRAN version
 
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/CDM)](https://cran.r-project.org/package=CDM)
+&#160;&#160;
+
+
 The official version of `CDM` is hosted on CRAN and may be found [here](https://cran.r-project.org/package=CDM). 
 The CRAN version can be installed from within R using:
 

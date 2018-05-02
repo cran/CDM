@@ -1,5 +1,5 @@
 %% File Name: equivalent.dina.Rd
-%% File Version: 1.14
+%% File Version: 1.19
 
 \name{equivalent.dina}
 \alias{equivalent.dina}
@@ -11,21 +11,21 @@ Determination of a Statistically Equivalent DINA Model
 This function determines a statistically equivalent DINA model
 given a Q-matrix using the method of von Davier (2014).
 Thereby, the dimension of the skill space is expanded, but in the
-reparametrized version, the Q-matrix has a simple structure
+reparameterized version, the Q-matrix has a simple structure
 or the IRT model is no longer be conjuctive (like in DINA) due
 to a redefinition of the skill space.
 }
 \usage{
-equivalent.dina(q.matrix, reparametrization = "B")
+equivalent.dina(q.matrix, reparameterization = "B")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{q.matrix}{
 The Q-matrix (see \code{\link{din}})
 }
-  \item{reparametrization}{
-The used reparametrization (see von Davier, 2014). \code{A} and \code{B}
-are possible reparametrizations.
+  \item{reparameterization}{
+The used reparameterization (see von Davier, 2014). \code{A} and \code{B}
+are possible reparameterizations.
 }
 }
 %\details{
@@ -35,17 +35,16 @@ are possible reparametrizations.
 A list with following entries
 
   \item{q.matrix}{Original Q-matrix}
-  \item{q.matrix.ast}{Reparametrized Q-matrix}  
+  \item{q.matrix.ast}{Reparameterized Q-matrix}
   \item{alpha}{Original skill space}
-  \item{alpha.ast}{Reparametrized skill space}  
+  \item{alpha.ast}{Reparameterized skill space}
 }
 
 
 \references{
 von Davier, M. (2014). The DINA model as a constrained general
 diagnostic model: Two variants of a model equivalency.
-\emph{British Journal of Mathematical and Statistical Psychology},
-\bold{67}, 49-71.
+\emph{British Journal of Mathematical and Statistical Psychology, 67}, 49-71.
 }
 
 
@@ -63,25 +62,25 @@ diagnostic model: Two variants of a model equivalency.
 %}
 \examples{
 #############################################################################
-# EXAMPLE 1: Toy example 
+# EXAMPLE 1: Toy example
 #############################################################################
 
 # define a Q-matrix
-Q <- matrix( c( 1,0,0 ,  0,1,0 , 
+Q <- matrix( c( 1,0,0 ,  0,1,0 ,
         0,0,1,   1,0,1 ,  1,1,1 ) , byrow=TRUE , ncol=3 )
 Q <- Q[ rep(1:(nrow(Q)),each=2) , ]
 
-# equivalent DINA model (using the default reparametrization B)
+# equivalent DINA model (using the default reparameterization B)
 res1 <- CDM::equivalent.dina( q.matrix=Q )
 res1
 
 # equivalent DINA model (reparametrization A)
-res2 <- CDM::equivalent.dina( q.matrix=Q , reparametrization="A")
+res2 <- CDM::equivalent.dina( q.matrix=Q , reparameterization="A")
 res2
 
 \dontrun{
 #############################################################################
-# EXAMPLE 2: Estimation with two equivalent DINA models 
+# EXAMPLE 2: Estimation with two equivalent DINA models
 #############################################################################
 
 # simulate data
@@ -111,7 +110,7 @@ round( cbind( mod2$attribute.patt, mod1$attribute.patt ) , 4 )
 
 
 #############################################################################
-# EXAMPLE 3: Examples from von Davier (2014) 
+# EXAMPLE 3: Examples from von Davier (2014)
 #############################################################################
 
 # define Q-matrix
@@ -126,11 +125,11 @@ Q[7, ] <- c(0,1,1)
 Q[8, ] <- c(1,1,1)
 
 #- parametrization A
-res1 <- CDM::equivalent.dina(q.matrix=Q, reparametrization="A")
+res1 <- CDM::equivalent.dina(q.matrix=Q, reparameterization="A")
 res1
 
 #- parametrization B
-res2 <- CDM::equivalent.dina(q.matrix=Q, reparametrization="B")
+res2 <- CDM::equivalent.dina(q.matrix=Q, reparameterization="B")
 res2
 }
 }

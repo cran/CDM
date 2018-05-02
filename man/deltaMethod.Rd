@@ -1,5 +1,5 @@
 %% File Name: deltaMethod.Rd
-%% File Version: 0.05
+%% File Version: 0.08
 
 \name{deltaMethod}
 \alias{deltaMethod}
@@ -24,7 +24,7 @@ Vector of derived parameters written in \R formula framework
 Vector of parameter estimates
 }
   \item{Sigma}{
-Covariance matrrix of parameters
+Covariance matrix of parameters
 }
   \item{h}{
 Numerical differentiation parameter
@@ -40,7 +40,7 @@ Numerical differentiation parameter
   \item{A}{First derivative of nonlinear transformation}
   \item{univarTest}{Data frame containing univariate summary of
   nonlinear parameters}
-  \item{WaldTest}{Multivariate parameter test for nonlinear paramter}
+  \item{WaldTest}{Multivariate parameter test for nonlinear parameter}
 }
 
 %\references{
@@ -65,7 +65,7 @@ See \code{\link[car:deltaMethod]{car::deltaMethod}} or
 \examples{
 #############################################################################
 # EXAMPLE 1: Nonlinear parameter
-#############################################################################	
+#############################################################################
 
 #-- parameter estimate
 est <- c( 510.67 , 102.57)
@@ -78,7 +78,7 @@ derived.pars <- list( "d" = ~ I( ( mu - 508 ) / sigma ) ,
                       "dsig" = ~ I( sigma / 100 - 1) )
 
 #*** apply delta method
-res <- CDM::deltaMethod( derived.pars , est , Sigma )	
+res <- CDM::deltaMethod( derived.pars , est , Sigma )
 res
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
