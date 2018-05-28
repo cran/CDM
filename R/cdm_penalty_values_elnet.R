@@ -1,7 +1,7 @@
-## File Name: cdm_penalty_elnet.R
-## File Version: 0.01
+## File Name: cdm_penalty_values_elnet.R
+## File Version: 0.02
 
-cdm_penalty_elnet <- function( x, lambda, alpha )
+cdm_penalty_values_elnet <- function( x, lambda, alpha )
 {
     lam1 <- lambda * alpha
     lam2 <- lambda * ( 1 - alpha )

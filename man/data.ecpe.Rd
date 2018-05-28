@@ -1,5 +1,5 @@
 %% File Name: data.ecpe.Rd
-%% File Version: 0.22
+%% File Version: 0.25
 
 \name{data.ecpe}
 \alias{data.ecpe}
@@ -46,13 +46,13 @@ The skills are
 
 }
 
-%\details{
-%%  ~~ If necessary, more details than the __description__ above ~~
-%}
-\source{
-The dataset is used in Templin and Hoffman (2013) and
+\details{
+The dataset has been used in Templin and Hoffman (2013), and
 Templin and Bradshaw (2014).
+}
 
+
+\source{
 The dataset was downloaded from
 \url{http://psych.unl.edu/jtemplin/teaching/dcm/dcm12ncme/}.
 }
@@ -98,7 +98,7 @@ anova(mod1,mod2)
 hier <- "skill3 > skill2 > skill1"
 skill.names <- colnames(Q)
 # define skill space with hierarchy
-skillspace <- CDM::skillspace.hierarchy( hier, skill.names= skill.names )
+skillspace <- CDM::skillspace.hierarchy( hier, skill.names=skill.names )
 skillspace$skillspace.reduced
   ##        skill1 skill2 skill3
   ##   A000      0      0      0
@@ -132,7 +132,7 @@ summary(mod3)
 mod4 <- CDM::gdina( dat, q.matrix=Q, rule="RRUM")
 summary(mod4)
 # compare some models
-IRT.compareModels(mod1 , mod2, mod3, mod4 )
+IRT.compareModels(mod1, mod2, mod3, mod4 )
 
 #*** Model 5a: GDINA model with identity link
 mod5a <- CDM::gdina( dat, q.matrix=Q, link="identity")
