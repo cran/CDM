@@ -1,5 +1,5 @@
 ## File Name: gdina.R
-## File Version: 9.264
+## File Version: 9.282
 
 
 ################################################################################
@@ -42,7 +42,7 @@ gdina <- function( data, q.matrix, skillclasses=NULL, conv.crit=0.0001,
                     save.devmin=TRUE, calc.se=TRUE,
                     se_version=1, PEM=TRUE, PEM_itermax=maxit,
                     cd=FALSE, cd_steps=1, mono_maxiter=10,
-                    freq_weights=FALSE,
+                    freq_weights=FALSE, optimizer="CDM",
                     ...
                         )
 {
@@ -128,12 +128,14 @@ gdina <- function( data, q.matrix, skillclasses=NULL, conv.crit=0.0001,
     res <- gdina_proc_check_admissible_rules(rule=rule)
 
     #---- RRUM model specifications
-    res <- gdina_proc_spec_rrum( rule=rule, method=method, linkfct=linkfct )
+    res <- gdina_proc_spec_rrum( rule=rule, method=method, linkfct=linkfct,
+                optimizer=optimizer)
     rrum.params <- res$rrum.params
     rrum.model <- res$rrum.model
     method <- res$method
     linkfct <- res$linkfct
     rule <- res$rule
+    optimizer <- res$optimizer
 
     ################################################################################
     # model specification: DINA, DINO or itemwise specification of DINA or DINO    #
@@ -358,7 +360,7 @@ gdina <- function( data, q.matrix, skillclasses=NULL, conv.crit=0.0001,
     # choose regularization, coordinate descent and monotonicity constraints
     res <- gdina_proc_regularization( regular_type=regular_type, cd=cd, mono.constr=mono.constr, linkfct=linkfct,
                     method=method, PEM=PEM, regular_alpha=regular_alpha, regular_tau=regular_tau,
-                    rule=rule)
+                    rule=rule, optimizer=optimizer)
     linkfct <- res$linkfct
     save.devmin <- res$save.devmin
     method <- res$method
@@ -368,6 +370,7 @@ gdina <- function( data, q.matrix, skillclasses=NULL, conv.crit=0.0001,
     regular_alpha <- res$regular_alpha
     regular_tau <- res$regular_tau
     regularization_types <- res$regularization_types
+    optimizer <- res$optimizer
 
     #--------- process prior distributions
     res <- gdina_proc_prior_distribution( prior_intercepts=prior_intercepts, prior_slopes=prior_slopes, method=method,
@@ -487,13 +490,15 @@ gdina <- function( data, q.matrix, skillclasses=NULL, conv.crit=0.0001,
                         mono.constr=mono.constr, Aj_mono_constraints=Aj_mono_constraints,
                         mono_maxiter=mono_maxiter, regular_alpha=regular_alpha, regular_tau=regular_tau,
                         regularization_types=regularization_types, prior_intercepts=prior_intercepts,
-                        prior_slopes=prior_slopes, use_prior=use_prior )
+                        prior_slopes=prior_slopes, use_prior=use_prior, optimizer=optimizer,
+                        regularization=regularization )
         delta.new <- res$delta.new
         suffstat_probs <- res$suffstat_probs
         mono_constraints_fitted <- res$mono_constraints_fitted
         penalty <- res$penalty
         ll_value <- res$ll_value
         logprior_value <- res$logprior_value
+        numb_regular_pars <- res$numb_regular_pars
 
         ##########################################################################
         # estimation with a design matrix for delta parameters
@@ -555,7 +560,8 @@ gdina <- function( data, q.matrix, skillclasses=NULL, conv.crit=0.0001,
                     max.par.change=max.par.change, iter=iter, progress=progress,
                     progress.item=progress.item, regularization=regularization, penalty=penalty,
                     opt_fct=opt_fct, opt_fct_change=opt_fct_change, ll_value=ll_value,
-                    regular_type=regular_type, logprior_value=logprior_value, use_prior=use_prior )
+                    regular_type=regular_type, logprior_value=logprior_value, use_prior=use_prior,
+                    numb_regular_pars=numb_regular_pars)
 
         utils::flush.console() # Output is flushing on the console
         iter <- iter + 1 # new iteration number
@@ -653,6 +659,7 @@ gdina <- function( data, q.matrix, skillclasses=NULL, conv.crit=0.0001,
     caic <- res$caic
     Nskillpar <- res$Nskillpar
     Nipar <- res$Nipar
+    ic <- res$ic
 
     #--- postprocess posterior distributions
     res <- gdina_post_posterior_output( G=G, p.aj.xi=p.aj.xi, p.xi.aj=p.xi.aj, pattern=pattern, data=data,
@@ -705,7 +712,8 @@ gdina <- function( data, q.matrix, skillclasses=NULL, conv.crit=0.0001,
                 prior_intercepts=prior_intercepts, prior_slopes=prior_slopes, use_prior=use_prior,
                 logprior_value=logprior_value,
                 seed=seed, iter=iter, converged=iter < maxit, iter.min=iter.min,
-                deviance.history=deviance.history, penalty=penalty, opt_fct=opt_fct )
+                deviance.history=deviance.history, penalty=penalty, opt_fct=opt_fct,
+                optimizer=optimizer, method=method, ic=ic )
 
     if (HOGDINA>=0) {
         colnames(a.attr) <- paste0( "a.Gr", 1:G )

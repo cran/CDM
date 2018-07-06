@@ -1,5 +1,5 @@
 %% File Name: gdina.Rd
-%% File Version: 3.442
+%% File Version: 3.454
 
 \name{gdina}
 \alias{gdina}
@@ -49,7 +49,7 @@ gdina(data, q.matrix, skillclasses=NULL, conv.crit=0.0001, dev.crit=.1,  maxit=1
     progress.item=FALSE, mstep_iter=10, mstep_conv=1E-4, increment.factor=1.01,
     fac.oldxsi=0, max.increment=.3, avoid.zeroprobs=FALSE, seed=0,
     save.devmin=TRUE, calc.se=TRUE, se_version=1, PEM=TRUE, PEM_itermax=maxit,
-    cd=FALSE, cd_steps=1, mono_maxiter=10, freq_weights=FALSE, ...)
+    cd=FALSE, cd_steps=1, mono_maxiter=10, freq_weights=FALSE, optimizer="CDM", ...)
 
 \method{summary}{gdina}(object, digits=4, file=NULL,  \dots)
 
@@ -266,6 +266,14 @@ applied.}
 monotonicity constraint}
 \item{freq_weights}{Logical indicating whether frequency weights should
 be used. Default is \code{FALSE}.}
+\item{optimizer}{String indicating which optimizer should be used in
+    M-step estimation in case of \code{method="ML"}.
+    The internal optimizer of \pkg{CDM} can be requested by
+    \code{optimizer="CDM"}. The optimization with \code{stats::optim}
+    can be requested by \code{optimizer="optim"}.
+    For the RRUM model, it is always chosen
+\code{optimizer="optim"}. }
+
   \item{object}{A required object of class \code{gdina}, obtained
     from a call to the function \code{\link{gdina}}.  }
   \item{digits}{Number of digits after decimal separator to display.  }
@@ -989,6 +997,18 @@ q.matrix <- data.cdm08$q.matrix
 
 #*** estimate model
 mod <- CDM::gdina( dat0, q.matrix, rule="SISM", bugs=colnames(q.matrix)[5:7] )
+summary(mod)
+
+#############################################################################
+# EXAMPLE 13: Regularized estimation in GDINA model
+#############################################################################
+
+data(data.ecpe, package="CDM")
+dat <- data.ecpe$data[,-1]
+Q <- data.ecpe$q.matrix
+
+#* LASSO regularization with lambda parameter of .12
+mod <- CDM::gdina(dat, q.matrix=Q, rule="GDINA", regular_lam=.12, regular_type="lasso")
 summary(mod)
 }
 }

@@ -1,7 +1,7 @@
 ## File Name: gdina_proc_spec_rrum.R
-## File Version: 0.09
+## File Version: 0.12
 
-gdina_proc_spec_rrum <- function(rule, method, linkfct)
+gdina_proc_spec_rrum <- function(rule, method, linkfct, optimizer="CDM")
 {
     # estimation of a reduced RUM model
     rrum.params <- FALSE
@@ -14,6 +14,7 @@ gdina_proc_spec_rrum <- function(rule, method, linkfct)
             method <- "ML"
         }
         rrum.model <- TRUE
+        optimizer <- "optim"
     } else {
         if ( is.null(method) ){
             method <- "WLS"
@@ -21,6 +22,6 @@ gdina_proc_spec_rrum <- function(rule, method, linkfct)
     }
     #---- OUTPUT
     res <- list( rrum.params=rrum.params, rrum.model=rrum.model, method=method,
-                    linkfct=linkfct, rule=rule)
+                    linkfct=linkfct, rule=rule, optimizer=optimizer)
     return(res)
 }

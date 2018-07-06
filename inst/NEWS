@@ -22,6 +22,27 @@ R script and (if necessary) a corresponding dataset.
 
 
 
+
+--------------------------------------------------------------
+VERSIONS CDM 6.4  |  2018-07-06  |  Last: CDM 6.4-23
+--------------------------------------------------------------
+
+NOTE  * included argument 'optimizer' in gdina() which allows
+        to use the stats::optim() function for optimization in
+        M-step (default is optimizer='optim'). 
+        'use_optim=TRUE' is always used for estimation
+        of the RRUM model. This change was motivated by an
+        application of Hamdollah Ravand.
+NOTE  * included utility function cdm_matrixstring()
+FIXED * allowed items with only zero Q-matrix entries in
+        mcdina() anf fixed a bug in reduced skill space 
+        estimation in mcdina() (thanks to Jeannot Gersner)
+NOTE  * exported core computation function IRT_RMSD_calc_rmsd()
+        for RMSD statistic
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: gdina (13)
+
 --------------------------------------------------------------
 VERSIONS CDM 6.3  |  2018-05-28  |  Last: CDM 6.3-45
 --------------------------------------------------------------
@@ -38,12 +59,9 @@ ADDED * included function eval_likelihood() for evaluating
 NOTE  * included corrected statistics for classification
         accuracy and consistency in cdm.est.class.accuracy()
 
-
 DATA  * included/modified datasets: ---
 EXAMP * included/modified examples: sim_model (1),
         IRT.classify (1), eval_likelihood (1)
-
-
 
 --------------------------------------------------------------
 VERSIONS CDM 6.2  |  2018-05-02  |  Last: CDM 6.2-91

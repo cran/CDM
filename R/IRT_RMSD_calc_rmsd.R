@@ -1,5 +1,5 @@
 ## File Name: IRT_RMSD_calc_rmsd.R
-## File Version: 3.22
+## File Version: 3.27
 
 
 ##########################################
@@ -33,7 +33,8 @@ IRT_RMSD_calc_rmsd <- function( n.ik, pi.k, probs, eps=1E-30 )
     p.ik_samp_var <- pi.k_tot^2 * p.ik_obs_var
     h2 <- IRT_RMSD_proc_dist_item(dist.item=p.ik_samp_var)
     h2 <- colSums( h2 ) / maxK
-    RMSD_bc <- sqrt( ifelse( RMSD^2 - h2 < 0, 0, RMSD^2 - h2 ) )
+    RMSD_bc <- RMSD^2 - h2
+    RMSD_bc <- sign(RMSD_bc)*sqrt( abs(RMSD_bc) )
 
     #------------------------------------------------
     #*** MD fit statistic

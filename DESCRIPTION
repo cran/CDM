@@ -1,8 +1,8 @@
 Package: CDM
 Type: Package
 Title: Cognitive Diagnosis Modeling
-Version: 6.3-45
-Date: 2018-05-28 10:57:00
+Version: 6.4-23
+Date: 2018-07-06 10:11:49
 Author: 
     Alexander Robitzsch [aut, cre], Thomas Kiefer [aut],
     Ann Cathrice George [aut], Ali Uenlue [aut]
@@ -29,9 +29,10 @@ Suggests: BIFIEsurvey, GDINA, lattice, miceadds, mirt, sirt, TAM
 LinkingTo: Rcpp, RcppArmadillo
 LazyLoad: yes
 LazyData: yes
-URL: https://github.com/alexanderrobitzsch/CDM
+URL: https://github.com/alexanderrobitzsch/CDM,
+        https://sites.google.com/site/alexanderrobitzsch2/software
 License: GPL (>= 2)
 NeedsCompilation: yes
-Packaged: 2018-05-28 08:58:45 UTC; sunpn563
+Packaged: 2018-07-06 08:13:34 UTC; sunpn563
 Repository: CRAN
-Date/Publication: 2018-05-28 18:36:09 UTC
+Date/Publication: 2018-07-06 09:20:03 UTC

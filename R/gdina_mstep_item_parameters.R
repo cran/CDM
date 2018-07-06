@@ -1,15 +1,15 @@
 ## File Name: gdina_mstep_item_parameters.R
-## File Version: 0.43
+## File Version: 0.59
 
 gdina_mstep_item_parameters <- function(R.lj, I.lj, aggr.patt.designmatrix, max.increment,
         increment.factor, J, Aj, Mj, delta, method, avoid.zeroprobs, invM.list, linkfct,
         rule, iter, fac.oldxsi, rrum.model, delta.fixed, devchange, mstep_iter, mstep_conv,
         Mj.index, suffstat_probs, regular_lam, regular_type, cd_steps,
         mono.constr, Aj_mono_constraints, mono_maxiter, regular_alpha, regular_tau,
-        regularization_types, prior_intercepts, prior_slopes, use_prior )
+        regularization_types, prior_intercepts, prior_slopes, use_prior,
+        optimizer="CDM", regularization=FALSE )
 {
     mono_constraints_fitted <- NULL
-
     # calculation of expected counts
     R.ljM <- R.lj %*% aggr.patt.designmatrix
     I.ljM <- I.lj %*% aggr.patt.designmatrix
@@ -19,11 +19,10 @@ gdina_mstep_item_parameters <- function(R.lj, I.lj, aggr.patt.designmatrix, max.
 
     eps2 <- eps <- 1E-10
     max.increment <- max.increment / increment.factor
-
     delta.new <- NULL
+
     #----- loop over items
     for (jj in 1:J){     # begin item
-
         Ajjj <- Aj[[jj]]
         Mjjj <- Mj[[jj]][[1]]
         Rlj.ast <- R.ljM[ jj, Mj.index[jj,5]:Mj.index[jj,6] ]
@@ -59,21 +58,29 @@ gdina_mstep_item_parameters <- function(R.lj, I.lj, aggr.patt.designmatrix, max.
                 arglist$prior_intercepts <- prior_intercepts
                 arglist$prior_slopes <- prior_slopes
                 arglist$use_prior <- use_prior
+                arglist$optimizer <- optimizer
                 #-- estimation step
                 res_jj <- do.call( what=gdina_mstep_item_ml, args=arglist )
                 penalty <- penalty + res_jj$penalty
                 ll_value <- ll_value + res_jj$ll_value
                 logprior_value <- logprior_value + res_jj$logprior_value
             }
-            if (  rrum ){
+            if ( rrum ){
+                arglist$optimizer <- optimizer
                 res_jj <- do.call( what=gdina_mstep_item_ml_rrum, args=arglist )
             }
         }
         delta.new <- res_jj$delta.new
 
     }        # end item
+
+    # number of regularized item parameters
+    numb_regular_pars <- gdina_mstep_item_parameters_number_of_regularized_parameters(
+                        regularization=regularization, delta=delta, J=J)
+
     #----------------- OUTPUT -------------
     res <- list( delta.new=delta.new, suffstat_probs=suffstat_probs, mono_constraints_fitted=mono_constraints_fitted,
-                    penalty=penalty, ll_value=ll_value, logprior_value=logprior_value)
+                    penalty=penalty, ll_value=ll_value, logprior_value=logprior_value,
+                    numb_regular_pars=numb_regular_pars)
     return(res)
 }

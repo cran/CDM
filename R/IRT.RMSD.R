@@ -1,5 +1,5 @@
 ## File Name: IRT.RMSD.R
-## File Version: 0.38
+## File Version: 0.40
 
 IRT.RMSD <- function( object )
 {
