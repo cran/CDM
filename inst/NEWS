@@ -24,6 +24,16 @@ R script and (if necessary) a corresponding dataset.
 
 
 --------------------------------------------------------------
+VERSIONS CDM 6.6  |  2018-09-30  |  Last: CDM 6.6-5
+--------------------------------------------------------------
+
+NOTE  * changes in estimation algorithm in regularized latent 
+        class analysis function reglca() to stabilize estimation
+
+DATA  * included/modified datasets: ---
+EXAMP * included/modified examples: ---
+
+--------------------------------------------------------------
 VERSIONS CDM 6.5  |  2018-08-16  |  Last: CDM 6.5-12
 --------------------------------------------------------------
 
@@ -38,8 +48,6 @@ FIXED * corrected output with missing entries in case of groups
 
 DATA  * included/modified datasets: ---
 EXAMP * included/modified examples: ---
-
-
 
 --------------------------------------------------------------
 VERSIONS CDM 6.4  |  2018-07-06  |  Last: CDM 6.4-23
