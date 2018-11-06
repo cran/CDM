@@ -7,7 +7,7 @@ If you use `CDM` and have suggestions for improvement or have found bugs, please
 #### CRAN version
 
 <!---
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/CDM)](https://cran.r-project.org/package=CDM)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version-last-release/CDM)](https://cran.r-project.org/package=CDM)
 &#160;&#160;
 -->
 
