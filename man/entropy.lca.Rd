@@ -1,5 +1,5 @@
 %% File Name: entropy.lca.Rd
-%% File Version: 0.26
+%% File Version: 0.28
 
 \name{entropy.lca}
 \alias{entropy.lca}
@@ -42,7 +42,7 @@ A list with the data frame \code{entropy} as an entry.
 
 \references{
 Asparouhov, T. & Muthen, B. (2014). \emph{Variable-specific entropy
-contribution}. Technical Appendix. \url{http://www.statmodel.com/7_3_papers.shtml}
+contribution}. Technical Appendix. http://www.statmodel.com/7_3_papers.shtml
 }
 
 %\author{
@@ -114,8 +114,8 @@ summary(emod1)
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 
-\keyword{Entropy}
+%% \keyword{Entropy}
 %\keyword{din}
 %\keyword{gdina}
 %\keyword{mcdina}
-\keyword{summary}% __ONLY ONE__ keyword per line
+%% \keyword{summary}% __ONLY ONE__ keyword per line

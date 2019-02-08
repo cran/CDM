@@ -1,5 +1,5 @@
 ## File Name: cdm_est_calc_accuracy_version2.R
-## File Version: 0.06
+## File Version: 0.14
 
 
 cdm_est_calc_accuracy_version2 <- function( cdmobj, n.sims=0 )
@@ -9,6 +9,7 @@ cdm_est_calc_accuracy_version2 <- function( cdmobj, n.sims=0 )
     theta <- attr(irfprob, "theta")
     TP <- nrow(theta)
     prob_theta <- attr(irfprob, "prob.theta")
+    prob_theta <- cdm_shrink_positive(x=prob_theta)
     prior <- prob_theta
     data <- IRT.data(cdmobj)
     N <- nrow(data)
@@ -19,6 +20,9 @@ cdm_est_calc_accuracy_version2 <- function( cdmobj, n.sims=0 )
     theta_index <- rep(1:TP, sizes)
     K <- ncol(theta)   # number of skills
     skill_names <- colnames(theta)
+    if (is.null(skill_names)){
+        skill_names <- paste0("skill",1:K)
+    }
     statistics_names <- c( "MLE_patt", "MAP_patt", paste0("MLE_", skill_names),
                         paste0("MAP_", skill_names) )
 
@@ -63,7 +67,7 @@ cdm_est_calc_accuracy_version2 <- function( cdmobj, n.sims=0 )
     post <- IRT.posterior(cdmobj)
     eps <- 1E-7
     for (pp in estimators){
-        if (pp=="MLE"){ matr <- like } else {    matr <- post }
+        if (pp=="MLE"){ matr <- like } else { matr <- post }
         est <- cdm_rcpp_irt_classify_individuals(like=as.matrix(matr))$class_index
         index <- cbind(1:N, est)
 

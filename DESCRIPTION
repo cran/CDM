@@ -1,8 +1,8 @@
 Package: CDM
 Type: Package
 Title: Cognitive Diagnosis Modeling
-Version: 7.1-20
-Date: 2018-12-13 11:54:50
+Version: 7.2-30
+Date: 2019-02-08 11:13:48
 Author: 
     Alexander Robitzsch [aut, cre], Thomas Kiefer [aut],
     Ann Cathrice George [aut], Ali Uenlue [aut]
@@ -20,7 +20,7 @@ Description:
     See George, Robitzsch, Kiefer, Gross, and Uenlue (2017) <doi:10.18637/jss.v074.i02> 
     for further details on estimation and the package structure.
     For tutorials on how to use the CDM package see 
-    George and Robitzsch (2015) as well as
+    George and Robitzsch (2015, <doi:10.20982/tqmp.11.3.p189>) as well as
     Ravand and Robitzsch (2015).
 Depends: R (>= 3.1), mvtnorm
 Imports: graphics, grDevices, MASS, methods, polycor, Rcpp, sfsmisc,
@@ -34,6 +34,6 @@ URL: https://github.com/alexanderrobitzsch/CDM,
 License: GPL (>= 2)
 BugReports: https://github.com/alexanderrobitzsch/CDM/issues?state=open
 NeedsCompilation: yes
-Packaged: 2018-12-13 10:58:17 UTC; sunpn563
+Packaged: 2019-02-08 10:18:56 UTC; sunpn563
 Repository: CRAN
-Date/Publication: 2018-12-13 14:00:15 UTC
+Date/Publication: 2019-02-08 11:09:21 UTC
