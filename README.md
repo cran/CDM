@@ -2,7 +2,11 @@
 #### Cognitive Diagnosis Modeling
 
 
-If you use `CDM` and have suggestions for improvement or have found bugs, please email me at robitzsch@ipn.uni-kiel.de.
+If you use `CDM` and have suggestions for improvement or have found bugs, please email me at robitzsch@leibniz-ipn.de.
+
+#### Manual
+
+The manual may be found here [https://alexanderrobitzsch.github.io/CDM/](https://alexanderrobitzsch.github.io/CDM/) 
 
 #### CRAN version
 
