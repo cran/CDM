@@ -1,5 +1,5 @@
 ## File Name: gdina.R
-## File Version: 9.3402
+## File Version: 9.3409
 
 
 ################################################################################
@@ -11,7 +11,7 @@ gdina <- function( data, q.matrix, skillclasses=NULL, conv.crit=0.0001,
             invariance=TRUE, method=NULL, delta.init=NULL, delta.fixed=NULL,
             delta.designmatrix=NULL, delta.basispar.lower=NULL,    delta.basispar.upper=NULL,
             delta.basispar.init=NULL, zeroprob.skillclasses=NULL, attr.prob.init=NULL,
-            reduced.skillspace=NULL, reduced.skillspace.method=2, HOGDINA=-1,
+            attr.prob.fixed=NULL, reduced.skillspace=NULL, reduced.skillspace.method=2, HOGDINA=-1,
             Z.skillspace=NULL, weights=rep(1, nrow(data)),  rule="GDINA", bugs=NULL,
             regular_lam=0, regular_type="none",    regular_alpha=NA, regular_tau=NA,
             regular_weights=NULL, mono.constr=FALSE, prior_intercepts=NULL, prior_slopes=NULL,
@@ -271,6 +271,11 @@ gdina <- function( data, q.matrix, skillclasses=NULL, conv.crit=0.0001,
         }
     }
 
+    #--- attribute probabilities
+    if (!is.null(attr.prob.fixed)){
+        attr.prob <- attr.prob.fixed
+    }
+
     #--- delta parameter indices
     res <- gdina_proc_delta_indices(delta=delta, Mj=Mj)
     delta_indices <- res$delta_indices
@@ -366,7 +371,8 @@ gdina <- function( data, q.matrix, skillclasses=NULL, conv.crit=0.0001,
 
         res <- gdina_calc_individual_posterior( G=G, IP=IP, attr.prob=attr.prob, p.xi.aj=p.xi.aj,
                     L=L, I=I, zeroprob.skillclasses=zeroprob.skillclasses,
-                    reduced.skillspace=reduced.skillspace, item.patt.freq=item.patt.freq )
+                    reduced.skillspace=reduced.skillspace, item.patt.freq=item.patt.freq,
+                    attr.prob.fixed=attr.prob.fixed)
         p.aj.xi <- res$p.aj.xi
         attr.prob <- res$attr.prob
 
@@ -594,7 +600,8 @@ gdina <- function( data, q.matrix, skillclasses=NULL, conv.crit=0.0001,
     #--- calculation of the AIC und BIC
     res <- gdina_calc_ic( delta=delta, delta.designmatrix=delta.designmatrix, delta.fixed=delta.fixed,
                 G=G, ncolZ=ncolZ, K=K, HOGDINA=HOGDINA, item.patt.freq=item.patt.freq,
-                zeroprob.skillclasses=zeroprob.skillclasses, loglike=loglike, numb_regular_pars=numb_regular_pars )
+                zeroprob.skillclasses=zeroprob.skillclasses, loglike=loglike,
+                numb_regular_pars=numb_regular_pars, attr.prob.fixed=attr.prob.fixed )
     Npars <- res$Npars
     aic <- res$aic
     bic <- res$bic

@@ -1,20 +1,20 @@
 ## File Name: modelfit.cor.din.R
-## File Version: 2.21
+## File Version: 2.242
 
-#############################################################
-# Model fit for din object
+
+###---  Model fit for din object
 modelfit.cor.din <- function( dinobj, jkunits=0 )
 {
     mod <- dinobj
 
     # classes din and gdm
-    if ( class(dinobj) %in% c("din","gdina") ){
+    if ( inherits(dinobj, c("din","gdina")) ){
         data <- as.matrix( mod$data )
         posterior <- mod$posterior
         probs <- mod$pjk
     }
     # class gdm
-    if (class(mod)=="gdm"){
+    if (inherits(mod,"gdm") ){
         jkunits <- 0
         probs <- aperm( mod$pjk, c(2,3,1) )
         posterior <- mod$posterior
@@ -23,8 +23,7 @@ modelfit.cor.din <- function( dinobj, jkunits=0 )
 
     res <- modelfit.cor2( data=data, posterior=posterior, probs=probs )
 
-    #******************************************
-    # Jackknife
+    #**** Jackknife
     HJJ <- sum( abs( jkunits) )
     if ( HJJ > 0 ){
         data <- dinobj$data
@@ -50,9 +49,9 @@ modelfit.cor.din <- function( dinobj, jkunits=0 )
         for (jj in 1:JJ){
             data.jj <- data[ jkunits !=jj, ]
             weights.jj <- weights[ jkunits !=jj ]
-            #****
-            # DINA/DINO model
-            if (class(dinobj)=="din"){
+
+            #--- DINA/DINO model
+            if (inherits(dinobj,"din") ){
                 mod.jj <- din( data=data.jj, q.matrix=q.matrix,
                             skillclasses=c1$skillclasses, conv.crit=c1$conv.crit,
                             dev.crit=c1$dev.crit, maxit=c1$maxit,
@@ -66,9 +65,9 @@ modelfit.cor.din <- function( dinobj, jkunits=0 )
                             param.history=FALSE,
                             progress=FALSE )
             }
-            #****
-            # GDINA model
-            if (class(dinobj)=="gdina"){
+
+            #--- GDINA model
+            if (inherits(dinobj,"gdina") ){
                 mod.jj<- gdina( data=data.jj, q.matrix, skillclasses=c1$skillclasses,
                         conv.crit=c1$conv.crit,
                         dev.crit=c1$dev.crit, maxit=c1$maxit,
@@ -110,8 +109,10 @@ modelfit.cor.din <- function( dinobj, jkunits=0 )
     class(res) <- "modelfit.cor.din"
     return(res)
 }
-##############################################################
-# summary
+
+
+
+#*** summary
 summary.modelfit.cor.din <- function( object, ... )
 {
     cat("Test of Global Model Fit\n")
@@ -123,5 +124,5 @@ summary.modelfit.cor.din <- function( object, ... )
     for (vv in seq(1,ncol(obji))){    obji[,vv] <- round( obji[,vv], 3 ) }
     print(obji)
 }
-#################################################################
+
 
