@@ -1,4 +1,4 @@
-adf2dbc8afabd8caf70e079044161b81 *DESCRIPTION
+16cc162677115b18e93552ac2c58ee18 *DESCRIPTION
 e8775ce8ae3234c67f54e5a0e82f8669 *NAMESPACE
 6c43689d578cd58c6b82d82aeae1351e *R/CDM_rbind_fill.R
 24ef478ed85b53d29da8c666c7667623 *R/CDM_require_namespace.R
@@ -37,7 +37,7 @@ f5b10a1fe25ed0034c644f675afc0fd1 *R/IRT_RMSD_summary_print_statistics.R
 04652c7fadd02d6bdc68a94a9638ef1e *R/IRT_se_gdina.R
 f697f99c2029392f7556130ab21a9858 *R/IRT_se_gdina_calc_individual_likelihood.R
 a576d9653ac6141bc9e33b36e90d149a *R/IRT_se_gdina_calc_skill_distribution.R
-b385fef22490bf539f0c07ad7eb05adb *R/RcppExports.R
+c2c58b1d95a7551b6c8e09dba0d6059f *R/RcppExports.R
 24658aed5978852ad8ebd38cb5d27ffb *R/WaldTest.R
 b47d40f14a665798bee385285219a3c1 *R/abs_approx.R
 92d6ba7e23aae55683e165609b241f46 *R/abs_approx_D1.R
@@ -378,8 +378,8 @@ cd35ce8c62864cbc7190d5cb90089aa2 *R/univar_table_statistics.R
 4226f3f6208c579a7b336d4ee0882a47 *R/vcov.din.R
 f912b55e2e35f23f397dd4f31925e8e9 *R/vcov.loglike.din.R
 d154751d61e3e039c6d1bca5a9ff6d1e *R/zzz.R
-a7bcec9c93cf81a7213c83d8a7dcb22c *README.md
-0499faa8a999228b1b5faa89ed116f49 *build/partial.rdb
+74eb1280f266ee8a4137b52bdbdff71f *README.md
+aea2da98d3792e37718f7bef49c69c4a *build/partial.rdb
 b3905389d6af4beffc89f67dbf49d868 *data/data.Students.rda
 b30c5e5060ff6c470b213e9ae15cb6aa *data/data.cdm01.rda
 3c32a6b38b75faae3374a31dfbfcbab0 *data/data.cdm02.rda
@@ -421,7 +421,7 @@ c66f6acd51974c1b0d37ed61ea09bc24 *data/data.timss11.G4.sa.rda
 3153fee7d7aff375d5bbb80bb3f5b135 *data/sim.dino.rda
 627db0b2911f84f1bda0c2772edc5790 *data/sim.qmatrix.rda
 d743a6939a588814aeee9a9f65c01a3a *inst/CITATION
-3d30965b3fabf9a5954d30d8f7265586 *inst/NEWS
+9ee7f0807ee19caf0d0a84f9ec1ae613 *inst/NEWS
 970d057e0f718f29d0c2efe1a8419db3 *man/CDM-package.Rd
 347737f51e224d7dcb1daa8a731323dc *man/CDM-utilities.Rd
 31f8f578ba3e6320271f4e77859351c8 *man/Data-sim.Rd
@@ -470,14 +470,14 @@ f1665f1f91b6f34c340516918ac2ad2e *man/din.Rd
 60dcfb5a8ff5c01f27519e4946f21b2e *man/din.equivalent.class.Rd
 3d13fadc65947a9cbff5e1ef1dad6fc8 *man/din.validate.qmatrix.Rd
 958ac6523910431b7ae652c7ee1aed50 *man/din_identifiability.Rd
-a673c7cc3bea90d02e743ba51ed01c6d *man/discrim.index.Rd
+0660341b73bb71059e1e388545700409 *man/discrim.index.Rd
 047705a23bf76fedf65f16186f17b3ac *man/entropy.lca.Rd
 3232966014ad9108901eed4392a5c558 *man/equivalent.dina.Rd
 ad3c4efd700f7b84daea73c7e5d23687 *man/eval_likelihood.Rd
 488dda32c19db094067a5ea6f7fe14e5 *man/fraction.subtraction.data.Rd
 a2760b1aaa8284611f3bbcc9327b8db5 *man/fraction.subtraction.qmatrix.Rd
 65ef56826e87175d522d85d7a3f8a12a *man/gdd.Rd
-3e21307a33ef5deacf5d001c8fcb81cb *man/gdina.Rd
+1eef7aadccc0b8f8e29304841068f36e *man/gdina.Rd
 08599d9ac26c2401e2117211f28ae629 *man/gdina.dif.Rd
 ec91f1e249a54663eced4b7d46526c53 *man/gdina.wald.Rd
 b08e26e09650b2925bb167a17633c5bd *man/gdm.Rd
@@ -509,7 +509,7 @@ e68f9e34dfb9fe65a4af8c3ce0f06bce *man/slca.Rd
 2babb04a8670d76b507e9be5d3f22e0e *man/vcov.Rd
 3900e4e4b505787e0f3cb83ad8ba2138 *src/Makevars
 36dc26a5d3e080089104b503a783361f *src/Makevars.win
-799a397de809ceb5057a765abd08f48c *src/RcppExports.cpp
+501aad9939e8511f790ec4233f7012d4 *src/RcppExports.cpp
 870c9d6702803b7c4228b444ece15251 *src/cdm_c_calcfx.c
 bf695dcb3baa3a54257f4d5896e1ba60 *src/cdm_rcpp_din_deterministic_devcrit.cpp
 a95d051c299dd8a276133efc4cff61a7 *src/cdm_rcpp_din_em.cpp
@@ -527,4 +527,4 @@ b8806b80d5cdf64fe96504c62828de75 *src/cdm_rcpp_kli.cpp
 303ef402696009ad6c40f3d87a388f11 *src/cdm_rcpp_modelfit_cor.cpp
 3bffea509a99db9084942f93926b8fb1 *src/cdm_rcpp_sim_model.cpp
 ba8247950f752ac9fded2915682e5a9b *src/cdm_rcpp_slca.cpp
-7507c45235feb4c60e813849974cdbaf *src/init.c
+17bd175113879a2c4cca97afb3d483d1 *src/init.c

@@ -1,8 +1,8 @@
 Package: CDM
 Type: Package
 Title: Cognitive Diagnosis Modeling
-Version: 8.1-12
-Date: 2022-05-12 13:47:57
+Version: 8.2-6
+Date: 2022-08-25 15:43:23
 Author: 
     Alexander Robitzsch [aut, cre], Thomas Kiefer [aut],
     Ann Cathrice George [aut], Ali Uenlue [aut]
@@ -35,6 +35,6 @@ URL: https://github.com/alexanderrobitzsch/CDM,
 License: GPL (>= 2)
 BugReports: https://github.com/alexanderrobitzsch/CDM/issues?state=open
 NeedsCompilation: yes
-Packaged: 2022-05-12 11:51:09 UTC; sunpn563
+Packaged: 2022-08-25 13:46:46 UTC; sunpn563
 Repository: CRAN
-Date/Publication: 2022-05-13 08:50:14 UTC
+Date/Publication: 2022-08-25 15:12:43 UTC
